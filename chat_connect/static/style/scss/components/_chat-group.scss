@@ -1,0 +1,29 @@
+.chat-app {
+
+    &__groups {
+        overflow-y: scroll;
+        flex-basis: 35%;
+    }
+
+    &__group {
+        list-style-type: none;
+        padding: 2rem 2rem;
+        background-color: $color-light-amber;
+        cursor: pointer;
+
+        &-link {
+            text-decoration: none;
+
+            font-size: 1.4rem;
+            color: $color-black;
+            text-transform: uppercase;
+
+        }
+
+        &:not(:last-child) {
+            border-bottom: 2px solid $color-light-amber-2;
+            
+        }
+
+    }
+}

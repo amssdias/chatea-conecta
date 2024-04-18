@@ -1,0 +1,37 @@
+.chat-form {
+
+    height: 10%;
+    display: flex;
+
+    &-input {
+        flex-basis: 100%;
+        margin-right: 1rem;
+        height: 100%;
+        
+        font-size: 1.4rem;
+        padding: 2rem;
+        border-radius: 1rem;
+        outline: none;
+        border: 2px solid $color-light-amber-2;
+        background-color: $color-light-amber;
+    }
+
+    &-btn {
+        height: 100%;
+        padding: 0rem 2rem;
+        font-size: 1.4rem;
+        color: $color-red-wine;
+        font-weight: 999;
+
+        outline: none;
+        border: 2px solid $color-light-amber-2;
+        border-radius: 1rem;
+        background-color: $color-light-amber;
+        cursor: pointer;
+
+        &:focus {
+            background-color: $color-light-amber-2;
+        }
+
+    }
+}
