@@ -1,88 +1,67 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatea-Conecta</title>
-    <link rel="stylesheet" href="style/css/main.min.css">
+{% block scripts %}
+    <script defer src="{% static 'js/chatScript.js' %}"></script>
+{% endblock scripts %}
 
-    <script defer src="scripts/chatScript.js"></script>
-    <link rel="stylesheet" href="{% static 'style/css/main.min.css' %}">
+{% block content %}
 
+    <div class="chat-app">
 
-</head>
-<body>
-    
-    <nav>
-        <span>Chatea-Conecta</span>
-        <a href="index.html">Inicio</a>
-        <a href="">Salas</a>
-        <a href="">Colabora</a>
-    </nav>
-
-    <main>
-
-        <div class="chat-app">
-
-            <!-- All groups available to chat -->
-            <div class="chat-app__groups">
-                <ul>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Madrid</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Barcelona</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Valencia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Alicante</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                    <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
-                </ul>
-            </div>
-            
-            <!-- Where user can write chat messages -->
-            <div class="chat">
-                <div class="chat__header">Madrid (287)</div>
-                <div id="chat-messages" class="chat__messages margin-top-xsmall">
-
-                    <div class="chat__message">
-                        <h5 class="chat__message-user">Paulo</h5>
-                        <p class="chat__message-text">This is the message send by Paulo</p>
-                    </div>
-                    <div class="chat__message chat__message--current-user">
-                        <h5 class="chat__message-user">Dias</h5>
-                        <p class="chat__message-text">This is the message send by Cris</p>
-                        <p class="chat__message-text">This is the message sThis is the message send by Dias and some more text ehere</p>
-                    </div>
-
-                    <div class="chat__message">
-                        <h5 class="chat__message-user">Paulo</h5>
-                        <p class="chat__message-text">This is the message send by Paulo</p>
-                    </div>
-
-
-
-                </div>
-                <form id="chat-form" class="chat-form margin-top-xsmall" action="">
-                    <input class="chat-form-input" type="text">
-                    <button class="chat-form-btn" type="submit">Submit</button>
-                </form>
-            </div>
-
+        <!-- All groups available to chat -->
+        <div class="chat-app__groups">
+            <ul>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Madrid</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Barcelona</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Valencia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Alicante</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+                <li class="chat-app__group"><a href="#" class="chat-app__group-link">Galicia</a></li>
+            </ul>
         </div>
 
-    </main>
+        <!-- Where user can write chat messages -->
+        <div class="chat">
+            <div class="chat__header">Madrid (287)</div>
+            <div id="chat-messages" class="chat__messages margin-top-xsmall">
+
+                <div class="chat__message">
+                    <h5 class="chat__message-user">Paulo</h5>
+                    <p class="chat__message-text">This is the message send by Paulo</p>
+                </div>
+                <div class="chat__message chat__message--current-user">
+                    <h5 class="chat__message-user">Dias</h5>
+                    <p class="chat__message-text">This is the message send by Cris</p>
+                    <p class="chat__message-text">This is the message sThis is the message send by Dias and some more text ehere</p>
+                </div>
+
+                <div class="chat__message">
+                    <h5 class="chat__message-user">Paulo</h5>
+                    <p class="chat__message-text">This is the message send by Paulo</p>
+                </div>
 
 
-</body>
-</html>
+
+            </div>
+            <form id="chat-form" class="chat-form margin-top-xsmall" action="">
+                <input class="chat-form-input" type="text">
+                <button class="chat-form-btn" type="submit">Submit</button>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,21 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatea-conecta</title>
-    <link rel="stylesheet" href="{% static 'style/css/main.css' %}">
-</head>
-<body>
-    
-    <nav>
-        <span>Chatea-Conecta</span>
-        <a href="">Inicio</a>
-        <a href="/chat.html">Salas</a>
-        <a href="">Colabora</a>
-    </nav>
-
+{% block header %}
     <header>
         <h1>Chatea-Conecta</h1>
 
@@ -25,6 +8,4 @@
         </form>
 
     </header>
-
-</body>
-</html>
+{% endblock header %}
