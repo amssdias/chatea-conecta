@@ -29,8 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+MY_PROJECT_APPS = ["apps.chat"]
+EXTERNAL_APPS = ["daphne"]
+
+INSTALLED_APPS = MY_PROJECT_APPS + EXTERNAL_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'chat_connect.wsgi.application'
+ASGI_APPLICATION = "chat_connect.asgi.application"
 
 
 # Database
