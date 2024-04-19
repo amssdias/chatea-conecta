@@ -1,9 +1,11 @@
+{% extends "base.html" %}
 {% block header %}
     <header>
         <h1>Chatea-Conecta</h1>
 
-        <form>
-            <input type="text" placeholder="Escribe tu apodo...">
+        <form method="POST" action="{% url 'chat:live-chat' %}">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Escribe tu apodo...">
             <button type="submit">Chatear</button>
         </form>
 

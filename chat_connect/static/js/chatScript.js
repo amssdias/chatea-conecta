@@ -1,6 +1,6 @@
 const chatForm = document.getElementById("chat-form");
 const chatMessages = document.getElementById("chat-messages");
-let user = "Dias";
+
 
 chatForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -39,7 +39,7 @@ function createUserChatMessageElements(message) {
 
     const userHeader = document.createElement("h5");
     userHeader.classList.add("chat__message-user");
-    userHeader.innerHTML = user;
+    userHeader.innerHTML = username;
 
     const paragraph = document.createElement("p");
     paragraph.classList.add("chat__message-text");
