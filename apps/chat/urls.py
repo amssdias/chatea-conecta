@@ -1,10 +1,11 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
-from .views import test_request
+from apps.chat.views.chat_view import ChatView
 
 app_name = "chat"
 
 urlpatterns = [
-    path("testing/", test_request, name="test"),
+    path("", TemplateView.as_view(template_name="index.html"), name="home"),
+    path("live-chat/", ChatView.as_view(), name="live-chat"),
 ]
