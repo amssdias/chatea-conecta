@@ -1,20 +1,46 @@
-const chatForm = document.getElementById("chat-form");
-const chatMessages = document.getElementById("chat-messages");
+const chatView = new ChatView();
+
+document.querySelector(".chat-app__groups").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const targetEl = e.target;
+    if (!targetEl) return;
+
+    const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.children[0];
+    const groupChatName = groupChatLink.innerHTML;
+
+    // Open web sockets connection
+    // const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${groupChatName}/`);
+    // chatSocket.onmessage = function (e) {
+    //     const data = JSON.parse(e.data);
+    //     document.querySelector('#chat-log').value += (data.message + '\n');
+    // };
+
+    // chatSocket.onclose = function (e) {
+    //     console.error('Chat socket closed unexpectedly');
+    // };
+
+    // Display chat
+    chatView.createChat(groupChatName, sendMessage);
+
+})
 
 
-chatForm.addEventListener("submit", function (e) {
+
+function sendMessage(e) {
     e.preventDefault();
 
     // Get the text to be sent
-    const chatFormInput = chatForm.querySelector(".chat-form-input");
+    const chatFormInput = this.querySelector(".chat-form-input");
     const message = chatFormInput.value.trim();
     if (!message) return;
 
     // Check who sent the last text
-    const lastMessage = chatMessages.lastElementChild;
+    const chatBox = document.getElementById("chat-messages");
+    const lastMessage = chatBox.lastElementChild;
 
     // If last sent was by current user append to the div
-    if (lastMessage.classList.contains("chat__message--current-user")) {
+    if (lastMessage && lastMessage.classList.contains("chat__message--current-user")) {
 
         const paragraph = document.createElement("p");
         paragraph.classList.add("chat__message-text");
@@ -24,29 +50,10 @@ chatForm.addEventListener("submit", function (e) {
 
     } else {
         // If last sent was by the other user, create new div
-        const div = createUserChatMessageElements(message);
-        chatMessages.appendChild(div);
+        const div = chatView.createUserChatMessageElements(message);
+        chatBox.appendChild(div);
 
     }
     chatFormInput.value = "";
 
-})
-
-
-function createUserChatMessageElements(message) {
-    const div = document.createElement("div");
-    div.classList.add("chat__message", "chat__message--current-user");
-
-    const userHeader = document.createElement("h5");
-    userHeader.classList.add("chat__message-user");
-    userHeader.innerHTML = username;
-
-    const paragraph = document.createElement("p");
-    paragraph.classList.add("chat__message-text");
-    paragraph.innerHTML = message;
-
-    div.appendChild(userHeader);
-    div.appendChild(paragraph);
-
-    return div;
-}
+};

@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block scripts %}
+    <script defer src="{% static 'js/views/chatView.js' %}"></script>
     <script defer src="{% static 'js/chatScript.js' %}"></script>
 {% endblock scripts %}
 
@@ -40,7 +41,8 @@
 
         <!-- Where user can write chat messages -->
         <div class="chat">
-            <div class="chat__header">Madrid (287)</div>
+            <!-- <div class="chat__header">Madrid (287)</div>
+
             <div id="chat-messages" class="chat__messages margin-top-xsmall">
 
                 <div class="chat__message">
@@ -58,13 +60,11 @@
                     <p class="chat__message-text">This is the message send by Paulo</p>
                 </div>
 
-
-
             </div>
             <form id="chat-form" class="chat-form margin-top-xsmall" action="">
                 <input class="chat-form-input" type="text">
                 <button class="chat-form-btn" type="submit">Submit</button>
-            </form>
+            </form> -->
         </div>
 
     </div>
