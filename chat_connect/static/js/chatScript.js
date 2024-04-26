@@ -1,4 +1,7 @@
-const chatView = new ChatView();
+const chatView = new ChatView(username);
+
+// Open web sockets connection
+let chatSocket;
 
 document.querySelector(".chat-app__groups").addEventListener("click", function (e) {
     e.preventDefault();
@@ -7,18 +10,27 @@ document.querySelector(".chat-app__groups").addEventListener("click", function (
     if (!targetEl) return;
 
     const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.children[0];
-    const groupChatName = groupChatLink.innerHTML;
+    const groupChatName = groupChatLink.innerHTML.toLowerCase();
 
-    // Open web sockets connection
-    // const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${groupChatName}/`);
-    // chatSocket.onmessage = function (e) {
-    //     const data = JSON.parse(e.data);
-    //     document.querySelector('#chat-log').value += (data.message + '\n');
-    // };
+    chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${groupChatName}/`);
 
-    // chatSocket.onclose = function (e) {
-    //     console.error('Chat socket closed unexpectedly');
-    // };
+    chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        // console.log(`RECEIVED MESSAGE FROM ${data.username} - MESSAGE SOCKET: ${data}`)
+
+        // If message was from the same user who sent, we don't need to display on the user
+        if (data.username === username) return;
+
+        // Show message from other users
+        chatView.displayOtherUserMessage(
+            data.username,
+            data.message
+        );
+    };
+
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
 
     // Display chat
     chatView.createChat(groupChatName, sendMessage);
@@ -35,25 +47,17 @@ function sendMessage(e) {
     const message = chatFormInput.value.trim();
     if (!message) return;
 
-    // Check who sent the last text
-    const chatBox = document.getElementById("chat-messages");
-    const lastMessage = chatBox.lastElementChild;
+    // Display message on the chat
+    chatView.displayCurrentUserMessage(message);
 
-    // If last sent was by current user append to the div
-    if (lastMessage && lastMessage.classList.contains("chat__message--current-user")) {
-
-        const paragraph = document.createElement("p");
-        paragraph.classList.add("chat__message-text");
-        paragraph.innerHTML = message;
-
-        lastMessage.appendChild(paragraph);
-
-    } else {
-        // If last sent was by the other user, create new div
-        const div = chatView.createUserChatMessageElements(message);
-        chatBox.appendChild(div);
-
-    }
+    // Clear input
     chatFormInput.value = "";
+
+    console.log("SENDING MESSAGE ON SOCKET: ", message);
+    chatSocket.send(
+        JSON.stringify({
+            'message': message
+        })
+    );
 
 };

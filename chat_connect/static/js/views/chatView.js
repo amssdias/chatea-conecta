@@ -61,9 +61,70 @@ class ChatView {
         return form;
     }
 
-    createUserChatMessageElements(message) {
+    displayOtherUserMessage(username, message) {
+
+        // Check who sent the last text
+        const chatBox = document.getElementById("chat-messages");
+        const lastMessage = chatBox.lastElementChild;
+
+        // If last sent was by same user, then only add a paragraph to it
+        if (lastMessage && lastMessage.dataset.username === username) {
+
+            const paragraph = document.createElement("p");
+            paragraph.classList.add("chat__message-text");
+            paragraph.innerHTML = message;
+
+            lastMessage.appendChild(paragraph);
+
+
+        } else {
+            // If last sent was by some other user, create new div
+            const div = this.createUserChatMessageElements(
+                message,
+                username
+            );
+            chatBox.appendChild(div);
+
+        }
+
+    }
+
+    displayCurrentUserMessage(message) {
+
+        // Check who sent the last text
+        const chatBox = document.getElementById("chat-messages");
+        const lastMessage = chatBox.lastElementChild;
+
+        // If last sent was by current user append to the div
+        if (lastMessage && lastMessage.dataset.username === this._username) {
+
+            const paragraph = document.createElement("p");
+            paragraph.classList.add("chat__message-text");
+            paragraph.innerHTML = message;
+
+            lastMessage.appendChild(paragraph);
+
+        } else {
+            // If last sent was by the other user, create new div
+            const div = this.createUserChatMessageElements(
+                message,
+                this._username,
+                true,
+            );
+            chatBox.appendChild(div);
+
+        }
+
+    }
+
+    createUserChatMessageElements(message, username, isCurrentUser = false) {
         const div = document.createElement("div");
-        div.classList.add("chat__message", "chat__message--current-user");
+        if (isCurrentUser) {
+            div.classList.add("chat__message--current-user")
+        }
+
+        div.setAttribute("data-username", username);
+        div.classList.add("chat__message");
 
         const userHeader = document.createElement("h5");
         userHeader.classList.add("chat__message-user");
