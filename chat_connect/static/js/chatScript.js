@@ -1,9 +1,12 @@
+const chatGroups = document.querySelector(".chat-app__groups");
+
 const chatView = new ChatView(username);
 
 // Open web sockets connection
 let chatSocket;
 
-document.querySelector(".chat-app__groups").addEventListener("click", function (e) {
+// Event when user selects a group to chat
+chatGroups.addEventListener("click", function (e) {
     e.preventDefault();
 
     const targetEl = e.target;
@@ -12,13 +15,22 @@ document.querySelector(".chat-app__groups").addEventListener("click", function (
     const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.children[0];
     const groupChatName = groupChatLink.innerHTML.toLowerCase();
 
+    createChatSocket(groupChatName);
+
+    // Display chat with event
+    chatView.createChat(groupChatName, sendMessage);
+
+})
+
+
+function createChatSocket(groupChatName) {
     chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${groupChatName}/`);
 
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        // console.log(`RECEIVED MESSAGE FROM ${data.username} - MESSAGE SOCKET: ${data}`)
 
         // If message was from the same user who sent, we don't need to display on the user
+        // It's already displayed when he sent the message
         if (data.username === username) return;
 
         // Show message from other users
@@ -31,12 +43,7 @@ document.querySelector(".chat-app__groups").addEventListener("click", function (
     chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
-
-    // Display chat
-    chatView.createChat(groupChatName, sendMessage);
-
-})
-
+}
 
 
 function sendMessage(e) {
