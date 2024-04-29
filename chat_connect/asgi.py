@@ -13,8 +13,14 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
+from dotenv import load_dotenv
 
 from apps.chat.routing import websocket_urlpatterns
+
+# Load environment variables
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat_connect.settings')
 
