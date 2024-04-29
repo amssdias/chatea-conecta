@@ -99,7 +99,7 @@ class ChatView {
         if (lastMessage && lastMessage.dataset.username === this._username) {
 
             const paragraph = document.createElement("p");
-            paragraph.classList.add("chat__message-text");
+            paragraph.classList.add("chat__message-text", "background-color-text-sending");
             paragraph.innerHTML = message;
 
             lastMessage.appendChild(paragraph);
@@ -119,9 +119,6 @@ class ChatView {
 
     createUserChatMessageElements(message, username, isCurrentUser = false) {
         const div = document.createElement("div");
-        if (isCurrentUser) {
-            div.classList.add("chat__message--current-user")
-        }
 
         div.setAttribute("data-username", username);
         div.classList.add("chat__message");
@@ -134,10 +131,32 @@ class ChatView {
         paragraph.classList.add("chat__message-text");
         paragraph.innerHTML = message;
 
+        if (isCurrentUser) {
+            div.classList.add("chat__message--current-user");
+            paragraph.classList.add("background-color-text-sending");
+        }
+
         div.appendChild(userHeader);
         div.appendChild(paragraph);
 
         return div;
+    }
+
+    updateCurrentUserBackgroundMessage(userMessage) {
+        // Get all messages from a current user, get the last that matches the same message
+        const chatMessagesEl = document.getElementById("chat-messages");
+        const currentUserMessages = Array.from(chatMessagesEl.querySelectorAll(".chat__message--current-user")).reverse()
+
+        currentUserMessages.forEach(userChatMessage => {
+            const userMessages = userChatMessage.querySelectorAll(".chat__message-text");
+
+            userMessages.forEach(message => {
+                if (message.innerHTML === userMessage) {
+                    message.classList.remove("background-color-text-sending");
+                }
+            })
+
+        })
     }
 }
 

@@ -13,7 +13,7 @@ chatGroups.addEventListener("click", function (e) {
     if (!targetEl) return;
 
     const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.children[0];
-    const groupChatName = groupChatLink.innerHTML.toLowerCase();
+    const groupChatName = groupChatLink.dataset.groupName?.toLowerCase();
 
     createChatSocket(groupChatName);
 
@@ -29,19 +29,23 @@ function createChatSocket(groupChatName) {
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
 
-        // If message was from the same user who sent, we don't need to display on the user
-        // It's already displayed when he sent the message
-        if (data.username === username) return;
+        // If message was from the same user who sent, 
+        // we change the background knowing the user that it was successfully sent
+        if (data.username === username) {
+            chatView.updateCurrentUserBackgroundMessage(data.message);
 
-        // Show message from other users
-        chatView.displayOtherUserMessage(
-            data.username,
-            data.message
-        );
+        } else {
+            // Show message from other users
+            chatView.displayOtherUserMessage(
+                data.username,
+                data.message
+            );
+        }
+
     };
 
     chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
+        console.error("Chat socket closed unexpectedly");
     };
 }
 
@@ -60,10 +64,10 @@ function sendMessage(e) {
     // Clear input
     chatFormInput.value = "";
 
-    console.log("SENDING MESSAGE ON SOCKET: ", message);
+    // Send message through socket
     chatSocket.send(
         JSON.stringify({
-            'message': message
+            "message": message
         })
     );
 
