@@ -1,43 +1,50 @@
 import json
 
-from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
+from chat_connect.utils.redis_connection import redis_connection
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
+class ChatConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self):
         print("---- CONNECTED ----")
         print(f"scope: {self.scope}")
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name.lower()}"
 
         # Join room group
-        async_to_sync(self.channel_layer.group_add)(
+        await self.channel_layer.group_add(
             self.room_group_name, self.channel_name
         )
 
-        self.accept()
+        # Increment Redis counter for the group
+        group_key_counter = f"{self.room_group_name}_counter"
+        await redis_connection.incrby(group_key_counter, amount=1)
+        users_online = await redis_connection.get(group_key_counter)
+        await self.accept()
 
-    def disconnect(self, close_code):
+        # Send the amount of users online on this chat
+        await self.send(text_data=json.dumps({"users_online": users_online}))
+
+    async def disconnect(self, close_code):
         # Leave room group
-        async_to_sync(self.channel_layer.group_discard)(
+        await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
 
-    def receive(self, text_data):
-        print("RECEIVED MESSAGE FROM FRONTEND")
+        redis_connection.decrby(f"{self.room_group_name}_counter", 1)
 
+    async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
-        print(f"MESSAGE: {text_data_json}")
 
         username = self.scope["cookies"].get("username")
         if not username:
-            self.disconnect(1234)
+            await self.close(code=401, reason="No username")
             return
 
         # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
+        await self.channel_layer.group_send(
             self.room_group_name,
             {
                 "type": "chat.message",
@@ -47,8 +54,9 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     # Receive message from room group
-    def chat_message(self, event):
+    async def chat_message(self, event):
         message = event["message"]
         username = event["username"]
+
         # Send message to WebSocket (frontend)
-        self.send(text_data=json.dumps({"message": message, "username": username}))
+        await self.send(text_data=json.dumps({"message": message, "username": username}))
