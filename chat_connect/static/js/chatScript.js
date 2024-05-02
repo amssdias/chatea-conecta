@@ -15,43 +15,25 @@ chatGroups.addEventListener("click", function (e) {
     const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.children[0];
     const groupChatName = groupChatLink.dataset.groupName?.toLowerCase();
 
-    createChatSocket(groupChatName);
+    // Create chat socket
+    const groupSocket = createChatSocket(groupChatName);
 
     // Display chat with event
-    chatView.createChat(groupChatName, sendMessage);
+    chatView.createChat(groupChatName, sendMessage, groupSocket);
 
 })
 
 
 function createChatSocket(groupChatName) {
-    chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${groupChatName}/`);
 
-    chatSocket.onmessage = function (e) {
-        const data = JSON.parse(e.data);
+    const socketUrl = `ws://${window.location.host}/ws/chat/${groupChatName}/`;
+    let chatSocket =  new ChatSocket(socketUrl, chatView);
+    return chatSocket;
 
-        // If message was from the same user who sent, 
-        // we change the background knowing the user that it was successfully sent
-        if (data.username === username) {
-            chatView.updateCurrentUserBackgroundMessage(data.message);
-
-        } else {
-            // Show message from other users
-            chatView.displayOtherUserMessage(
-                data.username,
-                data.message
-            );
-        }
-
-    };
-
-    chatSocket.onclose = function (e) {
-        console.error("Chat socket closed unexpectedly");
-    };
 }
 
 
-function sendMessage(e) {
-    e.preventDefault();
+function sendMessage(chatSocket) {
 
     // Get the text to be sent
     const chatFormInput = this.querySelector(".chat-form-input");

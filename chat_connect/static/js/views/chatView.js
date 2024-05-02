@@ -10,7 +10,7 @@ class ChatView {
         this._parentElement.innerHTML = "";
     }
 
-    createChat(groupChatName, send_message_handler) {
+    createChat(groupChatName, send_message_handler, chatSocket) {
 
         // Clear chat
         this.clearChat();
@@ -22,7 +22,7 @@ class ChatView {
         const chatBox = this.createChatBox();
 
         // Chat form
-        const form = this.createChatForm(send_message_handler);
+        const form = this.createChatForm(send_message_handler, chatSocket);
 
         this._parentElement.appendChild(chatHeader);
         this._parentElement.appendChild(chatBox);
@@ -43,13 +43,16 @@ class ChatView {
         return chatBox;
     }
 
-    createChatForm(handler) {
+    createChatForm(handler, chatSocket) {
+
         const form = document.createElement("form");
         form.classList.add("chat-form", "margin-top-xsmall");
         form.id = "chat-form";
+
         const inputEl = document.createElement("input");
         inputEl.type = "text";
         inputEl.classList.add("chat-form-input");
+
         const btn = document.createElement("button");
         btn.type = "submit";
         btn.innerHTML = "Submit";
@@ -57,7 +60,11 @@ class ChatView {
 
         form.appendChild(inputEl);
         form.appendChild(btn);
-        form.addEventListener("submit", handler);
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            handler.call(this, chatSocket);
+        });
+
         return form;
     }
 
