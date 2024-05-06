@@ -1,32 +1,51 @@
 class ChatView {
 
-    _parentElement = document.querySelector(".chat");
+    _parentElement = document.querySelector(".chat-container");
 
     constructor(username) {
         this._username = username;
     }
 
-    clearChat() {
-        this._parentElement.innerHTML = "";
+    displayNUsersOnline(users_online) {
+        const activeChat = this._parentElement.querySelector(".active");
+        const chatHeader = activeChat.querySelector(".chat__header");
+        chatHeader.innerHTML = `${chatHeader.innerHTML} (${users_online})`;
+    }
+
+    hideActiveChat() {
+        const activeChat = this._parentElement.querySelector(".active");
+
+        if (activeChat) {
+            activeChat.classList.remove("active");
+            activeChat.classList.add("hide");
+        }
+
     }
 
     createChat(groupChatName, send_message_handler, chatSocket) {
 
-        // Clear chat
-        this.clearChat();
+        // Hide chat
+        this.hideActiveChat();
 
-        // Create chat header
+        // Chat header
         const chatHeader = this.createChatHeader(groupChatName);
 
-        // Chat box
+        // Chat messages box
         const chatBox = this.createChatBox();
 
         // Chat form
         const form = this.createChatForm(send_message_handler, chatSocket);
 
-        this._parentElement.appendChild(chatHeader);
-        this._parentElement.appendChild(chatBox);
-        this._parentElement.appendChild(form);
+        // Create chat
+        const chat = document.createElement("div");
+        chat.classList.add("chat", "active");
+        chat.dataset.groupName = groupChatName;
+
+        chat.appendChild(chatHeader);
+        chat.appendChild(chatBox);
+        chat.appendChild(form);
+
+        this._parentElement.appendChild(chat);
     }
 
     createChatHeader(groupChatName) {
@@ -60,7 +79,7 @@ class ChatView {
 
         form.appendChild(inputEl);
         form.appendChild(btn);
-        form.addEventListener("submit", function(e) {
+        form.addEventListener("submit", function (e) {
             e.preventDefault();
             handler.call(this, chatSocket);
         });
@@ -68,10 +87,14 @@ class ChatView {
         return form;
     }
 
-    displayOtherUserMessage(username, message) {
+    displayOtherUserMessage(username, message, groupChatName) {
 
         // Check who sent the last text
-        const chatBox = document.getElementById("chat-messages");
+        const chat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
+
+        if (!chat) return;
+
+        const chatBox = chat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
 
         // If last sent was by same user, then only add a paragraph to it
@@ -99,7 +122,8 @@ class ChatView {
     displayCurrentUserMessage(message) {
 
         // Check who sent the last text
-        const chatBox = document.getElementById("chat-messages");
+        const activeChat = this._parentElement.querySelector(".active");
+        const chatBox = activeChat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
 
         // If last sent was by current user append to the div
@@ -151,7 +175,9 @@ class ChatView {
 
     updateCurrentUserBackgroundMessage(userMessage) {
         // Get all messages from a current user, get the last that matches the same message
-        const chatMessagesEl = document.getElementById("chat-messages");
+
+        const activeChat = this._parentElement.querySelector(".active");
+        const chatMessagesEl = activeChat.querySelector(".chat__messages");
         const currentUserMessages = Array.from(chatMessagesEl.querySelectorAll(".chat__message--current-user")).reverse()
 
         currentUserMessages.forEach(userChatMessage => {
@@ -164,6 +190,15 @@ class ChatView {
             })
 
         })
+    }
+
+    displayGroupChat(groupChatName) {
+
+        this.hideActiveChat();
+
+        const groupChat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`)
+        groupChat.classList.add("active");
+        groupChat.classList.remove("hide");
     }
 }
 

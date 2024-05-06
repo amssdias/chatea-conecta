@@ -9,11 +9,10 @@ class ChatSocket extends WebSocket {
 
     handleMessage(event) {
         const data = JSON.parse(event.data);
-        console.log(`DATA: ${data}`);
-        console.log(data);
 
         // Display how many users are online
         if (data.users_online) {
+            this.chatView.displayNUsersOnline(data.users_online);
             console.log(`Users online: ${data.users_online}`);
             return;
         }
@@ -27,7 +26,8 @@ class ChatSocket extends WebSocket {
             // Show message from other users
             this.chatView.displayOtherUserMessage(
                 data.username,
-                data.message
+                data.message,
+                data.groupChatName
             );
         }
 
