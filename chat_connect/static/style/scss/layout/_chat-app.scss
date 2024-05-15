@@ -1,9 +1,21 @@
 .chat-app {
-    margin: 5rem;
-    border: 2px solid #218380;
+    margin: 5rem 0rem;
+    border: 2px solid $color-dark-amber-2;
 
     display: flex;
+
     height: 90rem;
 
     background-color: $color-red-wine;
+
+    &__container {
+        display: flex;
+        flex-grow: 1;
+
+        padding: 2rem;
+
+        @include respond(tab-land) {
+            flex-direction: row-reverse;
+        }
+    }
 }

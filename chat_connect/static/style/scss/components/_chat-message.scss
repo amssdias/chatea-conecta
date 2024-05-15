@@ -1,7 +1,13 @@
 .chat-container {
-    flex-basis: 65%;
+    display: block;
+    flex-grow: 1;
 
-    padding: 2rem;
+    padding: 0rem 2rem;
+
+    @include respond(phone) {
+        display: block;
+        padding: 1rem;
+    }
 }
 
 .chat {
@@ -9,17 +15,21 @@
     height: 100%;
 
     &__header {
-        border: 1px solid $color-light-amber-2;
-        border-radius: 1rem;
+        // border: 1px solid $color-light-amber-2;
+        // border-radius: 1rem;
         padding: 2rem;
         font-size: 1.6rem;
         text-transform: uppercase;
-        background-color: $color-light-amber;
-
+        // background-color: $color-light-amber;
+        color: $color-light-amber;
+        border-bottom: 1px solid $color-light-amber;
         display: flex;
         align-items: center;
 
+        letter-spacing: 0.2rem;
+
         height: 10%;
+
     }
 
     &__messages {
@@ -33,6 +43,10 @@
         background-color: $color-light-amber;
 
         overflow-y: scroll;
+
+        @include respond(tab-port) {
+            padding: 2rem 4rem;
+        }
     }
 
     &__message {
@@ -63,6 +77,10 @@
             padding: 1rem 2rem;
 
             max-width: 50%;
+
+            @include respond(phone) {
+                max-width: 80%;
+            }
         }
 
     }

@@ -29,8 +29,26 @@
         background-color: $color-light-amber;
         cursor: pointer;
 
-        &:focus {
+        z-index: 1000;
+
+        &:active {
+
+            & .chat-form-btn__svg{
+                background-color: $color-light-amber-2;
+            }
             background-color: $color-light-amber-2;
+        }
+
+        &__svg {
+            // width: 2rem;
+            display: inline;
+            height: 100%;
+            width: 3rem;
+            background-color: $color-light-amber;
+
+            &:focus {
+                background-color: $color-light-amber-2;
+            }
         }
 
     }

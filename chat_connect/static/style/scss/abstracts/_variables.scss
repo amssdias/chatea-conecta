@@ -3,6 +3,12 @@ $color-light-amber: #fef3c7;
 $color-light-amber-2: #fcd34d;
 $color-light-amber-3: #fde68a;
 
+$color-dark-amber-1: #f59e0b;
+$color-dark-amber-2: #d97706;
+$color-dark-amber-3: #b45309;
+
+$color-green-dark-1: #84cc16;
+
 $color-rose: #D81159;
 $color-red-wine: #813c58;
 
@@ -12,3 +18,10 @@ $color-grey-dark-3: #333;
 
 $color-white: #fff;
 $color-black: #000;
+
+// FONT
+$default-font-size: 1.6rem;
+@font-face {
+    font-family: "Poetsen One";
+    src: url("../../utils/fonts/PoetsenOne-Regular.ttf") format("truetype");
+}

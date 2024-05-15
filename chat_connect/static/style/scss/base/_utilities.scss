@@ -1,3 +1,8 @@
 .margin-top-xsmall {margin-top: 2rem;}
+.margin-bottom-xsmall {margin-bottom: 2rem;}
+.margin-right-xxsmall {margin-right: 1rem;}
 .background-color-text-sending {background-color: $color-light-amber-3 !important;}
-.hide {display: none;}
+.hide {display: none !important;}
+.online {fill:$color-green-dark-1;}
+.offline {fill: $color-grey-dark-2;}
+.selected {background-color: $color-light-amber-3 !important;}

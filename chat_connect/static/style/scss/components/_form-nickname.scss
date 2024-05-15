@@ -1,0 +1,60 @@
+.form-nickname {
+
+    // border: 1px solid green;
+    width: 80%;
+    padding: 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: rgba(255, 255, 255, 0.4);
+
+    &__input {
+        font-size: 2rem;
+        width: 40%;
+        height: 5rem;
+        padding: 1rem;
+        color: $color-dark-amber-1;
+        border: 0.3rem solid $color-light-amber-2;
+        background-color: $color-light-amber;
+        margin-bottom: 3rem;
+        // border-radius: 40rem;
+        
+        &::placeholder {
+            color: $color-dark-amber-1;
+        }
+
+        &:focus {
+            outline: none;
+            border: 0.3rem solid $color-dark-amber-1;
+        }
+
+        @include respond(tab-land) {
+            width: 75%;
+        }
+
+        @include respond(phone) {
+            width: 90%;
+        }
+    }
+
+    &__btn {
+        align-self: center;
+
+        padding: 1.5rem 6rem;
+
+        border: none;
+        outline: 0.3rem solid $color-light-amber-2;
+        background-color: $color-light-amber;
+        cursor: pointer;
+
+        font-size: 2rem;
+        color: $color-dark-amber-1;
+
+        &:focus {
+            // border: 0.3rem solid $color-dark-amber-2;
+            outline:  0.3rem solid $color-dark-amber-2;
+        }
+    }
+
+}
