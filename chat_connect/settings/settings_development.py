@@ -1,6 +1,8 @@
 from .base import *
 
-DEBUG = os.getenv("DEBUG")
+DEBUG = True
+
+ALLOWED_HOSTS = ['*']
 
 # Channels
 CHANNEL_LAYERS = {
