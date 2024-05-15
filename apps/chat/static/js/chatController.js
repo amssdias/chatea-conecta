@@ -1,6 +1,7 @@
 const chatGroups = document.querySelector(".chat-app__groups");
 
 const chatView = new ChatView(username);
+const chatGroupsView = new ChatGroupsView();
 
 const openedChats = new Set();
 
@@ -12,7 +13,7 @@ chatGroups.addEventListener("click", function (e) {
     const targetEl = e.target;
     if (!targetEl) return;
 
-    const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.children[0];
+    const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.querySelector("chat-app__group-link");
     const groupChatName = groupChatLink.dataset.groupName?.toLowerCase();
 
     // If the user already opened this chat
@@ -24,16 +25,19 @@ chatGroups.addEventListener("click", function (e) {
         // Create chat socket
         const groupSocket = createChatSocket(groupChatName);
 
+        // Show group online icon
+        chatGroupsView.activateGroup(groupChatName);
+
+        // Make group chat as selected
+        chatGroupsView.selectedGroupChat(groupChatName);
+
         // Display chat with event
         chatView.createChat(groupChatName, sendMessage, groupSocket);
 
         // Add to list of opened chats
         openedChats.add(groupChatName);
-    }
-
-
-
-})
+    };
+});
 
 
 function createChatSocket(groupChatName) {

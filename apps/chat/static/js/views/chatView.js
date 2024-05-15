@@ -6,14 +6,17 @@ class ChatView {
         this._username = username;
     }
 
+    get activeChat() {
+        return this._parentElement.querySelector(".active");
+    }
+
     displayNUsersOnline(users_online) {
-        const activeChat = this._parentElement.querySelector(".active");
-        const chatHeader = activeChat.querySelector(".chat__header");
+        const chatHeader = this.activeChat.querySelector(".chat__header");
         chatHeader.innerHTML = `${chatHeader.innerHTML} (${users_online})`;
     }
 
     hideActiveChat() {
-        const activeChat = this._parentElement.querySelector(".active");
+        const activeChat = this.activeChat;
 
         if (activeChat) {
             activeChat.classList.remove("active");
@@ -122,8 +125,7 @@ class ChatView {
     displayCurrentUserMessage(message) {
 
         // Check who sent the last text
-        const activeChat = this._parentElement.querySelector(".active");
-        const chatBox = activeChat.querySelector(".chat__messages");
+        const chatBox = this.activeChat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
 
         // If last sent was by current user append to the div
@@ -174,10 +176,9 @@ class ChatView {
     }
 
     updateCurrentUserBackgroundMessage(userMessage) {
-        // Get all messages from a current user, get the last that matches the same message
 
-        const activeChat = this._parentElement.querySelector(".active");
-        const chatMessagesEl = activeChat.querySelector(".chat__messages");
+        // Get all messages from a current user, get the last that matches the same message
+        const chatMessagesEl = this.activeChat.querySelector(".chat__messages");
         const currentUserMessages = Array.from(chatMessagesEl.querySelectorAll(".chat__message--current-user")).reverse()
 
         currentUserMessages.forEach(userChatMessage => {
