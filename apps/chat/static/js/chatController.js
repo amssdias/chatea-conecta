@@ -67,6 +67,35 @@ function sendMessage(chatSocket) {
 
 };
 
+// Open group chats
+const groupsLinkImage = document.getElementById("groups-link");
+groupsLinkImage.addEventListener("click", function (e) {
+
+    const chatGroups = document.getElementById("chat-groups");
+
+    // Hide or show group chats
+    chatGroups.classList.toggle("hide");
+
+    if (window.innerWidth <= 600) {
+        if (chatGroups.classList.contains("hide")) {
+            document.querySelector(".chat-container").classList.remove("hide");
+        } else {
+            document.querySelector(".chat-container").classList.add("hide");
+        };
+
+    };
+
+});
+
+// Make sure if window is resized the chat ocupies the whole space
+window.addEventListener("resize", function (e) {
+
+    if (this.innerWidth > 600) {
+        document.querySelector(".chat-container").classList.remove("hide");
+    }
+})
+
+
 // Save the messages on localstorage through a new file for chatModel.js
 // Future make saying a small message saying (sendind and sent) on the chat
 
