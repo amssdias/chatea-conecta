@@ -20,6 +20,6 @@ class ChatView(View):
             # Redirect to home page
             return redirect("chat:home")
 
-        response = render(request, "chat.html", context={"username": username})
+        response = render(request, "chat/chat.html", context={"username": username})
         response.set_cookie("username", username, httponly=True, secure=settings.COOKIES_SECURE)
         return response
