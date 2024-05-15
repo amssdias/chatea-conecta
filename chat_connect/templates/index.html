@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% block header %}
-    <header>
-        <h1>Chatea-Conecta</h1>
 
-        <form method="POST" action="{% url 'chat:live-chat' %}">
+    <header class="header">
+        <div class="header__title">
+            <h1 class="heading-primary margin-bottom-xsmall">Chatea-Conecta</h1>
+            <h4 class="heading-quaternary">Conecta con personas cerca de ti...</h4>
+        </div>
+
+        <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="Escribe tu apodo...">
-            <button type="submit">Chatear</button>
+            <input class="form-nickname__input" type="text" name="username" placeholder="Escribe tu apodo...">
+            <button class="form-nickname__btn" type="submit">Chatear</button>
         </form>
 
     </header>

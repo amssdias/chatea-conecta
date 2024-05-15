@@ -11,7 +11,7 @@ class ChatView(View):
         if not username:
             return redirect("chat:home")
 
-        return render(request, "chat.html", context={"username": username})
+        return render(request, "chat/chat.html", context={"username": username})
 
     def post(self, request):
         username = request.POST.get("username")

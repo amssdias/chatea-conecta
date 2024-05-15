@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <script defer src="{% static 'js/config.js' %}"></script>
+    <script defer src="{% static 'js/views/chatView.js' %}"></script>
+    <script defer src="{% static 'js/chatSocket.js' %}"></script>
+    <script defer src="{% static 'js/chatController.js' %}"></script>
+{% endblock scripts %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        let username = "{{ username }}";
+    </script>
+
+
+    <div class="chat-app">
+        <div class="chat-app__menu">
+
+            <!-- SVG Groups -->
+            <a href="#" class="chat-app__menu__link" id="groups-link">
+                <svg class="chat-app__menu__svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M6.09436 11.2288C6.03221 10.8282 5.99996 10.4179 5.99996 10C5.99996 5.58172 9.60525 2 14.0526 2C18.4999 2 22.1052 5.58172 22.1052 10C22.1052 10.9981 21.9213 11.9535 21.5852 12.8345C21.5154 13.0175 21.4804 13.109 21.4646 13.1804C21.4489 13.2512 21.4428 13.301 21.4411 13.3735C21.4394 13.4466 21.4493 13.5272 21.4692 13.6883L21.8717 16.9585C21.9153 17.3125 21.9371 17.4895 21.8782 17.6182C21.8266 17.731 21.735 17.8205 21.6211 17.8695C21.4911 17.9254 21.3146 17.8995 20.9617 17.8478L17.7765 17.3809C17.6101 17.3565 17.527 17.3443 17.4512 17.3448C17.3763 17.3452 17.3245 17.3507 17.2511 17.3661C17.177 17.3817 17.0823 17.4172 16.893 17.4881C16.0097 17.819 15.0524 18 14.0526 18C13.6344 18 13.2237 17.9683 12.8227 17.9073M7.63158 22C10.5965 22 13 19.5376 13 16.5C13 13.4624 10.5965 11 7.63158 11C4.66668 11 2.26316 13.4624 2.26316 16.5C2.26316 17.1106 2.36028 17.6979 2.53955 18.2467C2.61533 18.4787 2.65322 18.5947 2.66566 18.6739C2.67864 18.7567 2.68091 18.8031 2.67608 18.8867C2.67145 18.9668 2.65141 19.0573 2.61134 19.2383L2 22L4.9948 21.591C5.15827 21.5687 5.24 21.5575 5.31137 21.558C5.38652 21.5585 5.42641 21.5626 5.50011 21.5773C5.5701 21.5912 5.67416 21.6279 5.88227 21.7014C6.43059 21.8949 7.01911 22 7.63158 22Z" stroke="#813c58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+            </a>
+
+            <!-- SVG Favorites -->
+            <a href="#" class="chat-app__menu__link">
+                <svg class="chat-app__menu__svg" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <title>start-favorite</title>
+                        <desc>Created with Sketch Beta.</desc>
+                        <defs> </defs>
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                            <g id="Icon-Set" sketch:type="MSLayerGroup" transform="translate(-152.000000, -879.000000)" fill="#813c58">
+                                <path d="M168,903.21 L160.571,907.375 L161.989,898.971 L155.594,892.442 L164.245,891.317 L168,883.313 L171.722,891.317 L180.344,892.54 L174.011,899.002 L175.335,907.406 L168,903.21 L168,903.21 Z M184,891.244 L172.962,889.56 L168,879 L163.038,889.56 L152,891.244 L159.985,899.42 L158.095,911 L168,905.53 L177.905,911 L176.015,899.42 L184,891.244 L184,891.244 Z" id="start-favorite" sketch:type="MSShapeGroup">
+                                </path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+
+        </div>
+
+        <div class="chat-app__container">
+            <!-- All groups available to chat -->
+            <div class="chat-app__groups hide" id="chat-groups">
+                <ul>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="galicia" class="chat-app__group-link">Galicia (123)</a>
+
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="asturias" class="chat-app__group-link">Asturias</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="cantabria" class="chat-app__group-link">Cantabria</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="pais_vasco" class="chat-app__group-link">País Vasco</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="navarra" class="chat-app__group-link">Navarra</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="la_rioja" class="chat-app__group-link">La Rioja</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="castilla_leon" class="chat-app__group-link">Castilla y León</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="aragon" class="chat-app__group-link">Aragón</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="cataluna" class="chat-app__group-link">Cataluña</a>
+                    </li>
+                    <li class="chat-app__group selected">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="madrid" class="chat-app__group-link">Madrid</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="extremadura" class="chat-app__group-link">Extremadura</a>
+                    </li>
+                    <li class="chat-app__group">
+                        {% include "../utils/offline_svg.html" %}
+                        <a href="#" data-group-name="castilla_la_mancha" class="chat-app__group-link">Castilla-La Mancha</a>
+                    </li>
+                    <li class="chat-app__group">
+                        <a href="#" data-group-name="valencia" class="chat-app__group-link">Comunidad Valenciana</a>
+                    </li>
+                    <li class="chat-app__group">
+                        <a href="#" data-group-name="region_murcia" class="chat-app__group-link">Región de Murcia</a>
+                    </li>
+                    <li class="chat-app__group">
+                        <a href="#" data-group-name="andalucia" class="chat-app__group-link">Andalucía</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Where user can write chat messages -->
+            <div class="chat-container">
+
+                    <div class="chat">
+                        <div class="chat__header">
+                            <span>Madrid (287)</span>
+                        </div>
+
+                        <div class="chat__messages margin-top-xsmall">
+
+<!--                            <div class="chat__message">-->
+<!--                                <h5 class="chat__message-user">Paulo</h5>-->
+<!--                                <p class="chat__message-text">This is the message send by Paulo</p>-->
+<!--                            </div>-->
+<!--                            <div class="chat__message chat__message&#45;&#45;current-user">-->
+<!--                                <h5 class="chat__message-user">Dias</h5>-->
+<!--                                <p class="chat__message-text">This is the message send by Cris</p>-->
+<!--                                <p class="chat__message-text">This is the message sThis is the message send by Dias and some more text ehere</p>-->
+<!--                            </div>-->
+
+<!--                            <div class="chat__message">-->
+<!--                                <h5 class="chat__message-user">Paulo</h5>-->
+<!--                                <p class="chat__message-text">This is the message send by Paulo</p>-->
+<!--                            </div>-->
+
+                        </div>
+                        <form id="chat-form" class="chat-form margin-top-xsmall" action="">
+                            <input class="chat-form-input" type="text">
+                            <button class="chat-form-btn" type="submit">
+                                <svg class="chat-form-btn__svg" width="201px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#813c58" stroke-width="0.9600000000000002" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+        </div>
+
+
+    </div>
+
+{% endblock %}
