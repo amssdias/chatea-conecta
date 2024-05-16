@@ -37,7 +37,7 @@ class ChatView {
         const chatBox = this.createChatBox();
 
         // Chat form
-        const form = this.createChatForm(send_message_handler, chatSocket);
+        const form = this.createChatForm(send_message_handler, groupChatName);
 
         // Create chat
         const chat = document.createElement("div");
@@ -65,7 +65,7 @@ class ChatView {
         return chatBox;
     }
 
-    createChatForm(handler, chatSocket) {
+    createChatForm(handler, groupChatName) {
 
         const form = document.createElement("form");
         form.classList.add("chat-form", "margin-top-xsmall");
@@ -84,7 +84,7 @@ class ChatView {
         form.appendChild(btn);
         form.addEventListener("submit", function (e) {
             e.preventDefault();
-            handler.call(this, chatSocket);
+            handler.call(this, groupChatName);
         });
 
         return form;

@@ -3,6 +3,8 @@ const chatGroups = document.querySelector(".chat-app__groups");
 const chatView = new ChatView(username);
 const chatGroupsView = new ChatGroupsView();
 
+const chatSocketHandler = new ChatSocket(SOCKET_URL, chatView);
+
 const openedChats = new Set();
 
 
@@ -13,7 +15,7 @@ chatGroups.addEventListener("click", function (e) {
     const targetEl = e.target;
     if (!targetEl) return;
 
-    const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.querySelector("chat-app__group-link");
+    const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.querySelector(".chat-app__group-link");
     const groupChatName = groupChatLink.dataset.groupName?.toLowerCase();
 
     // If the user already opened this chat
@@ -22,8 +24,13 @@ chatGroups.addEventListener("click", function (e) {
         chatView.displayGroupChat(groupChatName);
 
     } else {
-        // Create chat socket
-        const groupSocket = createChatSocket(groupChatName);
+
+        // Register user on a group
+        chatSocketHandler.send(
+            JSON.stringify({
+                "registerGroup": groupChatName
+            })
+        );
 
         // Show group online icon
         chatGroupsView.activateGroup(groupChatName);
@@ -32,7 +39,7 @@ chatGroups.addEventListener("click", function (e) {
         chatGroupsView.selectedGroupChat(groupChatName);
 
         // Display chat with event
-        chatView.createChat(groupChatName, sendMessage, groupSocket);
+        chatView.createChat(groupChatName, sendMessage);
 
         // Add to list of opened chats
         openedChats.add(groupChatName);
@@ -40,16 +47,7 @@ chatGroups.addEventListener("click", function (e) {
 });
 
 
-function createChatSocket(groupChatName) {
-
-    const socketUrl = `${SOCKET_URL}${groupChatName}/`;
-    let chatSocket = new ChatSocket(socketUrl, chatView);
-    return chatSocket;
-
-}
-
-
-function sendMessage(chatSocket) {
+function sendMessage(groupName) {
 
     // Get the text to be sent
     const chatFormInput = this.querySelector(".chat-form-input");
@@ -63,8 +61,9 @@ function sendMessage(chatSocket) {
     chatFormInput.value = "";
 
     // Send message through socket
-    chatSocket.send(
+    chatSocketHandler.send(
         JSON.stringify({
+            "group": groupName,
             "message": message
         })
     );
