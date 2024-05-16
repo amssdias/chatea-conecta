@@ -7,14 +7,14 @@ from django.views import View
 
 class ChatView(View):
     def get(self, request):
-        username = self.request.COOKIES.get("username")
+        username = self.request.COOKIES.get("username").lower()
         if not username:
             return redirect("chat:home")
 
         return render(request, "chat/chat.html", context={"username": username})
 
     def post(self, request):
-        username = request.POST.get("username")
+        username = request.POST.get("username").lower()
         if not username:
             messages.error(request, "You need to put an username")
             # Redirect to home page
