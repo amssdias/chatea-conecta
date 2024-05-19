@@ -28,7 +28,8 @@ chatGroups.addEventListener("click", function (e) {
         // Register user on a group
         chatSocketHandler.send(
             JSON.stringify({
-                "registerGroup": groupChatName
+                "registerGroup": true,
+                "group": groupChatName
             })
         );
 

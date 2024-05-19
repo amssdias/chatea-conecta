@@ -13,31 +13,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(
-            self.room_group_name, self.channel_name
-        )
+        # Remove username
+        username = self.scope.get("cookies", {}).get("username", "").lower()
+        await aio_redis_connection.srem(REDIS_USERNAME_KEY, username)
 
     async def receive(self, text_data):
         # Send message that user should be registered in a group
         data = json.loads(text_data)
+        group = data.get("group").lower()
 
         # Join room group
-        group = data.get("registerGroup", "").lower()
-        if group and group not in self.groups:
-            await self.channel_layer.group_add(
-                group, self.channel_name
-            )
-            self.groups.add(group)
-            users_online = await self.get_group_size(group)
-            await self.send(text_data=json.dumps({"users_online": users_online}))
+        register_group = data.get("registerGroup", False)
+        if register_group and group not in self.groups:
+            await self.join_room_group(group)
             return
 
         # Send regular messages to the corresponding group
-        group = data.get("group").lower()
         message = data.get("message")
 
-        username = self.scope["cookies"].get("username").lower()
+        username = self.scope["cookies"].get("username", "")
         if not username:
             await self.close(code=401, reason="No username")
             return
@@ -53,8 +47,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    # Receive message from room group
+    async def join_room_group(self, group: str):
+        await self.channel_layer.group_add(
+            group, self.channel_name
+        )
+        self.groups.add(group)
+        users_online = await self.get_group_size(group)
+        await self.send(text_data=json.dumps({"users_online": users_online}))
+
     async def chat_message(self, event):
+        """Receive message from room group"""
         message = event["message"]
         username = event["username"]
         group = event["group"]
