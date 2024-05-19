@@ -1,6 +1,7 @@
 import json
 
-from chat_connect.utils.redis_connection import redis_connection
+from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY, REDIS_GROUPS_KEY
+from chat_connect.utils.aio_redis_connection import aio_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
@@ -68,15 +69,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
-    async def increment_and_send_users_counter(self, group_name):
-        # Increment Redis counter for the group
-        group_key_counter = f"{group_name}_counter"
-        await redis_connection.incrby(group_key_counter, amount=1)
-        users_online = await redis_connection.get(group_key_counter)
-        await self.send(text_data=json.dumps({"users_online": users_online}))
-
     async def get_group_size(self, group_name):
-        group_key = f"asgi:group:{group_name}"
-        group_size = await redis_connection.zcard(group_key)
-        print(f"Group Size: {group_size}")
+        group_key = f"{REDIS_GROUPS_KEY}:{group_name}"
+        group_size = await aio_redis_connection.zcard(group_key)
         return group_size
