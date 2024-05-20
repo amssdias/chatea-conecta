@@ -1,0 +1,20 @@
+.group-search {
+    // border: 2px solid blue;
+    background-color: $color-light-amber;
+    padding: 2rem;
+    border-bottom: 2px solid $color-light-amber-2;
+
+    &__input {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 3rem;
+        border: none;
+        font-size: 1.4rem;
+        outline: 2px solid $color-light-amber;
+
+        &:focus {
+            // border: 1px solid $color-light-amber;
+            outline: 2px solid $color-light-amber-2;
+        }
+    }
+}

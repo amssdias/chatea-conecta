@@ -17,7 +17,7 @@ ORDER: Base + typography > general layout + grid > page layout > components
 */
 @font-face {
   font-family: "Poetsen One";
-  src: url("../fonts/PoetsenOne-Regular.ttf") format("truetype");
+  src: url("../../utils/fonts/PoetsenOne-Regular.ttf") format("truetype");
 }
 @keyframes moveInRight {
   0% {
@@ -108,6 +108,10 @@ body {
   }
 }
 
+.margin-top-xxsmall {
+  margin-top: 1rem;
+}
+
 .margin-top-xsmall {
   margin-top: 2rem;
 }
@@ -162,12 +166,16 @@ body {
   padding: 2rem 2rem;
   background-color: #fef3c7;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .chat-app__group:hover {
   background-color: #fcd34d !important;
 }
 .chat-app__group-link {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   font-size: 1.4rem;
   color: #000;
@@ -178,6 +186,12 @@ body {
 }
 .chat-app__group:not(:last-child) {
   border-bottom: 2px solid #fcd34d;
+}
+.chat-app__group-options {
+  width: 2.4rem;
+}
+.chat-app__group-options:hover {
+  fill: rgba(0, 0, 0, 0.5);
 }
 
 .chat-app__menu {
@@ -317,6 +331,23 @@ body {
   background-color: #fcd34d;
 }
 
+.group-search {
+  background-color: #fef3c7;
+  padding: 2rem;
+  border-bottom: 2px solid #fcd34d;
+}
+.group-search__input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 3rem;
+  border: none;
+  font-size: 1.4rem;
+  outline: 2px solid #fef3c7;
+}
+.group-search__input:focus {
+  outline: 2px solid #fcd34d;
+}
+
 .form-nickname {
   width: 80%;
   padding: 6rem 2rem;
@@ -404,4 +435,6 @@ body {
 .nav-bar {
   background-color: red;
   height: 10vh;
-}/*# sourceMappingURL=main.css.map */
+}
+
+/*# sourceMappingURL=main.css.map */

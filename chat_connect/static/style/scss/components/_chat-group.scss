@@ -25,16 +25,18 @@
         padding: 2rem 2rem;
         background-color: $color-light-amber;
         cursor: pointer;
-        // width: 40rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
 
         &:hover {
             background-color: $color-light-amber-2 !important;
         }
 
         &-link {
-            // border: 1px solid red;
-            display: inline-block;
-            // width: 15rem;
+            display: flex;
+            align-items: center;
 
             text-decoration: none;
             font-size: 1.4rem;
@@ -44,12 +46,21 @@
         }
 
         &__connected {
+            // display: none;
             width: 1rem;
         }
 
         &:not(:last-child) {
             border-bottom: 2px solid $color-light-amber-2;
             
+        }
+
+        &-options {
+            width: 2.4rem;
+
+            &:hover {
+                fill: rgba(0, 0, 0, 0.5);
+            }
         }
 
     }

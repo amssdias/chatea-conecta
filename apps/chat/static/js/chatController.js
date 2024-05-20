@@ -14,6 +14,7 @@ chatGroups.addEventListener("click", function (e) {
 
     const targetEl = e.target;
     if (!targetEl) return;
+    if (targetEl.closest("#group-search")) return;
 
     const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.querySelector(".chat-app__group-link");
     const groupChatName = groupChatLink.dataset.groupName?.toLowerCase();
@@ -99,6 +100,23 @@ window.addEventListener("resize", function (e) {
     }
 })
 
+// Event to search groups
+document.getElementById("group-search").addEventListener("keyup", function (e) {
+
+    const searchFilter = this.children[0].value.toLowerCase();
+
+    const groups = document.getElementById("chat-app-groups");
+    const allGroups = groups.querySelectorAll("li > a");
+
+    for (const group of allGroups) {
+        const groupName = group.dataset.groupName.split("_").join(" ");
+        if (!groupName.includes(searchFilter)) {
+            group.parentElement.style.display = "none";
+        } else {
+            group.parentElement.style.display = "flex";
+        }
+    }
+});
 
 // Save the messages on localstorage through a new file for chatModel.js
 // Future make saying a small message saying (sendind and sent) on the chat
