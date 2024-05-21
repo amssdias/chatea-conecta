@@ -13,8 +13,11 @@ services:
   chat-app:
     build:
       context: .
+      dockerfile: deployments/${ENVIRON}/Dockerfile
     ports:
       - "8000:8000"
+    volumes:
+      - .:/usr/src/app
     depends_on:
       - my-redis
     environment:
