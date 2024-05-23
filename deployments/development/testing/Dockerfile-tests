@@ -1,0 +1,12 @@
+FROM python:3.9
+
+WORKDIR /usr/src/app-tests
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy app
+COPY .. .
+
+CMD ["python", "manage.py", "test", "apps.chat", "--settings=chat_connect.settings.settings_tests"]
