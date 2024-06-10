@@ -1,6 +1,13 @@
 <nav class="nav-bar">
-    <span>Chatea-Conecta</span>
-    <a href="{% url 'chat:home' %}">Inicio</a>
-    <a href="">Salas</a>
-    <a href="">Colabora</a>
+    <span class="nav-bar-logo">Chatea-Conecta</span>
+    <a class="nav-bar-link" href="{% url 'chat:home' %}">Inicio</a>
+    <a class="nav-bar-link" href="">Salas</a>
+    <a class="nav-bar-link" href="">Colabora</a>
+
+    {% if username %}
+        <form action="{% url 'chat:close-chat' %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-close-session" type="submit">Cerrar sesión</button>
+        </form>
+    {% endif %}
 </nav>

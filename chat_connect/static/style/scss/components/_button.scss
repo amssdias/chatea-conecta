@@ -1,0 +1,17 @@
+.btn {
+    border: 1px solid black;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    border-radius: 1rem;
+    background-color: $color-dark-amber-1;
+    cursor: pointer;
+}
+
+.btn-close-session {
+    align-self: self-end;
+
+    &:hover {
+        background-color: $color-dark-amber-2;
+        transition: 0.2s;
+    }
+}
