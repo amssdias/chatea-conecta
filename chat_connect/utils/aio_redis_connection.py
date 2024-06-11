@@ -7,6 +7,6 @@ aio_redis_connection = None
 
 async def get_redis_aio_connection():
     global aio_redis_connection
-    aio_redis_connection = aioredis.from_url(settings.REDIS_CHANNEL_LAYER_URL, decode_responses=True)
+    aio_redis_connection = await aioredis.from_url(settings.REDIS_CHANNEL_LAYER_URL, decode_responses=True)
 
 asyncio.run(get_redis_aio_connection())
