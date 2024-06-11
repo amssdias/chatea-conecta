@@ -12,6 +12,7 @@ aioredis = "==2.0.1"
 python-dotenv = "==1.0.1"
 
 [dev-packages]
+django-browser-reload = "*"
 
 [requires]
 python_version = "3.9"
