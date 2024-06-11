@@ -10,6 +10,10 @@
     {% endblock scripts %}
 
     <link rel="stylesheet" href="{% static 'style/css/main.min.css' %}">
+    {% if settings.DEBUG %}
+        <script src="{% url 'django_browser_reload:reload' %}"></script>
+    {% endif %} 
+
 
 </head>
 <body>
