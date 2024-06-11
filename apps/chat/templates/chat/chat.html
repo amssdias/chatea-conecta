@@ -62,106 +62,24 @@
                 </div>
 
                 <ul id="chat-app-groups">
-                    <li class="chat-app__group">
 
-                        <a href="#" data-group-name="galicia" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Galicia (123)
-                        </a>
+                    {% for group in groups %}
+                        <li class="chat-app__group">
 
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="asturias" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Asturias
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="cantabria" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Cantabria
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="pais_vasco" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            País Vasco
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="navarra" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Navarra
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="la_rioja" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            La Rioja
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="castilla_leon" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Castilla y León
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="aragon" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Aragón
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="cataluna" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Cataluña
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="madrid" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Madrid
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="extremadura" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Extremadura
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="castilla_la_mancha" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Castilla-La Mancha
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="valencia" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Comunidad Valenciana
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="region_murcia" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Región de Murcia
-                        </a>
-                    </li>
-                    <li class="chat-app__group">
-                        <a href="#" data-group-name="andalucia" class="chat-app__group-link">
-                            {% include "../utils/offline_svg.html" %}
-                            Andalucía
-                        </a>
-                    </li>
+                            <a href="#" data-group-name="{{ group.1 }}" class="chat-app__group-link">
+                                {% include "../utils/offline_svg.html" %}
+                                {{ group.0 }}
+                                </a>
+                            {% include "../utils/options.html" %}
+                            {% include "../utils/options-menu.html" %}
+
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
 
             <!-- Where user can write chat messages -->
             <div class="chat-container">
-
-
-
             </div>
 
         </div>

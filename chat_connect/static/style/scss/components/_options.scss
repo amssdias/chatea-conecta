@@ -1,0 +1,46 @@
+.options-container {
+
+    position: relative;
+
+    &:hover .options__menu {
+        display: block;
+    }
+}
+
+.options {
+
+    &-svg {
+        width: 2.4rem;
+
+        &:hover {
+            fill: rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    &__menu {
+        display: none;
+        border: 1px solid $color-dark-amber-3;
+        width: 15rem;
+        z-index: 1000;
+        position: absolute;
+        top: 15px;
+        right: 0%;
+        background-color: $color-light-amber-3;
+        cursor: pointer;
+
+        &:hover {
+            display: block;
+        }
+
+        &__link {
+            padding: 1rem 2rem;
+            border: 1px solid $color-dark-amber-1;
+            list-style-type: none;
+
+            &:hover {
+                background-color: $color-light-amber;
+
+            }
+        }
+    }
+}

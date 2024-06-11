@@ -15,20 +15,28 @@
     height: 100%;
 
     &__header {
-        // border: 1px solid $color-light-amber-2;
-        // border-radius: 1rem;
-        padding: 2rem;
-        font-size: 1.6rem;
-        text-transform: uppercase;
-        // background-color: $color-light-amber;
-        color: $color-light-amber;
-        border-bottom: 1px solid $color-light-amber;
-        display: flex;
-        align-items: center;
-
-        letter-spacing: 0.2rem;
-
         height: 10%;
+
+        &-title {
+            padding: 2rem;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: $color-light-amber;
+            border-bottom: 1px solid $color-light-amber;
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+
+            letter-spacing: 0.2rem;
+
+        }
+
+        &-close {
+            width: 3rem;
+            margin-left: auto;
+            cursor: pointer;
+
+        }
 
     }
 
