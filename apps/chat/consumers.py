@@ -18,15 +18,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await aio_redis_connection.srem(REDIS_USERNAME_KEY, username)
 
     async def receive(self, text_data):
+
+        username = self.scope["cookies"].get("username", "")
+        lower_username = username.lower()
+        is_connected = await aio_redis_connection.sismember(REDIS_USERNAME_KEY, lower_username)
+        if not username or not is_connected:
+            await self.close(code=4001, reason="No username")
+            return
+
         # Send message that user should be registered in a group
         data = json.loads(text_data)
-        group = data.get("group").lower()
+        group = data.get("group", "").lower()
+        if not group:
+            await self.close(code=401, reason="No group")
+            return None
 
         # Join room group
         register_group = data.get("registerGroup", False)
         if register_group and group not in self.groups:
             await self.join_room_group(group)
-            return
+            return None
 
         # Send regular messages to the corresponding group
         message = data.get("message")

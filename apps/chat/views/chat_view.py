@@ -30,10 +30,11 @@ GROUPS = [
 class ChatView(View):
     def get(self, request):
         username = self.request.COOKIES.get("username", "")
-        if not username:
-            return redirect("chat:home")
-
-        return render(request, "chat/chat.html", context={"username": username})
+        if not username or not redis_connection.sismember(REDIS_USERNAME_KEY, username.lower()):
+            response = redirect("chat:home")
+            response.delete_cookie("username")
+            return response
+        return render(request, "chat/chat.html", context={"username": username, "groups": GROUPS})
 
     def post(self, request):
         username = request.POST.get("username")

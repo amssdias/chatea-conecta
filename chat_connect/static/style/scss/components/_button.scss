@@ -5,6 +5,11 @@
     border-radius: 1rem;
     background-color: $color-dark-amber-1;
     cursor: pointer;
+
+    &-home {
+        font-size: 1.8rem;
+        color: $color-red-wine;
+    }
 }
 
 .btn-close-session {

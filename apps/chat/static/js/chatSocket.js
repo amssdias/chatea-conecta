@@ -35,6 +35,8 @@ class ChatSocket extends WebSocket {
 
     handleClose(e) {
         console.error("Chat socket closed unexpectedly");
+        const chatClosedEl = document.getElementById("chat-closed");
+        chatClosedEl.classList.remove("hide");
     };
 
 }
