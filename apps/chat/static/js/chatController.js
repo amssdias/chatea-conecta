@@ -75,20 +75,7 @@ function sendMessage(groupName) {
 // Open group chats
 const groupsLinkImage = document.getElementById("groups-link");
 groupsLinkImage.addEventListener("click", function (e) {
-
-    const chatGroups = document.getElementById("chat-groups");
-
-    // Hide or show group chats
-    chatGroups.classList.toggle("hide");
-
-    if (window.innerWidth <= 600) {
-        if (chatGroups.classList.contains("hide")) {
-            document.querySelector(".chat-container").classList.remove("hide");
-        } else {
-            document.querySelector(".chat-container").classList.add("hide");
-        };
-
-    };
+    chatGroupsView.openGroupChatsList();
 
 });
 
