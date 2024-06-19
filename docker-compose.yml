@@ -8,8 +8,6 @@ services:
       # Mount the custom redis.conf file into the container
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-    environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
   chat-app:
     build:
       context: .
