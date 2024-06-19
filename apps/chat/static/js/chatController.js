@@ -1,4 +1,4 @@
-const chatGroups = document.querySelector(".chat-app__groups");
+const chatGroups = document.getElementById("chat-groups");
 
 const chatView = new ChatView(username);
 const chatGroupsView = new ChatGroupsView();
@@ -47,6 +47,10 @@ chatGroups.addEventListener("click", function (e) {
         // Add to list of opened chats
         openedChats.add(groupChatName);
     };
+
+    // Make group chat as selected
+    chatGroupsView.selectedGroupChat(groupChatName);
+
 });
 
 
@@ -79,6 +83,12 @@ groupsLinkImage.addEventListener("click", function (e) {
     chatGroupsView.openGroupChatsList();
 
 });
+
+// Open online groups chats
+const groupsOnline = document.getElementById("groups-connected");
+groupsOnline.addEventListener("click", function (e) {
+    chatGroupsView.openOnlineGroupsList();
+})
 
 // Make sure if window is resized the chat ocupies the whole space
 window.addEventListener("resize", function (e) {

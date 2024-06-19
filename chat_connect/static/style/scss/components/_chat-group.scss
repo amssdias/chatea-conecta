@@ -3,10 +3,29 @@
     &__groups {
         // padding: 1rem;
         // display: none;
-        overflow-y: scroll;
+        overflow-y: auto;
         width: 25rem;
         animation: moveInLeft;
         animation-duration: 0.5s;
+        background: $color-light-amber;
+
+        &::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Color of the scrollbar track */
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: #888; /* Color of the scrollbar thumb */
+            border-radius: 10px; /* Roundness of the scrollbar thumb */
+            border: 3px solid #f1f1f1; /* Padding around thumb */
+        }
+        
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Color of the scrollbar thumb when hovered */
+        }
         
         @include respond(tab-land) {
             animation: moveInRight;
