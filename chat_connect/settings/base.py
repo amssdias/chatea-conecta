@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # Where it will store when run collectstatic
-STATIC_ROOT = BASE_DIR / "collected_static"
+STATIC_ROOT = BASE_DIR / "prod_static"
 
 # Use for deployment
 # STATICFILES_STORAGE = ""

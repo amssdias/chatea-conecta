@@ -1,3 +1,9 @@
+import ChatView from "./views/chatView.js";
+import ChatGroupsView from "./views/chatGroupsView.js";
+import ChatSocket from "./chatSocket.js";
+
+import { SOCKET_URL } from "./config.js";
+
 const chatGroups = document.getElementById("chat-groups");
 
 const chatView = new ChatView(username);
@@ -17,6 +23,7 @@ chatGroups.addEventListener("click", function (e) {
     if (targetEl.closest("#group-search")) return;
 
     const groupChatLink = targetEl.closest(".chat-app__group-link") ? targetEl : targetEl.querySelector(".chat-app__group-link");
+    if (!groupChatLink) return;
     const groupChatName = groupChatLink.dataset.groupName?.toLowerCase();
 
     // If the user already opened this chat

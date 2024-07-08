@@ -59,7 +59,7 @@ class ChatView {
         h4El.classList.add("chat__header-title");
         // chatHeader.innerHTML = groupChatName;
 
-        const svgEl = `
+        const svgElChatClose = `
         <svg class="chat__header-close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fef3c7">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -71,7 +71,7 @@ class ChatView {
         </svg>
         `;
 
-        h4El.innerHTML = groupChatName + svgEl;
+        h4El.innerHTML = groupChatName + svgElChatClose;
         chatHeader.appendChild(h4El);
 
         return chatHeader;
@@ -222,3 +222,4 @@ class ChatView {
     }
 }
 
+export default ChatView;

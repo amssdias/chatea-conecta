@@ -1,1 +1,2 @@
-const SOCKET_URL = `ws://${window.location.host}/ws/chat/`
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+export const SOCKET_URL = `${protocol}://${window.location.host}/ws/chat/`;

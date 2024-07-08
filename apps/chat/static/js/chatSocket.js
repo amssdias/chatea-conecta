@@ -40,3 +40,5 @@ class ChatSocket extends WebSocket {
     };
 
 }
+
+export default ChatSocket;

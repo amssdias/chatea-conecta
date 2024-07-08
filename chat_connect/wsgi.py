@@ -17,6 +17,6 @@ dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat_connect.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat_connect.settings.settings_production')
 
 application = get_wsgi_application()

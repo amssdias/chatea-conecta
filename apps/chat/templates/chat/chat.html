@@ -2,11 +2,9 @@
 {% load static %}
 
 {% block scripts %}
-    <script defer src="{% static 'js/config.js' %}"></script>
-    <script defer src="{% static 'js/views/chatGroupsView.js' %}"></script>
-    <script defer src="{% static 'js/views/chatView.js' %}"></script>
-    <script defer src="{% static 'js/chatSocket.js' %}"></script>
-    <script defer src="{% static 'js/chatController.js' %}"></script>
+
+    <script type="module" src="{% static 'js/main.js' %}"></script>
+
 {% endblock scripts %}
 
 {% block content %}

@@ -79,3 +79,5 @@ class ChatGroupsView {
     }
 
 };
+
+export default ChatGroupsView;
