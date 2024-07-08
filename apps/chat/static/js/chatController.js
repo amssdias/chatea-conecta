@@ -45,9 +45,6 @@ chatGroups.addEventListener("click", function (e) {
         // Show group online icon
         chatGroupsView.activateGroup(groupChatName);
 
-        // Make group chat as selected
-        chatGroupsView.selectedGroupChat(groupChatName);
-
         // Display chat with event
         chatView.createChat(groupChatName, sendMessage);
 
