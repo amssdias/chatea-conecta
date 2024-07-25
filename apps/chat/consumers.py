@@ -55,6 +55,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.register_user_to_room_group(group)
             return None
 
+        # TODO: Leave group room
+        unregister_group = data.get("unregisterGroup", False)
+        if unregister_group and group in self.groups:
+            # Unregister group
+            pass
+        
         # Send regular messages to the corresponding group
         message = data.get("message")
 
