@@ -7,7 +7,6 @@ services:
     #volumes:
       # Mount the custom redis.conf file into the container
       # - redis.conf:/usr/local/etc/redis/redis.conf
-    #command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--port", "6380"]
     command: ["redis-server", "--port", "6380", "--requirepass", "redis-test"]
   test:
     build:
