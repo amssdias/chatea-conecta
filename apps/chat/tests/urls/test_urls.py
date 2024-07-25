@@ -1,12 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from django.contrib.auth.views import LogoutView
 
-from apps.chat.views import (
-    ChatView,
-    CloseChatSessionView,
-    HomeChatView
-)
+from apps.chat.views import ChatView, CloseChatSessionView, HomeChatView
 
 
 class UrlsTestCase(SimpleTestCase):

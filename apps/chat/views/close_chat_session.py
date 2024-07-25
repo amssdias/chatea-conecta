@@ -18,10 +18,9 @@ class CloseChatSessionView(View):
         response.delete_cookie("username")
 
         return response
-    
+
     @staticmethod
     def remove_username_from_redis(username):
         lower_username = username.lower()
         if redis_connection.sismember(REDIS_USERNAME_KEY, lower_username):
             redis_connection.srem("asgi:usernames", lower_username)
-

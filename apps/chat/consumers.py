@@ -1,6 +1,6 @@
 import json
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY, REDIS_GROUPS_KEY
+from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
 from chat_connect.utils.aio_redis_connection import aio_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
@@ -13,18 +13,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Remove username
+        await self.remove_user()
+        await self.unregister_user_from_group()
+
+    async def remove_user(self):
         username = self.scope.get("cookies", {}).get("username", "").lower()
         await aio_redis_connection.srem(REDIS_USERNAME_KEY, username)
-        await self.remove_user_from_group()
 
     async def unregister_user_from_group(self):
         for group in self.groups:
-            await self.channel_layer.group_discard(
-                group,
-                self.channel_name
-            )
-            self.groups.discard(self.group_name)
+            await self.channel_layer.group_discard(group, self.channel_name)
+            self.groups.discard(group)
 
     async def receive(self, text_data):
         """
@@ -37,7 +36,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         username = self.scope["cookies"].get("username", "")
         lower_username = username.lower()
-        is_connected = await aio_redis_connection.sismember(REDIS_USERNAME_KEY, lower_username)
+        is_connected = await aio_redis_connection.sismember(
+            REDIS_USERNAME_KEY, lower_username
+        )
         if not username or not is_connected:
             await self.close(code=4001, reason="No username")
             return
@@ -60,7 +61,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if unregister_group and group in self.groups:
             # Unregister group
             pass
-        
+
         # Send regular messages to the corresponding group
         message = data.get("message")
 
@@ -72,13 +73,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "message": message,
                 "username": username,
                 "group": group,
-            }
+            },
         )
 
     async def register_user_to_room_group(self, group: str):
-        await self.channel_layer.group_add(
-            group, self.channel_name
-        )
+        await self.channel_layer.group_add(group, self.channel_name)
         self.groups.add(group)
         users_online = await self.get_group_size()
         await self.send(text_data=json.dumps({"users_online": users_online}))
@@ -90,9 +89,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         group = event["group"]
 
         # Send message to WebSocket (frontend)
-        await self.send(text_data=json.dumps(
+        await self.send(
+            text_data=json.dumps(
                 {
-                    "message": message, 
+                    "message": message,
                     "username": username,
                     "groupChatName": group,
                 }
