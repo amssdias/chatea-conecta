@@ -3,6 +3,8 @@ from django.views.generic import TemplateView
 
 
 class HomeChatView(TemplateView):
+    template_name="index.html"
+
     def get(self, request, *args, **kwargs):
         username = self.request.COOKIES.get("username", "")
         if username:
