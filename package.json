@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "sass": "sass --watch chat_connect/static/style/scss:chat_connect/static/style/css/ --style=expanded",
     "sass-min": "sass --watch chat_connect/static/style/scss/main.scss:chat_connect/static/style/css/main.min.css --style=compressed"
   },
