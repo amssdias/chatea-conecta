@@ -54,11 +54,11 @@ class ChatView {
     createChatHeader(groupChatName) {
         const chatHeader = document.createElement("div");
         chatHeader.classList.add("chat__header");
-        
+
         const h4El = document.createElement("h4");
         h4El.classList.add("chat__header-title");
-        // chatHeader.innerHTML = groupChatName;
 
+        // Use it in the future
         const svgElChatClose = `
         <svg class="chat__header-close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fef3c7">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
