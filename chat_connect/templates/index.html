@@ -10,6 +10,12 @@
         <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
             {% csrf_token %}
             <input class="form-nickname__input" type="text" name="username" placeholder="Escribe tu apodo...">
+            {% for message in messages %}
+
+                <p class="message-error">{{ message }}</p>
+
+            {% endfor %}
+
             <button class="form-nickname__btn" type="submit">Chatear</button>
         </form>
 
