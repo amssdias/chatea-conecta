@@ -16,8 +16,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Remove username
         username = self.scope.get("cookies", {}).get("username", "").lower()
         await aio_redis_connection.srem(REDIS_USERNAME_KEY, username)
+        await self.remove_user_from_group()
+
+    async def unregister_user_from_group(self):
+        for group in self.groups:
+            await self.channel_layer.group_discard(
+                group,
+                self.channel_name
+            )
+            self.groups.discard(self.group_name)
 
     async def receive(self, text_data):
+        """
+        text_data: ARGS:
+            group: str
+            registerGroup: bool
+            unregisterGroup: bool
+            message: str
+        """
 
         username = self.scope["cookies"].get("username", "")
         lower_username = username.lower()
@@ -36,16 +52,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Join room group
         register_group = data.get("registerGroup", False)
         if register_group and group not in self.groups:
-            await self.join_room_group(group)
+            await self.register_user_to_room_group(group)
             return None
 
         # Send regular messages to the corresponding group
         message = data.get("message")
-
-        username = self.scope["cookies"].get("username", "")
-        if not username:
-            await self.close(code=401, reason="No username")
-            return
 
         # Send message to room group
         await self.channel_layer.group_send(
@@ -58,12 +69,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    async def join_room_group(self, group: str):
+    async def register_user_to_room_group(self, group: str):
         await self.channel_layer.group_add(
             group, self.channel_name
         )
         self.groups.add(group)
-        users_online = await self.get_group_size(group)
+        users_online = await self.get_group_size()
         await self.send(text_data=json.dumps({"users_online": users_online}))
 
     async def chat_message(self, event):
@@ -82,7 +93,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
-    async def get_group_size(self, group_name):
-        group_key = f"{REDIS_GROUPS_KEY}:{group_name}"
-        group_size = await aio_redis_connection.zcard(group_key)
+    async def get_group_size(self):
+        group_size = await aio_redis_connection.scard(REDIS_USERNAME_KEY)
         return group_size

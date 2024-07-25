@@ -23,7 +23,7 @@
 
 
     <div class="chat-app">
-        <div class="chat-app__menu">
+        <div class="chat-app__menu" style="display: none;">
 
             <!-- SVG Groups -->
             <a href="#" class="chat-app__menu__link" id="groups-link">
@@ -87,7 +87,7 @@
                                 {% include "../utils/offline_svg.html" %}
                                 {{ group.0 }}
                                 </a>
-                            {% include "../utils/options.html" %}
+                            <!-- {% include "../utils/options.html" %} -->
                         </li>
                     {% endfor %}
                 </ul>

@@ -131,3 +131,24 @@ window.addEventListener('beforeunload', function (event) {
     //    event.preventDefault(); // This line is required in some browsers
     //    event.returnValue = ''; // A string must be assigned to indicate a prompt should show
 });
+
+function createMainChat(groupChatName) {
+    // Register user on a group
+    chatSocketHandler.send(
+        JSON.stringify({
+            "registerGroup": true,
+            "group": groupChatName,
+            "username": username,
+        })
+    );
+
+    // Display chat with event
+    chatView.createChat(groupChatName, sendMessage);
+
+    // Add to list of opened chats
+    openedChats.add(groupChatName);
+}
+
+chatSocketHandler.addEventListener('open', () => {
+    createMainChat("general");
+});

@@ -25,7 +25,7 @@ class ChatView {
 
     }
 
-    createChat(groupChatName, send_message_handler, chatSocket) {
+    createChat(groupChatName, sendMessageHandler, chatSocket) {
 
         // Hide chat
         this.hideActiveChat();
@@ -37,7 +37,7 @@ class ChatView {
         const chatBox = this.createChatBox();
 
         // Chat form
-        const form = this.createChatForm(send_message_handler, groupChatName);
+        const form = this.createChatForm(sendMessageHandler, groupChatName);
 
         // Create chat
         const chat = document.createElement("div");
@@ -71,7 +71,7 @@ class ChatView {
         </svg>
         `;
 
-        h4El.innerHTML = groupChatName + svgElChatClose;
+        h4El.innerHTML = groupChatName;
         chatHeader.appendChild(h4El);
 
         return chatHeader;
