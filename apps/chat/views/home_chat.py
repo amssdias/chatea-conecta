@@ -8,5 +8,3 @@ class HomeChatView(TemplateView):
         if username:
             return redirect("chat:live-chat")
         return super().get(request, args, kwargs)
-
-            
