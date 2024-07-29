@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import UniqueConstraint
 
 
 class ConversationFlow(models.Model):
@@ -14,6 +15,11 @@ class ConversationFlow(models.Model):
         "Topic", related_name="conversation_flows", on_delete=models.CASCADE
     )
     message = models.CharField(max_length=300)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=["topic", "message"], name="unique_topic_message")
+        ]
 
     def __str__(self):
         return f"{self.topic.name} - {self.message}"
