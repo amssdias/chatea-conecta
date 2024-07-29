@@ -1,7 +1,6 @@
 {
   "greeting": [
     "¡Hola a todos!",
-    "¿Qué tal están todos?",
     "¿Cómo están?",
     "¡Buenas a todos!",
     "¡Hey! ¿Cómo andan?",
@@ -189,9 +188,6 @@
   ],
   "opinion": [
     "¿Alguien vio la última película de Marvel?",
-    "¿Qué opinan del clima hoy?",
-    "¿Qué opinan del partido de ayer?",
-    "¿Qué opinan de la política actual?",
     "¿Qué opinan de la nueva tecnología?",
     "¿Qué opinan del clima hoy?",
     "¿Qué tal el tráfico hoy?",
@@ -207,7 +203,6 @@
     "¿Quién para un juego de mesa?",
     "¿Dónde están todos?",
     "¿Qué tal el fin de semana de todos?",
-    "¿Alguien más está viendo la serie nueva en Netflix?",
-    "Planeando una fiesta, ¿quién quiere venir?"
+    "¿Alguien más está viendo la serie nueva en Netflix?"
   ]
 }
