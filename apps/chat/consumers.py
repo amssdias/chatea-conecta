@@ -1,11 +1,14 @@
 import json
 
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from apps.chat.utils.consumer_db import DatabaseQueries
 from chat_connect.utils.aio_redis_connection import aio_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+
+    db = DatabaseQueries()
 
     async def connect(self):
         print("---- CONNECTED ----")
@@ -30,7 +33,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data: ARGS:
             group: str
             registerGroup: bool
-            unregisterGroup: bool
             message: str
         """
 
@@ -54,6 +56,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         register_group = data.get("registerGroup", False)
         if register_group and group not in self.groups:
             await self.register_user_to_room_group(group)
+            await self.send_user_bots_messages(group)
             return None
 
         # TODO: Leave group room
@@ -81,6 +84,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.groups.add(group)
         users_online = await self.get_group_size()
         await self.send(text_data=json.dumps({"users_online": users_online}))
+
+    async def send_user_bots_messages(self, group):
+
+        # Get user message
+        for i in range(4):
+            user_message = await self.db.get_message_to_send()
+
+            await self.channel_layer.group_send(
+                group,
+                {
+                    "type": "chat.message",
+                    "message": user_message.get("message"),
+                    "username": user_message.get("username"),
+                    "group": group,
+                },
+            )
 
     async def chat_message(self, event):
         """Receive message from room group"""
