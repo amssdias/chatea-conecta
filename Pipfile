@@ -10,6 +10,7 @@ daphne = "==4.1.2"
 channels-redis = "==4.2.0"
 aioredis = "==2.0.1"
 python-dotenv = "==1.0.1"
+celery = "*"
 
 [dev-packages]
 django-browser-reload = "*"
