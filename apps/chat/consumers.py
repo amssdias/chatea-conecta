@@ -26,7 +26,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def unregister_user_from_group(self):
         for group in self.groups:
             await self.channel_layer.group_discard(group, self.channel_name)
-            self.groups.discard(group)
+
+        self.groups.clear()
 
     async def receive(self, text_data):
         """
