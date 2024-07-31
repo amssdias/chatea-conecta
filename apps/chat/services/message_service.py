@@ -1,19 +1,13 @@
 import random
-from typing import List, Optional, Dict
+from typing import Optional, Dict, Set
 
-from channels.db import database_sync_to_async
 from apps.chat.models import UserConversation, ConversationFlow, Topic
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
-class DatabaseQueries:
-    # Celery beat will work with a DB flag
-    # If there are still users on the DB, we will continue to send messages
-    # If there are no users, we stop sending messages
-
-    @database_sync_to_async
+class MessageService:
     def get_message_to_send(self) -> Optional[Dict]:
         user_ids = set(User.objects.all().values_list("id", flat=True))
         topics_ids = set(Topic.objects.all().values_list("id", flat=True))
@@ -72,9 +66,9 @@ class DatabaseQueries:
         return user_message
 
     @staticmethod
-    def _get_random_user_id(user_ids: List) -> int:
+    def _get_random_user_id(user_ids: Set) -> int:
         return random.choice(list(user_ids)) if user_ids else None
 
     @staticmethod
-    def _get_random_topic_id(topics_ids: List) -> int:
+    def _get_random_topic_id(topics_ids: Set) -> int:
         return random.choice(list(topics_ids)) if topics_ids else None

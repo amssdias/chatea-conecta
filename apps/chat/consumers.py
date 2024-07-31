@@ -1,14 +1,12 @@
 import json
 
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
-from apps.chat.utils.consumer_db import DatabaseQueries
+from apps.chat.tasks.send_random_chat_messages import send_random_messages
 from chat_connect.utils.aio_redis_connection import aio_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-
-    db = DatabaseQueries()
 
     async def connect(self):
         print("---- CONNECTED ----")
@@ -86,21 +84,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         users_online = await self.get_group_size()
         await self.send(text_data=json.dumps({"users_online": users_online}))
 
-    async def send_user_bots_messages(self, group):
-
-        # Get user message
-        for i in range(4):
-            user_message = await self.db.get_message_to_send()
-
-            await self.channel_layer.group_send(
-                group,
-                {
-                    "type": "chat.message",
-                    "message": user_message.get("message"),
-                    "username": user_message.get("username"),
-                    "group": group,
-                },
-            )
+    async def send_user_bots_messages(self, group: str):
+        send_random_messages.delay(group)
 
     async def chat_message(self, event):
         """Receive message from room group"""
