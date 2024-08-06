@@ -141,16 +141,36 @@ REDIS_PROTOCOL = os.getenv("REDIS_PROTOCOL", "rediss")
 REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = os.getenv("REDIS_PORT", "6379")
+REDIS_URL = f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
-# Web Socket
-REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL", "1")
-REDIS_CHANNEL_LAYER_URL = (
-    f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB_CHANNEL}"
-)
+# Django Cache
+DJANGO_REDIS_CACHE_DB = os.getenv("DJANGO_CACHE_DB")
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"{REDIS_URL}:{REDIS_PORT}",
+        "OPTIONS": {
+            "db": DJANGO_REDIS_CACHE_DB,
+        }
+    }
+}
+
+# Web Socket - Channels
+REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")
+REDIS_CHANNEL_LAYER_URL = f"{REDIS_URL}/{REDIS_DB_CHANNEL}"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [REDIS_CHANNEL_LAYER_URL],
+            "expiry": 60
+        },
+    },
+}
 
 # Celery settings
-REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CELERY", "2")
+REDIS_DB_CELERY = os.getenv("REDIS_DB_CELERY")
 CELERY_BROKER_URL = (
-    f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB_CHANNEL}"
+    f"{REDIS_URL}/{REDIS_DB_CELERY}"
 )
 CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL = 60
