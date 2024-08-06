@@ -1,9 +1,12 @@
 import json
 
+from asgiref.sync import sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
+from django.core.cache import cache
+
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
 from apps.chat.tasks.send_random_chat_messages import send_random_messages
 from chat_connect.utils.aio_redis_connection import aio_redis_connection
-from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -16,6 +19,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         await self.remove_user()
         await self.unregister_user_from_group()
+
+        group_size = await self.get_group_size()
+        if not group_size:
+            await sync_to_async(cache.delete)(f"has_users")
 
     async def remove_user(self):
         username = self.scope.get("cookies", {}).get("username", "").lower()
@@ -81,8 +88,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def register_user_to_room_group(self, group: str):
         await self.channel_layer.group_add(group, self.channel_name)
         self.groups.add(group)
-        users_online = await self.get_group_size()
-        await self.send(text_data=json.dumps({"users_online": users_online}))
+        group_size = await self.get_group_size()
+
+        # If there are users we make sure the key is true
+        if group_size:
+            await sync_to_async(cache.set)("has_users", True)
+
+        await self.send(text_data=json.dumps({"users_online": group_size}))
 
     async def send_user_bots_messages(self, group: str):
         send_random_messages.delay(group)
