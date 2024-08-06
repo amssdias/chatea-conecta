@@ -139,6 +139,8 @@ class ChatView {
 
         }
 
+        chatBox.scrollTop = chatBox.scrollHeight;
+
     }
 
     displayCurrentUserMessage(message) {
@@ -166,6 +168,8 @@ class ChatView {
             chatBox.appendChild(div);
 
         }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
 
     }
 
