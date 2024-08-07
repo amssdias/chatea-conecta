@@ -144,14 +144,14 @@ REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 REDIS_URL = f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
 # Django Cache
-DJANGO_REDIS_CACHE_DB = os.getenv("DJANGO_CACHE_DB")
+DJANGO_REDIS_CACHE_DB = os.getenv("DJANGO_REDIS_CACHE_DB", "0")
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"{REDIS_URL}:{REDIS_PORT}",
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "db": DJANGO_REDIS_CACHE_DB,
-        }
+        },
     }
 }
 
@@ -161,16 +161,11 @@ REDIS_CHANNEL_LAYER_URL = f"{REDIS_URL}/{REDIS_DB_CHANNEL}"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [REDIS_CHANNEL_LAYER_URL],
-            "expiry": 60
-        },
+        "CONFIG": {"hosts": [REDIS_CHANNEL_LAYER_URL], "expiry": 60},
     },
 }
 
 # Celery settings
 REDIS_DB_CELERY = os.getenv("REDIS_DB_CELERY")
-CELERY_BROKER_URL = (
-    f"{REDIS_URL}/{REDIS_DB_CELERY}"
-)
+CELERY_BROKER_URL = f"{REDIS_URL}/{REDIS_DB_CELERY}"
 CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL = 60
