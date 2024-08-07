@@ -23,4 +23,4 @@ class CloseChatSessionView(View):
     def remove_username_from_redis(username):
         lower_username = username.lower()
         if redis_connection.sismember(REDIS_USERNAME_KEY, lower_username):
-            redis_connection.srem("asgi:usernames", lower_username)
+            redis_connection.srem(REDIS_USERNAME_KEY, lower_username)
