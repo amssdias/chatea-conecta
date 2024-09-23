@@ -17,3 +17,4 @@ CACHES = {
 
 # Use an in-memory broker URL if using Celery
 CELERY_BROKER_URL = "memory://localhost"
+COOKIES_SECURE = False

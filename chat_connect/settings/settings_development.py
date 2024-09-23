@@ -14,5 +14,5 @@ MIDDLEWARE += ["django_browser_reload.middleware.BrowserReloadMiddleware"]
 COOKIES_SECURE = False
 
 # CELERY
-CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_ALWAYS_EAGER = False # If true must disable task on chat consumer
 CELERY_TASK_EAGER_PROPAGATES = True
