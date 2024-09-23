@@ -29,4 +29,4 @@ jobs:
 
       - name: 🧪 Run tests
         run: |
-          python3 manage.py test apps.chat --settings=chat_connect.settings.settings_tests
+          pipenv run python3 manage.py test apps.chat --settings=chat_connect.settings.settings_tests
