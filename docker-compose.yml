@@ -22,3 +22,18 @@ services:
       - REDIS_HOST=my-redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+  celery:
+    build:
+      context: .
+      dockerfile: deployments/${ENVIRON}/Dockerfile
+    depends_on:
+      - my-redis
+      - chat-app
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - REDIS_HOST=my-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DB_CELERY=2
+    command: ["celery", "-A", "chat_connect", "worker", "--loglevel=info", "--concurrency=4"]
