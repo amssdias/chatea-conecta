@@ -90,14 +90,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.groups.add(group)
         group_size = await self.get_group_size()
 
-        # If there are users we make sure the key is true
+        # If there are users we make sure the key is true to keep sending user msgs
         if group_size:
             await sync_to_async(cache.set)("has_users", True)
 
         await self.send(text_data=json.dumps({"users_online": group_size}))
 
     async def send_user_bots_messages(self, group: str):
-        send_random_messages.delay(group)
+        await sync_to_async(send_random_messages.delay)(group)
 
     async def chat_message(self, event):
         """Receive message from room group"""
