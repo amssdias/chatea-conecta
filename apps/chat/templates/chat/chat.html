@@ -70,28 +70,30 @@
 
         <div class="chat-app__container">
 
-            <!-- All groups available to chat -->
-            <div class="chat-app__groups hide" id="chat-groups">
+            {% if groups %}
+                <!-- All groups available to chat -->
+                <div class="chat-app__groups hide" id="chat-groups">
 
-                <!-- Group Search -->
-                <div id="group-search" class="group-search">
-                    <input class="group-search__input" type="text">
+                    <!-- Group Search -->
+                    <div id="group-search" class="group-search">
+                        <input class="group-search__input" type="text">
+                    </div>
+
+                    <ul id="chat-app-groups">
+
+                        {% for group in groups %}
+                            <li class="chat-app__group">
+
+                                <a href="#" data-group-name="{{ group.1 }}" class="chat-app__group-link">
+                                    {% include "../utils/offline_svg.html" %}
+                                    {{ group.0 }}
+                                    </a>
+                                <!-- {% include "../utils/options.html" %} -->
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-
-                <ul id="chat-app-groups">
-
-                    {% for group in groups %}
-                        <li class="chat-app__group">
-
-                            <a href="#" data-group-name="{{ group.1 }}" class="chat-app__group-link">
-                                {% include "../utils/offline_svg.html" %}
-                                {{ group.0 }}
-                                </a>
-                            <!-- {% include "../utils/options.html" %} -->
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            {% endif %}
 
             <!-- Where user can write chat messages -->
             <div class="chat-container">

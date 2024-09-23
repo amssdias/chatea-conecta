@@ -37,7 +37,7 @@ class ChatView(View):
             response.delete_cookie("username")
             return response
         return render(
-            request, "chat/chat.html", context={"username": username, "groups": GROUPS}
+            request, "chat/chat.html", context={"username": username, "groups": None}
         )
 
     def post(self, request):
@@ -61,7 +61,7 @@ class ChatView(View):
             "chat/chat.html",
             context={
                 "username": username,
-                "groups": GROUPS,
+                "groups": None,
             },
         )
         response.set_cookie(
