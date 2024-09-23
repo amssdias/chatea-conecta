@@ -1,5 +1,7 @@
 from chat_connect.settings.base import *
+import secrets
 
+SECRET_KEY = "".join(secrets.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50))
 
 # Web Socket - Channels
 CHANNEL_LAYERS = {
