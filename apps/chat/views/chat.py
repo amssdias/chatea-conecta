@@ -41,7 +41,7 @@ class ChatView(View):
         )
 
     def post(self, request):
-        username = request.POST.get("username")
+        username = request.POST.get("username", "").strip()
         if not username:
             messages.error(request, "You need to put an username")
             # Redirect to home page
@@ -54,7 +54,7 @@ class ChatView(View):
             return redirect("chat:home")
 
         # Add the username to the Redis set
-        redis_connection.sadd("asgi:usernames", lower_username)
+        redis_connection.sadd(REDIS_USERNAME_KEY, lower_username)
 
         response = render(
             request,
