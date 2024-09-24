@@ -4,6 +4,6 @@ from apps.chat.models import ConversationFlow
 
 
 @admin.register(ConversationFlow)
-class CategoryAdmin(admin.ModelAdmin):
+class ConversationFlowAdmin(admin.ModelAdmin):
     list_display = ("topic", "message")
     search_fields = ("topic", "message")

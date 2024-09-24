@@ -17,3 +17,5 @@ class UserConversation(models.Model):
     conversation_flow = models.ForeignKey(
         "ConversationFlow", related_name="user_conversation", on_delete=models.CASCADE
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+

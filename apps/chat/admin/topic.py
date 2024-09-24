@@ -4,6 +4,6 @@ from apps.chat.models import Topic
 
 
 @admin.register(Topic)
-class CategoryAdmin(admin.ModelAdmin):
+class TopicAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
