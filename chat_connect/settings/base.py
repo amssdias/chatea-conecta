@@ -39,7 +39,10 @@ DJANGO_APPS = [
 ]
 
 MY_PROJECT_APPS = ["apps.chat"]
-EXTERNAL_APPS = ["daphne"]
+EXTERNAL_APPS = [
+    "django_celery_beat",
+    "daphne"
+]
 
 INSTALLED_APPS = MY_PROJECT_APPS + EXTERNAL_APPS + DJANGO_APPS
 

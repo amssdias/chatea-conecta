@@ -11,6 +11,7 @@ channels-redis = "==4.2.0"
 aioredis = "==2.0.1"
 python-dotenv = "*"
 celery = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 django-browser-reload = "*"
