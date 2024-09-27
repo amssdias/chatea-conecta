@@ -54,5 +54,5 @@ jobs:
 
       - name: 📊 Run coverage
         run: |
-          pipenv run python3 manage.py test apps.chat --settings=chat_connect.settings.settings_tests
+          pipenv run coverage run --source="." manage.py test apps.chat --settings=chat_connect.settings.settings_tests
           coverage report
