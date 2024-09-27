@@ -1,4 +1,4 @@
-name: 🧪 Run tests
+name: 🧪 Run tests and coverage
 
 on:
   push:
@@ -30,3 +30,29 @@ jobs:
       - name: 🧪 Run tests
         run: |
           pipenv run python3 manage.py test apps.chat --settings=chat_connect.settings.settings_tests
+
+  run_coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v2
+
+      - name: 🐍 Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: 📦 Install Pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+
+      - name: 📦 Install Dependencies with Pipenv
+        run: |
+          pipenv install --dev
+
+      - name: 📊 Run coverage
+        run: |
+          pipenv run python3 manage.py test apps.chat --settings=chat_connect.settings.settings_tests
+          coverage report
