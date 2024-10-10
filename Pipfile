@@ -12,6 +12,7 @@ aioredis = "==2.0.1"
 python-dotenv = "*"
 celery = "*"
 django-celery-beat = "*"
+mysqlclient = "*"
 
 [dev-packages]
 django-browser-reload = "*"
