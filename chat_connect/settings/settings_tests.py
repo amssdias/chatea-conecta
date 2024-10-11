@@ -3,6 +3,14 @@ import secrets
 
 SECRET_KEY = "".join(secrets.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50))
 
+# DB
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
 # Web Socket - Channels
 CHANNEL_LAYERS = {
     "default": {
