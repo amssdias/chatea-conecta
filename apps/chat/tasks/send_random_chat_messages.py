@@ -11,6 +11,7 @@ from django_celery_beat.models import IntervalSchedule, PeriodicTask
 from apps.chat.caching import get_or_set_cache
 from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
 from apps.chat.services import MessageService
+from apps.chat.utils.redis_connection import redis_connection
 from chat_connect.celery import app
 
 logger = logging.getLogger("chat_connect")
@@ -45,6 +46,7 @@ def send_random_messages(group):
                 f"Sent message from user '{user_message.get('username')}' to group '{group}'."
             )
 
+    redis_connection.delete(TASK_LOCK_KEY)
     logger.info(f"'send_random_messages' task for group '{group}' completed.")
     return
 
