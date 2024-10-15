@@ -1,24 +1,30 @@
+import logging
 import random
 import time
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.core.cache import cache
+from django.conf import settings
+from django_celery_beat.models import IntervalSchedule, PeriodicTask
 
 from apps.chat.services import MessageService
 from chat_connect.celery import app
 
+logger = logging.getLogger("chat_connect")
+
 
 @app.task
 def send_random_messages(group):
+    logger.info(f"Starting 'send_random_messages' task for group: {group}")
+
     service = MessageService()
     channel_layer = get_channel_layer()
 
-    while True:
+    add_clear_messages_periodic_task()
 
-        if not cache.get("has_users"):
-            print("-------- FINISHING FUNCTION ----------")
-            return
+    # Make a periodic task instead of while true
+    while cache.get("has_users"):
 
         user_message = service.get_message_to_send()
 
@@ -33,3 +39,32 @@ def send_random_messages(group):
                     "group": group,
                 },
             )
+            logger.info(
+                f"Sent message from user '{user_message.get('username')}' to group '{group}'."
+            )
+
+    logger.info(f"'send_random_messages' task for group '{group}' completed.")
+    return
+
+
+def add_clear_messages_periodic_task():
+    logger.info("Activating the 'clear_users_bots_messages' periodic task.")
+
+    # TODO: cache this info to avoid multiple hits on the DB
+
+    # Use cache.touch to make it expiry after X seconds
+    interval, _ = IntervalSchedule.objects.get_or_create(
+        every=settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES,
+        period=IntervalSchedule.MINUTES,
+    )
+
+    task, _ = PeriodicTask.objects.get_or_create(
+        interval=interval,
+        name="clear_users_bots_messages",
+        task="apps.chat.tasks.clear_messages.clear_user_old_messages",
+    )
+
+    if not task.enabled:
+        task.enabled = True
+        task.save()
+        logger.info("Enabled the 'clear_users_bots_messages' periodic task.")
