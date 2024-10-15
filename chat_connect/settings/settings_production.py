@@ -26,6 +26,55 @@ CHANNEL_LAYERS = {
     },
 }
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,  # Ensure other Django loggers remain active
+    
+    # Define the format of log messages
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+
+    # Define where the log messages are sent
+    "handlers": {
+        # TODO: Config sentry and cloudwatch handler
+        # "sentry": {
+        #     "level": "ERROR",  # Log only errors and above
+        #     "class": "sentry_sdk.integrations.logging.EventHandler",
+        #     "formatter": "verbose",
+        # },
+        # "cloudwatch": {
+        #     "level": "INFO",  # Log info and above to CloudWatch
+        #     "class": "watchtower.CloudWatchLogHandler",
+        #     "log_group": "your-log-group",  # Replace with your CloudWatch Log Group
+        #     "stream_name": "django-app",  # Replace with your CloudWatch log stream name
+        #     "formatter": "verbose",
+        # },
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+
+    # Define the loggers themselves
+    "loggers": {
+        "django": {  # Django core logs
+            "handlers": ["sentry", "cloudwatch"],  # Log to Sentry and CloudWatch
+            "level": "ERROR",
+            "propagate": True,
+        },
+        "chat_connect": {
+            "handlers": ["cloudwatch"],  # Log only to CloudWatch
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
+
 # Time in minutes to expire messages sent
 CLEAR_MESSAGES_EXPIRATION_TIME = 10
 CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES = 10

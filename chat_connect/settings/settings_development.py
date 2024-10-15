@@ -27,3 +27,38 @@ COOKIES_SECURE = False
 # CELERY
 CELERY_TASK_ALWAYS_EAGER = False # If true must disable task on chat consumer
 CELERY_TASK_EAGER_PROPAGATES = True
+
+# Time in minutes to expire messages sent
+CLEAR_MESSAGES_EXPIRATION_TIME = 2
+CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES = 1
+
+LOGGING = {
+    "version": 1,  # Version of the logging configuration (always 1)
+    "disable_existing_loggers": False,  # Ensures that Django’s default loggers are not disabled
+
+    # Define the format of log messages
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+
+    # Define where the log messages are sent
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",  # Use the "verbose" formatter for console logs
+        },
+    },
+
+    # Define the loggers themselves
+    "loggers": {
+        "chat_connect": {
+            "handlers": ["console"],  # Send logs to console
+            "level": "INFO",  # Log everything, including info messages
+            "propagate": False,
+        },
+    },
+}
