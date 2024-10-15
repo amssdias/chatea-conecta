@@ -155,10 +155,12 @@ REDIS_URL = f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
 # Django Cache
 DJANGO_REDIS_CACHE_DB = os.getenv("DJANGO_REDIS_CACHE_DB", "0")
+DJANGO_REDIS_KEY_PREFIX = "django-chat-app:"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": REDIS_URL,
+        "KEY_PREFIX": DJANGO_REDIS_KEY_PREFIX,
         "OPTIONS": {
             "db": DJANGO_REDIS_CACHE_DB,
         },

@@ -1,5 +1,4 @@
 from django.core.cache import cache
-from django.conf import settings
 
 
 def get_or_set_cache(cache_key, model_class, get_or_create_kwargs, timeout=60 * 60 * 24):

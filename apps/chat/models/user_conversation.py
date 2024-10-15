@@ -18,4 +18,3 @@ class UserConversation(models.Model):
         "ConversationFlow", related_name="user_conversation", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
-

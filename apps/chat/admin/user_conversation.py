@@ -6,3 +6,5 @@ from apps.chat.models import UserConversation
 @admin.register(UserConversation)
 class UserConversationAdmin(admin.ModelAdmin):
     list_display = ("user", "conversation_flow", "created_at")
+    readonly_fields = ("created_at",)
+
