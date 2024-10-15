@@ -8,6 +8,7 @@ from django.core.cache import cache
 from django.conf import settings
 from django_celery_beat.models import IntervalSchedule, PeriodicTask
 
+from apps.chat.caching import get_or_set_cache
 from apps.chat.services import MessageService
 from chat_connect.celery import app
 
@@ -50,12 +51,16 @@ def send_random_messages(group):
 def add_clear_messages_periodic_task():
     logger.info("Activating the 'clear_users_bots_messages' periodic task.")
 
-    # TODO: cache this info to avoid multiple hits on the DB
-
-    # Use cache.touch to make it expiry after X seconds
-    interval, _ = IntervalSchedule.objects.get_or_create(
-        every=settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES,
-        period=IntervalSchedule.MINUTES,
+    # Cache key for interval schedule
+    interval_cache_key = f"interval_{settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES}_minutes"
+    interval = get_or_set_cache(
+        cache_key=interval_cache_key,
+        model_class=IntervalSchedule,
+        get_or_create_kwargs={
+            "every": settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES,
+            "period": IntervalSchedule.MINUTES
+        },
+        timeout=settings.CACHE_TIMEOUT_ONE_DAY
     )
 
     task, _ = PeriodicTask.objects.get_or_create(

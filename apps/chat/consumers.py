@@ -2,6 +2,7 @@ import json
 
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.conf import settings
 from django.core.cache import cache
 
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
@@ -97,7 +98,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({"users_online": group_size}))
 
     async def send_user_bots_messages(self, group: str):
-        await sync_to_async(send_random_messages.delay)(group)
+        task_lock = await aio_redis_connection.setnx(settings.TASK_LOCK_KEY, "locked")
+        if task_lock:
+            await sync_to_async(send_random_messages.delay)(group)
 
     async def chat_message(self, event):
         """Receive message from room group"""
