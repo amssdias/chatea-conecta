@@ -165,7 +165,6 @@ CACHES = {
     }
 }
 CACHE_TIMEOUT_ONE_DAY = 86400
-TASK_LOCK_KEY = "send_random_messages_task_lock"
 
 # Web Socket - Channels
 REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")

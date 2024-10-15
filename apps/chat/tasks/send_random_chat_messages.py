@@ -9,6 +9,7 @@ from django.conf import settings
 from django_celery_beat.models import IntervalSchedule, PeriodicTask
 
 from apps.chat.caching import get_or_set_cache
+from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
 from apps.chat.services import MessageService
 from chat_connect.celery import app
 
@@ -25,7 +26,7 @@ def send_random_messages(group):
     add_clear_messages_periodic_task()
 
     # Make a periodic task instead of while true
-    while cache.get("has_users"):
+    while cache.get(HAS_USERS):
 
         user_message = service.get_message_to_send()
 

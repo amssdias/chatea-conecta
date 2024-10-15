@@ -2,10 +2,9 @@ import json
 
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.conf import settings
 from django.core.cache import cache
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY, TASK_LOCK_KEY, HAS_USERS
 from apps.chat.tasks.send_random_chat_messages import send_random_messages
 from chat_connect.utils.aio_redis_connection import aio_redis_connection
 
@@ -23,7 +22,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         group_size = await self.get_group_size()
         if not group_size:
-            await sync_to_async(cache.delete)(f"has_users")
+            await sync_to_async(cache.delete)(HAS_USERS)
 
     async def remove_user(self):
         username = self.scope.get("cookies", {}).get("username", "").lower()
@@ -93,12 +92,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # If there are users we make sure the key is true to keep sending user msgs
         if group_size:
-            await sync_to_async(cache.set)("has_users", True)
+            await sync_to_async(cache.set)(HAS_USERS, True)
 
         await self.send(text_data=json.dumps({"users_online": group_size}))
 
     async def send_user_bots_messages(self, group: str):
-        task_lock = await aio_redis_connection.setnx(settings.TASK_LOCK_KEY, "locked")
+        task_lock = await aio_redis_connection.setnx(TASK_LOCK_KEY, "locked")
         if task_lock:
             await sync_to_async(send_random_messages.delay)(group)
 
