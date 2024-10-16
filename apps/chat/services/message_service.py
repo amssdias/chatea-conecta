@@ -1,17 +1,26 @@
+import logging
 import random
 from typing import Optional, Dict, Set
 
-from apps.chat.models import UserConversation, ConversationFlow, Topic
 from django.contrib.auth import get_user_model
+
+from apps.chat.models import UserConversation
+from apps.chat.services import DjangoCacheService
 
 User = get_user_model()
 
+logger = logging.getLogger("chat_connect")
+
 
 class MessageService:
+
+    def __init__(self):
+        self.django_cache = DjangoCacheService()
+
     def get_message_to_send(self) -> Optional[Dict]:
-        user_ids = set(User.objects.all().values_list("id", flat=True))
-        topics_ids = set(Topic.objects.all().values_list("id", flat=True))
-        topics_ids_to_choose = topics_ids.copy()
+        user_ids = self.django_cache.get_cached_user_ids()
+        topic_ids = self.django_cache.get_cached_topic_ids()
+        topics_ids_to_choose = topic_ids.copy()
         user_message = {
             "username": None,
             "message": None,
@@ -19,44 +28,50 @@ class MessageService:
 
         while True:
 
-            # Get random user
             user_id = self._get_random_user_id(user_ids)
             if not user_id:
+                logger.info("No more users found to send a message.")
                 return None
 
             # Get a random topic
             topic_id = self._get_random_topic_id(topics_ids_to_choose)
             if not topic_id:
                 user_ids.remove(user_id)
-                topics_ids_to_choose = topics_ids.copy()
+                topics_ids_to_choose = topic_ids.copy()
                 continue
 
-            # Get messages from this topic
-            conversations_flows = ConversationFlow.objects.filter(
-                topic_id=topic_id
-            ).prefetch_related("user_conversation")
+            # Preload all user conversations for the current topic and user in one query
+            user_conversations = set(
+                UserConversation.objects.filter(
+                    user_id=user_id, conversation_flow__topic_id=topic_id
+                ).values_list("conversation_flow_id", flat=True)
+            )
 
-            # Loop through all messages
+            # Get all conversation flows for the topic in one query
+            conversations_flows = self.django_cache.get_cached_conversation_flows(
+                topic_id
+            )
+
+            # Loop through conversation flows and check if user has sent a message for this flow
             for conversation_flow in conversations_flows:
 
-                # Check if user already sent this topic
-                # if yes, get next message from this topic
-                if conversation_flow.user_conversation.filter(user_id=user_id).exists():
+                # If the user already sent a message for this conversation flow, skip it
+                if conversation_flow.id in user_conversations:
                     continue
 
-                else:
-                    # if user did not send message yet, send message from this topic
-                    user_message["message"] = conversation_flow.message
-                    user_message["username"] = User.objects.get(id=user_id).username
-                    # if not, send message from this topic
-                    UserConversation.objects.create(
-                        conversation_flow=conversation_flow,
-                        user_id=user_id,
-                    )
-                    break
+                # If user did not send message yet, send message from this topic
+                user_message["message"] = conversation_flow.message
+                user_message["username"] = self.django_cache.get_username(user_id)
 
+                # Create the user conversation record
+                UserConversation.objects.create(
+                    conversation_flow=conversation_flow,
+                    user_id=user_id,
+                )
+
+                break
             else:
-                # If user already sent all possible messages from this topic
+                # If user has sent all possible messages from this topic
                 # Remove this topic to get another topic
                 topics_ids_to_choose.remove(topic_id)
                 continue
