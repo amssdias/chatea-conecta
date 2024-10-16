@@ -23,7 +23,7 @@ def send_random_messages(group):
 
     add_clear_messages_periodic_task()
 
-    while DjangoCacheService.get_cache(HAS_USERS):
+    while RedisService.key_exists(HAS_USERS):
 
         user_message = service.get_message_to_send()
 

@@ -1,28 +1,31 @@
+import logging
 import json
 
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY, TASK_LOCK_KEY, HAS_USERS
-from apps.chat.services import AsyncRedisService, DjangoCacheService
+from apps.chat.services import AsyncRedisService
 from apps.chat.tasks.send_random_chat_messages import send_random_messages
+
+logger = logging.getLogger("chat_connect")
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        print("---- CONNECTED ----")
+        logger.info("---- CONNECTED TO WEBSOCKET ----")
         self.groups = set()
         await self.accept()
 
     async def disconnect(self, close_code):
+        logger.info("---- DISCONNECTING FROM WEBSOCKET ----")
         await self.remove_user()
         await self.unregister_user_from_group()
 
         group_size = await self.get_group_size()
         if not group_size:
-            await DjangoCacheService.async_delete_cache(HAS_USERS)
-            # await sync_to_async(cache.delete)(HAS_USERS)
+            await AsyncRedisService.delete_key(HAS_USERS)
 
     async def remove_user(self):
         username = self.scope.get("cookies", {}).get("username", "").lower()
@@ -44,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         username = self.scope["cookies"].get("username", "")
         lower_username = username.lower()
-        is_connected = AsyncRedisService.is_user_in_set(
+        is_connected = await AsyncRedisService.is_user_in_set(
             REDIS_USERNAME_KEY, lower_username
         )
         if not username or not is_connected:
@@ -92,13 +95,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # If there are users we make sure the key is true to keep sending user msgs
         if group_size:
-            await DjangoCacheService.async_set_cache(HAS_USERS, True)
-            # await sync_to_async(cache.set)(HAS_USERS, True)
+            await AsyncRedisService.set_if_not_exists(HAS_USERS, "true")
 
         await self.send(text_data=json.dumps({"users_online": group_size}))
 
     async def send_user_bots_messages(self, group: str):
-        task_lock = await AsyncRedisService.set_task_lock(TASK_LOCK_KEY, "locked")
+        task_lock = await AsyncRedisService.set_if_not_exists(TASK_LOCK_KEY, "locked")
         if task_lock:
             await sync_to_async(send_random_messages.delay)(group)
 

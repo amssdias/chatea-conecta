@@ -6,7 +6,7 @@ logger = logging.getLogger("chat_connect")
 
 
 class AsyncRedisService:
-    async_redis_connection = aio_redis_connection # Singleton
+    async_redis_connection = aio_redis_connection  # Singleton
 
     @classmethod
     async def is_user_in_set(cls, redis_key, username):
@@ -33,7 +33,7 @@ class AsyncRedisService:
         return removed_count
 
     @classmethod
-    async def set_task_lock(cls, lock_key, value="locked"):
+    async def set_if_not_exists(cls, lock_key, value="locked"):
         """
         Set a Redis key only if it does not already exist (NX: Set if Not Exists).
 
@@ -54,3 +54,14 @@ class AsyncRedisService:
         """
         group_size = await cls.async_redis_connection.scard(redis_key)
         return group_size
+
+    @classmethod
+    async def delete_key(cls, redis_key):
+        """
+        Asynchronously delete a key from Redis.
+
+        :param redis_key: The Redis key to delete.
+        :return: Number of keys deleted (1 if successful, 0 if the key didn't exist).
+        """
+        result = await cls.async_redis_connection.delete(redis_key)
+        return result

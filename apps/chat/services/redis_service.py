@@ -5,6 +5,16 @@ class RedisService:
     redis_connection = redis_connection  # Singleton sync Redis connection
 
     @classmethod
+    def key_exists(cls, redis_key):
+        """
+        Check if a Redis key exists.
+
+        :param redis_key: The Redis key to check.
+        :return: True if the key exists, False otherwise.
+        """
+        return cls.redis_connection.exists(redis_key) == 1
+
+    @classmethod
     def is_member(cls, redis_key, username):
         """
         Check if a username exists in the Redis set.
