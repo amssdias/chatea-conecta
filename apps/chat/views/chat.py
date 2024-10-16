@@ -1,12 +1,10 @@
 from django.conf import settings
-
-from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.views import View
 
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
-from apps.chat.utils.redis_connection import redis_connection
-
+from apps.chat.services import RedisService
 
 GROUPS = [
     ("Galicia", "galicia"),
@@ -30,7 +28,7 @@ GROUPS = [
 class ChatView(View):
     def get(self, request):
         username = self.request.COOKIES.get("username", "")
-        if not username or not redis_connection.sismember(
+        if not username or not RedisService.is_member(
             REDIS_USERNAME_KEY, username.lower()
         ):
             response = redirect("chat:home")
@@ -49,12 +47,12 @@ class ChatView(View):
 
         # Check if username already exists in Redis
         lower_username = username.lower()
-        if redis_connection.sismember(REDIS_USERNAME_KEY, lower_username):
+        if RedisService.is_member(REDIS_USERNAME_KEY, lower_username):
             messages.error(request, "Username already taken")
             return redirect("chat:home")
 
         # Add the username to the Redis set
-        redis_connection.sadd(REDIS_USERNAME_KEY, lower_username)
+        RedisService.add_to_set(REDIS_USERNAME_KEY, lower_username)
 
         response = render(
             request,

@@ -4,14 +4,11 @@ import time
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.core.cache import cache
 from django.conf import settings
 from django_celery_beat.models import IntervalSchedule, PeriodicTask
 
-from apps.chat.caching import get_or_set_cache
 from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
-from apps.chat.services import MessageService
-from apps.chat.utils.redis_connection import redis_connection
+from apps.chat.services import MessageService, DjangoCacheService, RedisService
 from chat_connect.celery import app
 
 logger = logging.getLogger("chat_connect")
@@ -26,8 +23,7 @@ def send_random_messages(group):
 
     add_clear_messages_periodic_task()
 
-    # Make a periodic task instead of while true
-    while cache.get(HAS_USERS):
+    while DjangoCacheService.get_cache(HAS_USERS):
 
         user_message = service.get_message_to_send()
 
@@ -46,7 +42,7 @@ def send_random_messages(group):
                 f"Sent message from user '{user_message.get('username')}' to group '{group}'."
             )
 
-    redis_connection.delete(TASK_LOCK_KEY)
+    RedisService.delete_key(TASK_LOCK_KEY)
     logger.info(f"'send_random_messages' task for group '{group}' completed.")
     return
 
@@ -56,14 +52,14 @@ def add_clear_messages_periodic_task():
 
     # Cache key for interval schedule
     interval_cache_key = f"interval_{settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES}_minutes"
-    interval = get_or_set_cache(
+    interval = DjangoCacheService.get_or_set_cache(
         cache_key=interval_cache_key,
         model_class=IntervalSchedule,
         get_or_create_kwargs={
             "every": settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES,
-            "period": IntervalSchedule.MINUTES
+            "period": IntervalSchedule.MINUTES,
         },
-        timeout=settings.CACHE_TIMEOUT_ONE_DAY
+        timeout=settings.CACHE_TIMEOUT_ONE_DAY,
     )
 
     task, _ = PeriodicTask.objects.get_or_create(
