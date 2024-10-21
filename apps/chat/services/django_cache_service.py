@@ -67,7 +67,7 @@ class DjangoCacheService:
         return username
 
     @staticmethod
-    def get_or_set_cache(
+    def get_or_create_cache(
         cache_key, model_class, get_or_create_kwargs, timeout=60 * 60 * 24
     ):
         """

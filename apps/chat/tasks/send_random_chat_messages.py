@@ -52,7 +52,7 @@ def add_clear_messages_periodic_task():
 
     # Cache key for interval schedule
     interval_cache_key = f"interval_{settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES}_minutes"
-    interval = DjangoCacheService.get_or_set_cache(
+    interval = DjangoCacheService.get_or_create_cache(
         cache_key=interval_cache_key,
         model_class=IntervalSchedule,
         get_or_create_kwargs={
