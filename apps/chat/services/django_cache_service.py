@@ -15,6 +15,7 @@ logger = logging.getLogger("chat_connect")
 
 class DjangoCacheService:
     CACHE_TIMEOUT = 60 * 15  # Default cache timeout (adjust as needed)
+    USER_MESSAGE_SENT = "user_{user_id}_topic_{topic_id}_message_{message_id}"
 
     def _get_or_set_cache(
         self, cache_key: str, fetch_function, timeout: int = 300
@@ -86,3 +87,20 @@ class DjangoCacheService:
             cache.set(cache_key, obj, timeout)
 
         return obj
+
+    def has_user_sent_message(self, user_id: int, topic_id: int, message_id: int) -> bool:
+        """Check if a user has already sent a specific message for a given topic."""
+        cache_key = self.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+        return cache.get(cache_key) is not None
+
+    def mark_user_message_sent_in_redis(self, user_id: int, topic_id: int, message_id: int, message: str):
+        """
+        Mark a message as sent by a user for a specific topic in Redis, with an expiration (TTL).
+        Each message is stored as a separate key, with a unique expiration time.
+        """
+
+        # Create a unique cache key for this user, topic, and message
+        cache_key = self.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+
+        # Store the message in Redis with a TTL (time-to-live)
+        cache.set(cache_key, message, timeout=settings.CACHE_TIMEOUT_ONE_DAY)

@@ -21,8 +21,6 @@ def send_random_messages(group):
     service = MessageService()
     channel_layer = get_channel_layer()
 
-    add_clear_messages_periodic_task()
-
     while RedisService.key_exists(HAS_USERS):
 
         user_message = service.get_message_to_send()

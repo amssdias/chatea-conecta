@@ -40,13 +40,6 @@ class MessageService:
                 topics_ids_to_choose = topic_ids.copy()
                 continue
 
-            # Preload all user conversations for the current topic and user in one query
-            user_conversations = set(
-                UserConversation.objects.filter(
-                    user_id=user_id, conversation_flow__topic_id=topic_id
-                ).values_list("conversation_flow_id", flat=True)
-            )
-
             # Get all conversation flows for the topic in one query
             conversations_flows = self.django_cache.get_cached_conversation_flows(
                 topic_id
@@ -56,17 +49,19 @@ class MessageService:
             for conversation_flow in conversations_flows:
 
                 # If the user already sent a message for this conversation flow, skip it
-                if conversation_flow.id in user_conversations:
+                if self.django_cache.has_user_sent_message(user_id, topic_id, conversation_flow.id):
                     continue
 
                 # If user did not send message yet, send message from this topic
                 user_message["message"] = conversation_flow.message
                 user_message["username"] = self.django_cache.get_username(user_id)
 
-                # Create the user conversation record
-                UserConversation.objects.create(
-                    conversation_flow=conversation_flow,
+                # Create the user conversation record on Redis
+                self.django_cache.mark_user_message_sent_in_redis(
                     user_id=user_id,
+                    topic_id=topic_id,
+                    message_id=conversation_flow.id,
+                    message=conversation_flow.message,
                 )
 
                 break
