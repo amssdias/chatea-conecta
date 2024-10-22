@@ -14,7 +14,6 @@ logger = logging.getLogger("chat_connect")
 
 
 class DjangoCacheService:
-    CACHE_TIMEOUT = 60 * 15  # Default cache timeout (adjust as needed)
     USER_MESSAGE_SENT = "user_{user_id}_topic_{topic_id}_message_{message_id}"
 
     def _get_or_set_cache(
