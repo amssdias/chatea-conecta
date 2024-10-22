@@ -4,11 +4,9 @@ import time
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.conf import settings
-from django_celery_beat.models import IntervalSchedule, PeriodicTask
 
 from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
-from apps.chat.services import MessageService, DjangoCacheService, RedisService
+from apps.chat.services import MessageService, RedisService
 from chat_connect.celery import app
 
 logger = logging.getLogger("chat_connect")
@@ -43,30 +41,3 @@ def send_random_messages(group):
     RedisService.delete_key(TASK_LOCK_KEY)
     logger.info(f"'send_random_messages' task for group '{group}' completed.")
     return
-
-
-def add_clear_messages_periodic_task():
-    logger.info("Activating the 'clear_users_bots_messages' periodic task.")
-
-    # Cache key for interval schedule
-    interval_cache_key = f"interval_{settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES}_minutes"
-    interval = DjangoCacheService.get_or_create_cache(
-        cache_key=interval_cache_key,
-        model_class=IntervalSchedule,
-        get_or_create_kwargs={
-            "every": settings.CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES,
-            "period": IntervalSchedule.MINUTES,
-        },
-        timeout=settings.CACHE_TIMEOUT_ONE_DAY,
-    )
-
-    task, _ = PeriodicTask.objects.get_or_create(
-        interval=interval,
-        name="clear_users_bots_messages",
-        task="apps.chat.tasks.clear_messages.clear_user_old_messages",
-    )
-
-    if not task.enabled:
-        task.enabled = True
-        task.save()
-        logger.info("Enabled the 'clear_users_bots_messages' periodic task.")
