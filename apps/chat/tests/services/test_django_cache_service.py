@@ -14,6 +14,7 @@ from apps.chat.tests.factories.user_factory import UserFactory
 User = get_user_model()
 fake = Faker()
 
+
 class DjangoCacheServiceTest(TestCase):
 
     @classmethod
@@ -28,9 +29,7 @@ class DjangoCacheServiceTest(TestCase):
         cache.set("test_key", {1, 2, 3})
 
         result = self.cache_service._get_or_set_cache(
-            cache_key="test_key",
-            fetch_function=lambda: {4, 5, 6},
-            timeout=300
+            cache_key="test_key", fetch_function=lambda: {4, 5, 6}, timeout=300
         )
 
         self.assertEqual(result, {1, 2, 3})
@@ -41,9 +40,7 @@ class DjangoCacheServiceTest(TestCase):
         fetch_function = lambda: {4, 5, 6}
 
         result = self.cache_service._get_or_set_cache(
-            cache_key="test_key",
-            fetch_function=fetch_function,
-            timeout=300
+            cache_key="test_key", fetch_function=fetch_function, timeout=300
         )
 
         self.assertEqual(result, {4, 5, 6})
@@ -54,10 +51,8 @@ class DjangoCacheServiceTest(TestCase):
 
         fetch_function = lambda: {7, 8, 9}
 
-        result =  self.cache_service._get_or_set_cache(
-            cache_key="custom_timeout_key",
-            fetch_function=fetch_function,
-            timeout=600
+        result = self.cache_service._get_or_set_cache(
+            cache_key="custom_timeout_key", fetch_function=fetch_function, timeout=600
         )
 
         # Assert that the cache was updated with the fetched data
@@ -68,7 +63,9 @@ class DjangoCacheServiceTest(TestCase):
         """Test that users are fetched from DB when cache is empty."""
 
         mock_user_ids = {1, 2, 3}
-        with patch("apps.chat.services.django_cache_service.User.objects.all") as mock_all:
+        with patch(
+            "apps.chat.services.django_cache_service.User.objects.all"
+        ) as mock_all:
             mock_all.return_value.values_list.return_value = mock_user_ids
 
             result = self.cache_service.get_cached_user_ids()
@@ -88,7 +85,9 @@ class DjangoCacheServiceTest(TestCase):
         cache.set(USER_IDS, mock_user_ids, timeout=300)
 
         # Call the method
-        with patch("apps.chat.services.django_cache_service.User.objects.all") as mock_all:
+        with patch(
+            "apps.chat.services.django_cache_service.User.objects.all"
+        ) as mock_all:
             result = self.cache_service.get_cached_user_ids()
 
             mock_all.assert_not_called()
@@ -98,7 +97,9 @@ class DjangoCacheServiceTest(TestCase):
         self.assertIsNone(cache.get(TOPIC_IDS))
 
         # Mocking the Topic query to simulate fetching from the DB
-        with patch("apps.chat.services.django_cache_service.Topic.objects.all") as mock_all:
+        with patch(
+            "apps.chat.services.django_cache_service.Topic.objects.all"
+        ) as mock_all:
             mock_topic_ids = {1, 2, 3}
             mock_all.return_value.values_list.return_value = mock_topic_ids
 
@@ -116,7 +117,9 @@ class DjangoCacheServiceTest(TestCase):
         # Prepopulate the cache with topic IDs
         cache.set(TOPIC_IDS, {4, 5, 6}, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
 
-        with patch("apps.chat.services.django_cache_service.Topic.objects.all") as mock_all:
+        with patch(
+            "apps.chat.services.django_cache_service.Topic.objects.all"
+        ) as mock_all:
             # Call the get_cached_topic_ids method
             result = self.cache_service.get_cached_topic_ids()
 
@@ -128,7 +131,9 @@ class DjangoCacheServiceTest(TestCase):
 
     def test_get_cached_topic_ids_with_custom_timeout(self):
         # Mocking the Topic query to simulate fetching from the DB
-        with patch("apps.chat.services.django_cache_service.Topic.objects.all") as mock_all:
+        with patch(
+            "apps.chat.services.django_cache_service.Topic.objects.all"
+        ) as mock_all:
 
             mock_topic_ids = {7, 8, 9}
             mock_all.return_value.values_list.return_value = mock_topic_ids
@@ -146,10 +151,14 @@ class DjangoCacheServiceTest(TestCase):
         # You can also check the cache timeout here by adjusting cache.get() in Django"s low-level API
 
     def test_get_cached_conversation_flows_with_no_cached_data(self):
-        conversation_flows = [ConversationFlowFactory(topic=self.topic) for _ in range(5)]
+        conversation_flows = [
+            ConversationFlowFactory(topic=self.topic) for _ in range(5)
+        ]
 
         # Mocking the ConversationFlow query to simulate fetching from the DB
-        with patch("apps.chat.services.django_cache_service.ConversationFlow.objects.filter") as mock_filter:
+        with patch(
+            "apps.chat.services.django_cache_service.ConversationFlow.objects.filter"
+        ) as mock_filter:
             mock_filter.return_value = conversation_flows
 
             # Call the get_cached_conversation_flows method
@@ -166,10 +175,16 @@ class DjangoCacheServiceTest(TestCase):
     def test_get_cached_conversation_flows_with_cached_data(self):
         # Prepopulate the cache with conversation flows
         cache_key = "conversation_flows_topic_1"
-        cached_conversation_flows = [ConversationFlowFactory(topic=self.topic) for _ in range(5)]
+        cached_conversation_flows = [
+            ConversationFlowFactory(topic=self.topic) for _ in range(5)
+        ]
 
-        cache.set(cache_key, cached_conversation_flows, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
-        with patch("apps.chat.services.django_cache_service.ConversationFlow.objects.filter") as mock_filter:
+        cache.set(
+            cache_key, cached_conversation_flows, timeout=settings.CACHE_TIMEOUT_ONE_DAY
+        )
+        with patch(
+            "apps.chat.services.django_cache_service.ConversationFlow.objects.filter"
+        ) as mock_filter:
 
             # Call the get_cached_conversation_flows method
             result = self.cache_service.get_cached_conversation_flows(topic_id=1)
@@ -185,7 +200,9 @@ class DjangoCacheServiceTest(TestCase):
 
         # Mocking the ConversationFlow query to simulate fetching from the DB
         conversation_flows = [ConversationFlowFactory(topic=topic) for _ in range(5)]
-        with patch("apps.chat.services.django_cache_service.ConversationFlow.objects.filter") as mock_filter:
+        with patch(
+            "apps.chat.services.django_cache_service.ConversationFlow.objects.filter"
+        ) as mock_filter:
             mock_filter.return_value = conversation_flows
 
             # Call the get_cached_conversation_flows method
@@ -203,9 +220,13 @@ class DjangoCacheServiceTest(TestCase):
         # If needed, you can validate cache timeout behavior (advanced testing of cache expiration)
 
     def test_get_cached_conversation_flows_filter_with_no_cached_data(self):
-        conversation_flows = [ConversationFlowFactory(topic=self.topic) for _ in range(5)]
+        conversation_flows = [
+            ConversationFlowFactory(topic=self.topic) for _ in range(5)
+        ]
         # Call the get_cached_conversation_flows method
-        result = self.cache_service.get_cached_conversation_flows(topic_id=self.topic.id)
+        result = self.cache_service.get_cached_conversation_flows(
+            topic_id=self.topic.id
+        )
 
         # Assert that the result matches the mocked data
         self.assertEqual(len(result), len(conversation_flows))
@@ -220,7 +241,9 @@ class DjangoCacheServiceTest(TestCase):
 
         self.assertEqual(result, user.username)
         # Ensure no DB query is made
-        with patch("apps.chat.services.django_cache_service.User.objects.get") as mock_get:
+        with patch(
+            "apps.chat.services.django_cache_service.User.objects.get"
+        ) as mock_get:
             self.cache_service.get_username(user_id=user.id)
             mock_get.assert_not_called()
 
@@ -228,7 +251,10 @@ class DjangoCacheServiceTest(TestCase):
         """Test when username is not in cache and fetched from the DB."""
         user = UserFactory()
 
-        with patch("apps.chat.services.django_cache_service.User.objects.get", return_value=user) as mock_get:
+        with patch(
+            "apps.chat.services.django_cache_service.User.objects.get",
+            return_value=user,
+        ) as mock_get:
             result = self.cache_service.get_username(user_id=user.id)
 
             # Ensure the DB query was made
@@ -271,31 +297,47 @@ class DjangoCacheServiceTest(TestCase):
         # Assert
         self.assertEqual(result, user.username)
         mock_cache_get.assert_called_once_with(f"username_{user.id}")
-        mock_cache_set.assert_called_once_with(f"username_{user.id}", user.username, timeout=settings.CACHE_TIMEOUT_ONE_MONTH)
+        mock_cache_set.assert_called_once_with(
+            f"username_{user.id}",
+            user.username,
+            timeout=settings.CACHE_TIMEOUT_ONE_MONTH,
+        )
 
     @patch("apps.chat.services.django_cache_service.cache.get")
     @patch("apps.chat.services.django_cache_service.cache.set")
     @patch("apps.chat.services.django_cache_service.User.objects.create")
-    def test_get_username_nonexistent_user(self, mock_user_create, mock_cache_set, mock_cache_get):
+    def test_get_username_nonexistent_user(
+        self, mock_user_create, mock_cache_set, mock_cache_get
+    ):
         # Arrange
         user_id = 3
         mock_cache_get.return_value = None  # Simulate cache miss
-        mock_user_create.return_value.username = fake.user_name()  # Simulate created user's username
+        mock_user_create.return_value.username = (
+            fake.user_name()
+        )  # Simulate created user's username
 
         # Act
         result = self.cache_service.get_username(user_id)
 
         # Assert
         self.assertTrue(mock_user_create.called)  # Ensure a new user is created
-        self.assertEqual(result, mock_user_create.return_value.username)  # Check if the returned username is the one generated
+        self.assertEqual(
+            result, mock_user_create.return_value.username
+        )  # Check if the returned username is the one generated
         mock_cache_get.assert_called_once_with(f"username_{user_id}")
-        mock_cache_set.assert_called_once_with(f"username_{user_id}", mock_user_create.return_value.username, timeout=settings.CACHE_TIMEOUT_ONE_MONTH)
+        mock_cache_set.assert_called_once_with(
+            f"username_{user_id}",
+            mock_user_create.return_value.username,
+            timeout=settings.CACHE_TIMEOUT_ONE_MONTH,
+        )
 
     def test_has_user_sent_message(self):
         user_id = 1
         topic_id = 1
         message_id = 1
-        cache_key = self.cache_service.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+        cache_key = self.cache_service.USER_MESSAGE_SENT.format(
+            user_id=user_id, topic_id=topic_id, message_id=message_id
+        )
         cache.set(cache_key, True, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
 
         result = self.cache_service.has_user_sent_message(user_id, topic_id, message_id)
@@ -315,7 +357,9 @@ class DjangoCacheServiceTest(TestCase):
         user_id = 1
         topic_id = 1
         message_id = 1
-        cache_key = self.cache_service.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+        cache_key = self.cache_service.USER_MESSAGE_SENT.format(
+            user_id=user_id, topic_id=topic_id, message_id=message_id
+        )
         mock_cache_get.return_value = True  # Simulate cache hit
 
         result = self.cache_service.has_user_sent_message(user_id, topic_id, message_id)
@@ -328,7 +372,9 @@ class DjangoCacheServiceTest(TestCase):
         user_id = 1
         topic_id = 1
         message_id = 1
-        cache_key = self.cache_service.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+        cache_key = self.cache_service.USER_MESSAGE_SENT.format(
+            user_id=user_id, topic_id=topic_id, message_id=message_id
+        )
         mock_cache_get.return_value = None  # Simulate cache miss
 
         # Act
@@ -346,10 +392,16 @@ class DjangoCacheServiceTest(TestCase):
         expected_cache_key = self.cache_service.USER_MESSAGE_SENT.format(
             user_id=user_id, topic_id=topic_id, message_id=message_id
         )
-        expected_timeout = settings.CACHE_TIMEOUT_ONE_DAY  # Ensure you have this set in your settings
+        expected_timeout = (
+            settings.CACHE_TIMEOUT_ONE_DAY
+        )  # Ensure you have this set in your settings
 
         message = "Hello"
-        self.cache_service.mark_user_message_sent_in_redis(user_id, topic_id, message_id, message)
+        self.cache_service.mark_user_message_sent_in_redis(
+            user_id, topic_id, message_id, message
+        )
 
         # Assert
-        mock_cache_set.assert_called_once_with(expected_cache_key, message, timeout=expected_timeout)
+        mock_cache_set.assert_called_once_with(
+            expected_cache_key, message, timeout=expected_timeout
+        )
