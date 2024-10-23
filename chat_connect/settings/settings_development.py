@@ -32,6 +32,10 @@ CELERY_TASK_EAGER_PROPAGATES = True
 CLEAR_MESSAGES_EXPIRATION_TIME = 2
 CLEAR_USER_SENT_MESSAGES_TASK_INTERVAL_SCHEDULE_MINUTES = 1
 
+CACHE_TIMEOUT_ONE_DAY = 120
+CACHE_TIMEOUT_ONE_WEEK = 120
+CACHE_TIMEOUT_ONE_MONTH = 120
+
 LOGGING = {
     "version": 1,  # Version of the logging configuration (always 1)
     "disable_existing_loggers": False,  # Ensures that Django’s default loggers are not disabled

@@ -28,3 +28,32 @@ CACHES = {
 # Use an in-memory broker URL if using Celery
 CELERY_BROKER_URL = "memory://localhost"
 COOKIES_SECURE = False
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "null": {
+            "class": "logging.NullHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["null"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "chat_connect": {
+            "handlers": ["null"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
+
