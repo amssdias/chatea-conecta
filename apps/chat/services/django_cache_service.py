@@ -4,11 +4,13 @@ from typing import Set
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from faker import Faker
 
 from apps.chat.constants.redis_keys import USER_IDS, TOPIC_IDS
 from apps.chat.models import Topic, ConversationFlow
 
 User = get_user_model()
+fake = Faker()
 
 logger = logging.getLogger("chat_connect")
 
@@ -60,7 +62,14 @@ class DjangoCacheService:
         cache_key = f"username_{user_id}"
         username = cache.get(cache_key)
         if not username:
-            username = User.objects.get(id=user_id).username
+            try:
+                username = User.objects.get(id=user_id).username
+            except User.DoesNotExist:
+                new_user = User.objects.create(username=fake.user_name())
+                logger.warning(
+                    f"Username not found, created new one with id: {new_user.id}"
+                )
+                username = new_user.username
             cache.set(cache_key, username, timeout=settings.CACHE_TIMEOUT_ONE_MONTH)
         return username
 
@@ -85,19 +94,27 @@ class DjangoCacheService:
 
         return obj
 
-    def has_user_sent_message(self, user_id: int, topic_id: int, message_id: int) -> bool:
+    def has_user_sent_message(
+        self, user_id: int, topic_id: int, message_id: int
+    ) -> bool:
         """Check if a user has already sent a specific message for a given topic."""
-        cache_key = self.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+        cache_key = self.USER_MESSAGE_SENT.format(
+            user_id=user_id, topic_id=topic_id, message_id=message_id
+        )
         return cache.get(cache_key) is not None
 
-    def mark_user_message_sent_in_redis(self, user_id: int, topic_id: int, message_id: int, message: str):
+    def mark_user_message_sent_in_redis(
+        self, user_id: int, topic_id: int, message_id: int, message: str
+    ):
         """
         Mark a message as sent by a user for a specific topic in Redis, with an expiration (TTL).
         Each message is stored as a separate key, with a unique expiration time.
         """
 
         # Create a unique cache key for this user, topic, and message
-        cache_key = self.USER_MESSAGE_SENT.format(user_id=user_id, topic_id=topic_id, message_id=message_id)
+        cache_key = self.USER_MESSAGE_SENT.format(
+            user_id=user_id, topic_id=topic_id, message_id=message_id
+        )
 
         # Store the message in Redis with a TTL (time-to-live)
         cache.set(cache_key, message, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
