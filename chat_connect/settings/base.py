@@ -40,7 +40,6 @@ DJANGO_APPS = [
 
 MY_PROJECT_APPS = ["apps.chat"]
 EXTERNAL_APPS = [
-    "django_celery_beat",
     "daphne"
 ]
 
