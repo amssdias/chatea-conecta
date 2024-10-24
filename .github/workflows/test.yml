@@ -1,4 +1,4 @@
-name: 🧪 Run tests and coverage
+name: 🔍 Validate Code and Migrations
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
       - master
 
 jobs:
-  run_tests:
+  tests:
+    name: 🧪 Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +32,8 @@ jobs:
         run: |
           pipenv run python3 manage.py test apps.chat --settings=chat_connect.settings.settings_tests
 
-  run_coverage:
+  coverage:
+    name: 📊 Coverage
     runs-on: ubuntu-latest
 
     steps:
@@ -56,3 +58,28 @@ jobs:
         run: |
           pipenv run coverage run --source="." manage.py test apps.chat --settings=chat_connect.settings.settings_tests
           pipenv run coverage report
+
+  migrations:
+    name: 🛠️ Migrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v2
+
+      - name: 🐍 Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: 📦 Install Pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+
+      - name: 📦 Install Dependencies with Pipenv
+        run: |
+          pipenv install
+
+      - name: 🛠️ Run makemigrations (Check for Pending Migrations)
+        run: python manage.py makemigrations --check --dry-run
