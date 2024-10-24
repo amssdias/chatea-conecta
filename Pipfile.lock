@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4594e5e449814cdbda0e59daa00f1615f7ff4dce00a5e82208fd0847d4073208"
+            "sha256": "d8e0b14e0cc312caaf4658accd5e577a821e47c22a361ae5a9233ac8eba4a308"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -805,6 +805,22 @@
             "markers": "python_version >= '3.8'",
             "version": "==0.12.1"
         },
+        "pip": {
+            "hashes": [
+                "sha256:2cd581cf58ab7fcfca4ce8efa6dcacd0de5bf8d0a3eb9ec927e07405f4d9e2a2",
+                "sha256:5b5e490b5e9cb275c879595064adce9ebd31b854e3e803740b72f9ccf34a45b8"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==24.2"
+        },
+        "pip3-autoremove": {
+            "hashes": [
+                "sha256:d3d272ec389227ac4924278d5b6aa228f92c46cc044afa41c75792470273a3a3",
+                "sha256:e02e5ecb3344112c772004944dade850959c17802bd291379e980767bc6dc9c9"
+            ],
+            "index": "pypi",
+            "version": "==1.2.2"
+        },
         "platformdirs": {
             "hashes": [
                 "sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907",
@@ -812,6 +828,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==4.3.6"
+        },
+        "setuptools": {
+            "hashes": [
+                "sha256:753bb6ebf1f465a1912e19ed1d41f403a79173a9acf66a42e7e6aec45c3c16ec",
+                "sha256:a7fcb66f68b4d9e8e66b42f9876150a3371558f98fa32222ffaa5bced76406f8"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==75.2.0"
         },
         "sqlparse": {
             "hashes": [

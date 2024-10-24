@@ -19,6 +19,7 @@ factory-boy = "*"
 django-browser-reload = "*"
 black = "*"
 coverage = "*"
+pip3-autoremove = "*"
 
 [requires]
 python_version = "3.9"
