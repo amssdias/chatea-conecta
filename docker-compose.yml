@@ -75,32 +75,5 @@ services:
       - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
       - REDIS_DB_CELERY=${REDIS_DB_CELERY}
     command: ["celery", "-A", "chat_connect", "worker", "--loglevel=info", "--concurrency=4"]
-
-  celery-beat:
-    container_name: celery-beat
-    build:
-      context: .
-      dockerfile: deployments/${ENVIRON}/Dockerfile
-    depends_on:
-      - my-redis
-      - chat-app
-      - celery
-    volumes:
-      - .:/usr/src/app
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - DB_NAME=chat-app-db
-      - DB_USER=${MYSQL_USER}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=3306
-      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_HOST=my-redis
-      - REDIS_PORT=6379
-      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
-      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
-      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
-    command: ["celery", "-A", "chat_connect", "beat", "--loglevel=info", "--scheduler=django_celery_beat.schedulers.DatabaseScheduler"]
 volumes:
   db_data:
