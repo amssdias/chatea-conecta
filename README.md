@@ -1,4 +1,6 @@
 [python-download]: https://www.python.org/downloads/
+[docker-download]: https://www.docker.com/get-started/
+[mysql-download]: https://www.mysql.com/downloads/
 [redis-download]: https://redis.io/download/
 
 ![Workflow branch master](https://github.com/amssdias/chatea-conecta/actions/workflows/test.yml/badge.svg?branch=master)
@@ -7,35 +9,72 @@
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
 
-<h1 align=center>Chatea Conecta</h1>
+<h1 align=center>Chatea Conecta 🌍💬</h1>
 
-## :hammer: Getting started
+**Chatea Conecta** is a chat application that allows users to connect and chat with people from around the world.
+
+## 🛠️ Getting started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Pre requisites
+### 🔧 Pre requisites
 
-- [Python][python-download] - 3.9
-- [Redis][redis-download]
-- [Docker](https://www.docker.com/) (Optional)
+To run this project, you need the following tools installed:
 
-### Installing
+- 🐳 [Docker][docker-download]: Required to run all services (Redis, MySQL, Django, Celery) using docker-compose.
+
+Alternatively, you can manually install and manage the services below if not using Docker.
+If not using Docker, make sure to install:
+
+- 🐍 [Python 3.9][python-download]: Required if you plan to run the Django app directly without Docker.
+- 🐬 [MySQL][mysql-download]: Required if running the database outside of Docker.
+- 🛠️ [Redis][redis-download]: Required if running Redis outside of Docker.
+
+
+### 🏗️ Installation
 
 
 1. Clone this repository to your local machine
-2. Navigate to the project directory
+
+Open your terminal and run the following commands:
 
 
-```
+```shell
 git clone https://github.com/amssdias/chatea-conecta.git
 cd chatea-conecta
 ```
    
-3. Make sure you have installed Redis with a password.
+2. Set up environment variables:
 
+Create a `.env` file in the project directory to configure environment variables like your Redis password, MySQL credentials, and Django settings. For example:
 
+```shell
+SECRET_KEY=<secret-key>
+MYSQL_USER=<mysql-username>
+MYSQL_PASSWORD=<mysql-password>
+MYSQL_ROOT_PASSWORD=<mysql-root-password>
+REDIS_PROTOCOL=<redis-protocol>
+REDIS_PASSWORD=<redis-password>
+DJANGO_REDIS_CACHE_DB=<redis-cache-db-index>
+REDIS_DB_CHANNEL=<redis-channel-db-index>
+REDIS_DB_CELERY=<redis-celery-db-index>
+ENVIRON=<development/production>
+```
 
-4. On the "redis.conf" you should write your redis password.
+3. Add redis.conf file (with same password in the `.env` file):
+
+```bash
+requirepass <your-redis-password>
+```
+
+4. 🚀 Run the application with Docker Compose:
+
+```shell
+docker-compose up --build
+```
+
+The application will be accessible at http://localhost:8000.
+
 
 
 ## Dockerfile Setup
