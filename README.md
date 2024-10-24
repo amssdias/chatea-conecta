@@ -3,7 +3,7 @@
 [mysql-download]: https://www.mysql.com/downloads/
 [redis-download]: https://redis.io/download/
 
-![Workflow branch master](https://github.com/amssdias/chatea-conecta/actions/workflows/test.yml/badge.svg?branch=master)
+![Workflow branch master](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml/badge.svg?branch=master)
 
 ![Python Badge](https://img.shields.io/badge/Python-3.9-blue?logo=python)
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white)
