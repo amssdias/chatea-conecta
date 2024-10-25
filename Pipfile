@@ -13,6 +13,7 @@ python-dotenv = "*"
 celery = "*"
 mysqlclient = "*"
 factory-boy = "*"
+sentry-sdk = {extras = ["django"], version = "*"}
 
 [dev-packages]
 django-browser-reload = "*"

@@ -3,6 +3,7 @@
 [mysql-download]: https://www.mysql.com/downloads/
 [redis-download]: https://redis.io/download/
 
+![Sentry](https://img.shields.io/badge/Sentry-Monitoring-informational?logo=sentry&color=362D59)
 ![Workflow branch master](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml/badge.svg?branch=master)
 
 ![Python Badge](https://img.shields.io/badge/Python-3.9-blue?logo=python)
@@ -50,15 +51,21 @@ Create a `.env` file in the project directory to configure environment variables
 
 ```shell
 SECRET_KEY=<secret-key>
+ALLOWED_HOSTS=<allowed=hosts>
+DB_NAME=<database-name>
+DB_HOST=<database-host>
+DB_PORT=<database-port>
 MYSQL_USER=<mysql-username>
 MYSQL_PASSWORD=<mysql-password>
 MYSQL_ROOT_PASSWORD=<mysql-root-password>
 REDIS_PROTOCOL=<redis-protocol>
+REDIS_PORT=<redis-port>
 REDIS_PASSWORD=<redis-password>
 DJANGO_REDIS_CACHE_DB=<redis-cache-db-index>
 REDIS_DB_CHANNEL=<redis-channel-db-index>
 REDIS_DB_CELERY=<redis-celery-db-index>
 ENVIRON=<development/production>
+SENTRY_DNS=<sentry-dns>
 ```
 
 3. Add redis.conf file (with same password in the `.env` file):

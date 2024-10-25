@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
 
 # Django security settings
 SECURE_SSL_REDIRECT = True
@@ -40,12 +40,12 @@ LOGGING = {
 
     # Define where the log messages are sent
     "handlers": {
-        # TODO: Config sentry and cloudwatch handler
-        # "sentry": {
-        #     "level": "ERROR",  # Log only errors and above
-        #     "class": "sentry_sdk.integrations.logging.EventHandler",
-        #     "formatter": "verbose",
-        # },
+        "sentry": {
+            "level": "WARNING",  # Log only warning and above
+            "class": "sentry_sdk.integrations.logging.EventHandler",
+            "formatter": "verbose",
+        },
+        # TODO: Config cloudwatch handler
         # "cloudwatch": {
         #     "level": "INFO",  # Log info and above to CloudWatch
         #     "class": "watchtower.CloudWatchLogHandler",
@@ -64,7 +64,7 @@ LOGGING = {
     "loggers": {
         "django": {  # Django core logs
             "handlers": ["sentry", "cloudwatch"],  # Log to Sentry and CloudWatch
-            "level": "ERROR",
+            "level": "WARNING",
             "propagate": True,
         },
         "chat_connect": {

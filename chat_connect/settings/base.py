@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import sentry_sdk
+
 
 load_dotenv()
 
@@ -185,3 +187,17 @@ CELERY_BROKER_URL = f"{REDIS_URL}/{REDIS_DB_CELERY}"
 CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL = 60
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_TIMEZONE = "UTC"
+
+# Sentry configuration
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DNS"),
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    _experiments={
+        # Set continuous_profiling_auto_start to True
+        # to automatically start the profiler on when
+        # possible.
+        "continuous_profiling_auto_start": True,
+    },
+)
