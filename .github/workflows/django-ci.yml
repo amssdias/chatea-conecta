@@ -82,4 +82,4 @@ jobs:
           pipenv install
 
       - name: 🛠️ Run makemigrations (Check for Pending Migrations)
-        run: python manage.py makemigrations --check --dry-run
+        run: pipenv run python manage.py makemigrations --check --dry-run
