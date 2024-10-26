@@ -1,11 +1,12 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 # Django security settings
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = []
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 300  # 1 year after testing
 SECURE_HSTS_PRELOAD = True
@@ -63,15 +64,15 @@ LOGGING = {
     # Define the loggers themselves
     "loggers": {
         "django": {  # Django core logs
-            "handlers": ["sentry", "cloudwatch"],  # Log to Sentry and CloudWatch
+            "handlers": ["sentry"],  # Log to Sentry and CloudWatch
             "level": "WARNING",
             "propagate": True,
         },
-        "chat_connect": {
-            "handlers": ["cloudwatch"],  # Log only to CloudWatch
-            "level": "INFO",
-            "propagate": False,
-        },
+        # "chat_connect": {
+        #     "handlers": ["cloudwatch"],  # Log only to CloudWatch
+        #     "level": "INFO",
+        #     "propagate": False,
+        # },
     },
 }
 
