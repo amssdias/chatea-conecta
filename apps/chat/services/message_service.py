@@ -4,7 +4,6 @@ from typing import Optional, Dict, Set
 
 from django.contrib.auth import get_user_model
 
-from apps.chat.models import UserConversation
 from apps.chat.services import DjangoCacheService
 
 User = get_user_model()
@@ -45,23 +44,25 @@ class MessageService:
                 topic_id
             )
 
+            random.shuffle(conversations_flows)
+
             # Loop through conversation flows and check if user has sent a message for this flow
-            for conversation_flow in conversations_flows:
+            for conversation_id, message in conversations_flows:
 
                 # If the user already sent a message for this conversation flow, skip it
-                if self.django_cache.has_user_sent_message(user_id, topic_id, conversation_flow.id):
+                if self.django_cache.has_user_sent_message(user_id, topic_id, conversation_id):
                     continue
 
                 # If user did not send message yet, send message from this topic
-                user_message["message"] = conversation_flow.message
+                user_message["message"] = message
                 user_message["username"] = self.django_cache.get_username(user_id)
 
                 # Create the user conversation record on Redis
                 self.django_cache.mark_user_message_sent_in_redis(
                     user_id=user_id,
                     topic_id=topic_id,
-                    message_id=conversation_flow.id,
-                    message=conversation_flow.message,
+                    message_id=conversation_id,
+                    message=message,
                 )
 
                 break

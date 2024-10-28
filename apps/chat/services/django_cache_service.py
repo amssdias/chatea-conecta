@@ -52,7 +52,7 @@ class DjangoCacheService:
         return self._get_or_set_cache(
             cache_key=cache_key,
             fetch_function=lambda: list(
-                ConversationFlow.objects.filter(topic_id=topic_id)
+                ConversationFlow.objects.filter(topic_id=topic_id).values_list("id", "message")
             ),
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
