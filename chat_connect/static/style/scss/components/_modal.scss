@@ -1,0 +1,65 @@
+.modal {
+    position: fixed;
+
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    animation: moveInDown;
+    animation-duration: 0.5s;
+
+    border: 2px solid $color-dark-amber-2;
+    border-radius: 2rem;
+    padding: 3rem 7rem;
+    width: 50%;
+    height: 50%;
+
+    @include respond(tab-land) {
+        width: 75%;
+    }
+
+    @include respond(phone) {
+        width: 90%;
+        padding: 3rem 3.5rem;
+    }
+
+    &__header {
+        display: flex;
+
+        justify-content: space-between;
+    }
+
+    &-close {
+        align-self: flex-end;
+
+        & svg {
+            cursor: pointer;
+            width: 3rem;
+            height: 3rem;
+
+            transition: 0.2s;
+
+            &:hover .bg-circle {
+                fill: $color-dark-amber-2;
+            }
+
+            &:hover .modal-close-x {
+                fill: white;
+            }
+        }
+
+    }
+
+    &-content {
+        font-size: 130%;
+
+        border: 0px solid $color-red-wine;
+        border-radius: 1rem;
+        overflow-y: scroll;
+        padding: 1rem 0rem;
+
+        scrollbar-width: thin;
+        scrollbar-color: $color-red-wine #f1f1f1;
+        
+    }
+}

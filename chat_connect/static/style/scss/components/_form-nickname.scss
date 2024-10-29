@@ -1,6 +1,4 @@
 .form-nickname {
-
-    // border: 1px solid green;
     width: 80%;
     padding: 6rem 2rem;
     display: flex;
@@ -17,9 +15,8 @@
         color: $color-dark-amber-1;
         border: 0.3rem solid $color-light-amber-2;
         background-color: $color-light-amber;
-        margin-bottom: 3rem;
-        // border-radius: 40rem;
-        
+        margin-bottom: 1rem;
+
         &::placeholder {
             color: $color-dark-amber-1;
         }
@@ -53,8 +50,26 @@
 
         &:focus {
             // border: 0.3rem solid $color-dark-amber-2;
-            outline:  0.3rem solid $color-dark-amber-2;
+            outline: 0.3rem solid $color-dark-amber-2;
         }
+    }
+
+    &__legal-confirmations {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0rem 4rem;
+    }
+
+    &__checkbox {
+
+        &-label {
+            font-size: 1.6rem;
+            color: $color-dark-amber-3;
+        }
+
     }
 
 }

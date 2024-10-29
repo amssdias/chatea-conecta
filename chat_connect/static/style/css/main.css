@@ -464,6 +464,16 @@ body {
 .form-nickname__btn:focus {
   outline: 0.3rem solid #d97706;
 }
+.form-nickname__check {
+  font-size: 2rem;
+  width: 40%;
+  height: 5rem;
+  padding: 1rem;
+  color: #f59e0b;
+  border: 0.3rem solid #fcd34d;
+  background-color: #fef3c7;
+  margin-bottom: 3rem;
+}
 
 .message-error {
   padding: 2rem 1rem;

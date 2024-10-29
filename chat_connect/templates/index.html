@@ -1,23 +1,133 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <script src="{% static 'js/modal.js' %}" defer></script>
+{% endblock scripts %}
+
 {% block header %}
 
-    <header class="header">
-        <div class="header__title">
-            <h1 class="heading-primary margin-bottom-xsmall">Chatea-Conecta</h1>
-            <h4 class="heading-quaternary">Conecta con personas cerca de ti...</h4>
+<header class="header">
+    <div class="header__title">
+        <h1 class="heading-primary margin-bottom-xsmall">Chatea-Conecta</h1>
+        <h4 class="heading-quaternary">Conecta con personas cerca de ti...</h4>
+    </div>
+
+    <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
+        {% csrf_token %}
+        <input class="form-nickname__input" type="text" name="username" placeholder="Escribe tu apodo...">
+        <div class="form-nickname__legal-confirmations">
+            <div class="margin-bottom-xxsmall">
+                <input class="form-nickname__checkbox margin-right-xxsmall" required type="checkbox" name="terms-conditions">
+                <label class="form-nickname__checkbox-label" for="terms-conditions">Confirmo que he leído y acepto los <span class="link-tc" id="terms-and-conditions">Términos y Condiciones</span> del sitio.</label>
+            </div>
+            <div class="margin-bottom-xsmall">
+                <input class="form-nickname__checkbox margin-right-xxsmall" required type="checkbox" name="age-verification">
+                <label class="form-nickname__checkbox-label" for="age-verification">Confirmo que tengo 18 años o más.</label>
+            </div>
+        </div>
+        {% for message in messages %}
+            <p class="message-error">{{ message }}</p>
+        {% endfor %}
+
+        <button class="form-nickname__btn" type="submit">Chatear</button>
+    </form>
+
+    <!-- Modal Terms and Conditions -->
+    <div class="modal hide" id="modal-terms-conditions">
+        
+        <div class="modal__header">
+            <h1 class="margin-bottom-xsmall">Terms and Conditions</h1>
+            <div class="modal-close margin-bottom-xxsmall" onclick="closeModal()">
+                <svg width="50px" height="50px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)">
+                    <!-- Background circle for hover effect -->
+                    <circle class="bg-circle" cx="12" cy="12" r="10.5" fill="transparent"></circle>
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.192"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path class="modal-close-x" d="M10.0303 8.96965C9.73741 8.67676 9.26253 8.67676 8.96964 8.96965C8.67675 9.26255 8.67675 9.73742 8.96964 10.0303L10.9393 12L8.96966 13.9697C8.67677 14.2625 8.67677 14.7374 8.96966 15.0303C9.26255 15.3232 9.73743 15.3232 10.0303 15.0303L12 13.0607L13.9696 15.0303C14.2625 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2625 15.0303 13.9696L13.0606 12L15.0303 10.0303C15.3232 9.73744 15.3232 9.26257 15.0303 8.96968C14.7374 8.67678 14.2625 8.67678 13.9696 8.96968L12 10.9393L10.0303 8.96965Z" fill="#d97706"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z" fill="#d97706"></path>
+                    </g>
+                </svg>
+            </div>
         </div>
 
-        <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
-            {% csrf_token %}
-            <input class="form-nickname__input" type="text" name="username" placeholder="Escribe tu apodo...">
-            {% for message in messages %}
 
-                <p class="message-error">{{ message }}</p>
+        <div class="modal-content">
+            <p class="paragraph margin-bottom-xsmall">
+                Welcome to Chatea Conecta! Please read these Terms and Conditions carefully before using our website. By accessing or using Chatea Conecta, you agree to be bound by these terms. If you do not agree with any part of these terms, please do not use our website.
+            </p>
 
-            {% endfor %}
+            <h2 class="heading-secondary margin-bottom-xxsmall">1. General Information</h2>
+            <p class="paragraph">
+                <ul>
+                    <li><strong>Website Name: </strong>Chatea Conecta</li>
+                    <li class="margin-bottom-xsmall"><strong>Contact Information: </strong>For questions or support, please contact us at test@testing.com (this may be updated with a domain-specific email in the future).</li>
+                </ul>
+            </p>
 
-            <button class="form-nickname__btn" type="submit">Chatear</button>
-        </form>
+            <h2 class="heading-secondary margin-bottom-xxsmall">2. Eligibility and Age Verification</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                By using Chatea Conecta, you confirm that you are at least 18 years of age. Our website is intended for users who are of legal age to participate in open chat rooms and interact with others in a respectful, adult manner.
+            </p>
 
-    </header>
+            <h2 class="heading-secondary margin-bottom-xxsmall">3. Platform Purpose and Acceptable Use</h2>
+            <p class="paragraph">
+                Chatea Conecta is an entertainment-based platform that allows users to connect and chat with others from around the world. We are dedicated to fostering a friendly, positive environment for users to enjoy casual conversations.
+            </p>
+            <p class="paragraph">By using this website, you agree to:</p>
+            <ul>
+                <li>Communicate respectfully with other users, refraining from offensive language, harassment, discrimination, or any form of abuse.
+                </li>
+                <li>Use Chatea Conecta solely for personal enjoyment and not for any commercial or promotional purposes.
+                </li>
+                <li class="margin-bottom-xsmall">Avoid sharing or attempting to solicit personal, financial, or sensitive information.
+                </li>
+            </ul>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">4. Prohibited Actions</h2>
+            <p class="paragraph">
+                To maintain a safe and welcoming environment, the following actions are strictly prohibited:
+            </p>
+            <ul>
+                <li><strong>Offensive or Abusive Behavior:</strong>Users may not use language or behavior that is abusive, offensive, obscene, or otherwise harmful to other users.</li>
+                <li><strong>Commercial Use:</strong>Using Chatea Conecta for advertising, promoting products or services, or conducting commercial transactions is not permitted.</li>
+                <li><strong>Misrepresentation:</strong>Impersonating another person or providing false information is not allowed.</li>
+            </ul>
+            <p class="paragraph margin-bottom-xsmall">
+                Violating any of these terms may result in suspension or permanent banning from the platform.
+            </p>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">5. Intellectual Property and Content Ownership</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                All content on Chatea Conecta, including SVG designs, website layout, and underlying code, is owned by the creator of Chatea Conecta. Users are not permitted to reproduce, distribute, or otherwise use any part of the website’s content for commercial purposes without prior permission.
+            </p>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">6. Privacy and Data Collection</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                Chatea Conecta does not collect, store, or share any personal data at this time. Should this policy change in the future, users will be notified, and updates will be reflected in our Privacy Policy.
+            </p>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">7. Liability Disclaimer</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                Chatea Conecta is provided on an "as is" basis. While we strive to maintain a positive environment, we are not responsible for the behavior, comments, or interactions of individual users. We disclaim any liability for damages resulting from user interactions or any content shared within the platform.
+            </p>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">8. Changes to Terms</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                Chatea Conecta reserves the right to update these Terms and Conditions at any time. Users will be notified of significant changes, and continued use of the platform constitutes acceptance of any revised terms.
+            </p>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">9. Governing Law</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                These Terms and Conditions are governed by applicable laws of [Your Country/Region]. Any disputes arising from the use of Chatea Conecta shall be resolved through appropriate legal channels within this jurisdiction.
+            </p>
+
+            <h2 class="heading-secondary margin-bottom-xxsmall">10. Contact Us</h2>
+            <p class="paragraph margin-bottom-xsmall">
+                For any questions or concerns regarding these Terms and Conditions, please contact us at test@testing.com.
+            </p>
+        </div>
+    </div>
+</header>
 {% endblock header %}
