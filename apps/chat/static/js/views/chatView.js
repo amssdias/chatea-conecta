@@ -139,7 +139,7 @@ class ChatView {
 
         }
 
-        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 1;
+        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight >= chatBox.scrollTop + 1;
 
         if (shouldScroll) {
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -172,7 +172,7 @@ class ChatView {
             chatBox.appendChild(div);
 
         }
-        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 1;
+        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight >= chatBox.scrollTop + 1;
 
         if (shouldScroll) {
             chatBox.scrollTop = chatBox.scrollHeight;
