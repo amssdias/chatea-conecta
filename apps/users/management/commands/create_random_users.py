@@ -25,9 +25,9 @@ class Command(BaseCommand):
         for user in users:
             try:
                 User.objects.create_user_with_profile(
-                    username=user,
+                    username=user["username"],
                     profile_data={
-                        "gender": "M",
+                        "gender": user["gender"],
                     }
                 )
                 self.users_created += 1
