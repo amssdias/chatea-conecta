@@ -40,7 +40,10 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-MY_PROJECT_APPS = ["apps.chat"]
+MY_PROJECT_APPS = [
+    "apps.chat",
+    "apps.users"
+]
 EXTERNAL_APPS = [
     "daphne"
 ]
