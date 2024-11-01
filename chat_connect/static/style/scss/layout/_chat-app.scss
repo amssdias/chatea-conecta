@@ -13,9 +13,14 @@
         flex-grow: 1;
 
         padding: 2rem;
+        width: 100%;
 
         @include respond(tab-land) {
             flex-direction: row-reverse;
+        }
+
+        @include respond(tab-port) {
+            padding: 1rem;
         }
     }
 }
