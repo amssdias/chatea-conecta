@@ -3,12 +3,13 @@ import json
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
+from apps.chat.tasks.send_random_chat_messages import logger
 
 User = get_user_model()
 
 class Command(BaseCommand):
     help = "Creates random users"
-    file_path = "apps/chat/management/data/random_users.json"
+    file_path = "apps/users/management/data/random_users.json"
 
     def __init__(self, *args, **kwargs):
         self.users_created = 0
@@ -23,11 +24,15 @@ class Command(BaseCommand):
         users = data.get("users", [])
         for user in users:
             try:
-                User.objects.create(
-                    username=user
+                User.objects.create_user_with_profile(
+                    username=user,
+                    profile_data={
+                        "gender": "M",
+                    }
                 )
                 self.users_created += 1
             except Exception as e:
+                logger.error(e)
                 self.users_not_created += 1
 
         self.stdout.write(
