@@ -1,8 +1,10 @@
 <nav class="nav-bar">
     <span class="nav-bar-logo">Chatea-Conecta</span>
-    <a class="nav-bar-link" href="{% url 'chat:home' %}">Inicio</a>
-    <a class="nav-bar-link" href="">Salas</a>
-    <a class="nav-bar-link" href="">Colabora</a>
+    <div class="nav-bar__links">
+        <a class="nav-bar-link" href="{% url 'chat:home' %}">Inicio</a>
+        <a class="nav-bar-link" href="">Salas</a>
+        <a class="nav-bar-link" href="">Colabora</a>
+    </div>
 
     {% if username %}
         <form action="{% url 'chat:close-chat' %}" method="POST">
