@@ -61,3 +61,29 @@ jobs:
 
       - name: 📋 Run makemigrations (Check for Pending Migrations)
         run: pipenv run python manage.py makemigrations --check --dry-run
+
+  check-deploy:
+    name: 🚀 Deployment Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+
+      - name: 📦 Install Pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+
+      - name: 📦 Install Dependencies with Pipenv
+        run: |
+          pipenv install
+
+      - name: ✅ Run Django Deployment Checks
+        run: |
+          pipenv run python manage.py check --deploy --settings=chat_connect.settings.settings_production
