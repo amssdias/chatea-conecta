@@ -6,6 +6,7 @@ from django.conf import settings
 from faker import Faker
 
 from apps.chat.constants.redis_keys import USER_IDS, TOPIC_IDS
+from apps.chat.models import ConversationFlow
 from apps.chat.services import DjangoCacheService
 from apps.chat.tests.factories.conversation_flow_factory import ConversationFlowFactory
 from apps.chat.tests.factories.topic_factory import TopicFactory
@@ -151,26 +152,21 @@ class DjangoCacheServiceTest(TestCase):
         # You can also check the cache timeout here by adjusting cache.get() in Django"s low-level API
 
     def test_get_cached_conversation_flows_with_no_cached_data(self):
-        conversation_flows = [
-            ConversationFlowFactory(topic=self.topic) for _ in range(5)
-        ]
+        [ConversationFlowFactory(topic=self.topic) for _ in range(5)]
+        conversation_flows_list = list(
+            ConversationFlow.objects.filter(topic=self.topic).values_list("id", "message")
+        )
 
-        # Mocking the ConversationFlow query to simulate fetching from the DB
-        with patch(
-            "apps.chat.services.django_cache_service.ConversationFlow.objects.filter"
-        ) as mock_filter:
-            mock_filter.return_value = conversation_flows
-
-            # Call the get_cached_conversation_flows method
-            result = self.cache_service.get_cached_conversation_flows(topic_id=1)
+        # Call the get_cached_conversation_flows method
+        result = self.cache_service.get_cached_conversation_flows(topic_id=1)
 
         # Assert that the result matches the mocked data
-        self.assertEqual(result, conversation_flows)
+        self.assertEqual(result, conversation_flows_list)
 
         # Ensure the data was cached with the correct cache key
-        cache_key = "conversation_flows_topic_1"
+        cache_key = f"conversation_flows_topic_{self.topic.id}"
         cached_data = cache.get(cache_key)
-        self.assertEqual(cached_data, conversation_flows)
+        self.assertEqual(cached_data, conversation_flows_list)
 
     def test_get_cached_conversation_flows_with_cached_data(self):
         # Prepopulate the cache with conversation flows
@@ -198,23 +194,19 @@ class DjangoCacheServiceTest(TestCase):
     def test_get_cached_conversation_flows_with_custom_timeout(self):
         topic = TopicFactory()
 
-        # Mocking the ConversationFlow query to simulate fetching from the DB
-        conversation_flows = [ConversationFlowFactory(topic=topic) for _ in range(5)]
-        with patch(
-            "apps.chat.services.django_cache_service.ConversationFlow.objects.filter"
-        ) as mock_filter:
-            mock_filter.return_value = conversation_flows
+        [ConversationFlowFactory(topic=topic) for _ in range(5)]
+        conversation_flows_list = list(ConversationFlow.objects.filter(topic=topic).values_list("id", "message"))
 
-            # Call the get_cached_conversation_flows method
-            result = self.cache_service.get_cached_conversation_flows(topic_id=topic.id)
+        # Call the get_cached_conversation_flows method
+        result = self.cache_service.get_cached_conversation_flows(topic_id=topic.id)
 
         # Assert that the result matches the mocked data
-        self.assertEqual(result, conversation_flows)
+        self.assertEqual(result, conversation_flows_list)
 
         # Ensure the data was cached with the correct cache key
-        cache_key = "conversation_flows_topic_2"
+        cache_key = f"conversation_flows_topic_{topic.id}"
         cached_data = cache.get(cache_key)
-        self.assertEqual(cached_data, conversation_flows)
+        self.assertEqual(cached_data, conversation_flows_list)
 
         # Ensure that the cache was set with the custom timeout
         # If needed, you can validate cache timeout behavior (advanced testing of cache expiration)
