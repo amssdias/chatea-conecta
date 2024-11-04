@@ -209,7 +209,7 @@ class DjangoCacheServiceTest(TestCase):
         self.assertEqual(cached_data, conversation_flows_list)
 
         # Ensure that the cache was set with the custom timeout
-        # If needed, you can validate cache timeout behavior (advanced testing of cache expiration)
+        # If needed, you can validate cache timeout behavior (advanced setup-environment-test of cache expiration)
 
     def test_get_cached_conversation_flows_filter_with_no_cached_data(self):
         conversation_flows = [
@@ -262,15 +262,12 @@ class DjangoCacheServiceTest(TestCase):
     @patch("apps.chat.services.django_cache_service.cache.get")
     @patch("apps.chat.services.django_cache_service.cache.set")
     def test_get_username_cached(self, mock_cache_set, mock_cache_get):
-        # Arrange
         user_id = 1
         username = fake.user_name()
         mock_cache_get.return_value = username  # Simulate cache returning a username
 
-        # Act
         result = self.cache_service.get_username(user_id)
 
-        # Assert
         self.assertEqual(result, username)
         mock_cache_get.assert_called_once_with(f"username_{user_id}")
         mock_cache_set.assert_not_called()  # Cache set should not be called
@@ -278,15 +275,12 @@ class DjangoCacheServiceTest(TestCase):
     @patch("apps.chat.services.django_cache_service.cache.get")
     @patch("apps.chat.services.django_cache_service.cache.set")
     def test_get_username_existing_user(self, mock_cache_set, mock_cache_get):
-        # Arrange
         user = User.objects.create(username=fake.user_name())
         mock_cache_get.return_value = None  # Simulate cache miss
         mock_cache_set.return_value = None  # Simulate successful cache set
 
-        # Act
         result = self.cache_service.get_username(user.id)
 
-        # Assert
         self.assertEqual(result, user.username)
         mock_cache_get.assert_called_once_with(f"username_{user.id}")
         mock_cache_set.assert_called_once_with(
@@ -308,10 +302,8 @@ class DjangoCacheServiceTest(TestCase):
             fake.user_name()
         )  # Simulate created user's username
 
-        # Act
         result = self.cache_service.get_username(user_id)
 
-        # Assert
         self.assertTrue(mock_user_create.called)  # Ensure a new user is created
         self.assertEqual(
             result, mock_user_create.return_value.username
@@ -334,14 +326,10 @@ class DjangoCacheServiceTest(TestCase):
 
         result = self.cache_service.has_user_sent_message(user_id, topic_id, message_id)
 
-        # Assert
         self.assertTrue(result)
 
     def test_has_user_sent_message_false(self):
-        # Act
         result = self.cache_service.has_user_sent_message(1, 1, 1)
-
-        # Assert
         self.assertFalse(result)
 
     @patch("apps.chat.services.django_cache_service.cache.get")
@@ -386,14 +374,13 @@ class DjangoCacheServiceTest(TestCase):
         )
         expected_timeout = (
             settings.CACHE_TIMEOUT_ONE_DAY
-        )  # Ensure you have this set in your settings
+        )
 
         message = "Hello"
         self.cache_service.mark_user_message_sent_in_redis(
             user_id, topic_id, message_id, message
         )
 
-        # Assert
         mock_cache_set.assert_called_once_with(
             expected_cache_key, message, timeout=expected_timeout
         )
