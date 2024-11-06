@@ -12,7 +12,7 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
     )
     gender = models.CharField(max_length=1, choices=GENDERS, null=True, blank=True)
     link = models.URLField(max_length=200, null=True, blank=True)
