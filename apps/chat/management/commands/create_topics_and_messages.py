@@ -20,8 +20,12 @@ class Command(BaseCommand):
 
             topic, created = Topic.objects.get_or_create(name=topic_name)
 
+            conversation_flow_messages = set(ConversationFlow.objects.filter(topic=topic).values_list("message", flat=True))
             conversation_topics = []
             for message in messages:
+                if message in conversation_flow_messages:
+                    continue
+
                 conversation_topics.append(
                     ConversationFlow(topic=topic, message=message)
                 )
