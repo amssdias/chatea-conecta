@@ -17,19 +17,32 @@ class MessageService:
         self.django_cache = DjangoCacheService()
 
     def get_message_to_send(self) -> Optional[Dict]:
-        user_ids = self.django_cache.get_cached_user_ids()
-        topic_ids = self.django_cache.get_cached_topic_ids()
+        is_promotional = self._should_select_promotional_user()
+
+        user_ids = self.django_cache.get_cached_user_ids(promotional=is_promotional)
+        topic_ids = self.django_cache.get_cached_topic_ids(promotional=is_promotional)
         topics_ids_to_choose = topic_ids.copy()
         user_message = {
             "username": None,
             "message": None,
         }
 
+        changed_users = False
+
         while True:
 
             user_id = self._get_random_user_id(user_ids)
             if not user_id:
-                logger.info("No more users found to send a message.")
+                if not changed_users:
+                    user_ids = self.django_cache.get_cached_user_ids(
+                        promotional=not is_promotional
+                    )
+                    topic_ids = self.django_cache.get_cached_topic_ids(
+                        promotional=not is_promotional
+                    )
+                    continue
+
+                logger.warning("No more users found to send a message.")
                 return None
 
             # Get a random topic
@@ -50,7 +63,9 @@ class MessageService:
             for conversation_id, message in conversations_flows:
 
                 # If the user already sent a message for this conversation flow, skip it
-                if self.django_cache.has_user_sent_message(user_id, topic_id, conversation_id):
+                if self.django_cache.has_user_sent_message(
+                    user_id, topic_id, conversation_id
+                ):
                     continue
 
                 # If user did not send message yet, send message from this topic
@@ -75,6 +90,11 @@ class MessageService:
             break
 
         return user_message
+
+    @staticmethod
+    def _should_select_promotional_user() -> bool:
+        """Return True with 35% chance to select a promotional user."""
+        return random.choices([True, False], weights=[0.35, 0.65])[0]
 
     @staticmethod
     def _get_random_user_id(user_ids: Set) -> int:

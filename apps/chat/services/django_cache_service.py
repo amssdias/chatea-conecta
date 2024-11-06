@@ -6,7 +6,12 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from faker import Faker
 
-from apps.chat.constants.redis_keys import USER_IDS, TOPIC_IDS
+from apps.chat.constants.redis_keys import (
+    USER_IDS,
+    TOPIC_IDS,
+    USER_PROMOTIONAL_IDS,
+    TOPIC_PROMOTIONAL_IDS,
+)
 from apps.chat.models import Topic, ConversationFlow
 
 User = get_user_model()
@@ -28,20 +33,26 @@ class DjangoCacheService:
             cache.set(cache_key, cached_data, timeout)
         return cached_data
 
-    def get_cached_user_ids(self) -> Set[int]:
-        """Retrieve cached user IDs, or fetch from DB and cache."""
+    def get_cached_user_ids(self, promotional=False) -> Set[int]:
+        """Retrieve cached user IDs by type ('normal' or 'promotional'), or fetch from DB and cache."""
         return self._get_or_set_cache(
-            cache_key=USER_IDS,
-            fetch_function=lambda: set(User.objects.all().values_list("id", flat=True)),
+            cache_key=USER_PROMOTIONAL_IDS if promotional else USER_IDS,
+            fetch_function=lambda: set(
+                User.objects.filter(profile__link__isnull=not promotional).values_list(
+                    "id", flat=True
+                )
+            ),
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
 
-    def get_cached_topic_ids(self) -> Set[int]:
+    def get_cached_topic_ids(self, promotional=False) -> Set[int]:
         """Retrieve cached topic IDs, or fetch from DB and cache."""
         return self._get_or_set_cache(
-            cache_key=TOPIC_IDS,
+            cache_key=TOPIC_PROMOTIONAL_IDS if promotional else TOPIC_IDS,
             fetch_function=lambda: set(
-                Topic.objects.all().values_list("id", flat=True)
+                Topic.objects.filter(is_promotional=promotional).values_list(
+                    "id", flat=True
+                )
             ),
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
@@ -52,7 +63,9 @@ class DjangoCacheService:
         return self._get_or_set_cache(
             cache_key=cache_key,
             fetch_function=lambda: list(
-                ConversationFlow.objects.filter(topic_id=topic_id).values_list("id", "message")
+                ConversationFlow.objects.filter(topic_id=topic_id).values_list(
+                    "id", "message"
+                )
             ),
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
