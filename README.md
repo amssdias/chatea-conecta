@@ -4,7 +4,7 @@
 [redis-download]: https://redis.io/download/
 
 ![Sentry](https://img.shields.io/badge/Sentry-Monitoring-informational?logo=sentry&color=362D59)
-![Workflow branch master](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml/badge.svg?branch=master)
+[![🔍 Validate Code and Migrations](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml/badge.svg)](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml)
 
 ![Python Badge](https://img.shields.io/badge/Python-3.9-blue?logo=python)
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white)
