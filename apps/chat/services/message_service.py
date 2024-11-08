@@ -2,6 +2,7 @@ import logging
 import random
 from typing import Optional, Dict, Set
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from apps.chat.services import DjangoCacheService
@@ -78,6 +79,11 @@ class MessageService:
                     topic_id=topic_id,
                     message_id=conversation_id,
                     message=message,
+                    timeout=(
+                        settings.CACHE_TIMEOUT_FIVE_MIN
+                        if is_promotional
+                        else settings.CACHE_TIMEOUT_ONE_DAY
+                    ),
                 )
 
                 break
