@@ -96,7 +96,12 @@ class DjangoCacheService:
         return cache.get(cache_key) is not None
 
     def mark_user_message_sent_in_redis(
-        self, user_id: int, topic_id: int, message_id: int, message: str
+        self,
+        user_id: int,
+        topic_id: int,
+        message_id: int,
+        message: str,
+        timeout: int = settings.CACHE_TIMEOUT_ONE_DAY,
     ):
         """
         Mark a message as sent by a user for a specific topic in Redis, with an expiration (TTL).
@@ -109,4 +114,4 @@ class DjangoCacheService:
         )
 
         # Store the message in Redis with a TTL (time-to-live)
-        cache.set(cache_key, message, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
+        cache.set(cache_key, message, timeout=timeout)
