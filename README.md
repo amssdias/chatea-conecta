@@ -6,6 +6,10 @@
 ![Sentry](https://img.shields.io/badge/Sentry-Monitoring-informational?logo=sentry&color=362D59)
 [![🔍 Validate Code and Migrations](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml/badge.svg)](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml)
 
+[![Tech Stack](https://img.shields.io/badge/Stack-Django%20%7C%20Celery%20%7C%20WebSocket-4285F4)]()
+[![Celery](https://img.shields.io/badge/Celery-4caf50?logo=celery&logoColor=white)](https://docs.celeryproject.org/)
+[![WebSocket](https://img.shields.io/badge/WebSocket-007acc?logo=websocket&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+
 ![Python Badge](https://img.shields.io/badge/Python-3.9-blue?logo=python)
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
