@@ -14,6 +14,14 @@ runs:
         pip install pipenv
       shell: bash
 
+    - name: Cache pipenv dependencies deploy
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/share/virtualenvs  # Default path for pipenv’s virtual environments
+        key: ${{ runner.os }}-pipenv-dev-${{ hashFiles('Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pipenv-dev-
+
     - name: 📦 Install Dependencies with Pipenv
       run: |
         pipenv install --dev

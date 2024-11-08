@@ -50,6 +50,14 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Cache pipenv dependencies deploy
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs  # Default path for pipenv’s virtual environments
+          key: ${{ runner.os }}-pipenv-deploy-${{ hashFiles('Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-deploy-
+
       - name: 📦 Install Pipenv
         run: |
           python -m pip install --upgrade pip
@@ -74,6 +82,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.9
+
+      - name: Cache pipenv dependencies deploy
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs  # Default path for pipenv’s virtual environments
+          key: ${{ runner.os }}-pipenv-deploy-${{ hashFiles('Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-deploy-
 
       - name: 📦 Install Pipenv
         run: |
