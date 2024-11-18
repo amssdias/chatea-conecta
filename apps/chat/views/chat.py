@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -24,6 +25,8 @@ GROUPS = [
     ("Andalucía", "andalucia"),
 ]
 
+User = get_user_model()
+
 
 class ChatView(View):
     def get(self, request):
@@ -47,7 +50,10 @@ class ChatView(View):
 
         # Check if username already exists in Redis
         lower_username = username.lower()
-        if RedisService.is_member(REDIS_USERNAME_KEY, lower_username):
+        if (
+            RedisService.is_member(REDIS_USERNAME_KEY, lower_username) or
+            User.objects.filter(username__icontains=lower_username).exists()
+        ):
             messages.error(request, "Username already taken")
             return redirect("chat:home")
 
