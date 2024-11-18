@@ -19,21 +19,35 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
+        """
+        Handles the cleanup when a user disconnects from the WebSocket.
+
+        Steps:
+        1. Remove the user from Redis to update the list of active users.
+        2. Unregister the user from all groups they were a part of and notify remaining users about the updated online count.
+        3. Reassess the activity status of the chat to update the `HAS_USERS` key.
+        """
+
         logger.info("---- DISCONNECTING FROM WEBSOCKET ----")
-        await self.remove_user()
-        await self.unregister_user_from_group()
+        await self.remove_user_from_active_list()
+        await self.unregister_user_from_all_groups()
+        await self.update_chat_activity_status()
 
-        group_size = await self.get_group_size()
-        if not group_size:
-            await AsyncRedisService.delete_key(HAS_USERS)
+    async def remove_user_from_active_list(self):
+        """
+        Removes the user from the list of active users stored in Redis.
 
-    async def remove_user(self):
+        This operation ensures that the user's session is no longer considered active
+        once they disconnect from the WebSocket.
+        """
+
         username = self.scope.get("cookies", {}).get("username", "").lower()
         await AsyncRedisService.remove_username_from_set(REDIS_USERNAME_KEY, username)
 
-    async def unregister_user_from_group(self):
+    async def unregister_user_from_all_groups(self):
         for group in self.groups:
             await self.channel_layer.group_discard(group, self.channel_name)
+            await self.notify_users_about_online_count(group_name=group)
 
         self.groups.clear()
 
@@ -65,7 +79,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         register_group = data.get("registerGroup", False)
         if register_group and group not in self.groups:
             await self.register_user_to_room_group(group)
+            await self.update_chat_activity_status()
+
+            await self.notify_users_about_online_count(group_name=group)
             await self.send_user_bots_messages(group)
+            # TODO: Should I leave this task only when a user enters? What if I run out of users and then they get deleted
             return None
 
         # TODO: Leave group room
@@ -91,13 +109,43 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def register_user_to_room_group(self, group: str):
         await self.channel_layer.group_add(group, self.channel_name)
         self.groups.add(group)
+
+    async def update_chat_activity_status(self):
+        """
+        Ensures the chat remains active by checking the group size and updating the HAS_USERS key.
+        """
         group_size = await self.get_group_size()
 
-        # If there are users we make sure the key is true to keep sending user msgs
         if group_size:
             await AsyncRedisService.set_if_not_exists(HAS_USERS, "true")
+        else:
+            await AsyncRedisService.delete_key(HAS_USERS)
 
-        await self.send(text_data=json.dumps({"users_online": group_size}))
+    async def notify_users_about_online_count(self, group_name: str):
+        """Sends the updated count of online users to all members of a group."""
+
+        group_size = await self.get_group_size()
+
+        # Send the user count to the group
+        await self.channel_layer.group_send(
+            group_name,
+            {
+                "type": "notify.users.count",
+                "group_size": group_size + 60,
+            },
+        )
+
+    async def notify_users_count(self, event):
+        group_size = event["group_size"]
+
+        # Send message to WebSocket (frontend)
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "users_online": group_size
+                }
+            )
+        )
 
     async def send_user_bots_messages(self, group: str):
         task_lock = await AsyncRedisService.set_if_not_exists(TASK_LOCK_KEY, "locked")

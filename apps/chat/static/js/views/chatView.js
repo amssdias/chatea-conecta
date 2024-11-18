@@ -12,6 +12,10 @@ class ChatView {
 
     displayNUsersOnline(users_online) {
         const chatHeader = this.activeChat.querySelector(".chat__header-title");
+        
+        // Remove any existing user count in parentheses
+        chatHeader.innerHTML = chatHeader.innerHTML.replace(/\(\d+\)\s*/, "");
+
         chatHeader.innerHTML = `(${users_online}) ${chatHeader.innerHTML}`;
     }
 
