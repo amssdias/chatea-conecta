@@ -37,7 +37,12 @@ def send_random_messages(group):
             logger.info(
                 f"Sent message from user '{user_message.get('username')}' to group '{group}'."
             )
+        else:
+            logger.warning(
+                f"'send_random_messages' task for group '{group}' stopped because there are no more users or messages to send."
+            )
+            break
 
-    RedisService.delete_key(TASK_LOCK_KEY)
     logger.info(f"'send_random_messages' task for group '{group}' completed.")
+    RedisService.delete_key(TASK_LOCK_KEY)
     return
