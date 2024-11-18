@@ -1,18 +1,26 @@
 .nav-bar {
-    background-color: red;
-    height: 10vh;
+    background-color: $color-red-wine;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0rem 2rem;
+    padding: 1rem 2rem;
 
     @include respond(phone) {
         flex-wrap: wrap;
     }
 
     &-logo {
-        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-svg {
+            width: 40px;
+            height: 40px;
+            filter: invert(100%);
+            margin: 0rem 0.6rem;
+        }
     }
 
     & form {
@@ -20,7 +28,7 @@
         margin-right: 2rem;
     }
 
-    &__links {
+    &__links {s
         display: flex;
 
         @include respond(phone) {

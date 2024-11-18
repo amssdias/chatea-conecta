@@ -1,10 +1,16 @@
+{% load static %}
+
 <nav class="nav-bar">
-    <span class="nav-bar-logo">Chatea-Conecta</span>
-    <div class="nav-bar__links">
+    <span class="nav-bar-logo">
+        
+        <h2 class="heading-secondary">Chatea-Conecta</h2>
+        <object type="image/svg+xml" data="{% static 'img/smile-chat-bubble.svg' %}" class="nav-bar-logo-svg"></object>
+    </span>
+    <!-- <div class="nav-bar__links">
         <a class="nav-bar-link" href="{% url 'chat:home' %}">Inicio</a>
         <a class="nav-bar-link" href="">Salas</a>
         <a class="nav-bar-link" href="">Colabora</a>
-    </div>
+    </div> -->
 
     {% if username %}
         <form action="{% url 'chat:close-chat' %}" method="POST">
