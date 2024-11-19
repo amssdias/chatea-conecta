@@ -31,3 +31,11 @@ ORDER: Base + typography > general layout + grid > page layout > components
     }
 }
 
+@mixin font-face($name, $file, $weight: normal, $style: normal) {
+    @font-face {
+      font-family: $name;
+      src: url('../../utils/fonts/sour-gummy/#{$file}.ttf') format('truetype');
+      font-weight: $weight;
+      font-style: $style;
+    }
+}

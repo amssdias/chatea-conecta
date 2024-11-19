@@ -21,7 +21,18 @@ $color-black: #000;
 
 // FONT
 $default-font-size: 1.6rem;
-@font-face {
-    font-family: "Poetsen One";
-    src: url("../../utils/fonts/PoetsenOne-Regular.ttf") format("truetype");
-}
+
+// Include fonts
+@include font-face("Sour Gummy", "SourGummy_Expanded-Thin", 100, normal);
+@include font-face("Sour Gummy", "SourGummy_Expanded-ThinItalic", 100, italic);
+@include font-face("Sour Gummy", "SourGummy_SemiExpanded-ExtraLight", 200, normal);
+@include font-face("Sour Gummy", "SourGummy_SemiExpanded-ExtraLightItalic", 200, italic);
+@include font-face("Sour Gummy", "SourGummy_SemiExpanded-Light", 300, normal);
+@include font-face("Sour Gummy", "SourGummy_SemiExpanded-Italic", 300, italic);
+@include font-face("Sour Gummy", "SourGummy-Regular", 400, normal);
+@include font-face("Sour Gummy", "SourGummy-Medium", 500, normal);
+@include font-face("Sour Gummy", "SourGummy-SemiBold", 600, normal);
+@include font-face("Sour Gummy", "SourGummy-Bold", 700, normal);
+@include font-face("Sour Gummy", "SourGummy-ExtraBold", 800, normal);
+@include font-face("Sour Gummy", "SourGummy-Black", 900, normal);
+  
