@@ -1,6 +1,5 @@
 body {
-    font-family: "Poetsen One", sans-serif;
-    font-weight: 400;
+    font-family: "Sour Gummy", sans-serif;
     line-height: 1.2;
     // background-color: $color-bg;
 }
@@ -10,6 +9,7 @@ body {
     font-size: 10rem;
     color: $color-dark-amber-1;
     text-shadow: 2px 2px $color-dark-amber-3;
+    font-weight: 600;
 
     @include respond(phone) {
         font-size: 6rem;
@@ -17,12 +17,20 @@ body {
 }
 
 .heading-secondary {
-    font-size: 3rem;
-    color: $color-white;
-    font-weight: 200;
+    font-size: 4.2rem;
+    font-weight: 500;
+
+    &-white {
+        color: $color-white;
+    }
+
+    &-dark-amber {
+        color: $color-dark-amber-2;
+    }
 }
 
 .heading-tertiary {
+    font-size: 3.4rem;
 }
 
 .heading-quaternary {
@@ -33,6 +41,10 @@ body {
     @include respond(phone) {
         font-size: 2rem;
     }
+}
+
+.paragraph {
+    font-size: 1.6rem;
 }
 
 .link-tc {

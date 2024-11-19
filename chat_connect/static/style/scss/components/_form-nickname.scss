@@ -66,6 +66,8 @@
 
         padding: 0rem 4rem;
 
+        text-align: center;
+
         @include respond(phone) {
             padding: 0rem 2rem;
         }

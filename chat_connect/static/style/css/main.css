@@ -16,8 +16,76 @@ ORDER: Base + typography > general layout + grid > page layout > components
 1em = 16px
 */
 @font-face {
-  font-family: "Poetsen One";
-  src: url("../../utils/fonts/PoetsenOne-Regular.ttf") format("truetype");
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy_Expanded-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy_Expanded-ThinItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy_SemiExpanded-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy_SemiExpanded-ExtraLightItalic.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy_SemiExpanded-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy_SemiExpanded-Italic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sour Gummy";
+  src: url("../../utils/fonts/sour-gummy/SourGummy-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
 }
 @keyframes moveInRight {
   0% {
@@ -43,13 +111,22 @@ ORDER: Base + typography > general layout + grid > page layout > components
     transform: translate(0rem);
   }
 }
+@keyframes moveInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0rem);
+  }
+}
 *,
 *::after,
 *::before {
   margin: 0;
   padding: 0;
   box-sizing: inherit;
-  font-family: "Poetsen One", sans-serif;
 }
 
 html {
@@ -82,8 +159,7 @@ body {
 }
 
 body {
-  font-family: "Poetsen One", sans-serif;
-  font-weight: 400;
+  font-family: "Sour Gummy", sans-serif;
   line-height: 1.2;
 }
 
@@ -91,11 +167,27 @@ body {
   font-size: 10rem;
   color: #f59e0b;
   text-shadow: 2px 2px #b45309;
+  font-weight: 600;
 }
 @media only screen and (max-width: 37.5em) {
   .heading-primary {
     font-size: 6rem;
   }
+}
+
+.heading-secondary {
+  font-size: 4.2rem;
+  font-weight: 500;
+}
+.heading-secondary-white {
+  color: #fff;
+}
+.heading-secondary-dark-amber {
+  color: #d97706;
+}
+
+.heading-tertiary {
+  font-size: 3.4rem;
 }
 
 .heading-quaternary {
@@ -108,6 +200,16 @@ body {
   }
 }
 
+.paragraph {
+  font-size: 1.6rem;
+}
+
+.link-tc {
+  cursor: pointer;
+  font-weight: 500;
+  border-bottom: 1px solid #b45309;
+}
+
 .margin-top-xxsmall {
   margin-top: 1rem;
 }
@@ -118,6 +220,10 @@ body {
 
 .margin-bottom-xsmall {
   margin-bottom: 2rem;
+}
+
+.margin-bottom-xxsmall {
+  margin-bottom: 1rem;
 }
 
 .margin-right-xxsmall {
@@ -280,6 +386,7 @@ body {
 .chat-container {
   display: block;
   flex-grow: 1;
+  width: 100%;
   padding: 0rem 2rem;
 }
 @media only screen and (max-width: 37.5em) {
@@ -326,6 +433,11 @@ body {
     padding: 2rem 4rem;
   }
 }
+@media only screen and (max-width: 37.5em) {
+  .chat__messages {
+    padding: 2rem 1rem;
+  }
+}
 .chat__message {
   padding: 1rem;
   display: flex;
@@ -348,6 +460,7 @@ body {
   border-radius: 1rem;
   padding: 1rem 2rem;
   max-width: 50%;
+  overflow-x: auto;
 }
 @media only screen and (max-width: 37.5em) {
   .chat__message-text {
@@ -424,6 +537,11 @@ body {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.4);
 }
+@media only screen and (max-width: 37.5em) {
+  .form-nickname {
+    width: 100%;
+  }
+}
 .form-nickname__input {
   font-size: 2rem;
   width: 40%;
@@ -432,7 +550,7 @@ body {
   color: #f59e0b;
   border: 0.3rem solid #fcd34d;
   background-color: #fef3c7;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 .form-nickname__input::placeholder {
   color: #f59e0b;
@@ -464,20 +582,80 @@ body {
 .form-nickname__btn:focus {
   outline: 0.3rem solid #d97706;
 }
-.form-nickname__check {
-  font-size: 2rem;
-  width: 40%;
-  height: 5rem;
-  padding: 1rem;
-  color: #f59e0b;
-  border: 0.3rem solid #fcd34d;
-  background-color: #fef3c7;
-  margin-bottom: 3rem;
+.form-nickname__legal-confirmations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem 4rem;
+  text-align: center;
+}
+@media only screen and (max-width: 37.5em) {
+  .form-nickname__legal-confirmations {
+    padding: 0rem 2rem;
+  }
+}
+.form-nickname__checkbox-label {
+  font-size: 1.6rem;
+  color: #b45309;
 }
 
 .message-error {
   padding: 2rem 1rem;
   font-size: 1.6rem;
+}
+
+.modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  animation: moveInDown;
+  animation-duration: 0.5s;
+  border: 2px solid #d97706;
+  border-radius: 2rem;
+  padding: 3rem 7rem;
+  width: 50%;
+  height: 50%;
+}
+@media only screen and (max-width: 75em) {
+  .modal {
+    width: 75%;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .modal {
+    width: 90%;
+    padding: 3rem 3.5rem;
+  }
+}
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+}
+.modal-close {
+  align-self: flex-end;
+}
+.modal-close svg {
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  transition: 0.2s;
+}
+.modal-close svg:hover .bg-circle {
+  fill: #d97706;
+}
+.modal-close svg:hover .modal-close-x {
+  fill: white;
+}
+.modal-content {
+  font-size: 130%;
+  border: 0px solid #813c58;
+  border-radius: 1rem;
+  overflow-y: scroll;
+  padding: 1rem 0rem;
+  scrollbar-width: thin;
+  scrollbar-color: #813c58 #f1f1f1;
 }
 
 .options-container {
@@ -527,15 +705,21 @@ body {
   display: flex;
   flex-grow: 1;
   padding: 2rem;
+  width: 100%;
 }
 @media only screen and (max-width: 75em) {
   .chat-app__container {
     flex-direction: row-reverse;
   }
 }
+@media only screen and (max-width: 56.25em) {
+  .chat-app__container {
+    padding: 1rem;
+  }
+}
 
 .header {
-  height: 70vh;
+  height: 91vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -552,30 +736,111 @@ body {
 }
 
 .nav-bar {
-  background-color: red;
-  height: 10vh;
+  background-color: #813c58;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 1rem 2rem;
+  height: 9vh;
+}
+@media only screen and (max-width: 37.5em) {
+  .nav-bar {
+    flex-wrap: wrap;
+  }
 }
 .nav-bar-logo {
-  margin-right: auto;
-  margin-left: 2rem;
-  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-bar-logo-svg {
+  width: 40px;
+  height: 40px;
+  filter: invert(100%);
+  margin: 0rem 0.6rem;
 }
 .nav-bar form {
   margin-left: auto;
   margin-right: 2rem;
 }
-.nav-bar-link {
-  font-size: 1.8rem;
-  text-decoration: none;
-  color: #000;
-  padding: 0rem 1rem;
-  cursor: pointer;
+
+.section-about, .section-features {
+  border: 2px solid #fde68a;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 6rem 20rem;
+  background-color: rgba(255, 255, 255, 0.6);
 }
-.nav-bar-link:not(:last-child) {
-  margin-right: 1rem;
+@media only screen and (max-width: 75em) {
+  .section-about, .section-features {
+    padding: 6rem 13rem;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .section-about, .section-features {
+    padding: 6rem 3rem;
+  }
+}
+
+@media only screen and (max-width: 56.25em) {
+  .section-about {
+    flex-direction: column;
+  }
+}
+.section-about h2 {
+  margin-right: 3rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .section-about h2 {
+    width: 100%;
+    margin-right: 0rem;
+    text-align: center;
+  }
+}
+.section-about p {
+  width: 50%;
+  color: #333;
+  font-weight: 0;
+}
+@media only screen and (max-width: 56.25em) {
+  .section-about p {
+    width: 100%;
+  }
+}
+
+.section-features {
+  flex-direction: column;
+  justify-content: center;
+}
+.section-features__list {
+  display: flex;
+  justify-content: space-between;
+}
+@media only screen and (max-width: 56.25em) {
+  .section-features__list {
+    flex-direction: column;
+  }
+}
+.section-features__list__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  list-style-type: none;
+  text-align: center;
+  width: 33%;
+}
+@media only screen and (max-width: 56.25em) {
+  .section-features__list__item {
+    width: 100%;
+  }
+}
+.section-features__list__item h3 {
+  height: 10rem;
+  display: flex;
+  align-items: center;
 }
 
 /*# sourceMappingURL=main.css.map */

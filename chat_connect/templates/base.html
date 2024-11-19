@@ -1,15 +1,19 @@
 {% load static %}
+{% load django_browser_reload %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatea-Conecta</title>
+    <title>Chatea-Conecta - Free Anonymous Chat Room for Adults</title>
+    <meta name="description" content="Join Chatea-Conecta, a free and anonymous chat platform for adults. Chat with people worldwide instantly—no login required!">
+    <meta name="keywords" content="anonymous chat, free chat room, online chat, global chat, adult chat room">
+    <meta name="author" content="Andre Dias">
 
     {% block scripts %}
     {% endblock scripts %}
-
+    {% django_browser_reload_script %}
     <link rel="stylesheet" href="{% static 'style/css/main.min.css' %}">
 
 

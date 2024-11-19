@@ -1,0 +1,81 @@
+.section-about, .section-features {
+    border: 2px solid $color-light-amber-3;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 6rem 20rem;
+
+    background-color: rgba(255, 255, 255, 0.6);
+
+    @include respond(tab-land) {
+        padding: 6rem 13rem;
+    }
+
+    @include respond(phone) {
+        padding: 6rem 3rem;
+    }
+
+}
+
+.section-about {
+
+    @include respond(tab-port) {
+        flex-direction: column;
+    }
+
+    & h2 {
+        margin-right: 3rem;
+        @include respond(tab-port) {
+            width: 100%;
+            margin-right: 0rem;
+            text-align: center;
+        }
+    }
+
+    & p {
+        width: 50%;
+        color: $color-grey-dark-3;
+        font-weight: 0;
+
+        @include respond(tab-port) {
+            width: 100%;
+        }
+    }
+}
+
+.section-features {
+    flex-direction: column;
+    justify-content: center;
+
+    &__list {
+        display: flex;
+        justify-content: space-between;
+
+        @include respond(tab-port) {
+            flex-direction: column;
+        }
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            
+            list-style-type: none;
+
+            text-align: center;
+            width: 33%;
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+
+            & h3 {
+                height: 10rem;
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}

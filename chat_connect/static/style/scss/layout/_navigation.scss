@@ -5,6 +5,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
+    height: 9vh;
 
     @include respond(phone) {
         flex-wrap: wrap;
@@ -28,27 +29,27 @@
         margin-right: 2rem;
     }
 
-    &__links {s
-        display: flex;
+    // &__links {
+    //     display: flex;
 
-        @include respond(phone) {
-            width: 100%;
-            justify-content: center;
-        }
+    //     @include respond(phone) {
+    //         width: 100%;
+    //         justify-content: center;
+    //     }
 
-    }
+    // }
 
-    &-link {
-        font-size: 1.8rem;
-        text-decoration: none;
-        color: $color-black;
-        padding: 0rem 1rem;
+    // &-link {
+    //     font-size: 1.8rem;
+    //     text-decoration: none;
+    //     color: $color-black;
+    //     padding: 0rem 1rem;
 
-        cursor: pointer;
+    //     cursor: pointer;
 
-        &:not(:last-child) {
-            margin-right: 1rem;
-        }
+    //     &:not(:last-child) {
+    //         margin-right: 1rem;
+    //     }
 
-    }
+    // }
 }
