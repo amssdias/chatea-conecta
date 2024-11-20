@@ -718,6 +718,38 @@ body {
   }
 }
 
+.footer {
+  background-color: #813c58;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem 0rem;
+  height: 10vh;
+}
+.footer p {
+  color: #fff;
+}
+.footer__links {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.footer__links__delimiter {
+  color: #fff;
+  font-size: 1.4rem;
+  margin: 0rem 2rem;
+}
+.footer__links__link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.4rem;
+  transition: 0.2s;
+}
+.footer__links__link:hover {
+  color: #fef3c7;
+}
+
 .header {
   height: 91vh;
   display: flex;
