@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
 from apps.chat.sitemaps import ChatStaticViewSitemap
@@ -28,6 +29,12 @@ sitemaps = {
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("apps.chat.urls")),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
 ]
 
 if settings.DEBUG:
