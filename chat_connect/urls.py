@@ -17,13 +17,17 @@ Including another URLconf
 
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include, reverse_lazy
-from django.views.generic import RedirectView
+from django.urls import path, include
+
+from apps.chat.sitemaps import ChatStaticViewSitemap
+
+sitemaps = {
+    "chat": ChatStaticViewSitemap,
+}
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", RedirectView.as_view(url=reverse_lazy("chat:home"))),
-    path("chat/", include("apps.chat.urls")),
+    path("", include("apps.chat.urls")),
 ]
 
 if settings.DEBUG:

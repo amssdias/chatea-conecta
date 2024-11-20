@@ -150,5 +150,5 @@ function createMainChat(groupChatName) {
 }
 
 chatSocketHandler.addEventListener('open', () => {
-    createMainChat("general");
+    createMainChat("chatea");
 });
