@@ -52,13 +52,13 @@ EXTERNAL_APPS = [
 INSTALLED_APPS = MY_PROJECT_APPS + EXTERNAL_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.security.SecurityMiddleware",  # Handles security headers like HTTPS redirection
+    "django.contrib.sessions.middleware.SessionMiddleware",  # Manages user sessions
+    "django.middleware.common.CommonMiddleware",  # Handles ETags, URL rewrites, etc.
+    "django.middleware.csrf.CsrfViewMiddleware",  # Protects against Cross-Site Request Forgery
+    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Handles user authentication
+    "django.contrib.messages.middleware.MessageMiddleware",  # Manages messages (e.g., success/error notices)
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Prevents clickjacking attacks
 ]
 
 ROOT_URLCONF = "chat_connect.urls"
@@ -139,8 +139,6 @@ STATIC_URL = "static/"
 # Where it will store when run collectstatic
 STATIC_ROOT = BASE_DIR / "prod_static"
 
-# Use for deployment
-# STATICFILES_STORAGE = ""
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -171,6 +169,8 @@ CACHES = {
         },
     }
 }
+CACHE_MIDDLEWARE_SECONDS = 60 * 15  # Cache for 15 minutes
+
 
 CACHE_TIMEOUT_FIVE_MIN = 300
 CACHE_TIMEOUT_ONE_DAY = 86400

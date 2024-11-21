@@ -3,6 +3,9 @@ from .base import *
 DEBUG = False
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+MIDDLEWARE.insert(0, "django.middleware.cache.UpdateCacheMiddleware") # Save responses to cache (must come first)
+MIDDLEWARE.insert(4, "django.middleware.cache.FetchFromCacheMiddleware") # Retrieve responses from cache (must be after CommonMiddleware)
+
 # ====== Security for HTTPS Enforcement ======
 # - SECURE_SSL_REDIRECT: Redirects all HTTP traffic to HTTPS, ensuring encrypted connections across the site.
 # - SECURE_HSTS_SECONDS: Instructs browsers to remember to only connect to the site over HTTPS for the specified duration (1 year in seconds).
@@ -31,6 +34,11 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "same-origin"
 
+# STATICFILES_STORAGE controls how Django handles static files during deployment.
+# - It adds a unique hash to file names for cache-busting (e.g., main.css → main.abc123.css).
+# - This ensures users always see the latest version of static files after updates.
+# - Does NOT affect user-uploaded files (those are managed via MEDIA_ROOT/MEDIA_URL).
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Channels
 CHANNEL_LAYERS = {
