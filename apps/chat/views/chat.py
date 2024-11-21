@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
@@ -44,7 +45,7 @@ class ChatView(View):
     def post(self, request):
         username = request.POST.get("username", "").strip()
         if not username:
-            messages.error(request, "You need to put an username")
+            messages.error(request, _("You need to put an username"))
             # Redirect to home page
             return redirect("chat:home")
 
@@ -54,7 +55,7 @@ class ChatView(View):
             RedisService.is_member(REDIS_USERNAME_KEY, lower_username) or
             User.objects.filter(username__iexact=lower_username).exists()
         ):
-            messages.error(request, "Username already taken")
+            messages.error(request, _("Username already taken"))
             return redirect("chat:home")
 
         # Add the username to the Redis set

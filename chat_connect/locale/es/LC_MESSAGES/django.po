@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-21 21:59+0000\n"
+"POT-Creation-Date: 2024-11-21 22:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,14 @@ msgstr ""
 #: apps/chat/templates/chat/chat.html:21
 msgid "Go back home"
 msgstr "Volver a la página principal"
+
+#: apps/chat/views/chat.py:48
+msgid "You need to put an username"
+msgstr "Debes ingresar un nombre de usuario"
+
+#: apps/chat/views/chat.py:58
+msgid "Username already taken"
+msgstr "El nombre de usuario ya está en uso"
 
 #: apps/users/models/profile.py:10
 msgid "Male"
@@ -425,9 +433,9 @@ msgid ""
 "field, and click 'Start Chatting'. You'll instantly join a global chat room "
 "with other users."
 msgstr ""
-"Simplemente ve a la página principal, escribe un nombre de usuario de tu elección en el campo "
-"de texto y haz clic en 'Comenzar a Chatear'. Entrarás instantáneamente en una sala de chat global "
-"con otros usuarios."
+"Simplemente ve a la página principal, escribe un nombre de usuario de tu "
+"elección en el campo de texto y haz clic en 'Comenzar a Chatear'. Entrarás "
+"instantáneamente en una sala de chat global con otros usuarios."
 
 #: chat_connect/templates/pages/faq.html:72
 msgid "Is Chatea-Conecta really anonymous?"
@@ -503,9 +511,9 @@ msgid ""
 "by bots. These messages are marked as 'Promotions' to distinguish them from "
 "real users."
 msgstr ""
-"Monetizamos la plataforma incluyendo ocasionalmente mensajes promocionales enviados "
-"por bots. Estos mensajes están marcados como 'Promociones' para distinguirlos de los "
-"usuarios reales."
+"Monetizamos la plataforma incluyendo ocasionalmente mensajes promocionales "
+"enviados por bots. Estos mensajes están marcados como 'Promociones' para "
+"distinguirlos de los usuarios reales."
 
 #: chat_connect/templates/pages/faq.html:198
 msgid "Can I block promotional messages?"
