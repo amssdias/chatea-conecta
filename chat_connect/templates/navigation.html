@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 <nav class="nav-bar">
     <span class="nav-bar-logo">
@@ -7,13 +8,13 @@
         <object type="image/svg+xml" data="{% static 'img/smile-chat-bubble.svg' %}" class="nav-bar-logo-svg"></object>
     </span>
     <div class="nav-bar__links">
-        <a class="nav-bar-link" href="{% url 'chat:home' %}">Home</a>
+        <a class="nav-bar-link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
     </div>
 
     {% if username %}
         <form action="{% url 'chat:close-chat' %}" method="POST">
             {% csrf_token %}
-            <button class="btn btn-close-session" type="submit">Leave chat</button>
+            <button class="btn btn-close-session" type="submit">{% trans "Leave chat" %}</button>
         </form>
     {% endif %}
 </nav>

@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
     <meta name="description" content="{% block description %}{% endblock description %}">
-    <meta name="keywords" content="anonymous chat, free chat room, online chat, global chat, adult chat room">
+    <meta name="keywords" content="{% trans 'anonymous chat, free chat room, online chat, global chat, adult chat room' %}">
     <meta name="author" content="Andre Dias">
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon">

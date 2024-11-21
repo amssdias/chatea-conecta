@@ -1,0 +1,388 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-21 21:11+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/chat/templates/chat/chat.html:20
+msgid "Sorry there was a problem with the connection, try sign up again."
+msgstr "Lo sentimos, hubo un problema con la conexión. Intenta registrarte de nuevo."
+
+#: apps/chat/templates/chat/chat.html:21
+msgid "Go back home"
+msgstr "Volver a la página principal"
+
+#: apps/users/models/profile.py:10
+msgid "Male"
+msgstr "Hombre"
+
+#: apps/users/models/profile.py:11
+msgid "Female"
+msgstr "Mujer"
+
+#: chat_connect/templates/base.html:12
+msgid ""
+"anonymous chat, free chat room, online chat, global chat, adult chat room"
+msgstr "chat anónimo, sala de chat gratis, chat en línea, chat global, sala de chat para adultos"
+
+#: chat_connect/templates/footer.html:4
+#, fuzzy
+#| msgid ""
+#| "Join Chatea-Conecta, a free and anonymous chat platform for adults. Chat "
+#| "with people worldwide instantly—no login required!"
+msgid ""
+"The best free anonymous chat room for adults. Connect instantly with people "
+"worldwide."
+msgstr ""
+"Únete a Chatea-Conecta, una plataforma de chat anónima y gratuita para "
+"adultos. Chatea con personas de todo el mundo al instante, ¡sin necesidad de "
+"registro!"
+
+#: chat_connect/templates/footer.html:7
+msgid "Privacy Policy"
+msgstr "Política de Privacidad"
+
+#: chat_connect/templates/footer.html:9
+msgid "FAQ"
+msgstr "Preguntas Frecuentes"
+
+#: chat_connect/templates/index.html:6
+msgid "Free Anonymous Chat Room for Adults"
+msgstr "Sala de Chat Anónima y Gratis para Adultos"
+
+#: chat_connect/templates/index.html:10
+msgid ""
+"Join Chatea-Conecta, a free and anonymous chat platform for adults. Chat "
+"with people worldwide instantly—no login required!"
+msgstr ""
+"Únete a Chatea-Conecta, una plataforma de chat anónima y gratuita para "
+"adultos. Chatea con personas de todo el mundo al instante, ¡sin necesidad de "
+"registro!"
+
+#: chat_connect/templates/index.html:22
+msgid "Connect with people near you..."
+msgstr "Conéctate con personas cerca de ti..."
+
+#: chat_connect/templates/index.html:32
+msgid ""
+"I confirm that I have read and agree to the <span class=\"link-tc\" "
+"id=\"terms-and-conditions\">Terms and Conditions</span>  of the site."
+msgstr ""
+"Confirmo que he leído y acepto los <span class=\"link-tc\" id=\"terms-and-"
+"conditions\">Términos y Condiciones</span> del sitio."
+
+#: chat_connect/templates/index.html:37
+msgid "I confirm that I am 18 years old or older."
+msgstr "Confirmo que tengo 18 años o más."
+
+#: chat_connect/templates/index.html:44
+msgid "Chat Now"
+msgstr "Chatear"
+
+#: chat_connect/templates/index.html:51
+msgid "Terms and Conditions"
+msgstr "Términos y Condiciones"
+
+#: chat_connect/templates/index.html:69
+msgid ""
+"Welcome to Chatea Conecta! Please read these Terms and Conditions carefully "
+"before using our website. By accessing or using Chatea Conecta, you agree to "
+"be bound by these terms. If you do not agree with any part of these terms, "
+"please do not use our website."
+msgstr ""
+"¡Bienvenido a Chatea Conecta! Por favor, lea detenidamente estos Términos y "
+"Condiciones antes de usar nuestro sitio web. Al acceder o utilizar Chatea "
+"Conecta, usted acepta cumplir con estos términos. Si no está de acuerdo con "
+"alguna parte de estos términos, por favor no use nuestro sitio web."
+
+#: chat_connect/templates/index.html:72
+msgid "General Information"
+msgstr "Información General"
+
+#: chat_connect/templates/index.html:75
+msgid "Website Name:"
+msgstr "Nombre del Sitio Web:"
+
+#: chat_connect/templates/index.html:76
+msgid "Contact Information:"
+msgstr "Información de Contacto:"
+
+#: chat_connect/templates/index.html:76
+msgid ""
+"For questions or support, please contact us at test@testing.com (this may be "
+"updated with a domain-specific email in the future)."
+msgstr ""
+"Para preguntas o soporte, contáctenos en test@testing.com (esto podría "
+"actualizarse con un correo electrónico específico del dominio en el futuro)."
+
+#: chat_connect/templates/index.html:80
+msgid "Eligibility and Age Verification"
+msgstr "Elegibilidad y Verificación de Edad"
+
+#: chat_connect/templates/index.html:82
+msgid ""
+"By using Chatea Conecta, you confirm that you are at least 18 years of age. "
+"Our website is intended for users who are of legal age to participate in "
+"open chat rooms and interact with others in a respectful, adult manner."
+msgstr ""
+"Al usar Chatea Conecta, usted confirma que tiene al menos 18 años. Nuestro "
+"sitio web está destinado a usuarios que tengan la edad legal para participar "
+"en salas de chat abiertas e interactuar con otros de manera respetuosa y "
+"adulta."
+
+#: chat_connect/templates/index.html:85
+msgid "Platform Purpose and Acceptable Use"
+msgstr "Propósito de la Plataforma y Uso Aceptable"
+
+#: chat_connect/templates/index.html:87
+msgid ""
+"Chatea Conecta is an entertainment-based platform that allows users to "
+"connect and chat with others from around the world. We are dedicated to "
+"fostering a friendly, positive environment for users to enjoy casual "
+"conversations."
+msgstr ""
+"Chatea Conecta es una plataforma basada en el entretenimiento que permite a "
+"los usuarios conectarse y chatear con personas de todo el mundo. Estamos "
+"dedicados a fomentar un ambiente amigable y positivo para que los usuarios "
+"disfruten de conversaciones casuales."
+
+#: chat_connect/templates/index.html:89
+msgid "By using this website, you agree to:"
+msgstr "Al usar este sitio web, usted acepta:"
+
+#: chat_connect/templates/index.html:91
+msgid ""
+"Communicate respectfully with other users, refraining from offensive "
+"language, harassment, discrimination, or any form of abuse."
+msgstr ""
+"Comunicarse respetuosamente con otros usuarios, absteniéndose de usar "
+"lenguaje ofensivo, acoso, discriminación o cualquier forma de abuso."
+
+#: chat_connect/templates/index.html:93
+msgid ""
+"Use Chatea Conecta solely for personal enjoyment and not for any commercial "
+"or promotional purposes."
+msgstr ""
+"Usar Chatea Conecta únicamente para disfrute personal y no para fines "
+"comerciales o promocionales."
+
+#: chat_connect/templates/index.html:95
+msgid ""
+"Avoid sharing or attempting to solicit personal, financial, or sensitive "
+"information."
+msgstr ""
+"Evitar compartir o intentar solicitar información personal, financiera o "
+"sensible."
+
+#: chat_connect/templates/index.html:99
+msgid "Prohibited Actions"
+msgstr "Acciones Prohibidas"
+
+#: chat_connect/templates/index.html:101
+msgid ""
+"To maintain a safe and welcoming environment, the following actions are "
+"strictly prohibited:"
+msgstr ""
+"Para mantener un entorno seguro y acogedor, las siguientes acciones están "
+"estrictamente prohibidas:"
+
+#: chat_connect/templates/index.html:104
+msgid "Offensive or Abusive Behavior:"
+msgstr "Comportamiento Ofensivo o Abusivo:"
+
+#: chat_connect/templates/index.html:104
+msgid ""
+"Users may not use language or behavior that is abusive, offensive, obscene, "
+"or otherwise harmful to other users."
+msgstr ""
+"Los usuarios no pueden usar lenguaje o comportamientos que sean abusivos, "
+"ofensivos, obscenos o perjudiciales para otros usuarios."
+
+#: chat_connect/templates/index.html:105
+msgid "Commercial Use:"
+msgstr "Uso Comercial:"
+
+#: chat_connect/templates/index.html:105
+msgid ""
+"Using Chatea Conecta for advertising, promoting products or services, or "
+"conducting commercial transactions is not permitted."
+msgstr ""
+"Usar Chatea Conecta para publicidad, promoción de productos o servicios, o "
+"realizar transacciones comerciales no está permitido."
+
+#: chat_connect/templates/index.html:106
+msgid "Misrepresentation:"
+msgstr "Falsedad o Representación Engañosa:"
+
+#: chat_connect/templates/index.html:106
+msgid ""
+"Impersonating another person or providing false information is not allowed."
+msgstr ""
+"Hacerse pasar por otra persona o proporcionar información falsa no está "
+"permitido."
+
+#: chat_connect/templates/index.html:109
+msgid ""
+"Violating any of these terms may result in suspension or permanent banning "
+"from the platform."
+msgstr ""
+"Violar cualquiera de estos términos puede resultar en la suspensión o "
+"prohibición permanente de la plataforma."
+
+#: chat_connect/templates/index.html:112
+msgid "Intellectual Property and Content Ownership"
+msgstr "Propiedad Intelectual y Derechos de Contenido"
+
+#: chat_connect/templates/index.html:114
+msgid ""
+"All content on Chatea Conecta, including SVG designs, website layout, and "
+"underlying code, is owned by the creator of Chatea Conecta. Users are not "
+"permitted to reproduce, distribute, or otherwise use any part of the "
+"website’s content for commercial purposes without prior permission."
+msgstr ""
+"Todo el contenido de Chatea Conecta, incluidos diseños SVG, diseño del sitio "
+"web y código subyacente, es propiedad del creador de Chatea Conecta. Los "
+"usuarios no están permitidos para reproducir, distribuir o usar cualquier "
+"parte del contenido del sitio para fines comerciales sin permiso previo."
+
+#: chat_connect/templates/index.html:117
+msgid "Privacy and Data Collection"
+msgstr "Privacidad y Recolección de Datos"
+
+#: chat_connect/templates/index.html:119
+msgid ""
+"Chatea Conecta does not collect, store, or share any personal data at this "
+"time. Should this policy change in the future, users will be notified, and "
+"updates will be reflected in our Privacy Policy."
+msgstr ""
+"Chatea Conecta no recopila, almacena ni comparte datos personales en este "
+"momento. Si esta política cambia en el futuro, los usuarios serán "
+"notificados, y las actualizaciones se reflejarán en nuestra Política de "
+"Privacidad."
+
+#: chat_connect/templates/index.html:122
+msgid "Liability Disclaimer"
+msgstr "Descargo de Responsabilidad"
+
+#: chat_connect/templates/index.html:124
+msgid ""
+"Chatea Conecta is provided on an 'as is' basis. While we strive to maintain "
+"a positive environment, we are not responsible for the behavior, comments, "
+"or interactions of individual users. We disclaim any liability for damages "
+"resulting from user interactions or any content shared within the platform."
+msgstr ""
+"Chatea Conecta se ofrece tal cual. Aunque nos esforzamos por mantener un "
+"ambiente positivo, no somos responsables del comportamiento, comentarios o "
+"interacciones de los usuarios individuales. Renunciamos a cualquier "
+"responsabilidad por daños que resulten de interacciones entre usuarios o de "
+"cualquier contenido compartido en la plataforma."
+
+#: chat_connect/templates/index.html:127
+msgid "Changes to Terms"
+msgstr "Cambios en los Términos"
+
+#: chat_connect/templates/index.html:129
+msgid ""
+"Chatea Conecta reserves the right to update these Terms and Conditions at "
+"any time. Users will be notified of significant changes, and continued use "
+"of the platform constitutes acceptance of any revised terms."
+msgstr ""
+"Chatea Conecta se reserva el derecho de actualizar estos Términos y "
+"Condiciones en cualquier momento. Se notificará a los usuarios sobre cambios "
+"significativos, y el uso continuo de la plataforma constituirá la aceptación "
+"de los términos revisados."
+
+#: chat_connect/templates/index.html:132
+msgid "Governing Law"
+msgstr "Ley Aplicable"
+
+#: chat_connect/templates/index.html:134
+msgid ""
+"These Terms and Conditions are governed by applicable laws of [Your Country/"
+"Region]. Any disputes arising from the use of Chatea Conecta shall be "
+"resolved through appropriate legal channels within this jurisdiction."
+msgstr ""
+"Estos Términos y Condiciones se rigen por las leyes aplicables de [Su País/"
+"Región]. Cualquier disputa que surja del uso de Chatea Conecta se resolverá "
+"a través de los canales legales correspondientes dentro de esta jurisdicción."
+
+#: chat_connect/templates/index.html:137
+msgid "Contact Us"
+msgstr "Contáctenos"
+
+#: chat_connect/templates/index.html:139
+msgid ""
+"For any questions or concerns regarding these Terms and Conditions, please "
+"contact us at test@testing.com."
+msgstr ""
+"Si tiene preguntas o inquietudes relacionadas con estos Términos y "
+"Condiciones, por favor contáctenos en test@testing.com."
+
+#: chat_connect/templates/index.html:149
+msgid "About Chatea-Conecta"
+msgstr "Acerca de Chatea-Conecta"
+
+#: chat_connect/templates/index.html:150
+msgid ""
+"Chatea-Conecta is a free and anonymous chat platform designed for adults who "
+"want to connect with people worldwide. No login or registration is required—"
+"simply enter your username and start chatting instantly. With real-time "
+"conversations and a global audience, Chatea-Conecta is your gateway to meet "
+"and interact with others online."
+msgstr ""
+"Chatea-Conecta es una plataforma de chat gratuita y anónima diseñada para "
+"adultos que desean conectarse con personas de todo el mundo. No se requiere "
+"inicio de sesión ni registro: simplemente ingrese su nombre de usuario y "
+"comience a chatear al instante. Con conversaciones en tiempo real y una "
+"audiencia global, Chatea-Conecta es su puerta de entrada para conocer e "
+"interactuar con otros en línea."
+
+#: chat_connect/templates/index.html:154
+msgid "Features"
+msgstr "Características"
+
+#: chat_connect/templates/index.html:165
+msgid "Anonymous chatting"
+msgstr "Chat anónimo"
+
+#: chat_connect/templates/index.html:168
+msgid "No personal details or registration required."
+msgstr "No se requieren datos personales ni registro."
+
+#: chat_connect/templates/index.html:175
+msgid "Global access"
+msgstr "Acceso global"
+
+#: chat_connect/templates/index.html:178
+msgid "Connect with people from Europe, Latin America, and beyond."
+msgstr "Conéctese con personas de Europa, América Latina y más allá."
+
+#: chat_connect/templates/index.html:200
+msgid "Secure connection"
+msgstr "Conexión segura"
+
+#: chat_connect/templates/index.html:203
+msgid "Powered by HTTPS for a safe chat experience."
+msgstr "Impulsado por HTTPS para una experiencia de chat segura."
+
+#: chat_connect/templates/navigation.html:11
+msgid "Home"
+msgstr "Inicio"
+
+#: chat_connect/templates/navigation.html:17
+msgid "Leave chat"
+msgstr "Salir del chat"

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block scripts %}
 
@@ -16,8 +17,8 @@
 
     <div id="chat-closed" class="chat-closed-container hide">
         <div class="chat-closed">
-            <h1>Sorry there was a problem with the connection, try sign up again.</h1>
-            <a href="{% url 'chat:home' %}" class="btn-home">Go back home</a>
+            <h1>{% trans "Sorry there was a problem with the connection, try sign up again." %}</h1>
+            <a href="{% url 'chat:home' %}" class="btn-home">{% trans "Go back home" %}</a>
         </div>
     </div>
 
