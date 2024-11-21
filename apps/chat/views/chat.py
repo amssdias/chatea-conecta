@@ -52,7 +52,7 @@ class ChatView(View):
         lower_username = username.lower()
         if (
             RedisService.is_member(REDIS_USERNAME_KEY, lower_username) or
-            User.objects.filter(username__icontains=lower_username).exists()
+            User.objects.filter(username__iexact=lower_username).exists()
         ):
             messages.error(request, "Username already taken")
             return redirect("chat:home")
