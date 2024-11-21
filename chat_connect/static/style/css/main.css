@@ -726,6 +726,29 @@ body {
   background-color: #fef3c7;
 }
 
+.privacy-policy {
+  padding: 6rem 20rem;
+}
+@media only screen and (max-width: 75em) {
+  .privacy-policy {
+    padding: 6rem 13rem;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .privacy-policy {
+    padding: 6rem 3rem;
+  }
+}
+.privacy-policy-heading {
+  padding: 3rem 0rem;
+}
+.privacy-policy-section:not(:last-child) {
+  margin-bottom: 2rem;
+}
+.privacy-policy-section__list {
+  list-style-type: none;
+}
+
 .chat-app {
   margin: 5rem 0rem;
   border: 2px solid #d97706;

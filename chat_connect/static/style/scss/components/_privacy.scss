@@ -1,0 +1,27 @@
+.privacy-policy {
+    padding: 6rem 20rem;
+
+    @include respond(tab-land) {
+        padding: 6rem 13rem;
+    }
+
+    @include respond(phone) {
+        padding: 6rem 3rem;
+    }
+
+    &-heading {
+        padding: 3rem 0rem;
+    }
+
+    &-section {
+
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+
+        &__list {
+            list-style-type: none;
+        }
+    }
+
+}
