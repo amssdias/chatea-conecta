@@ -11,6 +11,11 @@
 
     & p {
         color: $color-white;
+
+        @include respond(phone) {
+            padding: 0rem 10rem;
+            text-align: center;
+        }
     }
 
     &__links {

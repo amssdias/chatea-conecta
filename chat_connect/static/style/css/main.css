@@ -730,6 +730,12 @@ body {
 .footer p {
   color: #fff;
 }
+@media only screen and (max-width: 37.5em) {
+  .footer p {
+    padding: 0rem 10rem;
+    text-align: center;
+  }
+}
 .footer__links {
   width: 100%;
   display: flex;
