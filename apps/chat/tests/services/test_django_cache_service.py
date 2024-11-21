@@ -139,8 +139,8 @@ class DjangoCacheServiceTest(TestCase):
     def test_get_cached_user_ids_mixed_cache(self):
         """Test both promotional and regular user IDs when one is cached and the other is not."""
 
-        user1 = UserFactory()
-        user2 = UserFactory()
+        user1 = UserFactory(username="username-1")
+        user2 = UserFactory(username="username-2")
         regular_user_ids = {user1.id, user2.id}
 
         profile1 = ProfileFactory(with_link=True)
