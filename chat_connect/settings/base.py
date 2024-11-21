@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",  # Handles security headers like HTTPS redirection
     "django.contrib.sessions.middleware.SessionMiddleware",  # Manages user sessions
     "django.middleware.common.CommonMiddleware",  # Handles ETags, URL rewrites, etc.
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",  # Protects against Cross-Site Request Forgery
     "django.contrib.auth.middleware.AuthenticationMiddleware",  # Handles user authentication
     "django.contrib.messages.middleware.MessageMiddleware",  # Manages messages (e.g., success/error notices)
@@ -76,6 +77,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "chat_connect.context_processors.hreflang_context"
+                # "chat_connect.context_processors.clean_domain",
             ],
         },
     },
