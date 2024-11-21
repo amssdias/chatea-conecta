@@ -11,6 +11,15 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
 {% endblock description %}
 
 {% block scripts %}
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Chatea Conecta",
+          "url": "{{ request.scheme }}://{{ request.get_host }}"
+        }
+    </script>
+
     <script src="{% static 'js/modal.js' %}" defer></script>
 {% endblock scripts %}
 

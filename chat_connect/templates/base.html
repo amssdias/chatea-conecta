@@ -15,6 +15,10 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 
+    {% for hreflang in hreflang_urls %}
+        <link rel="alternate" hreflang="{{ hreflang.lang }}" href="{{ hreflang.url }}" />
+    {% endfor %}
+
     {% block scripts %}
     {% endblock scripts %}
 
