@@ -1,0 +1,36 @@
+.faq {
+    padding: 6rem 20rem;
+
+    @include respond(tab-land) {
+        padding: 6rem 13rem;
+    }
+
+    @include respond(phone) {
+        padding: 6rem 3rem;
+    }
+
+    &__question {
+        border: 0.2rem solid $color-red-wine;
+        padding: 1rem 3rem;
+
+        background-color: rgba(255, 255, 255, 0.6);
+
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0rem;
+        }
+
+        & p {
+            padding: 1rem 0rem;
+        }
+    }
+
+
+
+}

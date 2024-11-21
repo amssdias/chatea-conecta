@@ -10,6 +10,7 @@ body {
     color: $color-dark-amber-1;
     text-shadow: 2px 2px $color-dark-amber-3;
     font-weight: 600;
+    text-align: center;
 
     @include respond(phone) {
         font-size: 6rem;
