@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}
-Chatea-Conecta - Privacy Policy
+Chatea-Conecta - {% trans "Privacy Policy" %}
 {% endblock title %}
 
 {% block description %}
-    Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled.
+    {% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
 {% endblock description %}
 
 {% block scripts %}
@@ -15,7 +16,7 @@ Chatea-Conecta - Privacy Policy
 {% block header %}
 
 <header class="header-privacy">
-    <h1 class="heading-primary">Privacy Policy</h1>
+    <h1 class="heading-primary">{% trans "Privacy Policy" %}</h1>
 </header>
 
 {% endblock header %}
@@ -23,56 +24,56 @@ Chatea-Conecta - Privacy Policy
 {% block content %}
 <section class="privacy-policy" role="region" aria-labelledby="privacy-policy-heading">
     <div class="privacy-policy-heading">
-        <h2 id="privacy-policy-heading" class="heading-secondary heading-secondary-dark-amber">Effective Date: 01/05/2025</h2>
-        <p class="paragraph">Welcome to <strong>Chatea-Conecta</strong>. Your privacy is important to us. This Privacy Policy explains how we handle information collected from users (“you” or “your”) while using our application.</p>
+        <h2 id="privacy-policy-heading" class="heading-secondary heading-secondary-dark-amber">{% trans "Effective Date: 01/05/2025" %}</h2>
+        <p class="paragraph">{% trans "Welcome to <strong>Chatea-Conecta</strong>. Your privacy is important to us. This Privacy Policy explains how we handle information collected from users ('you' or 'your') while using our application." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">1. Information We Collect</h3>
-        <p class="paragraph">We do not collect or store any personal information. The only information we process is the username you create upon accessing our app. This username can be any set of characters of your choice and is not linked to your personal identity.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">1. {% trans "Information We Collect" %}</h3>
+        <p class="paragraph">{% trans "We do not collect or store any personal information. The only information we process is the username you create upon accessing our app. This username can be any set of characters of your choice and is not linked to your personal identity." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">2. How We Use Your Information</h3>
-        <p class="paragraph">The username is used exclusively to facilitate the chat functionality within the app. We do not store usernames permanently; they are temporarily cached using a secure caching service (Redis) and are automatically removed when you leave the page.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">2. {% trans "How We Use Your Information" %}</h3>
+        <p class="paragraph">{% trans "The username is used exclusively to facilitate the chat functionality within the app. We do not store usernames permanently; they are temporarily cached using a secure caching service (Redis) and are automatically removed when you leave the page." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">3. Cookies</h3>
-        <p class="paragraph">We use cookies to enhance your experience. A single cookie is used to store the username you create for the duration of your session. This cookie is deleted once the session ends or the page is refreshed.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">3. {% trans "Cookies" %}</h3>
+        <p class="paragraph">{% trans "We use cookies to enhance your experience. A single cookie is used to store the username you create for the duration of your session. This cookie is deleted once the session ends or the page is refreshed." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">4. Data Storage and Security</h3>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">4. {% trans "Data Storage and Security" %}</h3>
         <ul class="privacy-policy-section__list">
-            <li class="paragraph">Usernames are stored temporarily in Redis, a secure caching service, and are automatically deleted when the user exits the page.</li>
-            <li class="paragraph">We implement reasonable technical measures to ensure that the temporary data processed by our app is secure.</li>
+            <li class="paragraph">{% trans "Usernames are stored temporarily in Redis, a secure caching service, and are automatically deleted when the user exits the page." %}</li>
+            <li class="paragraph">{% trans "We implement reasonable technical measures to ensure that the temporary data processed by our app is secure." %}</li>
         </ul>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">5. Third Parties</h3>
-        <p class="paragraph">We do not share, sell, or disclose your information to third parties.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">5. {% trans "Third Parties" %}</h3>
+        <p class="paragraph">{% trans "We do not share, sell, or disclose your information to third parties." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">6. Age Restrictions</h3>
-        <p class="paragraph">Our app is intended for users aged 18 and older. By using this app, you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for ensuring compliance with this restriction.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">6. {% trans "Age Restrictions" %}</h3>
+        <p class="paragraph">{% trans "Our app is intended for users aged 18 and older. By using this app, you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for ensuring compliance with this restriction." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">7. Your Rights</h3>
-        <p class="paragraph">Since we do not store or collect personal information, there are no specific rights for data access, correction, or deletion. If you have concerns about privacy, you may stop using the app at any time.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">7. {% trans "Your Rights" %}</h3>
+        <p class="paragraph">{% trans "Since we do not store or collect personal information, there are no specific rights for data access, correction, or deletion. If you have concerns about privacy, you may stop using the app at any time." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">8. Updates to This Policy</h3>
-        <p class="paragraph">We may update this Privacy Policy from time to time. Any changes will be reflected on this page, and the updated date will be indicated at the top.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">8. {% trans "Updates to This Policy" %}</h3>
+        <p class="paragraph">{% trans "We may update this Privacy Policy from time to time. Any changes will be reflected on this page, and the updated date will be indicated at the top." %}</p>
     </div>
 
     <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">9. Contact Us</h3>
-        <p class="paragraph">If you have any questions or concerns regarding this Privacy Policy, please refrain from using the app.</p>
+        <h3 class="heading-tertiary heading-tertiary-dark-amber">9. {% trans "Contact Us" %}</h3>
+        <p class="paragraph">{% trans "If you have any questions or concerns regarding this Privacy Policy, please refrain from using the app." %}</p>
     </div>
 </section>
 {% endblock content %}

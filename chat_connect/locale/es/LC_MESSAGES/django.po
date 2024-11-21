@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-21 21:11+0000\n"
+"POT-Creation-Date: 2024-11-21 21:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,8 @@ msgstr ""
 
 #: apps/chat/templates/chat/chat.html:20
 msgid "Sorry there was a problem with the connection, try sign up again."
-msgstr "Lo sentimos, hubo un problema con la conexión. Intenta registrarte de nuevo."
+msgstr ""
+"Lo sentimos, hubo un problema con la conexión. Intenta registrarte de nuevo."
 
 #: apps/chat/templates/chat/chat.html:21
 msgid "Go back home"
@@ -37,13 +38,11 @@ msgstr "Mujer"
 #: chat_connect/templates/base.html:12
 msgid ""
 "anonymous chat, free chat room, online chat, global chat, adult chat room"
-msgstr "chat anónimo, sala de chat gratis, chat en línea, chat global, sala de chat para adultos"
+msgstr ""
+"chat anónimo, sala de chat gratis, chat en línea, chat global, sala de chat "
+"para adultos"
 
 #: chat_connect/templates/footer.html:4
-#, fuzzy
-#| msgid ""
-#| "Join Chatea-Conecta, a free and anonymous chat platform for adults. Chat "
-#| "with people worldwide instantly—no login required!"
 msgid ""
 "The best free anonymous chat room for adults. Connect instantly with people "
 "worldwide."
@@ -53,10 +52,12 @@ msgstr ""
 "registro!"
 
 #: chat_connect/templates/footer.html:7
+#: chat_connect/templates/pages/privacy.html:6
+#: chat_connect/templates/pages/privacy.html:19
 msgid "Privacy Policy"
 msgstr "Política de Privacidad"
 
-#: chat_connect/templates/footer.html:9
+#: chat_connect/templates/footer.html:9 chat_connect/templates/pages/faq.html:6
 msgid "FAQ"
 msgstr "Preguntas Frecuentes"
 
@@ -321,6 +322,7 @@ msgstr ""
 "a través de los canales legales correspondientes dentro de esta jurisdicción."
 
 #: chat_connect/templates/index.html:137
+#: chat_connect/templates/pages/privacy.html:75
 msgid "Contact Us"
 msgstr "Contáctenos"
 
@@ -386,3 +388,282 @@ msgstr "Inicio"
 #: chat_connect/templates/navigation.html:17
 msgid "Leave chat"
 msgstr "Salir del chat"
+
+#: chat_connect/templates/pages/faq.html:10
+msgid ""
+"Find answers to frequently asked questions about Chatea-Conecta. Learn how "
+"it works and more."
+msgstr ""
+"Encuentra respuestas a las preguntas frecuentes sobre Chatea-Conecta. "
+"Aprende cómo funciona y más."
+
+#: chat_connect/templates/pages/faq.html:21
+msgid "Frequently Asked Questions (FAQ)"
+msgstr "Preguntas Frecuentes (FAQ)"
+
+#: chat_connect/templates/pages/faq.html:30
+msgid "What is Chatea-Conecta?"
+msgstr "¿Qué es Chatea-Conecta?"
+
+#: chat_connect/templates/pages/faq.html:46
+msgid ""
+"Chatea-Conecta is a free and anonymous chat platform that allows users to "
+"connect with others worldwide in real-time. No login or registration is "
+"required to join the conversation."
+msgstr ""
+"Chatea-Conecta es una plataforma de chat gratuita y anónima que permite a "
+"los usuarios conectarse con otras personas de todo el mundo en tiempo real. "
+"No se requiere inicio de sesión ni registro para unirse a la conversación."
+
+#: chat_connect/templates/pages/faq.html:51
+msgid "How do I start chatting?"
+msgstr "¿Cómo empiezo a chatear?"
+
+#: chat_connect/templates/pages/faq.html:67
+msgid ""
+"Simply go to the homepage, enter a username of your choice in the input "
+"field, and click 'Start Chatting'. You'll instantly join a global chat room "
+"with other users."
+msgstr ""
+"Simplemente ve a la página principal, escribe un nombre de usuario de tu elección en el campo "
+"de texto y haz clic en 'Comenzar a Chatear'. Entrarás instantáneamente en una sala de chat global "
+"con otros usuarios."
+
+#: chat_connect/templates/pages/faq.html:72
+msgid "Is Chatea-Conecta really anonymous?"
+msgstr "¿Chatea-Conecta es realmente anónimo?"
+
+#: chat_connect/templates/pages/faq.html:88
+msgid ""
+"Yes! You don't need to provide any personal information to use the platform. "
+"However, avoid sharing sensitive details in the chat for your own safety."
+msgstr ""
+"¡Sí! No necesitas proporcionar información personal para usar la plataforma. "
+"Sin embargo, evita compartir detalles sensibles en el chat por tu propia "
+"seguridad."
+
+#: chat_connect/templates/pages/faq.html:93
+msgid "Is there a mobile version of Chatea-Conecta?"
+msgstr "¿Hay una versión móvil de Chatea-Conecta?"
+
+#: chat_connect/templates/pages/faq.html:109
+msgid ""
+"Yes, Chatea-Conecta is fully responsive and works seamlessly on mobile, "
+"tablet, and desktop devices. You can enjoy chatting on the go!"
+msgstr ""
+"Sí, Chatea-Conecta es completamente responsivo y funciona perfectamente en "
+"dispositivos móviles, tabletas y computadoras de escritorio. ¡Puedes "
+"disfrutar de chatear donde sea!"
+
+#: chat_connect/templates/pages/faq.html:114
+msgid "Can I report inappropriate behavior in the chat?"
+msgstr "¿Puedo reportar comportamientos inapropiados en el chat?"
+
+#: chat_connect/templates/pages/faq.html:130
+msgid ""
+"Yes. If you encounter inappropriate content, use the 'Report' button in the "
+"chat interface. This helps us maintain a safe and welcoming environment for "
+"all users."
+msgstr ""
+"Sí. Si encuentras contenido inapropiado, utiliza el botón 'Reportar' en la "
+"interfaz del chat. Esto nos ayuda a mantener un entorno seguro y acogedor "
+"para todos los usuarios."
+
+#: chat_connect/templates/pages/faq.html:135
+msgid "Does Chatea-Conecta store my chat messages?"
+msgstr "¿Chatea-Conecta guarda mis mensajes de chat?"
+
+#: chat_connect/templates/pages/faq.html:151
+msgid ""
+"No, Chatea-Conecta does not store chat messages. All conversations are real-"
+"time and ephemeral, ensuring your privacy."
+msgstr ""
+"No, Chatea-Conecta no guarda los mensajes de chat. Todas las conversaciones "
+"son en tiempo real y efímeras, garantizando tu privacidad."
+
+#: chat_connect/templates/pages/faq.html:156
+msgid "How is Chatea-Conecta secure?"
+msgstr "¿Cómo es seguro Chatea-Conecta?"
+
+#: chat_connect/templates/pages/faq.html:172
+msgid ""
+"We use HTTPS to encrypt all communication between your device and our "
+"servers. This ensures a safe and secure chat experience."
+msgstr ""
+"Usamos HTTPS para encriptar toda la comunicación entre tu dispositivo y "
+"nuestros servidores. Esto garantiza una experiencia de chat segura."
+
+#: chat_connect/templates/pages/faq.html:177
+msgid "Why do I see promotional messages in the chat?"
+msgstr "¿Por qué veo mensajes promocionales en el chat?"
+
+#: chat_connect/templates/pages/faq.html:193
+msgid ""
+"We monetize the platform by including occasional promotional messages sent "
+"by bots. These messages are marked as 'Promotions' to distinguish them from "
+"real users."
+msgstr ""
+"Monetizamos la plataforma incluyendo ocasionalmente mensajes promocionales enviados "
+"por bots. Estos mensajes están marcados como 'Promociones' para distinguirlos de los "
+"usuarios reales."
+
+#: chat_connect/templates/pages/faq.html:198
+msgid "Can I block promotional messages?"
+msgstr "¿Puedo bloquear los mensajes promocionales?"
+
+#: chat_connect/templates/pages/faq.html:214
+msgid ""
+"At this time, promotional messages cannot be blocked, but we strive to keep "
+"them minimal and non-intrusive."
+msgstr ""
+"Por el momento, los mensajes promocionales no se pueden bloquear, pero nos "
+"esforzamos por mantenerlos mínimos y no intrusivos."
+
+#: chat_connect/templates/pages/privacy.html:10
+msgid ""
+"Learn about the privacy practices of Chatea-Conecta. We prioritize your "
+"privacy and explain how your data is handled."
+msgstr ""
+"Conoce las prácticas de privacidad de Chatea-Conecta. Priorizamos tu "
+"privacidad y explicamos cómo manejamos tus datos."
+
+#: chat_connect/templates/pages/privacy.html:27
+msgid "Effective Date: 01/05/2025"
+msgstr "Fecha de Vigencia: 01/05/2025"
+
+#: chat_connect/templates/pages/privacy.html:28
+msgid ""
+"Welcome to <strong>Chatea-Conecta</strong>. Your privacy is important to us. "
+"This Privacy Policy explains how we handle information collected from users "
+"('you' or 'your') while using our application."
+msgstr ""
+"Bienvenido a <strong>Chatea-Conecta</strong>. Tu privacidad es importante "
+"para nosotros. Esta Política de Privacidad explica cómo manejamos la "
+"información recopilada de los usuarios ('tú' o 'tu') mientras usas nuestra "
+"aplicación."
+
+#: chat_connect/templates/pages/privacy.html:32
+msgid "Information We Collect"
+msgstr "Información que Recopilamos"
+
+#: chat_connect/templates/pages/privacy.html:33
+msgid ""
+"We do not collect or store any personal information. The only information we "
+"process is the username you create upon accessing our app. This username can "
+"be any set of characters of your choice and is not linked to your personal "
+"identity."
+msgstr ""
+"No recopilamos ni almacenamos ninguna información personal. La única "
+"información que procesamos es el nombre de usuario que creas al acceder a "
+"nuestra aplicación. Este nombre de usuario puede ser cualquier conjunto de "
+"caracteres de tu elección y no está vinculado a tu identidad personal."
+
+#: chat_connect/templates/pages/privacy.html:37
+msgid "How We Use Your Information"
+msgstr "Cómo Usamos Tu Información"
+
+#: chat_connect/templates/pages/privacy.html:38
+msgid ""
+"The username is used exclusively to facilitate the chat functionality within "
+"the app. We do not store usernames permanently; they are temporarily cached "
+"using a secure caching service (Redis) and are automatically removed when "
+"you leave the page."
+msgstr ""
+"El nombre de usuario se utiliza exclusivamente para facilitar la "
+"funcionalidad de chat dentro de la aplicación. No almacenamos los nombres de "
+"usuario de forma permanente; se guardan temporalmente en una memoria caché "
+"segura (Redis) y se eliminan automáticamente cuando abandonas la página."
+
+#: chat_connect/templates/pages/privacy.html:42
+msgid "Cookies"
+msgstr "Cookies"
+
+#: chat_connect/templates/pages/privacy.html:43
+msgid ""
+"We use cookies to enhance your experience. A single cookie is used to store "
+"the username you create for the duration of your session. This cookie is "
+"deleted once the session ends or the page is refreshed."
+msgstr ""
+"Usamos cookies para mejorar tu experiencia. Una única cookie se utiliza para "
+"almacenar el nombre de usuario que creas durante la duración de tu sesión. "
+"Esta cookie se elimina una vez que la sesión termina o la página se "
+"actualiza."
+
+#: chat_connect/templates/pages/privacy.html:47
+msgid "Data Storage and Security"
+msgstr "Almacenamiento y Seguridad de Datos"
+
+#: chat_connect/templates/pages/privacy.html:49
+msgid ""
+"Usernames are stored temporarily in Redis, a secure caching service, and are "
+"automatically deleted when the user exits the page."
+msgstr ""
+"Los nombres de usuario se almacenan temporalmente en Redis, un servicio de "
+"caché seguro, y se eliminan automáticamente cuando el usuario sale de la "
+"página."
+
+#: chat_connect/templates/pages/privacy.html:50
+msgid ""
+"We implement reasonable technical measures to ensure that the temporary data "
+"processed by our app is secure."
+msgstr ""
+"Implementamos medidas técnicas razonables para garantizar que los datos "
+"temporales procesados por nuestra aplicación sean seguros."
+
+#: chat_connect/templates/pages/privacy.html:55
+msgid "Third Parties"
+msgstr "Terceros"
+
+#: chat_connect/templates/pages/privacy.html:56
+msgid "We do not share, sell, or disclose your information to third parties."
+msgstr "No compartimos, vendemos ni divulgamos tu información a terceros."
+
+#: chat_connect/templates/pages/privacy.html:60
+msgid "Age Restrictions"
+msgstr "Restricciones de Edad"
+
+#: chat_connect/templates/pages/privacy.html:61
+msgid ""
+"Our app is intended for users aged 18 and older. By using this app, you "
+"confirm that you are at least 18 years old. If you are under 18, you are "
+"solely responsible for ensuring compliance with this restriction."
+msgstr ""
+"Nuestra aplicación está destinada a usuarios mayores de 18 años. Al usar "
+"esta aplicación, confirmas que tienes al menos 18 años. Si eres menor de 18, "
+"eres el único responsable de garantizar el cumplimiento de esta restricción."
+
+#: chat_connect/templates/pages/privacy.html:65
+msgid "Your Rights"
+msgstr "Tus Derechos"
+
+#: chat_connect/templates/pages/privacy.html:66
+msgid ""
+"Since we do not store or collect personal information, there are no specific "
+"rights for data access, correction, or deletion. If you have concerns about "
+"privacy, you may stop using the app at any time."
+msgstr ""
+"Dado que no almacenamos ni recopilamos información personal, no hay derechos "
+"específicos de acceso, corrección o eliminación de datos. Si tienes "
+"preocupaciones sobre la privacidad, puedes dejar de usar la aplicación en "
+"cualquier momento."
+
+#: chat_connect/templates/pages/privacy.html:70
+msgid "Updates to This Policy"
+msgstr "Actualizaciones de Esta Política"
+
+#: chat_connect/templates/pages/privacy.html:71
+msgid ""
+"We may update this Privacy Policy from time to time. Any changes will be "
+"reflected on this page, and the updated date will be indicated at the top."
+msgstr ""
+"Podemos actualizar esta Política de Privacidad de vez en cuando. Cualquier "
+"cambio se reflejará en esta página, y la fecha de actualización se indicará "
+"en la parte superior."
+
+#: chat_connect/templates/pages/privacy.html:76
+msgid ""
+"If you have any questions or concerns regarding this Privacy Policy, please "
+"refrain from using the app."
+msgstr ""
+"Si tienes preguntas o inquietudes relacionadas con esta Política de "
+"Privacidad, por favor abstente de usar la aplicación."
