@@ -7,13 +7,14 @@
     justify-content: space-around;
     padding: 1rem 0rem;
     
-    height: 10vh;
+    min-height: 10vh;
 
     & p {
         color: $color-white;
+        margin-bottom: 2rem;
 
         @include respond(phone) {
-            padding: 0rem 10rem;
+            padding: 0rem 6rem;
             text-align: center;
         }
     }

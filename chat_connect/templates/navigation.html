@@ -6,16 +6,14 @@
         <h2 class="heading-secondary heading-secondary-white">Chatea-Conecta</h2>
         <object type="image/svg+xml" data="{% static 'img/smile-chat-bubble.svg' %}" class="nav-bar-logo-svg"></object>
     </span>
-    <!-- <div class="nav-bar__links">
-        <a class="nav-bar-link" href="{% url 'chat:home' %}">Inicio</a>
-        <a class="nav-bar-link" href="">Salas</a>
-        <a class="nav-bar-link" href="">Colabora</a>
-    </div> -->
+    <div class="nav-bar__links">
+        <a class="nav-bar-link" href="{% url 'chat:home' %}">Home</a>
+    </div>
 
     {% if username %}
         <form action="{% url 'chat:close-chat' %}" method="POST">
             {% csrf_token %}
-            <button class="btn btn-close-session" type="submit">Cerrar sesión</button>
+            <button class="btn btn-close-session" type="submit">Leave chat</button>
         </form>
     {% endif %}
 </nav>

@@ -496,6 +496,16 @@ body {
   align-items: center;
   padding: 1rem 0rem;
 }
+@media only screen and (max-width: 37.5em) {
+  .faq__question__header {
+    flex-wrap: wrap;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .faq__question__header svg {
+    width: 3rem;
+  }
+}
 .faq__question p {
   padding: 1rem 0rem;
 }
@@ -780,14 +790,15 @@ body {
   align-items: center;
   justify-content: space-around;
   padding: 1rem 0rem;
-  height: 10vh;
+  min-height: 10vh;
 }
 .footer p {
   color: #fff;
+  margin-bottom: 2rem;
 }
 @media only screen and (max-width: 37.5em) {
   .footer p {
-    padding: 0rem 10rem;
+    padding: 0rem 6rem;
     text-align: center;
   }
 }
@@ -840,11 +851,12 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  height: 9vh;
+  min-height: 9vh;
 }
 @media only screen and (max-width: 37.5em) {
   .nav-bar {
     flex-wrap: wrap;
+    justify-items: center;
   }
 }
 .nav-bar-logo {
@@ -862,7 +874,27 @@ body {
   margin-left: auto;
   margin-right: 2rem;
 }
-
+.nav-bar__links {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-grow: 1;
+  padding: 1rem;
+}
+@media only screen and (max-width: 37.5em) {
+  .nav-bar__links {
+    justify-content: center;
+  }
+}
+.nav-bar-link {
+  border: 0.2rem solid #fff;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+}
 .section-about, .section-features {
   border: 2px solid #fde68a;
   display: flex;

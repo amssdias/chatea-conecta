@@ -23,7 +23,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            // flex-wrap: wrap;
             padding: 1rem 0rem;
+
+            @include respond(phone) {
+                flex-wrap: wrap;
+            }
+
+            & svg {
+                @include respond(phone) {
+                    width: 3rem;
+                }
+            }
+
+
         }
 
         & p {

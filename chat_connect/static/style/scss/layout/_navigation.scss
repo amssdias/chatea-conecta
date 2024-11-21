@@ -4,11 +4,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    // align-content: center;
     padding: 1rem 2rem;
-    height: 9vh;
+    min-height: 9vh;
 
     @include respond(phone) {
         flex-wrap: wrap;
+        justify-items: center;
     }
 
     &-logo {
@@ -29,27 +31,32 @@
         margin-right: 2rem;
     }
 
-    // &__links {
-    //     display: flex;
+    &__links {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-grow: 1;
 
-    //     @include respond(phone) {
-    //         width: 100%;
-    //         justify-content: center;
-    //     }
+        padding: 1rem;
 
-    // }
+        @include respond(phone) {
+            justify-content: center;
+        }
+    }
 
-    // &-link {
-    //     font-size: 1.8rem;
-    //     text-decoration: none;
-    //     color: $color-black;
-    //     padding: 0rem 1rem;
+    &-link {
+        border: 0.2rem solid $color-white;
+        padding: 1rem 2rem;
+        border-radius: 2rem;
 
-    //     cursor: pointer;
+        font-size: 2rem;
+        text-decoration: none;
+        color: $color-white;
 
-    //     &:not(:last-child) {
-    //         margin-right: 1rem;
-    //     }
+        cursor: pointer;
 
-    // }
+        @include respond(phone) {
+        }
+
+    }
 }
