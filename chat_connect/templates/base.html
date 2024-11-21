@@ -6,10 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatea-Conecta - Free Anonymous Chat Room for Adults</title>
+    <title>{% block title %}{% endblock title %}</title>
     <meta name="description" content="Join Chatea-Conecta, a free and anonymous chat platform for adults. Chat with people worldwide instantly—no login required!">
     <meta name="keywords" content="anonymous chat, free chat room, online chat, global chat, adult chat room">
     <meta name="author" content="Andre Dias">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 
     {% block scripts %}
     {% endblock scripts %}
