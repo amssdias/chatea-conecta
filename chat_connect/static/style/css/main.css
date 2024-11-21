@@ -149,7 +149,7 @@ html {
 }
 @media only screen and (max-width: 37.5em) {
   html {
-    font-size: 46%;
+    font-size: 62.5%;
   }
 }
 
@@ -589,13 +589,13 @@ body {
   width: 40%;
   height: 5rem;
   padding: 1rem;
-  color: #f59e0b;
+  color: #b45309;
   border: 0.3rem solid #fcd34d;
   background-color: #fef3c7;
   margin-bottom: 1rem;
 }
 .form-nickname__input::placeholder {
-  color: #f59e0b;
+  color: #b45309;
 }
 .form-nickname__input:focus {
   outline: none;
@@ -619,7 +619,7 @@ body {
   background-color: #fef3c7;
   cursor: pointer;
   font-size: 2rem;
-  color: #f59e0b;
+  color: #b45309;
 }
 .form-nickname__btn:focus {
   outline: 0.3rem solid #d97706;
