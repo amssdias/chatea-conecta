@@ -124,14 +124,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "UTC" # Default time zone for the application.
 
-USE_I18N = True
+USE_I18N = True # Enables internationalization support for translations.
 
-# Enable localization
-USE_L10N = True
+USE_L10N = True # Enables formatting of dates, numbers, and calendars based on locale.
 
-USE_TZ = True
+USE_TZ = True # Enables timezone-aware datetime support.
 
 LANGUAGES = [
     ("en", "English"),
