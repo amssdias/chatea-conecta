@@ -78,7 +78,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "chat_connect.context_processors.hreflang_context"
-                # "chat_connect.context_processors.clean_domain",
             ],
         },
     },
@@ -137,6 +136,7 @@ USE_TZ = True # Enables timezone-aware datetime support.
 
 LANGUAGES = [
     ("en", "English"),
+    ("en-us", "American English"),
     ("es", "Spanish"),
     ("pt", "Portuguese"),
 ]
