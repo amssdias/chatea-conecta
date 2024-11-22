@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from apps.chat.utils.redis_connection import redis_connection
 
 
@@ -59,3 +61,44 @@ class RedisService:
         """
         lower_username = username.lower()
         return cls.redis_connection.srem(redis_key, lower_username)
+
+    @classmethod
+    def store_in_hash(cls, hash_key: str, data: dict):
+        """
+        Stores data in a Redis hash.
+
+        Args:
+            hash_key (str): The key for the Redis hash.
+            data (dict): A dictionary with field-value pairs to store in the hash.
+        """
+        cls.redis_connection.hset(hash_key, mapping=data)
+        cls.set_hash_expiration(hash_key, settings.CACHE_TIMEOUT_ONE_DAY)
+
+    @classmethod
+    def get_from_hash(cls, hash_key: str, field: str) -> str:
+        """
+        Retrieves a specific field value from a Redis hash.
+
+        Args:
+            hash_key (str): The key for the Redis hash.
+            field (str): The field to retrieve.
+
+        Returns:
+            str: The value associated with the field, or None if not found.
+        """
+        import logging
+        logger = logging.getLogger("chat_connect")
+        value = cls.redis_connection.hget(hash_key, field)
+        logger.info(f"--------- {value} ----------")
+        return value
+
+    @classmethod
+    def set_hash_expiration(cls, hash_key: str, ttl_seconds: int):
+        """
+        Sets a time-to-live (TTL) for a Redis hash.
+
+        Args:
+            hash_key (str): The key for the Redis hash.
+            ttl_seconds (int): Time-to-live in seconds.
+        """
+        cls.redis_connection.expire(hash_key, ttl_seconds)

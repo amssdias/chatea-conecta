@@ -1,3 +1,6 @@
+import { convertLinksToAnchors } from "../utils/create_elements.js";
+
+
 class ChatView {
 
     _parentElement = document.querySelector(".chat-container");
@@ -122,13 +125,14 @@ class ChatView {
 
         const chatBox = chat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
+        const msg = convertLinksToAnchors(message);
 
         // If last sent was by same user, then only add a paragraph to it
         if (lastMessage && lastMessage.dataset.username === username) {
 
             const paragraph = document.createElement("p");
             paragraph.classList.add("chat__message-text");
-            paragraph.innerHTML = message;
+            paragraph.innerHTML = msg;
 
             lastMessage.appendChild(paragraph);
 
@@ -136,7 +140,7 @@ class ChatView {
         } else {
             // If last sent was by some other user, create new div
             const div = this.createUserChatMessageElements(
-                message,
+                msg,
                 username
             );
             chatBox.appendChild(div);
@@ -156,20 +160,21 @@ class ChatView {
         // Check who sent the last text
         const chatBox = this.activeChat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
+        const msg = convertLinksToAnchors(message);
 
         // If last sent was by current user append to the div
         if (lastMessage && lastMessage.dataset.username === this._username) {
 
             const paragraph = document.createElement("p");
             paragraph.classList.add("chat__message-text", "background-color-text-sending");
-            paragraph.innerHTML = message;
+            paragraph.innerHTML = msg;
 
             lastMessage.appendChild(paragraph);
 
         } else {
             // If last sent was by the other user, create new div
             const div = this.createUserChatMessageElements(
-                message,
+                msg,
                 this._username,
                 true,
             );
@@ -215,12 +220,13 @@ class ChatView {
         // Get all messages from a current user, get the last that matches the same message
         const chatMessagesEl = this.activeChat.querySelector(".chat__messages");
         const currentUserMessages = Array.from(chatMessagesEl.querySelectorAll(".chat__message--current-user")).reverse()
-
+        const userMsg = convertLinksToAnchors(userMessage);
         currentUserMessages.forEach(userChatMessage => {
             const userMessages = userChatMessage.querySelectorAll(".chat__message-text");
-
+            
             userMessages.forEach(message => {
-                if (message.innerHTML === userMessage) {
+                console.log(`Message: ${message.innerHTML}`);
+                if (message.innerHTML === userMsg) {
                     message.classList.remove("background-color-text-sending");
                 }
             })

@@ -5,7 +5,9 @@ from typing import Optional, Dict, Set
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from apps.chat.services import DjangoCacheService
+from apps.chat.constants.redis_keys import USER_PROMOTIONAL_LINKS
+from apps.chat.services.django_cache_service import DjangoCacheService
+from apps.chat.services.redis_service import RedisService
 
 User = get_user_model()
 
@@ -16,9 +18,11 @@ class MessageService:
 
     def __init__(self):
         self.django_cache = DjangoCacheService()
+        self.redis_connection = RedisService
 
     def get_message_to_send(self) -> Optional[Dict]:
         is_promotional = self._should_select_promotional_user()
+        self.store_user_promotional_links(is_promotional)
 
         user_ids = self.django_cache.get_cached_user_ids(promotional=is_promotional)
         topic_ids = self.django_cache.get_cached_topic_ids(promotional=is_promotional)
@@ -34,6 +38,8 @@ class MessageService:
 
             user_id = self._get_random_user_id(user_ids)
             if not user_id:
+
+                # We need to change between promotional and not promotional users
                 if not changed_users:
                     user_ids = self.django_cache.get_cached_user_ids(
                         promotional=not is_promotional
@@ -41,6 +47,8 @@ class MessageService:
                     topic_ids = self.django_cache.get_cached_topic_ids(
                         promotional=not is_promotional
                     )
+                    is_promotional = not is_promotional
+                    changed_users = True
                     continue
 
                 logger.warning("No more users found to send a message.")
@@ -68,6 +76,10 @@ class MessageService:
                     user_id, topic_id, conversation_id
                 ):
                     continue
+
+                # Build message with link if it's promotional
+                if is_promotional:
+                    message = self.build_message(user_id, message)
 
                 # If user did not send message yet, send message from this topic
                 user_message["message"] = message
@@ -109,3 +121,23 @@ class MessageService:
     @staticmethod
     def _get_random_topic_id(topics_ids: Set) -> int:
         return random.choice(list(topics_ids)) if topics_ids else None
+
+    def store_user_promotional_links(self, is_promotional):
+        if is_promotional and not self.redis_connection.key_exists(
+            USER_PROMOTIONAL_LINKS
+        ):
+            user_id_and_links = User.objects.filter(
+                profile__link__isnull=False
+            ).values_list("id", "profile__link")
+
+            user_dict = {str(key): value for key, value in user_id_and_links}
+            self.redis_connection.store_in_hash(
+                hash_key=USER_PROMOTIONAL_LINKS, data=user_dict
+            )
+
+    def build_message(self, user_id, message):
+        if "{}" not in message:
+            return message
+
+        user_link = self.redis_connection.get_from_hash(USER_PROMOTIONAL_LINKS, user_id)
+        return message.format(user_link) if user_link else message

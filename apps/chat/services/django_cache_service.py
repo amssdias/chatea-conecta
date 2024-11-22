@@ -80,7 +80,7 @@ class DjangoCacheService:
             except User.DoesNotExist:
                 new_user = User.objects.create(username=fake.user_name())
                 logger.warning(
-                    f"Username not found, created new one with id: {new_user.id}"
+                    f"Username with id '{user_id}' not found, created new one with id: {new_user.id}"
                 )
                 username = new_user.username
             cache.set(cache_key, username, timeout=settings.CACHE_TIMEOUT_ONE_MONTH)
