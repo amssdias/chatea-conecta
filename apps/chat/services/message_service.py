@@ -47,6 +47,7 @@ class MessageService:
                     topic_ids = self.django_cache.get_cached_topic_ids(
                         promotional=not is_promotional
                     )
+                    topics_ids_to_choose = topic_ids.copy()
                     is_promotional = not is_promotional
                     changed_users = True
                     continue
