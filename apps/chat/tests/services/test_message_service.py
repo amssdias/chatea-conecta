@@ -67,6 +67,7 @@ class MessageServiceTestCase(TestCase):
         self.service.redis_connection.key_exists.assert_called_once_with(USER_PROMOTIONAL_LINKS)
 
     def test_store_no_users_promotional_links(self):
+        profile = ProfileFactory(link="www.example.com")
         # Set up mocked Redis behaviors
         self.service.redis_connection.key_exists.return_value = False
         self.service.redis_connection.store_in_hash = MagicMock()
@@ -75,7 +76,7 @@ class MessageServiceTestCase(TestCase):
 
         self.service.redis_connection.store_in_hash.assert_called_once_with(
             hash_key=USER_PROMOTIONAL_LINKS,
-            data={},
+            data={str(profile.id): profile.link},
         )
         self.service.redis_connection.key_exists.assert_called_once_with(USER_PROMOTIONAL_LINKS)
 
@@ -90,13 +91,13 @@ class MessageServiceTestCase(TestCase):
         self.service.redis_connection.key_exists.assert_called_once_with(USER_PROMOTIONAL_LINKS)
 
     def test_build_message_no_placeholder(self):
-        result = self.service.build_message(user_id=1, message="Hello, World!")
+        result = self.service._build_message(user_id=1, message="Hello, World!")
         self.assertEqual(result, "Hello, World!", "Expected message to remain unchanged")
 
     def test_build_message_with_placeholder(self):
         self.service.redis_connection.get_from_hash.return_value = "http://promo-link.com"
 
-        result = self.service.build_message(user_id="1", message="Visit this link: {}")
+        result = self.service._build_message(user_id="1", message="Visit this link: {}")
         self.assertEqual(
             result,
             "Visit this link: http://promo-link.com",
@@ -176,7 +177,7 @@ class MessageServiceTestCase(TestCase):
 
     def test_get_message_to_send_switch_promotional_users(self):
         self.service.django_cache.get_cached_user_ids.side_effect = [set(), {2}]
-        self.service.django_cache.get_cached_topic_ids.side_effect = [set(), {201}]
+        self.service.django_cache.get_cached_topic_ids.return_value = {201}
         self.service.django_cache.get_cached_conversation_flows.return_value = [(1, "Message")]
         self.service.django_cache.has_user_sent_message.return_value = False
         self.service.django_cache.get_username.return_value = "test_user"

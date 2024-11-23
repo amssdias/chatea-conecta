@@ -25,7 +25,7 @@ class MessageService:
         self.store_user_promotional_links(is_promotional)
 
         user_ids = self.django_cache.get_cached_user_ids(promotional=is_promotional)
-        topic_ids = self.django_cache.get_cached_topic_ids(promotional=is_promotional)
+        topic_ids = self.django_cache.get_cached_topic_ids()
         topics_ids_to_choose = topic_ids.copy()
         user_message = {
             "username": None,
@@ -41,14 +41,11 @@ class MessageService:
 
                 # We need to change between promotional and not promotional users
                 if not changed_users:
+                    is_promotional = not is_promotional
                     user_ids = self.django_cache.get_cached_user_ids(
-                        promotional=not is_promotional
-                    )
-                    topic_ids = self.django_cache.get_cached_topic_ids(
-                        promotional=not is_promotional
+                        promotional=is_promotional
                     )
                     topics_ids_to_choose = topic_ids.copy()
-                    is_promotional = not is_promotional
                     changed_users = True
                     continue
 
@@ -64,7 +61,7 @@ class MessageService:
 
             # Get all conversation flows for the topic in one query
             conversations_flows = self.django_cache.get_cached_conversation_flows(
-                topic_id
+                topic_id, promotional=is_promotional
             )
 
             random.shuffle(conversations_flows)
@@ -80,7 +77,7 @@ class MessageService:
 
                 # Build message with link if it's promotional
                 if is_promotional:
-                    message = self.build_message(user_id, message)
+                    message = self._build_message(user_id, message)
 
                 # If user did not send message yet, send message from this topic
                 user_message["message"] = message
@@ -131,12 +128,14 @@ class MessageService:
                 profile__link__isnull=False
             ).values_list("id", "profile__link")
 
+            if not user_id_and_links:
+                return
             user_dict = {str(key): value for key, value in user_id_and_links}
             self.redis_connection.store_in_hash(
                 hash_key=USER_PROMOTIONAL_LINKS, data=user_dict
             )
 
-    def build_message(self, user_id, message):
+    def _build_message(self, user_id, message):
         if "{}" not in message:
             return message
 

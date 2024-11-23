@@ -11,7 +11,6 @@ from apps.chat.constants.redis_keys import (
     USER_IDS,
     TOPIC_IDS,
     USER_PROMOTIONAL_IDS,
-    TOPIC_PROMOTIONAL_IDS,
 )
 from apps.chat.models import ConversationFlow
 from apps.chat.services import DjangoCacheService
@@ -171,7 +170,7 @@ class DjangoCacheServiceTest(TestCase):
 
         # Mocking the Topic query to simulate fetching from the DB
         with patch(
-            "apps.chat.services.django_cache_service.Topic.objects.filter"
+            "apps.chat.services.django_cache_service.Topic.objects.all"
         ) as mock_all:
             mock_topic_ids = {1, 2, 3}
             mock_all.return_value.values_list.return_value = mock_topic_ids
@@ -205,110 +204,30 @@ class DjangoCacheServiceTest(TestCase):
     def test_get_cached_topic_ids_with_custom_timeout(self):
         # Mocking the Topic query to simulate fetching from the DB
         with patch(
-            "apps.chat.services.django_cache_service.Topic.objects.filter"
+            "apps.chat.services.django_cache_service.Topic.objects.all"
         ) as mock_all:
 
             mock_topic_ids = {7, 8, 9}
             mock_all.return_value.values_list.return_value = mock_topic_ids
 
-            # Call the get_cached_topic_ids method, which internally uses the _get_or_set_cache method
             result = self.cache_service.get_cached_topic_ids()
 
         # Ensure the result is the mocked data and was cached
         self.assertEqual(result, mock_topic_ids)
 
-        # Ensure the data was cached with the custom timeout
         cached_data = cache.get(TOPIC_IDS)
         self.assertEqual(cached_data, mock_topic_ids)
 
-        # You can also check the cache timeout here by adjusting cache.get() in Django"s low-level API
-
-    def test_get_cached_promotional_topic_ids_cache_miss(self):
-        """Test that promotional topic IDs are fetched from DB when cache is empty."""
-
-        # Ensure the promotional cache is empty
-        self.assertIsNone(cache.get(TOPIC_PROMOTIONAL_IDS))
-
-        topic1 = TopicFactory(is_promotional=True)
-        topic2 = TopicFactory(is_promotional=True)
-        promotional_topic_ids = {topic1.id, topic2.id}
-
-        with patch(
-            "apps.chat.services.django_cache_service.Topic.objects.filter"
-        ) as mock_filter:
-            mock_filter.return_value.values_list.return_value = promotional_topic_ids
-
-            result = self.cache_service.get_cached_topic_ids(promotional=True)
-
-        # Assert the result matches the mocked promotional data
-        self.assertEqual(result, promotional_topic_ids)
-
-        # Ensure the promotional data was cached
-        cached_data = cache.get(TOPIC_PROMOTIONAL_IDS)
-        self.assertEqual(cached_data, promotional_topic_ids)
-
-    def test_get_cached_promotional_topic_ids_cache_hit(self):
-        """Test that promotional topic IDs are fetched from cache when available."""
-
-        promotional_topic_ids = {1, 2, 3}
-
-        # Manually set promotional topic IDs in cache
-        cache.set(
-            TOPIC_PROMOTIONAL_IDS,
-            promotional_topic_ids,
-            timeout=settings.CACHE_TIMEOUT_ONE_DAY,
-        )
-
-        with patch(
-            "apps.chat.services.django_cache_service.Topic.objects.filter"
-        ) as mock_filter:
-            # Call the method with promotional=True
-            result = self.cache_service.get_cached_topic_ids(promotional=True)
-
-            # Ensure the method returned the cached data without hitting the DB
-            self.assertEqual(result, promotional_topic_ids)
-            mock_filter.assert_not_called()  # DB should not be accessed
-
-    def test_get_cached_regular_and_promotional_topic_ids_mixed_cache(self):
-        """Test that regular and promotional IDs are cached and fetched independently."""
-
-        topic1 = TopicFactory()
-        topic2 = TopicFactory()
-        regular_topic_ids = {topic1.id, topic2.id}
-
-        topic3 = TopicFactory()
-        topic4 = TopicFactory()
-        promotional_topic_ids = {topic3.id, topic4.id}
-
-        cache.set(TOPIC_IDS, regular_topic_ids, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
-        self.assertIsNone(cache.get(TOPIC_PROMOTIONAL_IDS))
-
-        with patch(
-            "apps.chat.services.django_cache_service.Topic.objects.filter"
-        ) as mock_filter:
-            mock_filter.return_value.values_list.return_value = promotional_topic_ids
-
-            # Test fetching promotional topic IDs (cache miss)
-            result_promotional = self.cache_service.get_cached_topic_ids(
-                promotional=True
-            )
-            self.assertEqual(result_promotional, promotional_topic_ids)
-            mock_filter.assert_called_once_with(is_promotional=True)
-
-            # Test fetching regular topic IDs (cache hit)
-            result_regular = self.cache_service.get_cached_topic_ids(promotional=False)
-            self.assertEqual(result_regular, regular_topic_ids)
-
     def test_get_cached_conversation_flows_with_no_cached_data(self):
-        [ConversationFlowFactory(topic=self.topic) for _ in range(5)]
+        [ConversationFlowFactory(topic=self.topic, is_promotional=False) for _ in range(5)]
         conversation_flows_list = list(
-            ConversationFlow.objects.filter(topic=self.topic).values_list(
+            ConversationFlow.objects.filter(topic=self.topic, is_promotional=False).values_list(
                 "id", "message"
             )
         )
 
         # Call the get_cached_conversation_flows method
-        result = self.cache_service.get_cached_conversation_flows(topic_id=1)
+        result = self.cache_service.get_cached_conversation_flows(topic_id=1, promotional=False)
 
         # Assert that the result matches the mocked data
         self.assertEqual(result, conversation_flows_list)
@@ -333,7 +252,7 @@ class DjangoCacheServiceTest(TestCase):
         ) as mock_filter:
 
             # Call the get_cached_conversation_flows method
-            result = self.cache_service.get_cached_conversation_flows(topic_id=1)
+            result = self.cache_service.get_cached_conversation_flows(topic_id=1, promotional=False)
 
         # Ensure the method returned the cached data
         self.assertEqual(result, cached_conversation_flows)
@@ -344,13 +263,13 @@ class DjangoCacheServiceTest(TestCase):
     def test_get_cached_conversation_flows_with_custom_timeout(self):
         topic = TopicFactory()
 
-        [ConversationFlowFactory(topic=topic) for _ in range(5)]
+        [ConversationFlowFactory(topic=topic, is_promotional=False) for _ in range(5)]
         conversation_flows_list = list(
-            ConversationFlow.objects.filter(topic=topic).values_list("id", "message")
+            ConversationFlow.objects.filter(topic=topic, is_promotional=False).values_list("id", "message")
         )
 
         # Call the get_cached_conversation_flows method
-        result = self.cache_service.get_cached_conversation_flows(topic_id=topic.id)
+        result = self.cache_service.get_cached_conversation_flows(topic_id=topic.id, promotional=False)
 
         # Assert that the result matches the mocked data
         self.assertEqual(result, conversation_flows_list)
@@ -363,17 +282,90 @@ class DjangoCacheServiceTest(TestCase):
         # Ensure that the cache was set with the custom timeout
         # If needed, you can validate cache timeout behavior (advanced setup-environment-test of cache expiration)
 
-    def test_get_cached_conversation_flows_filter_with_no_cached_data(self):
-        conversation_flows = [
-            ConversationFlowFactory(topic=self.topic) for _ in range(5)
-        ]
-        # Call the get_cached_conversation_flows method
-        result = self.cache_service.get_cached_conversation_flows(
-            topic_id=self.topic.id
+    def test_get_cached_conversation_flows_promotional_with_no_cached_data(self):
+        # Create promotional conversation flows
+        [ConversationFlowFactory(topic=self.topic, is_promotional=True) for _ in range(5)]
+        conversation_flows_list = list(
+            ConversationFlow.objects.filter(topic=self.topic, is_promotional=True).values_list("id", "message")
         )
 
+        # Call the get_cached_conversation_flows method
+        result = self.cache_service.get_cached_conversation_flows(topic_id=self.topic.id, promotional=True)
+
         # Assert that the result matches the mocked data
+        self.assertEqual(result, conversation_flows_list)
+
+        # Ensure the data was cached with the correct cache key
+        cache_key = f"conversation_flows_promotional_topic_{self.topic.id}"
+        cached_data = cache.get(cache_key)
+        self.assertEqual(cached_data, conversation_flows_list)
+
+    def test_get_cached_conversation_flows_promotional_with_cached_data(self):
+        # Prepopulate the cache with promotional conversation flows
+        cache_key = f"conversation_flows_promotional_topic_{self.topic.id}"
+        cached_conversation_flows = [
+            (cf.id, cf.message) for cf in [ConversationFlowFactory(topic=self.topic, is_promotional=True) for _ in range(5)]
+        ]
+
+        cache.set(
+            cache_key, cached_conversation_flows, timeout=settings.CACHE_TIMEOUT_ONE_DAY
+        )
+
+        with patch(
+            "apps.chat.services.django_cache_service.ConversationFlow.objects.filter"
+        ) as mock_filter:
+
+            # Call the get_cached_conversation_flows method
+            result = self.cache_service.get_cached_conversation_flows(topic_id=self.topic.id, promotional=True)
+
+        # Ensure the method returned the cached data
+        self.assertEqual(result, cached_conversation_flows)
+
+        # Ensure that the DB fetch function was not called
+        mock_filter.assert_not_called()
+
+    def test_get_cached_conversation_flows_with_empty_dataset(self):
+        result = self.cache_service.get_cached_conversation_flows(topic_id=self.topic.id, promotional=False)
+
+        # Assert the result is empty
+        self.assertEqual(result, [])
+
+        # Check cache to ensure an empty list was stored
+        cache_key = f"conversation_flows_topic_{self.topic.id}"
+        cached_data = cache.get(cache_key)
+        self.assertEqual(cached_data, [])
+
+    def test_get_cached_conversation_flows_invalid_topic_id(self):
+        # Call the method with a non-existent topic_id
+        result = self.cache_service.get_cached_conversation_flows(topic_id=99999, promotional=False)
+
+        # Assert the result is empty
+        self.assertEqual(result, [])
+
+    def test_get_cached_conversation_flows_cache_expiration(self):
+        # Create conversation flows and cache them
+        cache_key = f"conversation_flows_topic_{self.topic.id}"
+        conversation_flows = [
+            (cf.id, cf.message) for cf in [ConversationFlowFactory(topic=self.topic, is_promotional=False) for _ in range(5)]
+        ]
+
+        cache.set(
+            cache_key, conversation_flows, timeout=1  # Cache expiration in 1 second
+        )
+
+        # Wait for cache to expire
+        import time
+        time.sleep(2)
+
+        # Call the method and ensure the cache is repopulated
+        result = self.cache_service.get_cached_conversation_flows(topic_id=self.topic.id, promotional=False)
+
+        # Assert that the result matches the database contents
         self.assertEqual(len(result), len(conversation_flows))
+
+        # Check the cache was refreshed
+        cached_data = cache.get(cache_key)
+        self.assertEqual(cached_data, result)
 
     def test_get_username_from_cache(self):
         """Test when username is already in the cache."""

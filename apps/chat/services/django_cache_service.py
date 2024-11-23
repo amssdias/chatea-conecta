@@ -10,7 +10,6 @@ from apps.chat.constants.redis_keys import (
     USER_IDS,
     TOPIC_IDS,
     USER_PROMOTIONAL_IDS,
-    TOPIC_PROMOTIONAL_IDS,
 )
 from apps.chat.models import Topic, ConversationFlow
 
@@ -22,6 +21,8 @@ logger = logging.getLogger("chat_connect")
 
 class DjangoCacheService:
     USER_MESSAGE_SENT = "user_{user_id}_topic_{topic_id}_message_{message_id}"
+    CONVERSATION_FLOW = "conversation_flows_topic_{topic_id}"
+    CONVERSATION_FLOW_PROMO = "conversation_flows_promotional_topic_{topic_id}"
 
     def _get_or_set_cache(
         self, cache_key: str, fetch_function, timeout: int = 300
@@ -45,27 +46,29 @@ class DjangoCacheService:
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
 
-    def get_cached_topic_ids(self, promotional=False) -> Set[int]:
+    def get_cached_topic_ids(self) -> Set[int]:
         """Retrieve cached topic IDs, or fetch from DB and cache."""
         return self._get_or_set_cache(
-            cache_key=TOPIC_PROMOTIONAL_IDS if promotional else TOPIC_IDS,
+            cache_key=TOPIC_IDS,
             fetch_function=lambda: set(
-                Topic.objects.filter(is_promotional=promotional).values_list(
-                    "id", flat=True
-                )
+                Topic.objects.all().values_list("id", flat=True)
             ),
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
 
-    def get_cached_conversation_flows(self, topic_id: int):
+    def get_cached_conversation_flows(self, topic_id: int, promotional: bool):
         """Retrieve cached conversation flows for a topic, or fetch and cache."""
-        cache_key = f"conversation_flows_topic_{topic_id}"
+        cache_key = (
+            self.CONVERSATION_FLOW.format(topic_id)
+            if not promotional
+            else self.CONVERSATION_FLOW_PROMO.format(topic_id)
+        )
         return self._get_or_set_cache(
             cache_key=cache_key,
             fetch_function=lambda: list(
-                ConversationFlow.objects.filter(topic_id=topic_id).values_list(
-                    "id", "message"
-                )
+                ConversationFlow.objects.filter(
+                    topic_id=topic_id, is_promotional=promotional
+                ).values_list("id", "message")
             ),
             timeout=settings.CACHE_TIMEOUT_ONE_DAY,
         )
