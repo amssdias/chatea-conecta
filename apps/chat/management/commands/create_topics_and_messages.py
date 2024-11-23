@@ -8,6 +8,30 @@ class Command(BaseCommand):
     help = "Creates topics and messages"
     file_path = "apps/chat/management/data/topic_messages.json"
 
+    """
+        Command to process and save conversation flows from a JSON file.
+        
+        The command expects a JSON file containing conversation data for multiple topics. 
+        Each topic should be a key in the JSON object, with its value being a list of lists. 
+        Each inner list should contain two elements:
+        1. A message string.
+        2. A boolean indicating whether the message is promotional (e.g., designed to draw additional attention or include external content).
+        
+        ### File Format Example
+        
+        {
+          "greeting": [
+            ["Good morning, how is everyone?", false],
+            ["Don't miss out on our latest updates: {}", true]
+          ],
+          "location": [
+            ["Where are you joining us from today?", false],
+            ["Check out local events happening near you: {}", true]
+          ],
+          "activity": []
+        }
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -22,12 +46,12 @@ class Command(BaseCommand):
 
             conversation_flow_messages = set(ConversationFlow.objects.filter(topic=topic).values_list("message", flat=True))
             conversation_topics = []
-            for message in messages:
+            for message, is_promotional in messages:
                 if message in conversation_flow_messages:
                     continue
 
                 conversation_topics.append(
-                    ConversationFlow(topic=topic, message=message)
+                    ConversationFlow(topic=topic, message=message, is_promotional=is_promotional)
                 )
 
             self.stdout.write(
