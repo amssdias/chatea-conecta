@@ -59,9 +59,9 @@ class DjangoCacheService:
     def get_cached_conversation_flows(self, topic_id: int, promotional: bool):
         """Retrieve cached conversation flows for a topic, or fetch and cache."""
         cache_key = (
-            self.CONVERSATION_FLOW.format(topic_id)
+            self.CONVERSATION_FLOW.format(topic_id=topic_id)
             if not promotional
-            else self.CONVERSATION_FLOW_PROMO.format(topic_id)
+            else self.CONVERSATION_FLOW_PROMO.format(topic_id=topic_id)
         )
         return self._get_or_set_cache(
             cache_key=cache_key,
