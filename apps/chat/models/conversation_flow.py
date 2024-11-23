@@ -15,6 +15,7 @@ class ConversationFlow(models.Model):
         "Topic", related_name="conversation_flows", on_delete=models.CASCADE
     )
     message = models.CharField(max_length=300)
+    is_promotional = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
