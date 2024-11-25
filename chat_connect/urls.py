@@ -15,13 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
 from apps.chat.sitemaps import ChatStaticViewSitemap
+from chat_connect.views import health_check
 
 sitemaps = {
     "chat": ChatStaticViewSitemap,
@@ -29,6 +30,7 @@ sitemaps = {
 
 urlpatterns = [
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path("health", health_check),
 ]
 
 urlpatterns += i18n_patterns(
