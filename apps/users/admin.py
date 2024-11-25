@@ -4,9 +4,11 @@ from apps.users.models import Profile, User
 
 
 @admin.register(Profile)
-class TopicAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "gender")
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "gender", "link")
     search_fields = ("user__username",)
+    list_filter = ("gender",)
+
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -18,3 +20,4 @@ class UserAdmin(admin.ModelAdmin):
     )
     list_display = ("id", "username", "email", "first_name", "last_name", "is_staff")
     search_fields = ("username", "email", "first_name", "last_name")
+    list_filter = ("is_active", "is_staff", "is_superuser")
