@@ -256,7 +256,7 @@ body {
   padding: 1rem 2rem;
   font-size: 1.6rem;
   border-radius: 1rem;
-  background-color: #f59e0b;
+  background-color: #fde68a;
   cursor: pointer;
 }
 .btn-home {
@@ -266,9 +266,10 @@ body {
 
 .btn-close-session {
   align-self: self-end;
+  color: #813c58;
 }
 .btn-close-session:hover {
-  background-color: #d97706;
+  background-color: #fcd34d;
   transition: 0.2s;
 }
 

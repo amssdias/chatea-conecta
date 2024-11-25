@@ -3,7 +3,7 @@
     padding: 1rem 2rem;
     font-size: 1.6rem;
     border-radius: 1rem;
-    background-color: $color-dark-amber-1;
+    background-color: $color-light-amber-3;
     cursor: pointer;
 
     &-home {
@@ -14,9 +14,10 @@
 
 .btn-close-session {
     align-self: self-end;
+    color: #813c58;
 
     &:hover {
-        background-color: $color-dark-amber-2;
+        background-color: $color-light-amber-2;
         transition: 0.2s;
     }
 }
