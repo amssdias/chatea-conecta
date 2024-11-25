@@ -22,7 +22,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # - CSRF_TRUSTED_ORIGINS: Specifies trusted origins for cross-origin requests with CSRF protection.
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 # ====== Header Security Settings ======
 # - SECURE_BROWSER_XSS_FILTER: Enables the X-XSS-Protection header in compatible browsers to help prevent cross-site scripting (XSS) attacks.
@@ -33,6 +33,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "same-origin"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # STATICFILES_STORAGE controls how Django handles static files during deployment.
 # - It adds a unique hash to file names for cache-busting (e.g., main.css → main.abc123.css).
