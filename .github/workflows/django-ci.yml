@@ -101,5 +101,8 @@ jobs:
           pipenv install
 
       - name: ✅ Run Django Deployment Checks
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          CSRF_TRUSTED_ORIGINS: ${{ secrets.CSRF_TRUSTED_ORIGINS }}
         run: |
           pipenv run python manage.py check --deploy --settings=chat_connect.settings.settings_production
