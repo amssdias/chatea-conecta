@@ -1,0 +1,89 @@
+version: "2"
+services:
+  my-redis:
+    image: redis:7.2.4
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    networks:
+      - chat-network
+
+  db:
+    image: mysql
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=chat-app-db
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      - chat-network
+
+  chat-app:
+    container_name: chat-app
+    build:
+      context: .
+      dockerfile: deployments/production/Dockerfile
+    depends_on:
+      - my-redis
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=chat-app-db
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST=my-redis
+      - REDIS_PORT=6379
+      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
+      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
+      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
+      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
+    networks:
+      - chat-network
+
+  celery:
+    container_name: celery-worker
+    build:
+      context: .
+      dockerfile: deployments/production/Dockerfile
+    depends_on:
+      - my-redis
+      - chat-app
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=chat-app-db
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST=my-redis
+      - REDIS_PORT=6379
+      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
+      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
+      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
+      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
+    command: [ "celery", "-A", "chat_connect", "worker", "--loglevel=info", "--autoscale=4,2" ]
+    networks:
+      - chat-network
+
+volumes:
+  db_data:
+
+networks:
+  chat-network:
+    driver: bridge
