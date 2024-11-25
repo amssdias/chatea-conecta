@@ -131,7 +131,7 @@ class MessageServiceTestCase(TestCase):
         self.service.django_cache.get_cached_user_ids.return_value = {1}
         self.service.django_cache.get_cached_topic_ids.return_value = {101}
         self.service.django_cache.get_cached_conversation_flows.return_value = [(1, "Message 1")]
-        self.service.django_cache.has_user_sent_message.return_value = False
+        self.service.django_cache.has_message_been_sent.return_value = False
         self.service.django_cache.get_username.return_value = "test_user"
 
         result = self.service.get_message_to_send()
@@ -144,7 +144,7 @@ class MessageServiceTestCase(TestCase):
         self.service.django_cache.get_cached_user_ids.return_value = {1}
         self.service.django_cache.get_cached_topic_ids.return_value = {101}
         self.service.django_cache.get_cached_conversation_flows.return_value = [(1, "Message {}")]
-        self.service.django_cache.has_user_sent_message.return_value = False
+        self.service.django_cache.has_message_been_sent.return_value = False
         self.service.django_cache.get_username.return_value = "test_user"
         self.service.redis_connection.get_from_hash.return_value = "http://example.com/promo"
 
@@ -158,7 +158,7 @@ class MessageServiceTestCase(TestCase):
         self.service.django_cache.get_cached_user_ids.return_value = {1}
         self.service.django_cache.get_cached_topic_ids.return_value = {101}
         self.service.django_cache.get_cached_conversation_flows.return_value = [(1, "Message {}")]
-        self.service.django_cache.has_user_sent_message.return_value = False
+        self.service.django_cache.has_message_been_sent.return_value = False
         self.service.django_cache.get_username.return_value = "test_user"
         self.service.redis_connection.get_from_hash.return_value = None
 
@@ -179,7 +179,7 @@ class MessageServiceTestCase(TestCase):
         self.service.django_cache.get_cached_user_ids.side_effect = [set(), {2}]
         self.service.django_cache.get_cached_topic_ids.return_value = {201}
         self.service.django_cache.get_cached_conversation_flows.return_value = [(1, "Message")]
-        self.service.django_cache.has_user_sent_message.return_value = False
+        self.service.django_cache.has_message_been_sent.return_value = False
         self.service.django_cache.get_username.return_value = "test_user"
 
         result = self.service.get_message_to_send()
@@ -199,7 +199,7 @@ class MessageServiceTestCase(TestCase):
         self.service.django_cache.get_cached_user_ids.return_value = {1}
         self.service.django_cache.get_cached_topic_ids.return_value = {101}
         self.service.django_cache.get_cached_conversation_flows.return_value = [(1, "Message {}")]
-        self.service.django_cache.has_user_sent_message.return_value = False
+        self.service.django_cache.has_message_been_sent.return_value = False
         self.service.django_cache.get_username.return_value = "test_user"
         self.service.redis_connection.get_from_hash.return_value = "http://example.com"
 

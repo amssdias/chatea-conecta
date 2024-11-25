@@ -69,9 +69,9 @@ class MessageService:
             # Loop through conversation flows and check if user has sent a message for this flow
             for conversation_id, message in conversations_flows:
 
-                # If the user already sent a message for this conversation flow, skip it
-                if self.django_cache.has_user_sent_message(
-                    user_id, topic_id, conversation_id
+                # If message was already sent, skip it
+                if self.django_cache.has_message_been_sent(
+                    topic_id, conversation_id
                 ):
                     continue
 
@@ -83,9 +83,8 @@ class MessageService:
                 user_message["message"] = message
                 user_message["username"] = self.django_cache.get_username(user_id)
 
-                # Create the user conversation record on Redis
-                self.django_cache.mark_user_message_sent_in_redis(
-                    user_id=user_id,
+                # Create the message conversation record on Redis
+                self.django_cache.mark_message_sent_in_redis(
                     topic_id=topic_id,
                     message_id=conversation_id,
                     message=message,

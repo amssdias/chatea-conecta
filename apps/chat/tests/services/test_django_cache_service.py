@@ -459,67 +459,65 @@ class DjangoCacheServiceTest(TestCase):
             timeout=settings.CACHE_TIMEOUT_ONE_MONTH,
         )
 
-    def test_has_user_sent_message(self):
+    def test_has_message_been_sent(self):
         user_id = 1
         topic_id = 1
         message_id = 1
-        cache_key = self.cache_service.USER_MESSAGE_SENT.format(
+        cache_key = self.cache_service.MESSAGE_SENT.format(
             user_id=user_id, topic_id=topic_id, message_id=message_id
         )
         cache.set(cache_key, True, timeout=settings.CACHE_TIMEOUT_ONE_DAY)
 
-        result = self.cache_service.has_user_sent_message(user_id, topic_id, message_id)
+        result = self.cache_service.has_message_been_sent(topic_id, message_id)
 
         self.assertTrue(result)
 
-    def test_has_user_sent_message_false(self):
-        result = self.cache_service.has_user_sent_message(1, 1, 1)
+    def test_has_message_been_sent_false(self):
+        result = self.cache_service.has_message_been_sent(1, 1)
         self.assertFalse(result)
 
     @patch("apps.chat.services.django_cache_service.cache.get")
-    def test_has_user_sent_message_cache_hit(self, mock_cache_get):
-        user_id = 1
+    def test_has_message_been_sent_cache_hit(self, mock_cache_get):
         topic_id = 1
         message_id = 1
-        cache_key = self.cache_service.USER_MESSAGE_SENT.format(
-            user_id=user_id, topic_id=topic_id, message_id=message_id
+        cache_key = self.cache_service.MESSAGE_SENT.format(
+            topic_id=topic_id, message_id=message_id
         )
         mock_cache_get.return_value = True  # Simulate cache hit
 
-        result = self.cache_service.has_user_sent_message(user_id, topic_id, message_id)
+        result = self.cache_service.has_message_been_sent(topic_id, message_id)
 
         self.assertTrue(result)
         mock_cache_get.assert_called_once_with(cache_key)
 
     @patch("apps.chat.services.django_cache_service.cache.get")
-    def test_has_user_sent_message_cache_miss(self, mock_cache_get):
+    def test_has_message_been_sent_cache_miss(self, mock_cache_get):
         user_id = 1
         topic_id = 1
         message_id = 1
-        cache_key = self.cache_service.USER_MESSAGE_SENT.format(
+        cache_key = self.cache_service.MESSAGE_SENT.format(
             user_id=user_id, topic_id=topic_id, message_id=message_id
         )
         mock_cache_get.return_value = None  # Simulate cache miss
 
         # Act
-        result = self.cache_service.has_user_sent_message(user_id, topic_id, message_id)
+        result = self.cache_service.has_message_been_sent(topic_id, message_id)
 
         # Assert
         self.assertFalse(result)
         mock_cache_get.assert_called_once_with(cache_key)
 
     @patch("apps.chat.services.django_cache_service.cache.set")
-    def test_mark_user_message_sent_in_redis_with_default_timeout(self, mock_cache_set):
-        user_id = 1
+    def test_mark_message_sent_in_redis_with_default_timeout(self, mock_cache_set):
         topic_id = 1
         message_id = 1
         message = "Hello"
-        expected_cache_key = self.cache_service.USER_MESSAGE_SENT.format(
-            user_id=user_id, topic_id=topic_id, message_id=message_id
+        expected_cache_key = self.cache_service.MESSAGE_SENT.format(
+            topic_id=topic_id, message_id=message_id
         )
 
-        self.cache_service.mark_user_message_sent_in_redis(
-            user_id, topic_id, message_id, message
+        self.cache_service.mark_message_sent_in_redis(
+            topic_id, message_id, message
         )
 
         mock_cache_set.assert_called_once_with(
@@ -527,66 +525,63 @@ class DjangoCacheServiceTest(TestCase):
         )
 
     @patch("apps.chat.services.django_cache_service.cache.set")
-    def test_mark_user_message_sent_in_redis_with_custom_timeout(self, mock_cache_set):
-        user_id = 1
+    def test_mark_message_sent_in_redis_with_custom_timeout(self, mock_cache_set):
         topic_id = 1
         message_id = 1
         message = "Hello"
-        expected_cache_key = self.cache_service.USER_MESSAGE_SENT.format(
-            user_id=user_id, topic_id=topic_id, message_id=message_id
+        expected_cache_key = self.cache_service.MESSAGE_SENT.format(
+            topic_id=topic_id, message_id=message_id
         )
         custom_timeout = settings.CACHE_TIMEOUT_FIVE_MIN
-        self.cache_service.mark_user_message_sent_in_redis(
-            user_id, topic_id, message_id, message, timeout=custom_timeout
+        self.cache_service.mark_message_sent_in_redis(
+            topic_id, message_id, message, timeout=custom_timeout
         )
 
         mock_cache_set.assert_called_once_with(
             expected_cache_key, message, timeout=custom_timeout
         )
 
-    def test_mark_user_message_sent_in_redis_integration_with_cache_default_timeout(self):
-        user_id = 1
+    def test_mark_message_sent_in_redis_integration_with_cache_default_timeout(self):
         topic_id = 1
         message_id = 1
         message = "Hello"
-        expected_cache_key = self.cache_service.USER_MESSAGE_SENT.format(
-            user_id=user_id, topic_id=topic_id, message_id=message_id
+        expected_cache_key = self.cache_service.MESSAGE_SENT.format(
+            topic_id=topic_id, message_id=message_id
         )
 
-        self.cache_service.mark_user_message_sent_in_redis(
-            user_id, topic_id, message_id, message
+        self.cache_service.mark_message_sent_in_redis(
+            topic_id, message_id, message
         )
 
         cached_value = cache.get(expected_cache_key)
         self.assertEqual(cached_value, message)
 
-    def test_mark_user_message_sent_in_redis_integration_with_cache_custom_timeout(self):
+    def test_mark_message_sent_in_redis_integration_with_cache_custom_timeout(self):
         user_id = 1
         topic_id = 1
         message_id = 1
         message = "Hello"
-        expected_cache_key = self.cache_service.USER_MESSAGE_SENT.format(
+        expected_cache_key = self.cache_service.MESSAGE_SENT.format(
             user_id=user_id, topic_id=topic_id, message_id=message_id
         )
         custom_timeout = settings.CACHE_TIMEOUT_FIVE_MIN
-        self.cache_service.mark_user_message_sent_in_redis(
-            user_id, topic_id, message_id, message, timeout=custom_timeout
+        self.cache_service.mark_message_sent_in_redis(
+            topic_id, message_id, message, timeout=custom_timeout
         )
 
         cached_value = cache.get(expected_cache_key)
         self.assertEqual(cached_value, message)
 
     def test_message_not_in_cache_after_timeout_integration(self):
-        user_id = 1
         topic_id = 1
         message_id = 1
         message = "Hello"
-        expected_cache_key = self.cache_service.USER_MESSAGE_SENT.format(
-            user_id=user_id, topic_id=topic_id, message_id=message_id
+        expected_cache_key = self.cache_service.MESSAGE_SENT.format(
+            topic_id=topic_id, message_id=message_id
         )
 
-        self.cache_service.mark_user_message_sent_in_redis(
-            user_id, topic_id, message_id, message, timeout=2
+        self.cache_service.mark_message_sent_in_redis(
+            topic_id, message_id, message, timeout=2
         )
 
         # Wait for cache to expire
