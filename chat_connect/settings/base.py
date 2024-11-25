@@ -43,8 +43,9 @@ DJANGO_APPS = [
 
 MY_PROJECT_APPS = [
     "apps.chat",
-    "apps.users"
+    "apps.users",
 ]
+
 EXTERNAL_APPS = [
     "daphne"
 ]
@@ -148,7 +149,7 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 # Where it will store when run collectstatic
 STATIC_ROOT = BASE_DIR / "prod_static"
