@@ -127,6 +127,9 @@ class ChatView {
         const lastMessage = chatBox.lastElementChild;
         const msg = convertLinksToAnchors(message);
 
+        // If the user is not at the bottom of the chat, don't scrool, if yes, scroll
+        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight - chatBox.scrollTop <= 5;
+
         // If last sent was by same user, then only add a paragraph to it
         if (lastMessage && lastMessage.dataset.username === username) {
 
@@ -147,9 +150,8 @@ class ChatView {
 
         }
 
-        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight >= chatBox.scrollTop + 1;
-
         if (shouldScroll) {
+            console.log("Scrolling...")
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
@@ -161,6 +163,8 @@ class ChatView {
         const chatBox = this.activeChat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
         const msg = convertLinksToAnchors(message);
+
+        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight - chatBox.scrollTop <= 5;
 
         // If last sent was by current user append to the div
         if (lastMessage && lastMessage.dataset.username === this._username) {
@@ -181,9 +185,9 @@ class ChatView {
             chatBox.appendChild(div);
 
         }
-        const shouldScroll = chatBox.scrollHeight - chatBox.clientHeight >= chatBox.scrollTop + 1;
 
         if (shouldScroll) {
+            console.log("Scrolling 2....")
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
