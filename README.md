@@ -9,10 +9,14 @@
 [![Tech Stack](https://img.shields.io/badge/Stack-Django%20%7C%20Celery%20%7C%20WebSocket-4285F4)]()
 [![Celery](https://img.shields.io/badge/Celery-4caf50?logo=celery&logoColor=white)](https://docs.celeryproject.org/)
 [![WebSocket](https://img.shields.io/badge/WebSocket-007acc?logo=websocket&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+![Django Translations](https://img.shields.io/badge/Django--Translations-i18n-important?logo=django&color=092E20)
 
 ![Python Badge](https://img.shields.io/badge/Python-3.9-blue?logo=python)
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
+![AWS S3](https://img.shields.io/badge/AWS_S3-FF9900?style=flat&logo=amazon-aws&logoColor=white)
+![NGINX](https://img.shields.io/badge/NGINX-269539?style=flat&logo=nginx&logoColor=white)
+
 
 <h1 align=center>Chatea Conecta 🌍💬</h1>
 
@@ -68,7 +72,6 @@ REDIS_PASSWORD=<redis-password>
 DJANGO_REDIS_CACHE_DB=<redis-cache-db-index>
 REDIS_DB_CHANNEL=<redis-channel-db-index>
 REDIS_DB_CELERY=<redis-celery-db-index>
-ENVIRON=<development/production>
 SENTRY_DNS=<sentry-dns>
 ```
 
@@ -81,7 +84,7 @@ requirepass <your-redis-password>
 4. 🚀 Run the application with Docker Compose:
 
 ```shell
-docker-compose up --build
+docker-compose -f docker-compose.dev.yml up --build
 ```
 
 The application will be accessible at http://localhost:8000.
@@ -117,7 +120,7 @@ COPY . .
 EXPOSE 8000
 
 # Command to run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--settings=chat_connect.settings.settings_development"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
 
 ### Explanation
