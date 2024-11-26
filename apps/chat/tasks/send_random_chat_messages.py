@@ -24,7 +24,7 @@ def send_random_messages(group):
         user_message = service.get_message_to_send()
 
         if user_message:
-            time.sleep(random.randint(1, 3))
+            time.sleep(random.randint(1, 5))
             async_to_sync(channel_layer.group_send)(
                 group,
                 {

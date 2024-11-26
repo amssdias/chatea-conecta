@@ -21,7 +21,7 @@ class MessageService:
         self.redis_connection = RedisService
 
     def get_message_to_send(self) -> Optional[Dict]:
-        is_promotional = False
+        is_promotional = self._should_select_promotional_user()
         self.store_user_promotional_links(is_promotional)
 
         user_ids = self.django_cache.get_cached_user_ids(promotional=is_promotional)
@@ -109,6 +109,8 @@ class MessageService:
     @staticmethod
     def _should_select_promotional_user() -> bool:
         """Return True with 35% chance to select a promotional user."""
+        if hasattr(settings, "SEND_PROMOTIONAL_MESSAGES") and not settings.SEND_PROMOTIONAL_MESSAGES:
+            return False
         return random.choices([True, False], weights=[0.35, 0.65])[0]
 
     @staticmethod
