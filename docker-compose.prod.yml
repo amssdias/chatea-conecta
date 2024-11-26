@@ -86,6 +86,11 @@ services:
       - REDIS_DB_CELERY=${REDIS_DB_CELERY}
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
     command: [ "celery", "-A", "chat_connect", "worker", "--loglevel=info", "--autoscale=4,2" ]
+    healthcheck:
+      test: ["CMD", "celery", "-A", "chat_connect", "status"]
+      interval: 2m
+      timeout: 10s
+      retries: 3
     networks:
       - chat-network
 
