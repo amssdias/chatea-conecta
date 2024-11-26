@@ -21,7 +21,7 @@ class MessageService:
         self.redis_connection = RedisService
 
     def get_message_to_send(self) -> Optional[Dict]:
-        is_promotional = self._should_select_promotional_user()
+        is_promotional = False
         self.store_user_promotional_links(is_promotional)
 
         user_ids = self.django_cache.get_cached_user_ids(promotional=is_promotional)
