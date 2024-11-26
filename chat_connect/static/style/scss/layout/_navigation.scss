@@ -24,6 +24,12 @@
             filter: invert(100%);
             margin: 0rem 0.6rem;
         }
+
+        h2 {
+            @include respond(phone) {
+                font-size: 2.6rem;
+            }
+        }
     }
 
     & form {

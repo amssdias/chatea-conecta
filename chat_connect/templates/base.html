@@ -12,7 +12,7 @@
     <meta name="keywords" content="{% trans 'anonymous chat, free chat room, online chat, global chat, adult chat room' %}">
     <meta name="author" content="Andre Dias">
 
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 
     {% for hreflang in hreflang_urls %}

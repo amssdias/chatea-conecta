@@ -15,7 +15,7 @@
     height: 100%;
 
     &__header {
-        height: 10%;
+        // height: 10%;
 
         &-title {
             padding: 2rem;
@@ -28,6 +28,10 @@
             font-weight: 400;
 
             letter-spacing: 0.2rem;
+
+            @include respond(phone) {
+                padding: 1rem 0rem;
+            }
 
         }
 
@@ -46,7 +50,7 @@
         padding: 2rem 12rem;
 
         font-size: 1.4rem;
-        height: 75%;
+        height: 65%;
 
         background-color: $color-light-amber;
 

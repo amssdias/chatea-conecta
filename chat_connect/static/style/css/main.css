@@ -402,9 +402,6 @@ body {
   width: 100%;
   height: 100%;
 }
-.chat__header {
-  height: 10%;
-}
 .chat__header-title {
   padding: 2rem;
   font-size: 1.6rem;
@@ -416,6 +413,11 @@ body {
   font-weight: 400;
   letter-spacing: 0.2rem;
 }
+@media only screen and (max-width: 37.5em) {
+  .chat__header-title {
+    padding: 1rem 0rem;
+  }
+}
 .chat__header-close {
   width: 3rem;
   margin-left: auto;
@@ -426,7 +428,7 @@ body {
   border-radius: 1rem;
   padding: 2rem 12rem;
   font-size: 1.4rem;
-  height: 75%;
+  height: 65%;
   background-color: #fef3c7;
   overflow-y: scroll;
 }
@@ -512,7 +514,7 @@ body {
 }
 
 .chat-form {
-  height: 10%;
+  height: 15%;
   display: flex;
 }
 .chat-form-input {
@@ -764,8 +766,14 @@ body {
   margin: 5rem 0rem;
   border: 2px solid #d97706;
   display: flex;
-  height: 90rem;
+  max-height: 90rem;
+  min-height: 60rem;
   background-color: #813c58;
+}
+@media only screen and (max-width: 37.5em) {
+  .chat-app {
+    margin: 2rem 0rem;
+  }
 }
 .chat-app__container {
   display: flex;
@@ -870,6 +878,11 @@ body {
   height: 40px;
   filter: invert(100%);
   margin: 0rem 0.6rem;
+}
+@media only screen and (max-width: 37.5em) {
+  .nav-bar-logo h2 {
+    font-size: 2.6rem;
+  }
 }
 .nav-bar form {
   margin-left: auto;
