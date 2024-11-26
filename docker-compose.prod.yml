@@ -51,6 +51,12 @@ services:
       - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
       - REDIS_DB_CELERY=${REDIS_DB_CELERY}
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 2m30s  # Check every 2 minute and 30 seconds
+      timeout: 10s     # Fail if the check takes longer than 10 seconds
+      retries: 3       # Mark as unhealthy after 3 consecutive failures
+      start_period: 30s  # Give the container 30 seconds after startup before checking
     volumes:
       - /var/www/static:/usr/src/app/chat_connect/prod_static
     networks:

@@ -29,10 +29,6 @@ RUN python manage.py collectstatic --noinput
 # Expose the application port
 EXPOSE 8000
 
-# Add a health check
-HEALTHCHECK --interval=30s --timeout=5s \
-    CMD curl --fail http://localhost:8000/health || exit 1
-
 # Switch to a non-root user
 RUN useradd -m chatea-conecta
 USER chatea-conecta
