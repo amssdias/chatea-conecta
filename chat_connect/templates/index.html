@@ -33,7 +33,7 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
 
     <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
         {% csrf_token %}
-        <input class="form-nickname__input" type="text" name="username" aria-label="{% trans 'Username' %}" placeholder="{% trans 'Escribe tu apodo...' %}">
+        <input class="form-nickname__input" type="text" name="username" aria-label="{% trans 'Username' %}" placeholder="{% trans 'Write your username...' %}">
         <div class="form-nickname__legal-confirmations">
             <div class="margin-bottom-xxsmall">
                 <input class="form-nickname__checkbox margin-right-xxsmall" aria-label="{% trans 'Terms and conditions' %}" required type="checkbox" name="terms-conditions">
