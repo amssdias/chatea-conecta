@@ -23,15 +23,11 @@ COPY . .
 ENV DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
 ENV PYTHONUNBUFFERED=1
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Create necessary directories
+RUN mkdir -p /usr/src/app/chat_connect/prod_static
 
 # Expose the application port
 EXPOSE 8000
-
-# Switch to a non-root user
-RUN useradd -m chatea-conecta
-USER chatea-conecta
 
 # Start the application
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "chat_connect.asgi:application"]
