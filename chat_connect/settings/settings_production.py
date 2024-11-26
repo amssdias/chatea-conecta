@@ -11,7 +11,7 @@ MIDDLEWARE.insert(4, "django.middleware.cache.FetchFromCacheMiddleware") # Retri
 # - SECURE_HSTS_SECONDS: Instructs browsers to remember to only connect to the site over HTTPS for the specified duration (1 year in seconds).
 # - SECURE_HSTS_PRELOAD: Signals the site's readiness for inclusion in browser preload lists, enforcing HTTPS globally without needing an initial visit.
 # - SECURE_HSTS_INCLUDE_SUBDOMAINS: Extends the HTTPS requirement to all subdomains, ensuring they also enforce HTTPS.
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False # Use NGINX as reverse proxy
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
