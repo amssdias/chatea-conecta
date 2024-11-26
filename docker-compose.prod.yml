@@ -51,6 +51,8 @@ services:
       - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
       - REDIS_DB_CELERY=${REDIS_DB_CELERY}
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
+    volumes:
+      - /var/www/static:/usr/src/app/chat_connect/prod_static
     networks:
       - chat-network
 
