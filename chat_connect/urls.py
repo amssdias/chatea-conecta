@@ -34,7 +34,7 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
-    path("admin/", admin.site.urls),
+    path("chatea-admin/", admin.site.urls),
     path("", include("apps.chat.urls")),
 )
 
