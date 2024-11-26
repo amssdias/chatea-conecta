@@ -428,7 +428,7 @@ body {
   border-radius: 1rem;
   padding: 2rem 12rem;
   font-size: 1.4rem;
-  height: 65%;
+  height: 75%;
   background-color: #fef3c7;
   overflow-y: scroll;
 }
@@ -469,6 +469,8 @@ body {
 @media only screen and (max-width: 37.5em) {
   .chat__message-text {
     max-width: 80%;
+    padding: 0.3rem 1rem;
+    margin-top: 0.5rem;
   }
 }
 
@@ -514,7 +516,7 @@ body {
 }
 
 .chat-form {
-  height: 15%;
+  height: 10%;
   display: flex;
 }
 .chat-form-input {
@@ -766,13 +768,13 @@ body {
   margin: 5rem 0rem;
   border: 2px solid #d97706;
   display: flex;
-  max-height: 90rem;
-  min-height: 60rem;
+  height: 90rem;
   background-color: #813c58;
 }
 @media only screen and (max-width: 37.5em) {
   .chat-app {
     margin: 2rem 0rem;
+    height: 60rem;
   }
 }
 .chat-app__container {
@@ -789,6 +791,11 @@ body {
 @media only screen and (max-width: 56.25em) {
   .chat-app__container {
     padding: 1rem;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .chat-app__container {
+    padding: 0rem;
   }
 }
 

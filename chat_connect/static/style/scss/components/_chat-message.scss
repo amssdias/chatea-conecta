@@ -50,7 +50,7 @@
         padding: 2rem 12rem;
 
         font-size: 1.4rem;
-        height: 65%;
+        height: 75%;
 
         background-color: $color-light-amber;
 
@@ -97,6 +97,8 @@
 
             @include respond(phone) {
                 max-width: 80%;
+                padding: 0.3rem 1rem;
+                margin-top: 0.5rem;
             }
         }
 
