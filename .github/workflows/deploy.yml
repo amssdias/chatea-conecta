@@ -1,0 +1,90 @@
+name: 🚀 Deploy to VPS
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_collectstatic:
+        description: "Run collectstatic?"
+        required: false
+        default: false
+        type: boolean
+      run_compilemessages:
+        description: "Run compilemessages?"
+        required: false
+        default: false
+        type: boolean
+      clear_redis:
+        description: "Clear redis?"
+        required: false
+        default: false
+        type: boolean
+      run_migrations:
+        description: "Run migrations?"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_DIR: /var/www/chatea-conecta
+      BRANCH: master
+      RUN_COLLECTSTATIC: ${{ inputs.run_collectstatic }}
+      RUN_COMPILEMESSAGES: ${{ inputs.run_compilemessages }}
+      CLEAR_REDIS: ${{ inputs.clear_redis }}
+      RUN_MIGRATIONS: ${{ inputs.run_migrations }}
+
+    steps:
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Navigating to project directory..."
+            cd $PROJECT_DIR || { echo "Project directory not found. Exiting."; exit 1; }
+
+            echo "Pulling latest code from branch $BRANCH..."
+            git fetch origin $BRANCH || { echo "Git fetch failed. Exiting."; exit 1; }
+            git reset --hard origin/$BRANCH || { echo "Git reset failed. Exiting."; exit 1; }
+            
+            # Clear Redis if input is True
+            if [ "$CLEAR_REDIS" = "true" ]; then
+              echo "Clearing Redis database..."
+              docker exec my-redis redis-cli FLUSHALL || { echo "Redis clearing failed. Exiting."; exit 1; }
+            fi
+
+            echo "Building Docker containers..."
+            docker-compose -f docker-compose.prod.yml build || { echo "Docker build failed. Exiting."; exit 1; }
+
+            echo "Restarting Docker services..."
+            docker-compose -f docker-compose.prod.yml down || { echo "Docker shutdown failed. Exiting."; exit 1; }
+            docker-compose -f docker-compose.prod.yml up -d || { echo "Docker startup failed. Exiting."; exit 1; }
+            
+            # Run migrations if input is true
+            if [ "$RUN_MIGRATIONS" = "true" ]; then
+              echo "Running database migrations..."
+              docker exec chat-app python manage.py migrate --noinput || { echo "Database migrations failed. Exiting."; exit 1; }
+            fi
+            
+            # Run collectstatic if input is true
+            if [ "$RUN_COLLECTSTATIC" = "true" ]; then
+              echo "Collecting static files..."
+              docker exec chat-app python manage.py collectstatic --noinput || { echo "Collectstatic failed. Exiting."; exit 1; }
+            fi
+
+            # Run compilemessages if input is true
+            if [ "$RUN_COMPILEMESSAGES" = "true" ]; then
+              echo "Compiling messages..."
+              docker exec chat-app python manage.py compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
+            fi
+
+            echo "Restarting NGINX..."
+            sudo systemctl restart nginx || { echo "NGINX restart failed. Exiting."; exit 1; }
+
+            echo "Deployment complete!"

@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     default-libmysqlclient-dev \
     pkg-config \
     python3-dev \
+    gettext \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements for caching
