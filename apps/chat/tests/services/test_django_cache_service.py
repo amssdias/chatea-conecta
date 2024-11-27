@@ -159,7 +159,11 @@ class DjangoCacheServiceTest(TestCase):
                 promotional=True
             )
             self.assertEqual(result_promotional, promotional_user_ids)
-            mock_filter.assert_called_once_with(profile__link__isnull=False)
+            mock_filter.assert_called_once_with(
+                is_superuser=False,
+                is_staff=False,
+                profile__link__isnull=False
+            )
 
             # Test regular user IDs (cache hit)
             result_regular = self.cache_service.get_cached_user_ids(promotional=False)

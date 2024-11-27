@@ -39,7 +39,11 @@ class DjangoCacheService:
         return self._get_or_set_cache(
             cache_key=USER_PROMOTIONAL_IDS if promotional else USER_IDS,
             fetch_function=lambda: set(
-                User.objects.filter(profile__link__isnull=not promotional).values_list(
+                User.objects.filter(
+                    is_superuser=False,
+                    is_staff=False,
+                    profile__link__isnull=not promotional
+                ).values_list(
                     "id", flat=True
                 )
             ),
