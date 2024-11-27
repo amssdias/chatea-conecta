@@ -39,7 +39,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: PROJECT_DIR,BRANCH,RUN_COLLECTSTATIC,RUN_COMPILEMESSAGES,CLEAR_REDIS,RUN_MIGRATIONS
+          envs: PROJECT_DIR,BRANCH,RUN_COLLECTSTATIC,CLEAR_REDIS,RUN_MIGRATIONS,REDIS_PASSWORD
           script: |
             echo "Navigating to project directory..."
             cd $PROJECT_DIR || { echo "Project directory not found. Exiting."; exit 1; }
@@ -47,12 +47,6 @@ jobs:
             echo "Pulling latest code from branch $BRANCH..."
             git fetch origin $BRANCH || { echo "Git fetch failed. Exiting."; exit 1; }
             git reset --hard origin/$BRANCH || { echo "Git reset failed. Exiting."; exit 1; }
-            
-            # Clear Redis if input is True
-            if [ "$CLEAR_REDIS" = "true" ]; then
-              echo "Clearing Redis database..."
-              docker exec redis redis-cli -a $REDIS_PASSWORD FLUSHALL || { echo "Redis clearing failed. Exiting."; exit 1; }
-            fi
 
             echo "Building Docker containers..."
             docker-compose -f docker-compose.prod.yml build || { echo "Docker build failed. Exiting."; exit 1; }
@@ -64,6 +58,12 @@ jobs:
             # Run compilemessages
             echo "Compiling messages..."
             docker exec chat-app python manage.py compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
+            
+            # Clear Redis if input is True
+            if [ "$CLEAR_REDIS" = "true" ]; then
+              echo "Clearing Redis database..."
+              docker exec redis redis-cli -a $REDIS_PASSWORD FLUSHALL || { echo "Redis clearing failed. Exiting."; exit 1; }
+            fi
             
             # Run migrations if input is true
             if [ "$RUN_MIGRATIONS" = "true" ]; then
