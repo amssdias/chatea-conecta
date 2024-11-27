@@ -4,6 +4,7 @@
 [redis-download]: https://redis.io/download/
 
 ![Sentry](https://img.shields.io/badge/Sentry-Monitoring-informational?logo=sentry&color=362D59)
+![AWS CloudWatch](https://img.shields.io/badge/AWS_CloudWatch-Monitoring-orange?logo=amazon-aws&logoColor=white)
 [![🔍 Validate Code and Migrations](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml/badge.svg)](https://github.com/amssdias/chatea-conecta/actions/workflows/django-ci.yml)
 
 [![Tech Stack](https://img.shields.io/badge/Stack-Django%20%7C%20Celery%20%7C%20WebSocket-4285F4)]()
