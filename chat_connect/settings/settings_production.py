@@ -85,7 +85,7 @@ LOGGING = {
             "level": "INFO",
             "class": "watchtower.CloudWatchLogHandler",
             "log_group": "chatea-conecta",
-            "stream_name": "django-app",
+            "stream_name": f"{os.getenv('APP_NAME', 'chatea-conecta')}-stream",
             "formatter": "verbose",
         },
         "console": {
