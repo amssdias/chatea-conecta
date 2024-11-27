@@ -48,9 +48,6 @@ jobs:
             git fetch origin $BRANCH || { echo "Git fetch failed. Exiting."; exit 1; }
             git reset --hard origin/$BRANCH || { echo "Git reset failed. Exiting."; exit 1; }
             
-            echo "Compiling messages..."
-            django-admin compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
-            
             # Clear Redis if input is True
             if [ "$CLEAR_REDIS" = "true" ]; then
               echo "Clearing Redis database..."
@@ -63,6 +60,10 @@ jobs:
             echo "Restarting Docker services..."
             docker-compose -f docker-compose.prod.yml down || { echo "Docker shutdown failed. Exiting."; exit 1; }
             docker-compose -f docker-compose.prod.yml up -d || { echo "Docker startup failed. Exiting."; exit 1; }
+            
+            # Run compilemessages
+            echo "Compiling messages..."
+            docker exec chat-app python manage.py compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
             
             # Run migrations if input is true
             if [ "$RUN_MIGRATIONS" = "true" ]; then
