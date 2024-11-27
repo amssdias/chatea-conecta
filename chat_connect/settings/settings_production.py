@@ -81,14 +81,13 @@ LOGGING = {
             "class": "sentry_sdk.integrations.logging.EventHandler",
             "formatter": "verbose",
         },
-        # TODO: Config cloudwatch handler
-        # "cloudwatch": {
-        #     "level": "INFO",  # Log info and above to CloudWatch
-        #     "class": "watchtower.CloudWatchLogHandler",
-        #     "log_group": "your-log-group",  # Replace with your CloudWatch Log Group
-        #     "stream_name": "django-app",  # Replace with your CloudWatch log stream name
-        #     "formatter": "verbose",
-        # },
+        "cloudwatch": {
+            "level": "INFO",
+            "class": "watchtower.CloudWatchLogHandler",
+            "log_group": "chatea-conecta",
+            "stream_name": "django-app",
+            "formatter": "verbose",
+        },
         "console": {
             "level": "INFO",
             "class": "logging.StreamHandler",
@@ -98,15 +97,15 @@ LOGGING = {
     # Define the loggers themselves
     "loggers": {
         "django": {  # Django core logs
-            "handlers": ["sentry"],  # Log to Sentry and CloudWatch
-            "level": "WARNING",
+            "handlers": ["sentry", "cloudwatch", "console"],
+            "level": "INFO",
             "propagate": True,
         },
-        # "chat_connect": {
-        #     "handlers": ["cloudwatch"],  # Log only to CloudWatch
-        #     "level": "INFO",
-        #     "propagate": False,
-        # },
+        "chat_connect": {
+            "handlers": ["sentry", "cloudwatch", "console"],
+            "level": "INFO",
+            "propagate": False,
+        },
     },
 }
 

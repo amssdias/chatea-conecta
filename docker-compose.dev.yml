@@ -53,6 +53,9 @@ services:
       - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
       - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
       - REDIS_DB_CELERY=${REDIS_DB_CELERY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_development
     networks:
       - chat-network
@@ -81,6 +84,10 @@ services:
       - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
       - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
       - REDIS_DB_CELERY=${REDIS_DB_CELERY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_development
     command: [ "celery", "-A", "chat_connect", "worker", "--loglevel=info"]
     networks:
       - chat-network

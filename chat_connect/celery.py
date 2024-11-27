@@ -1,11 +1,16 @@
 import os
 
+from django.conf import settings
 from celery import Celery
 
 # Set the default Django settings module for the "celery" program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chat_connect.settings")
 
 app = Celery("chat_connect")
+
+if hasattr(settings, "LOGGING"):
+    import logging.config
+    logging.config.dictConfig(settings.LOGGING)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

@@ -14,7 +14,7 @@ logger = logging.getLogger("chat_connect")
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        logger.info("---- CONNECTED TO WEBSOCKET ----")
+        logger.info(f"---- {self.scope['cookies'].get('username')} CONNECTED TO WEBSOCKET ----")
         self.groups = set()
         await self.accept()
 
@@ -28,7 +28,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         3. Reassess the activity status of the chat to update the `HAS_USERS` key.
         """
 
-        logger.info("---- DISCONNECTING FROM WEBSOCKET ----")
+        logger.info(f"---- {self.scope['cookies'].get('username')} DISCONNECTING FROM WEBSOCKET ----")
         await self.remove_user_from_active_list()
         await self.unregister_user_from_all_groups()
         await self.update_chat_activity_status()
