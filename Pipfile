@@ -15,6 +15,7 @@ mysqlclient = "*"
 factory-boy = "*"
 sentry-sdk = {extras = ["django"], version = "*"}
 boto3 = "*"
+watchtower = "*"
 
 [dev-packages]
 django-browser-reload = "*"
