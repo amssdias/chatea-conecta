@@ -8,11 +8,6 @@ on:
         required: false
         default: false
         type: boolean
-      run_compilemessages:
-        description: "Run compilemessages?"
-        required: false
-        default: false
-        type: boolean
       clear_redis:
         description: "Clear redis?"
         required: false
@@ -37,9 +32,9 @@ jobs:
           PROJECT_DIR: "/var/www/chatea-conecta"
           BRANCH: "master"
           RUN_COLLECTSTATIC: ${{ inputs.run_collectstatic }}
-          RUN_COMPILEMESSAGES: ${{ inputs.run_compilemessages }}
           CLEAR_REDIS: ${{ inputs.clear_redis }}
           RUN_MIGRATIONS: ${{ inputs.run_migrations }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
@@ -48,18 +43,18 @@ jobs:
           script: |
             echo "Navigating to project directory..."
             cd $PROJECT_DIR || { echo "Project directory not found. Exiting."; exit 1; }
-            
-            echo "Environment variables:"
-            printenv
 
             echo "Pulling latest code from branch $BRANCH..."
             git fetch origin $BRANCH || { echo "Git fetch failed. Exiting."; exit 1; }
             git reset --hard origin/$BRANCH || { echo "Git reset failed. Exiting."; exit 1; }
             
+            echo "Compiling messages..."
+            django-admin compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
+            
             # Clear Redis if input is True
             if [ "$CLEAR_REDIS" = "true" ]; then
               echo "Clearing Redis database..."
-              docker exec my-redis redis-cli FLUSHALL || { echo "Redis clearing failed. Exiting."; exit 1; }
+              docker exec redis redis-cli -a $REDIS_PASSWORD FLUSHALL || { echo "Redis clearing failed. Exiting."; exit 1; }
             fi
 
             echo "Building Docker containers..."
@@ -79,12 +74,6 @@ jobs:
             if [ "$RUN_COLLECTSTATIC" = "true" ]; then
               echo "Collecting static files..."
               docker exec chat-app python manage.py collectstatic --noinput || { echo "Collectstatic failed. Exiting."; exit 1; }
-            fi
-
-            # Run compilemessages if input is true
-            if [ "$RUN_COMPILEMESSAGES" = "true" ]; then
-              echo "Compiling messages..."
-              docker exec chat-app python manage.py compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
             fi
 
             echo "Restarting NGINX..."
