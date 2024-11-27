@@ -68,7 +68,7 @@ jobs:
           pipenv install
 
       - name: 📋 Run makemigrations (Check for Pending Migrations)
-        run: pipenv run python manage.py makemigrations --check --dry-run
+        run: pipenv run python manage.py makemigrations --check --dry-run --settings=chat_connect.settings.settings_tests
 
   check-deploy:
     name: 🚀 Deployment Checks
@@ -104,5 +104,6 @@ jobs:
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           CSRF_TRUSTED_ORIGINS: ${{ secrets.CSRF_TRUSTED_ORIGINS }}
+          SKIP_CLOUDWATCH: "1"
         run: |
           pipenv run python manage.py check --deploy --settings=chat_connect.settings.settings_production

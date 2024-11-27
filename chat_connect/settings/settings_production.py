@@ -109,6 +109,9 @@ LOGGING = {
     },
 }
 
+if os.getenv("SKIP_CLOUDWATCH"):
+    LOGGING = {"version": 1}
+
 # Time in minutes to expire messages sent
 CLEAR_MESSAGES_EXPIRATION_TIME = 10
 
