@@ -22,7 +22,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
 from apps.chat.sitemaps import ChatStaticViewSitemap
-from chat_connect.views import health_check
+from chat_connect.views import health_check, robots_txt
 
 sitemaps = {
     "chat": ChatStaticViewSitemap,
@@ -30,6 +30,7 @@ sitemaps = {
 
 urlpatterns = [
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path("robots.txt", robots_txt, name="robots_txt"),
     path("health/", health_check),
 ]
 

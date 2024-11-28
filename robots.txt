@@ -1,4 +1,7 @@
-User-agent: *
+User-agent: Googlebot
 Disallow:
+
+User-agent: *
+Disallow: /
 
 Sitemap: https://chatea-conecta.com/sitemap.xml
