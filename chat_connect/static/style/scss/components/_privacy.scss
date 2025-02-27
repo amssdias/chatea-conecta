@@ -6,7 +6,7 @@
     }
 
     @include respond(phone) {
-        padding: 0rem 3rem;
+        padding: 2rem 3rem;
     }
 
     &-heading {
