@@ -5,7 +5,7 @@ from django.utils.translation import activate, get_language
 
 class ChatStaticViewSitemap(Sitemap):
     changefreq = "daily"
-    languages = ["es", "en-us", "en"]
+    languages = ["es", "en"]
 
     def items(self):
         # Return a list of named URLs from the chat app

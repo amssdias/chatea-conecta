@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
 
 TIME_ZONE = "UTC" # Default time zone for the application.
 
@@ -137,9 +137,8 @@ USE_TZ = True # Enables timezone-aware datetime support.
 
 LANGUAGES = [
     ("en", "English"),
-    ("en-us", "American English"),
     ("es", "Spanish"),
-    ("pt", "Portuguese"),
+    # ("pt", "Portuguese"),
 ]
 
 LOCALE_PATHS = [
