@@ -3,11 +3,11 @@
 {% load i18n %}
 
 {% block title %}
-Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
+{% trans "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta" %}
 {% endblock title %}
 
 {% block description %}
-{% trans "Join an instant chat with just a nickname! No registration, no hassle—just fun conversations. Start chatting now." %}
+{% trans "Join Chatea-Conecta, the best free chat without registration! Pick a nickname & start chatting instantly—no sign-ups, no downloads, just real conversations!" %}
 {% endblock description %}
 
 {% block scripts %}
@@ -27,8 +27,8 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
 
 <header class="header">
     <div class="header__title">
-        <h1 class="heading-primary margin-bottom-xsmall">{% trans "Chat Instantly – No Sign-Ups, No Downloads" %}</h1>
-        <h2 class="heading-secondary text-align-center margin-bottom-xxsmall">{% trans "Welcome to Chatea-Conecta – The Free Anonymous Chat Platform" %}</h2>
+        <h1 class="heading-primary margin-bottom-xsmall">{% trans "Free Chat – No Sign-Ups, No Downloads!" %}</h1>
+        <h2 class="heading-secondary text-align-center margin-bottom-xxsmall">{% trans "Welcome to Chatea-Conecta – The Best Free Anonymous Chat Room!" %}</h2>
     </div>
 
     <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
@@ -51,6 +51,7 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
         {% endfor %}
 
         <button class="form-nickname__btn" type="submit">{% trans "Start Chatting Now" %}</button>
+        <p class="form-nickname__paragraph margin-top-xxsmall">{{ n_persons }} people chatting now!</p>
     </form>
 
     <!-- Modal Terms and Conditions -->
@@ -155,12 +156,12 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
 {% block content %}
 
 <section class="section-about margin-bottom-xsmall" role="region" aria-labelledby="about-heading">
-    <h3 id="about-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall text-align-center">{% trans "Instant Chat Without Registration" %}</h3>
-    <p class="paragraph">{% trans "Looking for a free, anonymous chat where you can meet new people instantly? Chatea-Conecta lets you join real-time conversations with people worldwide—no sign-ups, no hassle!" %}</p>
+    <h3 id="about-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall text-align-center">{% trans "Instant Free Chat Without Registration – Meet New People Now!" %}</h3>
+    <p class="paragraph">{% trans "Looking for an easy, free online chat where you can meet new people instantly? Chatea-Conecta lets you connect with people worldwide in real-time—no sign-ups, no hassle, just fun conversations!" %}</p>
 </section>
 
 <section class="section-features" role="region" aria-labelledby="features-section">
-    <h3 id="features-section" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "Features" %}</h3>
+    <h3 id="features-section" class="heading-tertiary heading-tertiary-dark-amber text-align-center margin-bottom-xsmall">{% trans "Why Use Chatea-Conecta? The Best Free Chat Online!" %}</h3>
     <ul class="section-features__list">
         <li class="section-features__list__item">
 

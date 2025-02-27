@@ -102,3 +102,8 @@ class RedisService:
             ttl_seconds (int): Time-to-live in seconds.
         """
         cls.redis_connection.expire(hash_key, ttl_seconds)
+
+    @classmethod
+    def get_group_size(cls, redis_key: str) -> int:
+        """Returns the size of a Redis set synchronously"""
+        return cls.redis_connection.scard(redis_key)
