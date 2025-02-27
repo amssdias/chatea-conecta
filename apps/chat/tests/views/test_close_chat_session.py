@@ -16,7 +16,8 @@ class TestCloseChatSessionView(TestCase):
     def setUp(self):
         self.client = Client()
 
-    def test_redirect_when_no_username_cookie(self, mock_remove_from_set, mock_is_member):
+    @patch("apps.chat.views.close_chat_session.RedisService.get_group_size", return_value=5)
+    def test_redirect_when_no_username_cookie(self, mock_get_group_size, mock_remove_from_set, mock_is_member):
         response = self.client.post(self.url)
         self.assertRedirects(response, reverse("chat:home"))
         mock_is_member.assert_not_called()
@@ -42,7 +43,8 @@ class TestCloseChatSessionView(TestCase):
         self.client.post(self.url)
         mock_remove_from_set.assert_not_called()
 
-    def test_redirect_when_username_cookie_present(self, mock_remove_from_set, mock_is_member):
+    @patch("apps.chat.views.close_chat_session.RedisService.get_group_size", return_value=5)
+    def test_redirect_when_username_cookie_present(self, mock_get_group_size,  mock_remove_from_set, mock_is_member):
         mock_is_member.return_value = False
         self.client.cookies["username"] = "testuser"
         response = self.client.post(self.url)
