@@ -51,7 +51,7 @@ def multilingual_sitemap(request, sitemaps, **kwargs):
                         {
                             "rel": "alternate",
                             "hreflang": alternate["hreflang"],
-                            "href": alternate["href"],
+                            "href": request.build_absolute_uri(alternate["href"]),
                         },
                     )
 
