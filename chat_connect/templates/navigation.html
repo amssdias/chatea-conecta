@@ -14,8 +14,11 @@
             <button class="btn btn-close-session" type="submit">{% trans "Leave chat" %}</button>
         </form>
     {% else %}
-        <div class="nav-bar__links">
-            <a class="nav-bar-link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
-        </div>
+        {% url "chat:home" as home_url %}
+        {% if request.path != home_url %}
+            <div class="nav-bar__links">
+                <a class="nav-bar-link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+            </div>
+        {% endif %}
     {% endif %}
 </nav>

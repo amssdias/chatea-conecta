@@ -11,6 +11,8 @@
     @include respond(phone) {
         flex-wrap: wrap;
         justify-items: center;
+        min-height: 7vh;
+
     }
 
     &-logo {
