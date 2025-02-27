@@ -18,18 +18,17 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
-from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
 from apps.chat.sitemaps import ChatStaticViewSitemap
-from chat_connect.views import health_check, robots_txt
+from chat_connect.views import health_check, robots_txt, multilingual_sitemap
 
 sitemaps = {
-    "chat": ChatStaticViewSitemap,
+    "chat": ChatStaticViewSitemap(),
 }
 
 urlpatterns = [
-    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path("sitemap.xml", multilingual_sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
     path("robots.txt", robots_txt, name="robots_txt"),
     path("health/", health_check),
 ]
