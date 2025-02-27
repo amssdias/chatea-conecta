@@ -11,9 +11,18 @@
         justify-content: space-between;
         align-items: center;
         
-        & h1 {
+        & h1, h4, h5 {
             text-align: center;
         }
+
+        & h5 {
+            width: 90%;
+        }
+
+        @include respond(phone) {
+            padding: 0rem 1.5rem;
+        }
+
 
     }
 

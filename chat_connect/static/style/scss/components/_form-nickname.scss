@@ -51,6 +51,11 @@
 
         font-size: 2rem;
         color: $color-dark-amber-3;
+        font-weight: 700;
+
+        @include respond(phone) {
+            padding: 1.5rem 4rem;
+        }
 
         &:focus {
             // border: 0.3rem solid $color-dark-amber-2;
