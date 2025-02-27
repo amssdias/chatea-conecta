@@ -10,7 +10,6 @@
 
     @include respond(phone) {
         flex-wrap: wrap;
-        justify-content: center;
         min-height: 7vh;
         padding: 0rem 1rem;
 
