@@ -17,7 +17,9 @@
         {% url "chat:home" as home_url %}
         {% if request.path != home_url %}
             <div class="nav-bar__links">
-                <a class="nav-bar-link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+                <a class="nav-bar-link" href="{% url 'chat:home' %}">
+                    <img src="{% static 'img/home-btn.svg' %}" class="nav-bar-link-home" aria-label="Chatea conecta Home" />
+                </a>
             </div>
         {% endif %}
     {% endif %}

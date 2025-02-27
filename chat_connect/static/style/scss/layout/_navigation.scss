@@ -10,8 +10,9 @@
 
     @include respond(phone) {
         flex-wrap: wrap;
-        justify-items: center;
+        justify-content: center;
         min-height: 7vh;
+        padding: 0rem 1rem;
 
     }
 
@@ -25,6 +26,10 @@
             height: 40px;
             filter: invert(100%);
             margin: 0rem 0.6rem;
+
+                @include respond(phone) {
+                    width: 30px;
+                }
         }
 
         h2 {
@@ -40,10 +45,10 @@
     }
 
     &__links {
+        z-index: 1000;
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        flex-grow: 1;
 
         padding: 1rem;
 
@@ -54,16 +59,20 @@
 
     &-link {
         border: 0.2rem solid $color-white;
-        padding: 1rem 2rem;
+        padding: 0.5rem 1.5rem;
         border-radius: 2rem;
 
-        font-size: 2rem;
         text-decoration: none;
         color: $color-white;
 
         cursor: pointer;
 
         @include respond(phone) {
+        }
+
+        &-home {
+            width: 32px;
+            height: 32px;
         }
 
     }
