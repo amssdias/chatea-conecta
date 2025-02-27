@@ -16,18 +16,18 @@
         width: 40%;
         height: 5rem;
         padding: 1rem;
-        color: $color-dark-amber-3;
-        border: 0.3rem solid $color-light-amber-2;
-        background-color: $color-light-amber;
+        color: $text-light;
+        // border: 0.3rem solid $color-light-amber-2;
+        background-color: $bg-medium;
         margin-bottom: 1rem;
 
         &::placeholder {
-            color: $color-dark-amber-3;
+            color: $text-light;
         }
 
         &:focus {
             outline: none;
-            border: 0.3rem solid $color-dark-amber-1;
+            // border: 0.3rem solid $color-dark-amber-1;
         }
 
         @include respond(tab-land) {
@@ -45,16 +45,20 @@
         padding: 1.5rem 6rem;
 
         border: none;
-        outline: 0.3rem solid $color-light-amber-2;
-        background-color: $color-light-amber;
+        // outline: 0.3rem solid $color-light-amber-2;
+        background-color: $primary-main;
         cursor: pointer;
 
         font-size: 2rem;
-        color: $color-dark-amber-3;
+        color: $bg-light;
         font-weight: 700;
 
         @include respond(phone) {
             padding: 1.5rem 4rem;
+        }
+
+        &:hover {
+            background-color: $primary-dark;
         }
 
         &:focus {
@@ -82,7 +86,7 @@
 
         &-label {
             font-size: 1.6rem;
-            color: $color-dark-amber-3;
+            color: $text-light;
         }
 
     }

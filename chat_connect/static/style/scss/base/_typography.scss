@@ -7,8 +7,7 @@ body {
 
 .heading-primary {
     font-size: 5rem;
-    color: $color-dark-amber-1;
-    text-shadow: 2px 2px $color-dark-amber-3;
+    color: $primary-dark;
     font-weight: 600;
     text-align: center;
 
@@ -19,7 +18,7 @@ body {
 
 .heading-secondary {
     font-size: 3rem;
-    color: $color-dark-amber-3;
+    color: $primary-main;
 
 
     @include respond(phone) {
@@ -37,7 +36,7 @@ body {
     }
 
     &-dark-amber {
-        color: $color-dark-amber-2;
+        color: $accent-dark;
     }
 
 }
@@ -57,10 +56,11 @@ body {
 
 .paragraph {
     font-size: 1.6rem;
+    color: $text-dark;
 }
 
 .link-tc {
     cursor: pointer;
     font-weight: 500;
-    border-bottom: 1px solid $color-dark-amber-3;
+    border-bottom: 1px solid $text-light;
 }

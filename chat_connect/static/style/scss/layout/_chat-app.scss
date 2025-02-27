@@ -1,12 +1,12 @@
 .chat-app {
     margin: 5rem 0rem;
-    border: 2px solid $color-dark-amber-2;
+    border: 2px solid $accent-dark;
 
     display: flex;
 
     height: 90rem;
 
-    background-color: $color-red-wine;
+    background-color: $bg-medium;
 
     @include respond(phone) {
         margin: 2rem 0rem;

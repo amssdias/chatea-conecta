@@ -21,8 +21,8 @@
             padding: 2rem;
             font-size: 1.6rem;
             text-transform: uppercase;
-            color: $color-light-amber;
-            border-bottom: 1px solid $color-light-amber;
+            color: $primary-dark;
+            border-bottom: 1px solid $primary-dark;
             display: flex;
             align-items: center;
             font-weight: 400;
@@ -45,14 +45,14 @@
     }
 
     &__messages {
-        border: 1px solid $color-light-amber-2;
+        border: 1px solid $accent-light;
         border-radius: 1rem;
         padding: 2rem 12rem;
 
         font-size: 1.4rem;
         height: 75%;
 
-        background-color: $color-light-amber;
+        background-color: $bg-light;
 
         overflow-y: scroll;
 
@@ -80,15 +80,15 @@
         &-user {
             font-size: 1.6rem;
             font-weight: 999;
-            color: $color-red-wine;
+            color: $primary-dark;
         }
 
         &-text {
             font-size: 1.4rem;
             
             margin-top: 1rem;
-            background-color: $color-light-amber-2;
-            box-shadow: 0rem 0rem 1rem $color-light-amber-2;
+            background-color: $bg-light;
+            box-shadow: 0rem 0rem 1rem $accent-light;
             border-radius: 1rem;
             padding: 1rem 2rem;
 

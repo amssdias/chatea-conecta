@@ -1,5 +1,5 @@
 .footer {
-    background-color: $color-red-wine;
+    background-color: $accent-dark;
 
     display: flex;
     flex-direction: column;
@@ -10,7 +10,7 @@
     min-height: 10vh;
 
     & p {
-        color: $color-white;
+        color: $bg-light;
         margin-bottom: 2rem;
 
         @include respond(phone) {
@@ -25,20 +25,20 @@
         justify-content: space-around;
 
         &__delimiter {
-            color: $color-white;
+            color: $bg-light;
             font-size: 1.4rem;
             margin: 0rem 2rem;
         }
 
         &__link {
             text-decoration: none;
-            color: $color-white;
+            color: $bg-light;
             font-size: 1.4rem;
 
             transition: 0.2s;
 
             &:hover {
-                color: $color-light-amber;
+                color: $bg-light;
             }
         }
     }

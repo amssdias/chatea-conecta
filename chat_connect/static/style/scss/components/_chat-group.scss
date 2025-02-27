@@ -7,7 +7,7 @@
         width: 25rem;
         animation: moveInLeft;
         animation-duration: 0.5s;
-        background: $color-light-amber;
+        background: $accent-light;
 
         &::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
@@ -42,7 +42,7 @@
     &__group {
         list-style-type: none;
         padding: 2rem 2rem;
-        background-color: $color-light-amber;
+        background-color: $accent-light;
         cursor: pointer;
         display: flex;
         justify-content: space-between;
@@ -50,7 +50,7 @@
 
 
         &:hover {
-            background-color: $color-light-amber-2 !important;
+            background-color: $accent-light !important;
         }
 
         &-link {
@@ -70,7 +70,7 @@
         }
 
         &:not(:last-child) {
-            border-bottom: 2px solid $color-light-amber-2;
+            border-bottom: 2px solid $accent-light;
             
         }
 

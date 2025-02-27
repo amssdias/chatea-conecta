@@ -1,5 +1,5 @@
 .nav-bar {
-    background-color: $color-red-wine;
+    background-color: $primary-dark;
 
     display: flex;
     justify-content: space-between;
@@ -57,12 +57,12 @@
     }
 
     &-link {
-        border: 0.2rem solid $color-white;
+        border: 0.2rem solid $bg-light;
         padding: 0.5rem 1.5rem;
         border-radius: 2rem;
 
         text-decoration: none;
-        color: $color-white;
+        color: $bg-light;
 
         cursor: pointer;
 

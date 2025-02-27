@@ -12,21 +12,21 @@
         padding: 2rem;
         border-radius: 1rem;
         outline: none;
-        border: 2px solid $color-light-amber-2;
-        background-color: $color-light-amber;
+        border: 2px solid $accent-light;
+        background-color: $bg-light;
     }
 
     &-btn {
         height: 100%;
         padding: 0rem 2rem;
         font-size: 1.4rem;
-        color: $color-red-wine;
+        color: $bg-light;
         font-weight: 999;
 
         outline: none;
-        border: 2px solid $color-light-amber-2;
+        border: 2px solid $primary-dark;
         border-radius: 1rem;
-        background-color: $color-light-amber;
+        background-color: $primary-main;
         cursor: pointer;
 
         z-index: 1000;
@@ -36,7 +36,7 @@
             & .chat-form-btn__svg{
                 background-color: $color-light-amber-2;
             }
-            background-color: $color-light-amber-2;
+            background-color: $primary-dark;
         }
 
         &__svg {
@@ -44,10 +44,10 @@
             display: inline;
             height: 100%;
             width: 3rem;
-            background-color: $color-light-amber;
+            background-color: $bg-light;
 
             &:focus {
-                background-color: $color-light-amber-2;
+                background-color: $bg-light;
             }
         }
 
