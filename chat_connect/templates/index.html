@@ -29,7 +29,6 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
     <div class="header__title">
         <h1 class="heading-primary margin-bottom-xsmall">{% trans "Chat Instantly – No Sign-Ups, No Downloads" %}</h1>
         <h2 class="heading-secondary margin-bottom-xxsmall">{% trans "Welcome to Chatea-Conecta – The Free Anonymous Chat Platform" %}</h2>
-<!--        <h5 class="heading-quinary">{% trans "Join a free chatroom in seconds. Pick a nickname and start chatting—no accounts needed." %}</h5>-->
     </div>
 
     <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
@@ -58,7 +57,7 @@ Chatea-Conecta - {% trans "Free Anonymous Chat Room for Adults" %}
     <div class="modal hide" id="modal-terms-conditions">
         
         <div class="modal__header">
-            <h1 class="margin-bottom-xsmall">{% trans "Terms and Conditions" %}</h1>
+            <h2 class="heading-secondary margin-bottom-xsmall">{% trans "Terms and Conditions" %}</h2>
             <div class="modal-close margin-bottom-xxsmall" onclick="closeModal()">
                 <svg width="50px" height="50px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)">
                     <!-- Background circle for hover effect -->

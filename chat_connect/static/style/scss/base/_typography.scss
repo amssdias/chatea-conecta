@@ -29,7 +29,7 @@ body {
 }
 
 .heading-tertiary {
-    font-size: 4rem;
+    font-size: 2.5rem;
     font-weight: 500;
 
     &-white {
@@ -43,13 +43,12 @@ body {
 }
 
 .heading-quaternary {
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .heading-quinary {
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: $color-dark-amber-3;
-    // text-shadow: 2px 2px $color-dark-amber-3;
 
     @include respond(phone) {
         font-size: 2rem;
