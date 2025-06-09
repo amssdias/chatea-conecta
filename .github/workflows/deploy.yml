@@ -29,7 +29,7 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
         env:
-          PROJECT_DIR: "/var/www/chatea-conecta"
+          PROJECT_DIR: "projects/chatea-conecta"
           BRANCH: "master"
           RUN_COLLECTSTATIC: ${{ inputs.run_collectstatic }}
           CLEAR_REDIS: ${{ inputs.clear_redis }}
