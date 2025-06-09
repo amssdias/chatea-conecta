@@ -61,7 +61,7 @@ services:
       retries: 3       # Mark as unhealthy after 3 consecutive failures
       start_period: 30s  # Give the container 30 seconds after startup before checking
     volumes:
-      - /var/www/static:/usr/src/app/chat_connect/prod_static
+      - ./prod_static:/usr/src/app/chat_connect/prod_static
     networks:
       - chat-network
 
