@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-09 20:39+0000\n"
+"POT-Creation-Date: 2025-06-09 22:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,7 +71,7 @@ msgstr "Preguntas Frecuentes"
 
 #: chat_connect/templates/index.html:6
 msgid "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta"
-msgstr ""
+msgstr "Chat Gratis Sin Registro | Chat Anónimo Online – Chatea-Conecta"
 
 #: chat_connect/templates/index.html:10
 msgid ""
@@ -79,14 +79,17 @@ msgid ""
 "nickname & start chatting instantly—no sign-ups, no downloads, just real "
 "conversations!"
 msgstr ""
+"Únete a Chatea-Conecta, el mejor chat gratis sin registro. Elige un apodo y "
+"comienza a chatear al instante—sin crear cuenta, sin descargas, solo "
+"conversaciones reales."
 
 #: chat_connect/templates/index.html:30
 msgid "Free Chat – No Sign-Ups, No Downloads!"
-msgstr ""
+msgstr "Chat Gratis – Sin Registro, Sin Descargas"
 
 #: chat_connect/templates/index.html:31
 msgid "Welcome to Chatea-Conecta – The Best Free Anonymous Chat Room!"
-msgstr ""
+msgstr "Bienvenido a Chatea-Conecta – El Mejor Chat Anónimo Gratis en Español"
 
 #: chat_connect/templates/index.html:36
 msgid "Username"
@@ -120,11 +123,18 @@ msgstr "Confirmo que tengo 18 años o más."
 msgid "Start Chatting Now"
 msgstr "Chatear ahora"
 
-#: chat_connect/templates/index.html:61
+#: chat_connect/templates/index.html:55
+#, python-format
+msgid "%(n)s person chatting now!"
+msgid_plural "%(n)s people chatting now!"
+msgstr[0] "%(n)s persona chateando en este momento!"
+msgstr[1] "%(n)s personas chateando en este momento"
+
+#: chat_connect/templates/index.html:63
 msgid "Terms and Conditions"
 msgstr "Términos y Condiciones"
 
-#: chat_connect/templates/index.html:79
+#: chat_connect/templates/index.html:81
 msgid ""
 "Welcome to Chatea Conecta! Please read these Terms and Conditions carefully "
 "before using our website. By accessing or using Chatea Conecta, you agree to "
@@ -136,19 +146,19 @@ msgstr ""
 "Conecta, usted acepta cumplir con estos términos. Si no está de acuerdo con "
 "alguna parte de estos términos, por favor no use nuestro sitio web."
 
-#: chat_connect/templates/index.html:82
+#: chat_connect/templates/index.html:84
 msgid "General Information"
 msgstr "Información General"
 
-#: chat_connect/templates/index.html:85
+#: chat_connect/templates/index.html:87
 msgid "Website Name:"
 msgstr "Nombre del Sitio Web:"
 
-#: chat_connect/templates/index.html:86
+#: chat_connect/templates/index.html:88
 msgid "Contact Information:"
 msgstr "Información de Contacto:"
 
-#: chat_connect/templates/index.html:86
+#: chat_connect/templates/index.html:88
 msgid ""
 "For questions or support, please contact us at test@testing.com (this may be "
 "updated with a domain-specific email in the future)."
@@ -156,11 +166,11 @@ msgstr ""
 "Para preguntas o soporte, contáctenos en test@testing.com (esto podría "
 "actualizarse con un correo electrónico específico del dominio en el futuro)."
 
-#: chat_connect/templates/index.html:90
+#: chat_connect/templates/index.html:92
 msgid "Eligibility and Age Verification"
 msgstr "Elegibilidad y Verificación de Edad"
 
-#: chat_connect/templates/index.html:92
+#: chat_connect/templates/index.html:94
 msgid ""
 "By using Chatea Conecta, you confirm that you are at least 18 years of age. "
 "Our website is intended for users who are of legal age to participate in "
@@ -171,11 +181,11 @@ msgstr ""
 "en salas de chat abiertas e interactuar con otros de manera respetuosa y "
 "adulta."
 
-#: chat_connect/templates/index.html:95
+#: chat_connect/templates/index.html:97
 msgid "Platform Purpose and Acceptable Use"
 msgstr "Propósito de la Plataforma y Uso Aceptable"
 
-#: chat_connect/templates/index.html:97
+#: chat_connect/templates/index.html:99
 msgid ""
 "Chatea Conecta is an entertainment-based platform that allows users to "
 "connect and chat with others from around the world. We are dedicated to "
@@ -187,11 +197,11 @@ msgstr ""
 "dedicados a fomentar un ambiente amigable y positivo para que los usuarios "
 "disfruten de conversaciones casuales."
 
-#: chat_connect/templates/index.html:99
+#: chat_connect/templates/index.html:101
 msgid "By using this website, you agree to:"
 msgstr "Al usar este sitio web, usted acepta:"
 
-#: chat_connect/templates/index.html:101
+#: chat_connect/templates/index.html:103
 msgid ""
 "Communicate respectfully with other users, refraining from offensive "
 "language, harassment, discrimination, or any form of abuse."
@@ -199,7 +209,7 @@ msgstr ""
 "Comunicarse respetuosamente con otros usuarios, absteniéndose de usar "
 "lenguaje ofensivo, acoso, discriminación o cualquier forma de abuso."
 
-#: chat_connect/templates/index.html:103
+#: chat_connect/templates/index.html:105
 msgid ""
 "Use Chatea Conecta solely for personal enjoyment and not for any commercial "
 "or promotional purposes."
@@ -207,7 +217,7 @@ msgstr ""
 "Usar Chatea Conecta únicamente para disfrute personal y no para fines "
 "comerciales o promocionales."
 
-#: chat_connect/templates/index.html:105
+#: chat_connect/templates/index.html:107
 msgid ""
 "Avoid sharing or attempting to solicit personal, financial, or sensitive "
 "information."
@@ -215,11 +225,11 @@ msgstr ""
 "Evitar compartir o intentar solicitar información personal, financiera o "
 "sensible."
 
-#: chat_connect/templates/index.html:109
+#: chat_connect/templates/index.html:111
 msgid "Prohibited Actions"
 msgstr "Acciones Prohibidas"
 
-#: chat_connect/templates/index.html:111
+#: chat_connect/templates/index.html:113
 msgid ""
 "To maintain a safe and welcoming environment, the following actions are "
 "strictly prohibited:"
@@ -227,11 +237,11 @@ msgstr ""
 "Para mantener un entorno seguro y acogedor, las siguientes acciones están "
 "estrictamente prohibidas:"
 
-#: chat_connect/templates/index.html:114
+#: chat_connect/templates/index.html:116
 msgid "Offensive or Abusive Behavior:"
 msgstr "Comportamiento Ofensivo o Abusivo:"
 
-#: chat_connect/templates/index.html:114
+#: chat_connect/templates/index.html:116
 msgid ""
 "Users may not use language or behavior that is abusive, offensive, obscene, "
 "or otherwise harmful to other users."
@@ -239,11 +249,11 @@ msgstr ""
 "Los usuarios no pueden usar lenguaje o comportamientos que sean abusivos, "
 "ofensivos, obscenos o perjudiciales para otros usuarios."
 
-#: chat_connect/templates/index.html:115
+#: chat_connect/templates/index.html:117
 msgid "Commercial Use:"
 msgstr "Uso Comercial:"
 
-#: chat_connect/templates/index.html:115
+#: chat_connect/templates/index.html:117
 msgid ""
 "Using Chatea Conecta for advertising, promoting products or services, or "
 "conducting commercial transactions is not permitted."
@@ -251,18 +261,18 @@ msgstr ""
 "Usar Chatea Conecta para publicidad, promoción de productos o servicios, o "
 "realizar transacciones comerciales no está permitido."
 
-#: chat_connect/templates/index.html:116
+#: chat_connect/templates/index.html:118
 msgid "Misrepresentation:"
 msgstr "Falsedad o Representación Engañosa:"
 
-#: chat_connect/templates/index.html:116
+#: chat_connect/templates/index.html:118
 msgid ""
 "Impersonating another person or providing false information is not allowed."
 msgstr ""
 "Hacerse pasar por otra persona o proporcionar información falsa no está "
 "permitido."
 
-#: chat_connect/templates/index.html:119
+#: chat_connect/templates/index.html:121
 msgid ""
 "Violating any of these terms may result in suspension or permanent banning "
 "from the platform."
@@ -270,11 +280,11 @@ msgstr ""
 "Violar cualquiera de estos términos puede resultar en la suspensión o "
 "prohibición permanente de la plataforma."
 
-#: chat_connect/templates/index.html:122
+#: chat_connect/templates/index.html:124
 msgid "Intellectual Property and Content Ownership"
 msgstr "Propiedad Intelectual y Derechos de Contenido"
 
-#: chat_connect/templates/index.html:124
+#: chat_connect/templates/index.html:126
 msgid ""
 "All content on Chatea Conecta, including SVG designs, website layout, and "
 "underlying code, is owned by the creator of Chatea Conecta. Users are not "
@@ -286,11 +296,11 @@ msgstr ""
 "usuarios no están permitidos para reproducir, distribuir o usar cualquier "
 "parte del contenido del sitio para fines comerciales sin permiso previo."
 
-#: chat_connect/templates/index.html:127
+#: chat_connect/templates/index.html:129
 msgid "Privacy and Data Collection"
 msgstr "Privacidad y Recolección de Datos"
 
-#: chat_connect/templates/index.html:129
+#: chat_connect/templates/index.html:131
 msgid ""
 "Chatea Conecta does not collect, store, or share any personal data at this "
 "time. Should this policy change in the future, users will be notified, and "
@@ -301,11 +311,11 @@ msgstr ""
 "notificados, y las actualizaciones se reflejarán en nuestra Política de "
 "Privacidad."
 
-#: chat_connect/templates/index.html:132
+#: chat_connect/templates/index.html:134
 msgid "Liability Disclaimer"
 msgstr "Descargo de Responsabilidad"
 
-#: chat_connect/templates/index.html:134
+#: chat_connect/templates/index.html:136
 msgid ""
 "Chatea Conecta is provided on an 'as is' basis. While we strive to maintain "
 "a positive environment, we are not responsible for the behavior, comments, "
@@ -318,11 +328,11 @@ msgstr ""
 "responsabilidad por daños que resulten de interacciones entre usuarios o de "
 "cualquier contenido compartido en la plataforma."
 
-#: chat_connect/templates/index.html:137
+#: chat_connect/templates/index.html:139
 msgid "Changes to Terms"
 msgstr "Cambios en los Términos"
 
-#: chat_connect/templates/index.html:139
+#: chat_connect/templates/index.html:141
 msgid ""
 "Chatea Conecta reserves the right to update these Terms and Conditions at "
 "any time. Users will be notified of significant changes, and continued use "
@@ -333,11 +343,11 @@ msgstr ""
 "significativos, y el uso continuo de la plataforma constituirá la aceptación "
 "de los términos revisados."
 
-#: chat_connect/templates/index.html:142
+#: chat_connect/templates/index.html:144
 msgid "Governing Law"
 msgstr "Ley Aplicable"
 
-#: chat_connect/templates/index.html:144
+#: chat_connect/templates/index.html:146
 msgid ""
 "These Terms and Conditions are governed by applicable laws of [Your Country/"
 "Region]. Any disputes arising from the use of Chatea Conecta shall be "
@@ -347,12 +357,12 @@ msgstr ""
 "Región]. Cualquier disputa que surja del uso de Chatea Conecta se resolverá "
 "a través de los canales legales correspondientes dentro de esta jurisdicción."
 
-#: chat_connect/templates/index.html:147
+#: chat_connect/templates/index.html:149
 #: chat_connect/templates/pages/privacy.html:75
 msgid "Contact Us"
 msgstr "Contáctenos"
 
-#: chat_connect/templates/index.html:149
+#: chat_connect/templates/index.html:151
 msgid ""
 "For any questions or concerns regarding these Terms and Conditions, please "
 "contact us at test@testing.com."
@@ -360,49 +370,56 @@ msgstr ""
 "Si tiene preguntas o inquietudes relacionadas con estos Términos y "
 "Condiciones, por favor contáctenos en test@testing.com."
 
-#: chat_connect/templates/index.html:159
+#: chat_connect/templates/index.html:161
 msgid "Instant Free Chat Without Registration – Meet New People Now!"
-msgstr ""
+msgstr "Chat Gratis al Instante Sin Registro – ¡Conoce Gente Nueva Ya!"
 
-#: chat_connect/templates/index.html:160
+#: chat_connect/templates/index.html:162
 msgid ""
 "Looking for an easy, free online chat where you can meet new people "
 "instantly? Chatea-Conecta lets you connect with people worldwide in real-time"
 "—no sign-ups, no hassle, just fun conversations!"
 msgstr ""
+"¿Buscas un chat online gratis y fácil para conocer gente al instante? Chatea-"
+"Conecta te conecta con personas de todo el mundo en tiempo real—sin "
+"registros, sin complicaciones, ¡solo conversaciones divertidas!"
 
-#: chat_connect/templates/index.html:164
+#: chat_connect/templates/index.html:166
 msgid "Why Use Chatea-Conecta? The Best Free Chat Online!"
-msgstr ""
+msgstr "¿Por Qué Usar Chatea-Conecta? ¡El Mejor Chat Online Gratis!"
 
-#: chat_connect/templates/index.html:175
+#: chat_connect/templates/index.html:177
 msgid "No Sign-Ups, No Hassle"
-msgstr ""
+msgstr "Sin Registro, Sin Complicaciones"
 
-#: chat_connect/templates/index.html:178
+#: chat_connect/templates/index.html:180
 msgid ""
 "Just pick a nickname and start chatting instantly. No personal details or "
 "registration required!"
-msgstr "Solo elige un apodo y empieza a chatear al instante. ¡No necesitas datos personales ni registrarte!"
+msgstr ""
+"Solo elige un apodo y empieza a chatear al instante. ¡No necesitas datos "
+"personales ni registrarte!"
 
-#: chat_connect/templates/index.html:185
+#: chat_connect/templates/index.html:187
 msgid "Chat Worldwide"
 msgstr "Chat Mundial"
 
-#: chat_connect/templates/index.html:188
+#: chat_connect/templates/index.html:190
 msgid "Connect with users from Europe, Latin America, and beyond in real-time."
 msgstr "Conecta con personas de Europa, América Latina y más allá."
 
-#: chat_connect/templates/index.html:210
+#: chat_connect/templates/index.html:212
 #, python-format
 msgid "100%% Private & Anonymous"
-msgstr ""
+msgstr "100%% Privado y Anónimo"
 
-#: chat_connect/templates/index.html:213
+#: chat_connect/templates/index.html:215
 msgid ""
 "No accounts, no tracking, no worries. Your conversations stay completely "
 "private."
 msgstr ""
+"Sin cuentas, sin rastreo, sin preocupaciones. Tus conversaciones son "
+"completamente privadas."
 
 #: chat_connect/templates/navigation.html:14
 msgid "Leave chat"
