@@ -51,7 +51,9 @@
         {% endfor %}
 
         <button class="form-nickname__btn" type="submit">{% trans "Start Chatting Now" %}</button>
-        <p class="form-nickname__paragraph margin-top-xxsmall">{{ n_persons }} people chatting now!</p>
+        <p class="form-nickname__paragraph margin-top-xxsmall">
+            {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{% endblocktrans %}
+        </p>
     </form>
 
     <!-- Modal Terms and Conditions -->
