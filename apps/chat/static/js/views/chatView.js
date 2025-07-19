@@ -151,7 +151,6 @@ class ChatView {
         }
 
         if (shouldScroll) {
-            console.log("Scrolling...")
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
@@ -187,7 +186,6 @@ class ChatView {
         }
 
         if (shouldScroll) {
-            console.log("Scrolling 2....")
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
@@ -201,20 +199,34 @@ class ChatView {
         div.classList.add("chat__message");
 
         const userHeader = document.createElement("h5");
-        userHeader.classList.add("chat__message-user");
+        userHeader.classList.add("chat__message-user", "chat__message-user-link");
         userHeader.innerHTML = username;
 
         const paragraph = document.createElement("p");
         paragraph.classList.add("chat__message-text");
         paragraph.innerHTML = message;
 
+        let userMenu = undefined;
+
         if (isCurrentUser) {
             div.classList.add("chat__message--current-user");
             paragraph.classList.add("background-color-text-sending");
+        } else {
+            userMenu = document.createElement("div");
+            userMenu.classList.add("chat__message-menu");
+
+            const menuOption = document.createElement("button");
+            menuOption.classList.add("chat__message-menu-btn");
+            menuOption.innerHTML = sendPrivateMsg;
+            menuOption.addEventListener("click", this.openUserChat);
+
+            userMenu.appendChild(menuOption);
         }
 
         div.appendChild(userHeader);
         div.appendChild(paragraph);
+
+        if (userMenu) div.appendChild(userMenu);
 
         return div;
     }

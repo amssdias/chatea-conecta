@@ -66,13 +66,115 @@
 
         cursor: pointer;
 
-        @include respond(phone) {
-        }
-
         &-home {
             width: 32px;
             height: 32px;
         }
 
     }
+}
+
+.side-menu {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 70%;
+	left: 0;
+	transform: translateX(-100%);
+
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+
+	background-color: $bg-medium;
+	border-right: 2px solid black;
+	padding: 1rem 2rem;
+
+	z-index: 10;
+
+	
+    @include respond(tab-port) {
+        right: 60%;
+    }
+
+	
+    @include respond(phone) {
+        right: 40%;
+    }
+
+	&__connected-icon {
+		width: 1rem;
+	}
+
+	&__header {
+		border-bottom: 2px solid $primary-dark;
+		
+		padding: 1rem 0rem;
+		
+		&__title {
+			font-size: 2rem;
+			text-align: center;
+			color: $primary-dark;
+		}
+
+		&__online {
+			font-size: 1.6rem;
+		}
+	}
+
+	&__group-chat {
+		border-bottom: 1px solid $primary-dark;
+
+		padding: 1rem 0rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		font-size: 1.4rem;
+
+		&-btn {
+			border: none;
+			color: $accent-dark;
+			cursor: pointer;
+
+			&:hover {
+				color: $primary-dark;
+			}
+		}
+	}
+
+	&__private-chats {
+		// border: 1px solid black;
+
+		&-title {
+			font-size: 1.8rem;
+		}
+
+		&__list {
+			list-style-type: none;
+
+			// border: 1px solid black;
+			height: 40rem;
+
+			overflow-y: auto;
+
+			// @include respond(tab-port) {
+			// 	height: 33rem;
+			// }
+
+			@include respond(phone) {
+				height: 33rem;
+			}
+
+			&-item {
+				// border-bottom: 1px solid black;
+				font-size: 1.4rem;
+				
+				&--link {
+					border: none;
+					cursor: pointer;
+					font-weight: 600;
+				}
+			}
+		}
+	}
 }

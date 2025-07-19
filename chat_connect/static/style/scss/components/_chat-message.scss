@@ -68,6 +68,7 @@
     &__message {
         
         // border: 1px solid black;
+        position: relative;
         padding: 1rem;
         display: flex;
         flex-direction: column;
@@ -81,6 +82,14 @@
             font-size: 1.6rem;
             font-weight: 999;
             color: $primary-dark;
+
+            &-link {
+                text-decoration: underline;
+
+                &:hover ~ .chat__message-menu {
+                    display: block;
+                }
+            }
         }
 
         &-text {
@@ -99,6 +108,31 @@
                 max-width: 80%;
                 padding: 0.3rem 1rem;
                 margin-top: 0.5rem;
+            }
+        }
+
+        &-menu {
+            display: none;
+
+            position: absolute;
+            top: 3rem;
+            left: 0;
+
+            background-color: $bg-medium;
+            border: 1px solid $primary-dark;
+            border-radius: 1rem;
+
+            &:hover {
+                display: block;
+            }
+
+            &-btn {
+                padding: 1rem;
+                font-size: 1.6rem;
+                font-weight: 600;
+                border: none;
+                border-radius: 1rem;
+                cursor: pointer;
             }
         }
 

@@ -1,4 +1,5 @@
 import ChatView from "./views/chatView.js";
+import SideBarView from "./views/sideBarView.js";
 import ChatGroupsView from "./views/chatGroupsView.js";
 import ChatSocket from "./chatSocket.js";
 
@@ -7,9 +8,14 @@ import { SOCKET_URL } from "./config.js";
 const chatGroups = document.getElementById("chat-groups");
 
 const chatView = new ChatView(username);
+const sideBarView = new SideBarView();
 const chatGroupsView = new ChatGroupsView();
 
-const chatSocketHandler = new ChatSocket(SOCKET_URL, chatView);
+const chatSocketHandler = new ChatSocket(
+    SOCKET_URL,
+    chatView,
+    sideBarView,
+);
 
 const openedChats = new Set();
 
@@ -103,17 +109,23 @@ function sendMessage(groupName) {
 
 };
 
-// Open group chats
+// Open group chats - not available
 const groupsLinkImage = document.getElementById("groups-link");
 groupsLinkImage.addEventListener("click", function (e) {
     chatGroupsView.openGroupChatsList();
 
 });
 
-// Open online groups chats
+// Open online groups chats - not available
 const groupsOnline = document.getElementById("groups-connected");
 groupsOnline.addEventListener("click", function (e) {
     chatGroupsView.openOnlineGroupsList();
+})
+
+const sideMenuBtn = document.getElementById("side-menu-btn");
+sideMenuBtn.addEventListener("click", function(e) {
+    const sideMenu = document.getElementById("side-menu");
+    sideMenu.classList.toggle("open-side-menu");
 })
 
 // Make sure if window is resized the chat ocupies the whole space

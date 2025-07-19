@@ -1,8 +1,9 @@
 class ChatSocket extends WebSocket {
 
-    constructor(url, chatView) {
+    constructor(url, chatView, sideBarView) {
         super(url);
         this.chatView = chatView;
+        this.sideMenuView = sideBarView;
         this.onmessage = (event) => this.handleMessage(event);
         this.onclose = (event) => this.handleClose(event);
     }
@@ -13,7 +14,7 @@ class ChatSocket extends WebSocket {
         // Display how many users are online
         if (data.users_online) {
             this.chatView.displayNUsersOnline(data.users_online);
-            console.log(`Users online: ${data.users_online}`);
+            this.sideMenuView.updateUsersCountOnline(data.users_online);
             return;
         }
 
@@ -33,11 +34,11 @@ class ChatSocket extends WebSocket {
 
     };
 
-    handleClose(e) {
-        console.error("Chat socket closed unexpectedly");
-        const chatClosedEl = document.getElementById("chat-closed");
-        chatClosedEl.classList.remove("hide");
-    };
+   handleClose(e) {
+       console.error("Chat socket closed unexpectedly");
+       const chatClosedEl = document.getElementById("chat-closed");
+       chatClosedEl.classList.remove("hide");
+   };
 
 }
 
