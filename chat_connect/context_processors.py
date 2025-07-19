@@ -3,9 +3,6 @@ import re
 from django.conf import settings
 
 
-import re
-from django.conf import settings
-
 def hreflang_context(request):
     """
     Context processor to add hreflang URLs for all supported languages.
