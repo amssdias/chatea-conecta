@@ -5,6 +5,12 @@ on:
     branches:
       - master
 
+  pull_request:
+    branches:
+      - "**"
+
+  workflow_dispatch:
+
 jobs:
   tests:
     name: 🧪 Tests
