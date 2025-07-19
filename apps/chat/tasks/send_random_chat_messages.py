@@ -6,7 +6,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
-from apps.chat.services import MessageService, RedisService
+from apps.chat.services.message_service import MessageService
+from apps.chat.services.redis_service import RedisService
 from chat_connect.celery import app
 
 logger = logging.getLogger("chat_connect")
@@ -33,9 +34,6 @@ def send_random_messages(group):
                     "username": user_message.get("username"),
                     "group": group,
                 },
-            )
-            logger.info(
-                f"Sent message from user '{user_message.get('username')}' to group '{group}'."
             )
         else:
             logger.warning(
