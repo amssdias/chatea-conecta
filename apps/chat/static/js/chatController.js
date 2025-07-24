@@ -7,8 +7,11 @@ import { SOCKET_URL } from "./config.js";
 
 const chatGroups = document.getElementById("chat-groups");
 
-const chatView = new ChatView(username);
 const sideBarView = new SideBarView();
+const chatView = new ChatView(
+    currentUser, 
+    sideBarView
+);
 const chatGroupsView = new ChatGroupsView();
 
 const chatSocketHandler = new ChatSocket(
@@ -46,7 +49,7 @@ if (chatGroups) {
                 JSON.stringify({
                     "registerGroup": true,
                     "group": groupChatName,
-                    "username": username,
+                    "username": currentUser,
                 })
             );
 
@@ -65,7 +68,7 @@ if (chatGroups) {
 
     });
 
-    // Event to search groups
+    // Event to search groups - Not available
     document.getElementById("group-search").addEventListener("keyup", function (e) {
 
         const searchFilter = this.children[0].value.toLowerCase();
@@ -86,28 +89,6 @@ if (chatGroups) {
 }
 
 
-function sendMessage(groupName) {
-
-    // Get the text to be sent
-    const chatFormInput = this.querySelector(".chat-form-input");
-    const message = chatFormInput.value.trim();
-    if (!message) return;
-
-    // Display message on the chat
-    chatView.displayCurrentUserMessage(message);
-
-    // Clear input
-    chatFormInput.value = "";
-
-    // Send message through socket
-    chatSocketHandler.send(
-        JSON.stringify({
-            "group": groupName,
-            "message": message
-        })
-    );
-
-};
 
 // Open group chats - not available
 const groupsLinkImage = document.getElementById("groups-link");
@@ -124,8 +105,7 @@ groupsOnline.addEventListener("click", function (e) {
 
 const sideMenuBtn = document.getElementById("side-menu-btn");
 sideMenuBtn.addEventListener("click", function(e) {
-    const sideMenu = document.getElementById("side-menu");
-    sideMenu.classList.toggle("open-side-menu");
+    sideBarView.hideSideBar();
 })
 
 // Make sure if window is resized the chat ocupies the whole space
@@ -144,23 +124,9 @@ window.addEventListener('beforeunload', function (event) {
     //    event.returnValue = ''; // A string must be assigned to indicate a prompt should show
 });
 
-function createMainChat(groupChatName) {
-    // Register user on a group
-    chatSocketHandler.send(
-        JSON.stringify({
-            "registerGroup": true,
-            "group": groupChatName,
-            "username": username,
-        })
-    );
-
-    // Display chat with event
-    chatView.createChat(groupChatName, sendMessage);
-
-    // Add to list of opened chats
-    openedChats.add(groupChatName);
-}
 
 chatSocketHandler.addEventListener('open', () => {
-    createMainChat("chatea");
+    chatSocketHandler.createMainChat("chatea");
 });
+
+// createMainChat("chatea");
