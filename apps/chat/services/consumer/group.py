@@ -1,3 +1,4 @@
+from apps.chat.constants.consumer import USER_GROUP_NOTIFICATION, USER_PRIVATE_GROUP
 from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
 from apps.chat.services import AsyncRedisService
 
@@ -6,6 +7,12 @@ async def register_user_to_group(consumer, group_name: str):
     if group_name not in consumer.groups:
         await consumer.channel_layer.group_add(group_name, consumer.channel_name)
         consumer.groups.add(group_name)
+
+
+async def register_user_to_group_notification(consumer, username: str):
+    user_notification_group = USER_GROUP_NOTIFICATION.format(username)
+    await consumer.channel_layer.group_add(user_notification_group, consumer.channel_name)
+    consumer.groups.add(user_notification_group)
 
 
 async def get_group_size():
@@ -25,3 +32,9 @@ async def notify_group_online_count(consumer, group_name: str):
             "group_size": group_size + 60,
         },
     )
+
+
+async def get_private_group_name(user1_id, user2_id):
+    user1 = user1_id.replace(" ", "-")
+    user2 = user2_id.replace(" ", "-")
+    return USER_PRIVATE_GROUP.format(user1, user2)
