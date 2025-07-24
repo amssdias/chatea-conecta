@@ -3,8 +3,11 @@ import logging
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+from apps.chat.constants.consumer import USER_GROUP_NOTIFICATION, REGISTER_GROUP, SEND_MESSAGE, NOTIFY_USERS_COUNT, \
+    PRIVATE_INVITE
 from apps.chat.services.consumer.activity import update_chat_activity_status, remove_user_from_active_list
-from apps.chat.services.consumer.group import register_user_to_group, notify_group_online_count
+from apps.chat.services.consumer.group import register_user_to_group, notify_group_online_count, \
+    register_user_to_group_notification, get_private_group_name
 from apps.chat.services.consumer.messaging import send_user_bots_messages
 from apps.chat.services.consumer.validation import validate_user_connection, validate_group_payload
 
@@ -16,6 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         logger.info(f"---- {self.scope['cookies'].get('username')} CONNECTED TO WEBSOCKET ----")
         self.groups = set()
+        self.private_chats = {}
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -43,9 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         """
         text_data: ARGS:
-            group: str
-            registerGroup: bool
-            message: str
+            type: str
         """
 
         username = await validate_user_connection(self.scope)
@@ -53,41 +55,63 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.close(code=4001, reason="No username")
             return
 
-        # Send message that user should be registered in a group
         data = json.loads(text_data)
-        group = validate_group_payload(data)
-        if not group:
-            await self.close(code=401, reason="No group")
-            return None
+        action = data.get("type")
 
-        # Join room group
-        register_group = data.get("registerGroup", False)
-        if register_group and group not in self.groups:
+        if action == PRIVATE_INVITE:
+            username_target = data.get("target_user_id")
+
+            if self.private_chats.get(username_target):
+                return
+
+            # Add user to private group created
+            private_group = await get_private_group_name(username, username_target)
+            await register_user_to_group(self, private_group)
+
+            self.private_chats[username_target] = private_group
+
+            # Notify the other user, so he's added to the private group
+            await self.channel_layer.group_send(
+                USER_GROUP_NOTIFICATION.format(username_target),
+                {
+                    "type": "chat.invite",
+                    "from_user": username,
+                    "private_group": private_group,
+                }
+            )
+
+        elif action == REGISTER_GROUP:
+            group = validate_group_payload(data)
+            if not group:
+                await self.close(code=401, reason="No group")
+                return None
+
             await register_user_to_group(self, group)
+            await register_user_to_group_notification(self, username.replace(" ", "-"))
             await update_chat_activity_status()
             await notify_group_online_count(self, group_name=group)
             await send_user_bots_messages(group)
             return None
 
-        # TODO: Leave group room
-        unregister_group = data.get("unregisterGroup", False)
-        if unregister_group and group in self.groups:
-            # Unregister group
-            pass
+        elif action == SEND_MESSAGE:
+            group = validate_group_payload(data)
+            if not group:
+                await self.close(code=401, reason="No group")
+                return None
 
-        # Send regular messages to the corresponding group
-        message = data.get("message")
+            # Send regular messages to the corresponding group
+            message = data.get("message")
 
-        # Send message to room group
-        await self.channel_layer.group_send(
-            group,
-            {
-                "type": "chat.message",
-                "message": message,
-                "username": username,
-                "group": group,
-            },
-        )
+            # Send message to room group
+            await self.channel_layer.group_send(
+                group,
+                {
+                    "type": "chat.message",
+                    "message": message,
+                    "username": username,
+                    "group": group,
+                },
+            )
 
     async def notify_users_count(self, event):
         group_size = event["group_size"]
@@ -96,6 +120,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(
             text_data=json.dumps(
                 {
+                    "type": NOTIFY_USERS_COUNT,
                     "users_online": group_size
                 }
             )
@@ -111,9 +136,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(
             text_data=json.dumps(
                 {
+                    "type": SEND_MESSAGE,
                     "message": message,
                     "username": username,
                     "groupChatName": group,
+                }
+            )
+        )
+
+    async def chat_invite(self, event):
+        private_group = event["private_group"]
+        username = event["from_user"]
+
+        await register_user_to_group(self, private_group)
+        self.private_chats[username] = private_group
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "type": PRIVATE_INVITE,
+                    "from_user": username,
+                    "private_group": private_group,
                 }
             )
         )
