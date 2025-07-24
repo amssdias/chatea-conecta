@@ -143,7 +143,6 @@
 	}
 
 	&__private-chats {
-		// border: 1px solid black;
 
 		&-title {
 			font-size: 1.8rem;
@@ -152,7 +151,6 @@
 		&__list {
 			list-style-type: none;
 
-			// border: 1px solid black;
 			height: 40rem;
 
 			overflow-y: auto;
@@ -166,7 +164,6 @@
 			}
 
 			&-item {
-				// border-bottom: 1px solid black;
 				font-size: 1.4rem;
 				
 				&--link {
