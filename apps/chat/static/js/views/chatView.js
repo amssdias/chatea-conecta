@@ -5,8 +5,10 @@ class ChatView {
 
     _parentElement = document.querySelector(".chat-container");
 
-    constructor(username) {
+    constructor(username, sideBarView) {
+        this._privateChatsMapping = {}
         this._username = username;
+        this._sideBarView = sideBarView;
     }
 
     get activeChat() {
@@ -32,10 +34,12 @@ class ChatView {
 
     }
 
-    createChat(groupChatName, sendMessageHandler, chatSocket) {
-
-        // Hide chat
+    displayChat (chat) {
         this.hideActiveChat();
+        chat.classList.add("active");
+    }
+
+    createChat(groupChatName, sendMessageHandler) {
 
         // Chat header
         const chatHeader = this.createChatHeader(groupChatName);
@@ -48,7 +52,7 @@ class ChatView {
 
         // Create chat
         const chat = document.createElement("div");
-        chat.classList.add("chat", "active");
+        chat.classList.add("chat");
         chat.dataset.groupName = groupChatName;
 
         chat.appendChild(chatHeader);
@@ -56,6 +60,8 @@ class ChatView {
         chat.appendChild(form);
 
         this._parentElement.appendChild(chat);
+
+        return chat;
     }
 
     createChatHeader(groupChatName) {
@@ -91,7 +97,7 @@ class ChatView {
         return chatBox;
     }
 
-    createChatForm(handler, groupChatName) {
+    createChatForm(sendMsgHandler, groupChatName) {
 
         const form = document.createElement("form");
         form.classList.add("chat-form", "margin-top-xsmall");
@@ -108,21 +114,39 @@ class ChatView {
 
         form.appendChild(inputEl);
         form.appendChild(btn);
-        form.addEventListener("submit", function (e) {
+        form.addEventListener("submit", (e) => {
             e.preventDefault();
-            handler.call(this, groupChatName);
+
+            // Get the text to be sent
+            const chatFormInput = form.querySelector(".chat-form-input");
+            const message = chatFormInput.value.trim();
+            if (!message) return;
+
+            // Display message on the chat
+            this.displayCurrentUserMessage(message);
+
+            // Clear input
+            chatFormInput.value = "";
+
+            sendMsgHandler(groupChatName, message);
         });
 
         return form;
     }
 
-    displayOtherUserMessage(username, message, groupChatName) {
+    displayOtherUserMessage(username, message, groupChatName, createPrivateChatGroup, sendMsgHandler) {
 
+        let chat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
+        
+        if (!chat) {
+            chat = this.createChat(this._privateChatsMapping[username], sendMsgHandler)
+            this._sideBarView.addPrivateChat(
+                username,
+                this.displayChat.bind(this, chat)
+            );
+        };
+        
         // Check who sent the last text
-        const chat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
-
-        if (!chat) return;
-
         const chatBox = chat.querySelector(".chat__messages");
         const lastMessage = chatBox.lastElementChild;
         const msg = convertLinksToAnchors(message);
@@ -146,6 +170,9 @@ class ChatView {
                 msg,
                 username
             );
+            const userMenu = this.createUserMenu(createPrivateChatGroup);
+            div.appendChild(userMenu);
+
             chatBox.appendChild(div);
 
         }
@@ -206,29 +233,33 @@ class ChatView {
         paragraph.classList.add("chat__message-text");
         paragraph.innerHTML = message;
 
-        let userMenu = undefined;
-
         if (isCurrentUser) {
             div.classList.add("chat__message--current-user");
             paragraph.classList.add("background-color-text-sending");
-        } else {
-            userMenu = document.createElement("div");
-            userMenu.classList.add("chat__message-menu");
-
-            const menuOption = document.createElement("button");
-            menuOption.classList.add("chat__message-menu-btn");
-            menuOption.innerHTML = sendPrivateMsg;
-            menuOption.addEventListener("click", this.openUserChat);
-
-            userMenu.appendChild(menuOption);
         }
 
         div.appendChild(userHeader);
         div.appendChild(paragraph);
 
-        if (userMenu) div.appendChild(userMenu);
-
         return div;
+    }
+
+    createUserMenu(createPrivateChatGroup) {
+        const menuOption = document.createElement("button");
+        menuOption.classList.add("chat__message-menu-btn");
+        menuOption.innerHTML = sendPrivateMsg;
+
+        menuOption.addEventListener("click", function() {
+            const username = this.closest('[data-username]')?.dataset.username;
+            if (!username) return;
+
+            createPrivateChatGroup(username);
+        })
+
+        let userMenu = document.createElement("div");
+        userMenu.classList.add("chat__message-menu");
+        userMenu.appendChild(menuOption);
+        return userMenu;
     }
 
     updateCurrentUserBackgroundMessage(userMessage) {
@@ -241,7 +272,7 @@ class ChatView {
             const userMessages = userChatMessage.querySelectorAll(".chat__message-text");
             
             userMessages.forEach(message => {
-                console.log(`Message: ${message.innerHTML}`);
+                // console.log(`Message: ${message.innerHTML}`);
                 if (message.innerHTML === userMsg) {
                     message.classList.remove("background-color-text-sending");
                 }
@@ -250,14 +281,71 @@ class ChatView {
         })
     }
 
-    displayGroupChat(groupChatName) {
+    // displayGroupChat(groupChatName) {
+
+    //     this.hideActiveChat();
+
+    //     const groupChat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`)
+    //     groupChat.classList.add("active");
+    //     groupChat.classList.remove("hide");
+    // }
+
+    openPrivateChatModal(usernameTarget, sendMsgHandler) {
 
         this.hideActiveChat();
+        
+        const cleanUsernameTarget = usernameTarget.replace(/ /g, "-")
+        const cleanCurrentUser = this._username.replace(/ /g, "-")
 
-        const groupChat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`)
-        groupChat.classList.add("active");
-        groupChat.classList.remove("hide");
+        // Check if already exists a unique name for this private chat
+        if (cleanUsernameTarget in this._privateChatsMapping) {
+
+            // Check if exists a modal, if not create it
+            const privateChatId = this._privateChatsMapping[usernameTarget];
+            const privateChat = this._parentElement.querySelector(`[data-group-name=${privateChatId}]`)
+            if (privateChat) {
+
+                privateChat.classList.add("active");
+                privateChat.classList.remove("hide");
+
+            } else {
+                // 1. Create and display chat
+                const chat = this.createChat(privateChatId, sendMsgHandler);
+                this.displayChat(chat);
+
+                // 2. Add user private chat to side bar view
+                this._sideBarView.addPrivateChat(
+                    usernameTarget,
+                    this.displayChat.bind(this, chat),
+                );
+                
+            }
+            
+        } else {
+            const privateChatId = `private_${cleanCurrentUser}_${cleanUsernameTarget}`
+            
+            // 1. Create and display chat
+            const chat = this.createChat(privateChatId, sendMsgHandler);
+            this.displayChat(chat);
+            
+            // 2. Add user private chat to side bar view
+            this._sideBarView.addPrivateChat(
+                cleanUsernameTarget,
+                this.displayChat.bind(this, chat),
+            );
+
+            // 3. Add to object of private chats
+            this._privateChatsMapping[cleanUsernameTarget] = privateChatId;
+        }
+
     }
+
+    addPrivateChatUser(data) {
+        const fromUsername = data.from_user.replace(/ /g, "-");
+        const privateGroup = data.private_group;
+        this._privateChatsMapping[fromUsername] = privateGroup;
+    }
+
 }
 
 export default ChatView;
