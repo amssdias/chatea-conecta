@@ -36,6 +36,7 @@ class ChatView {
 
     displayChat (chat) {
         this.hideActiveChat();
+        chat.classList.remove("hide");
         chat.classList.add("active");
     }
 
@@ -52,12 +53,13 @@ class ChatView {
 
         // Create chat
         const chat = document.createElement("div");
-        chat.classList.add("chat");
+        chat.classList.add("chat", "hide");
         chat.dataset.groupName = groupChatName;
 
         chat.appendChild(chatHeader);
         chat.appendChild(chatBox);
         chat.appendChild(form);
+        
 
         this._parentElement.appendChild(chat);
 
@@ -140,9 +142,11 @@ class ChatView {
         
         if (!chat) {
             chat = this.createChat(this._privateChatsMapping[username], sendMsgHandler)
+            const addIncomingMsgNotification = true;
             this._sideBarView.addPrivateChat(
                 username,
-                this.displayChat.bind(this, chat)
+                this.displayChat.bind(this, chat),
+                addIncomingMsgNotification
             );
         };
         
