@@ -10,13 +10,17 @@ class SideBarView {
         this._parentElement.classList.toggle("open-side-menu");
     }
 
+    removeIncomingMessageClass(el) {
+        if (el.classList.contains("incoming-message")) el.classList.remove("incoming-message");
+    }
+
     updateUsersCountOnline(usersCountOnline) {
         const countUsers = this._parentElement.querySelector("#side-menu-header-count-users");
         countUsers.innerHTML = usersCountOnline;
     }
 
-    addPrivateChat(username, openChatCallBack) {
-        const listItem = this._createListItem();
+    addPrivateChat(username, openChatCallBack, incomingMessage=false) {
+        const listItem = this._createListItem(incomingMessage);
         const icon = this._createOnlineIcon();
         const button = this._createChatButton(username, openChatCallBack);
 
@@ -27,9 +31,11 @@ class SideBarView {
         container.appendChild(listItem);
     }
 
-    _createListItem() {
+    _createListItem(incomingMessage) {
         const li = document.createElement("li");
-        li.className = "side-menu__private-chats__list-item margin-bottom-xsmall";
+        li.className = "side-menu__private-chats__list-item margin-bottom-xxsmall";
+        if (incomingMessage) li.classList.add("incoming-message");
+
         return li;
     }
 
@@ -65,18 +71,20 @@ class SideBarView {
     _createChatButton(username, openChatCallBack) {
         const button = document.createElement("button");
         button.className = "side-menu__private-chats__list-item--link";
+        button.title = "online";
         button.dataset.username = username;
         button.textContent = `🧑 ${username}`;
 
         button.addEventListener("click", () => {
             openChatCallBack();
             this.hideSideBar();
+
+            const li = button.parentElement;
+            this.removeIncomingMessageClass(li);
         });
 
         return button;
     }
-
-
 
 }
 
