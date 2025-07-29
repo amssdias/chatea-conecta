@@ -1,5 +1,5 @@
 USER_GROUP_NOTIFICATION = "user_notification_{}"
-USER_PRIVATE_GROUP = "private_{}_{}"
+USER_PRIVATE_GROUP = "private-{}-{}"
 
 # WebSocket actions
 REGISTER_GROUP = "register_group"

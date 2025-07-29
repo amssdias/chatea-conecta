@@ -1,4 +1,5 @@
 import { convertLinksToAnchors } from "../utils/create_elements.js";
+import { toLowerKebabCase } from "../utils/stringUtils.js";
 
 
 class ChatView {
@@ -141,7 +142,8 @@ class ChatView {
         let chat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
         
         if (!chat) {
-            chat = this.createChat(this._privateChatsMapping[username], sendMsgHandler)
+            const usernameFormatted = toLowerKebabCase(username);
+            chat = this.createChat(this._privateChatsMapping[usernameFormatted], sendMsgHandler)
             const addIncomingMsgNotification = true;
             this._sideBarView.addPrivateChat(
                 username,
@@ -276,7 +278,6 @@ class ChatView {
             const userMessages = userChatMessage.querySelectorAll(".chat__message-text");
             
             userMessages.forEach(message => {
-                // console.log(`Message: ${message.innerHTML}`);
                 if (message.innerHTML === userMsg) {
                     message.classList.remove("background-color-text-sending");
                 }
@@ -298,8 +299,8 @@ class ChatView {
 
         this.hideActiveChat();
         
-        const cleanUsernameTarget = usernameTarget.replace(/ /g, "-")
-        const cleanCurrentUser = this._username.replace(/ /g, "-")
+        const cleanUsernameTarget = toLowerKebabCase(usernameTarget);
+        const cleanCurrentUser = toLowerKebabCase(this._username)
 
         // Check if already exists a unique name for this private chat
         if (cleanUsernameTarget in this._privateChatsMapping) {
@@ -326,7 +327,7 @@ class ChatView {
             }
             
         } else {
-            const privateChatId = `private_${cleanCurrentUser}_${cleanUsernameTarget}`
+            const privateChatId = `private-${cleanCurrentUser}-${cleanUsernameTarget}`;
             
             // 1. Create and display chat
             const chat = this.createChat(privateChatId, sendMsgHandler);
@@ -345,7 +346,7 @@ class ChatView {
     }
 
     addPrivateChatUser(data) {
-        const fromUsername = data.from_user.replace(/ /g, "-");
+        const fromUsername = toLowerKebabCase(data.from_user);
         const privateGroup = data.private_group;
         this._privateChatsMapping[fromUsername] = privateGroup;
     }

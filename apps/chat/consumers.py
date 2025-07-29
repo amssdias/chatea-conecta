@@ -59,16 +59,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         action = data.get("type")
 
         if action == PRIVATE_INVITE:
-            username_target = data.get("target_user_id")
+            username_target = data.get("target_user_id").replace(" ", "-")
 
             if self.private_chats.get(username_target):
                 return
 
             # Add user to private group created
             private_group = await get_private_group_name(username, username_target)
-            await register_user_to_group(self, private_group)
+            clean_private_group = private_group.lower()
+            await register_user_to_group(self, clean_private_group)
 
-            self.private_chats[username_target] = private_group
+            self.private_chats[username_target] = clean_private_group
 
             # Notify the other user, so he's added to the private group
             await self.channel_layer.group_send(
@@ -76,7 +77,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "chat.invite",
                     "from_user": username,
-                    "private_group": private_group,
+                    "private_group": clean_private_group,
                 }
             )
 
