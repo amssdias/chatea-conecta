@@ -10,6 +10,10 @@ class SideBarView {
         this._parentElement.classList.toggle("open-side-menu");
     }
 
+    addIncomingMessageClass(el) {
+        el.classList.add("incoming-message");
+    }
+
     removeIncomingMessageClass(el) {
         if (el.classList.contains("incoming-message")) el.classList.remove("incoming-message");
     }
@@ -19,8 +23,8 @@ class SideBarView {
         countUsers.innerHTML = usersCountOnline;
     }
 
-    addPrivateChat(username, openChatCallBack, incomingMessage=false) {
-        const listItem = this._createListItem(incomingMessage);
+    addPrivateChat(username, privateChatMappgingId, openChatCallBack, incomingMessage=false) {
+        const listItem = this._createListItem(incomingMessage, username, privateChatMappgingId);
         const icon = this._createOnlineIcon();
         const button = this._createChatButton(username, openChatCallBack);
 
@@ -31,10 +35,38 @@ class SideBarView {
         container.appendChild(listItem);
     }
 
-    _createListItem(incomingMessage) {
+    addGroupChat(groupChatName, displayChatCallBack) {
+        const sideMenuGroups = this._parentElement.querySelector("#side-menu-groups");
+
+        const groupContainer = document.createElement("div");
+        groupContainer.classList.add("side-menu__group-chat--item", "margin-bottom-xxsmall");
+        groupContainer.dataset.groupName = groupChatName.toLowerCase();
+
+        const btnGroup = document.createElement("button");
+        btnGroup.classList.add("side-menu__group-chat-btn");
+        btnGroup.textContent = groupChatName;
+        btnGroup.addEventListener("click", () => {
+            this.removeIncomingMessageClass(groupContainer);
+            this.hideSideBar();
+            displayChatCallBack();
+        })
+
+        groupContainer.appendChild(btnGroup);
+
+        sideMenuGroups.appendChild(groupContainer);
+    }
+
+    addIncomingMsgNotification(groupChatName) {
+        let group = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
+        this.addIncomingMessageClass(group);
+    }
+
+    _createListItem(incomingMessage, username, privateChatMappgingId) {
         const li = document.createElement("li");
         li.className = "side-menu__private-chats__list-item margin-bottom-xxsmall";
-        if (incomingMessage) li.classList.add("incoming-message");
+        li.dataset.username = username;
+        li.dataset.groupName = privateChatMappgingId;
+        if (incomingMessage) this.addIncomingMessageClass(li);
 
         return li;
     }

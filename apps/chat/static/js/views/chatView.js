@@ -143,10 +143,12 @@ class ChatView {
         
         if (!chat) {
             const usernameFormatted = toLowerKebabCase(username);
-            chat = this.createChat(this._privateChatsMapping[usernameFormatted], sendMsgHandler)
+            const privateChatMapping = this._privateChatsMapping[usernameFormatted]
+            chat = this.createChat(privateChatMapping, sendMsgHandler)
             const addIncomingMsgNotification = true;
             this._sideBarView.addPrivateChat(
                 username,
+                privateChatMapping,
                 this.displayChat.bind(this, chat),
                 addIncomingMsgNotification
             );
@@ -185,6 +187,13 @@ class ChatView {
 
         if (shouldScroll) {
             chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Add notification chat on side menu if not opened
+        if (!chat.classList.contains("active")) {
+            const isPrivateGroup = groupChatName.includes("private") ? true : false;
+            const groupName = isPrivateGroup ? this._privateChatsMapping[toLowerKebabCase(username)] : groupChatName ;
+            this._sideBarView.addIncomingMsgNotification(groupName)
         }
 
     }
@@ -321,6 +330,7 @@ class ChatView {
                 // 2. Add user private chat to side bar view
                 this._sideBarView.addPrivateChat(
                     usernameTarget,
+                    privateChatId,
                     this.displayChat.bind(this, chat),
                 );
                 
@@ -336,6 +346,7 @@ class ChatView {
             // 2. Add user private chat to side bar view
             this._sideBarView.addPrivateChat(
                 cleanUsernameTarget,
+                privateChatId,
                 this.displayChat.bind(this, chat),
             );
 

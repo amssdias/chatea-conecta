@@ -77,6 +77,11 @@ class ChatSocket extends WebSocket {
         );
 
         this.chatView.displayChat(chat);
+
+        this.sideMenuView.addGroupChat(
+            groupChatName,
+            this.chatView.displayChat.bind(this.chatView, chat)
+        );
     }
 
     sendMessage(groupName, message) {
