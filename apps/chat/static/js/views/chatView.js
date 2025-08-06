@@ -35,7 +35,7 @@ class ChatView {
 
     }
 
-    displayChat (chat) {
+    displayChat(chat) {
         this.hideActiveChat();
         chat.classList.remove("hide");
         chat.classList.add("active");
@@ -294,15 +294,6 @@ class ChatView {
 
         })
     }
-
-    // displayGroupChat(groupChatName) {
-
-    //     this.hideActiveChat();
-
-    //     const groupChat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`)
-    //     groupChat.classList.add("active");
-    //     groupChat.classList.remove("hide");
-    // }
 
     openPrivateChatModal(usernameTarget, sendMsgHandler) {
 

@@ -349,29 +349,6 @@ body {
   padding: 1rem;
 }
 
-.chat-app__menu {
-  background-color: #fef3c7;
-  flex: 0 0 7rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.chat-app__menu__link {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0rem;
-}
-.chat-app__menu__link:first-child {
-  margin-top: 2rem;
-}
-.chat-app__menu__link:hover {
-  background-color: #fde68a;
-}
-.chat-app__menu__svg {
-  width: 3rem;
-}
-
 .chat-container {
   display: block;
   flex-grow: 1;
@@ -573,23 +550,6 @@ body {
   background-color: #fbfbfb;
 }
 
-.group-search {
-  background-color: #fef3c7;
-  padding: 2rem;
-  border-bottom: 2px solid #fcd34d;
-}
-.group-search__input {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 3rem;
-  border: none;
-  font-size: 1.4rem;
-  outline: 2px solid #fef3c7;
-}
-.group-search__input:focus {
-  outline: 2px solid #fcd34d;
-}
-
 .form-nickname {
   width: 80%;
   padding: 6rem 2rem;
@@ -726,42 +686,6 @@ body {
   padding: 1rem 0rem;
   scrollbar-width: thin;
   scrollbar-color: #813c58 #f1f1f1;
-}
-
-.options-container {
-  position: relative;
-}
-.options-container:hover .options__menu {
-  display: block;
-}
-
-.options-svg {
-  width: 2.4rem;
-}
-.options-svg:hover {
-  fill: rgba(0, 0, 0, 0.5);
-}
-.options__menu {
-  display: none;
-  border: 1px solid #b45309;
-  width: 15rem;
-  z-index: 1000;
-  position: absolute;
-  top: 15px;
-  right: 0%;
-  background-color: #fde68a;
-  cursor: pointer;
-}
-.options__menu:hover {
-  display: block;
-}
-.options__menu__link {
-  padding: 1rem 2rem;
-  border: 1px solid #f59e0b;
-  list-style-type: none;
-}
-.options__menu__link:hover {
-  background-color: #fef3c7;
 }
 
 .privacy-policy {
