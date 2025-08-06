@@ -126,7 +126,5 @@ window.addEventListener('beforeunload', function (event) {
 
 
 chatSocketHandler.addEventListener('open', () => {
-    chatSocketHandler.createMainChat("chatea");
+    chatSocketHandler.createMainChat("Chatea");
 });
-
-// createMainChat("chatea");

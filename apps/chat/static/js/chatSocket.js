@@ -67,11 +67,12 @@ class ChatSocket extends WebSocket {
     }
 
     createMainChat(groupChatName) {
-        this.registerGroupUser(groupChatName);
+        const formattedGroupChatName = groupChatName.toLowerCase();
+        this.registerGroupUser(formattedGroupChatName);
 
-        // Display chat with event
+        // Create and display chat with event
         const chat = this.chatView.createChat(
-            groupChatName, 
+            formattedGroupChatName, 
             this.sendMessage.bind(this)
         );
 
