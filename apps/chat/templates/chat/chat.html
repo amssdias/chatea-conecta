@@ -27,7 +27,7 @@
 
     <!-- Header -->
     <div class="side-menu__header margin-bottom-xsmall" id="side-menu-header">
-        <h2 class="side-menu__header__title margin-bottom-xxsmall">{% trans "Chats" %}</h2>
+        <h2 class="side-menu__header__title margin-bottom-xxsmall">{% trans "Chats" %} - {{ username }}</h2>
         <p class="side-menu__header__online">
             <svg class="side-menu__connected-icon margin-right-xxsmall online" fill="#000000" viewBox="0 0 32 32"
                  xmlns="http://www.w3.org/2000/svg">
@@ -43,11 +43,7 @@
     </div>
 
     <!-- Group Chat -->
-    <div class="side-menu__group-chat margin-bottom-xsmall">
-        <button id="group-chatea" class="side-menu__group-chat-btn" data-chat-id="chatea">
-            🌐 Group Chat (chatea)
-        </button>
-        <span class="badge">17</span>
+    <div id="side-menu-groups" class="side-menu__group-chat margin-bottom-xsmall">
     </div>
 
     <!-- Private Chats List -->
@@ -55,35 +51,6 @@
         <h3 class="side-menu__private-chats-title margin-bottom-xxsmall">Private Chats</h3>
 
         <ul class="side-menu__private-chats__list">
-            <li class="side-menu__private-chats__list-item margin-bottom-xsmall">
-                <svg class="side-menu__connected-icon margin-right-xxsmall online" fill="#000000" viewBox="0 0 32 32"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <circle cx="16" cy="16" r="16"></circle>
-                    </g>
-                </svg>
-                <button class="side-menu__private-chats__list-item--link" data-username="chat_1234">
-                    🧑 User A
-                </button>
-            </li>
-
-
-            <li class="side-menu__private-chats__list-item margin-bottom-xsmall">
-                <svg class="side-menu__connected-icon margin-right-xxsmall offline" fill="#000000" viewBox="0 0 32 32"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <circle cx="16" cy="16" r="16"></circle>
-                    </g>
-                </svg>
-                <button class="side-menu__private-chats__list-item--link" data-chat-id="chat_5678">
-                    👩 User B
-                </button>
-            </li>
-            <!-- More chats dynamically injected here -->
         </ul>
     </div>
 

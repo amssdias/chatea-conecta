@@ -124,12 +124,16 @@
 	&__group-chat {
 		border-bottom: 1px solid $primary-dark;
 
-		padding: 1rem 0rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		&--item {
 
-		font-size: 1.4rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			padding: 0.7rem;
+			font-size: 1.4rem;
+
+		}
 
 		&-btn {
 			border: none;
