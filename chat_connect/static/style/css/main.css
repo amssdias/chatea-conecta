@@ -953,6 +953,8 @@ body {
   }
 }
 .side-menu__private-chats__list-item {
+  display: flex;
+  align-items: center;
   font-size: 1.4rem;
   padding: 0.7rem;
 }
@@ -961,6 +963,14 @@ body {
   cursor: pointer;
   font-weight: 600;
   background-color: transparent;
+}
+.side-menu__private-chats__list-item--close {
+  display: flex;
+  width: 2.2rem;
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .section-about, .section-features {

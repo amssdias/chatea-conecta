@@ -27,9 +27,11 @@ class SideBarView {
         const listItem = this._createListItem(incomingMessage, username, privateChatMappgingId);
         const icon = this._createOnlineIcon();
         const button = this._createChatButton(username, openChatCallBack);
+        const closeBtn = this._createCloseBtn();
 
         listItem.appendChild(icon);
         listItem.appendChild(button);
+        listItem.appendChild(closeBtn);
 
         const container = this._parentElement.querySelector(".side-menu__private-chats .side-menu__private-chats__list");
         container.appendChild(listItem);
@@ -116,6 +118,51 @@ class SideBarView {
         });
 
         return button;
+    }
+
+    _createCloseBtn() {
+        const svgNS = "http://www.w3.org/2000/svg";
+
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("stroke", "#000000");
+
+        const g1 = document.createElementNS(svgNS, "g");
+        g1.setAttribute("id", "SVGRepo_bgCarrier");
+        g1.setAttribute("stroke-width", "0");
+
+        const g2 = document.createElementNS(svgNS, "g");
+        g2.setAttribute("id", "SVGRepo_tracerCarrier");
+        g2.setAttribute("stroke-linecap", "round");
+        g2.setAttribute("stroke-linejoin", "round");
+
+        const g3 = document.createElementNS(svgNS, "g");
+        g3.setAttribute("id", "SVGRepo_iconCarrier");
+
+        const circle = document.createElementNS(svgNS, "circle");
+        circle.setAttribute("cx", "12");
+        circle.setAttribute("cy", "12");
+        circle.setAttribute("r", "10");
+        circle.setAttribute("stroke", "#c21d03");
+        circle.setAttribute("stroke-width", "1.5");
+
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute("d", "M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5");
+        path.setAttribute("stroke", "#c21d03");
+        path.setAttribute("stroke-width", "1.5");
+        path.setAttribute("stroke-linecap", "round");
+
+        g3.appendChild(circle);
+        g3.appendChild(path);
+        svg.append(g1, g2, g3);
+
+        const btnEl = document.createElement("button");
+        btnEl.className = "side-menu__private-chats__list-item--close";
+
+        btnEl.appendChild(svg);
+
+        return btnEl;
     }
 
 }

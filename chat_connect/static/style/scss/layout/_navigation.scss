@@ -168,6 +168,9 @@
 			}
 
 			&-item {
+				display: flex;
+				align-items: center;
+
 				font-size: 1.4rem;
 				padding: 0.7rem;
 				
@@ -176,6 +179,17 @@
 					cursor: pointer;
 					font-weight: 600;
 					background-color: transparent;
+				}
+
+				&--close {
+					display: flex;
+
+					width: 2.2rem;
+					margin-left: auto;
+
+					border: none;
+					background: transparent;
+					cursor: pointer;
 				}
 			}
 		}
