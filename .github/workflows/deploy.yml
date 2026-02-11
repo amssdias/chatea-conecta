@@ -39,6 +39,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 60m
           envs: PROJECT_DIR,BRANCH,RUN_COLLECTSTATIC,CLEAR_REDIS,RUN_MIGRATIONS,REDIS_PASSWORD
           script: |
             echo "Navigating to project directory..."
