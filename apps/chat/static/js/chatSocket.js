@@ -11,6 +11,7 @@ class ChatSocket extends WebSocket {
             notify_users_count: this.handleNotifyUsersCount.bind(this),
             send_message: this.handleSendMessage.bind(this),
             private_invite: this.handleChatInvite.bind(this),
+            private_chat_participant_offline: this.handlePrivateChatOffline.bind(this)
         };
     }
 
@@ -35,7 +36,7 @@ class ChatSocket extends WebSocket {
 
     handleNotifyUsersCount(data) {
         const onlineUsersCount = data.users_online;
-        this.chatView.displayNUsersOnline(onlineUsersCount);
+        // this.chatView.displayNUsersOnline(onlineUsersCount);
         this.sideMenuView.updateUsersCountOnline(onlineUsersCount);
     }
 
@@ -45,6 +46,7 @@ class ChatSocket extends WebSocket {
         } else {
             this.chatView.displayOtherUserMessage(
                 data.username,
+                data.userId,
                 data.message,
                 data.groupChatName,
                 this.createPrivateChatGroup.bind(this),
@@ -55,6 +57,14 @@ class ChatSocket extends WebSocket {
 
     handleChatInvite(data) {
         this.chatView.addPrivateChatUser(data);
+    }
+
+    handlePrivateChatOffline(data) {       
+        // Change color of side bar private chat
+        this.sideMenuView.setPrivateChatOffline(data.userId);
+
+        // On user chat, make a way to target him as offline
+        this.chatView.markPrivateChatAsOffline(data.username);
     }
 
     registerGroupUser(groupChatName) {
@@ -73,6 +83,7 @@ class ChatSocket extends WebSocket {
         // Create and display chat with event
         const chat = this.chatView.createChat(
             formattedGroupChatName, 
+            formattedGroupChatName,
             this.sendMessage.bind(this)
         );
 
@@ -94,15 +105,16 @@ class ChatSocket extends WebSocket {
         );
     }
 
-    createPrivateChatGroup(username) {
+    createPrivateChatGroup(userIdTarget, usernameTarget) {
         this.chatView.openPrivateChatModal(
-            username,
+            userIdTarget,
+            usernameTarget,
             this.sendMessage.bind(this),
         );
 
         this.send(JSON.stringify({
             "type": "private_invite",
-            "target_user_id": username
+            "target_user_id": userIdTarget
         }));
     }
 

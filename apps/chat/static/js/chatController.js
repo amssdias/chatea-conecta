@@ -9,6 +9,7 @@ const chatGroups = document.getElementById("chat-groups");
 const sideBarView = new SideBarView();
 const chatView = new ChatView(
     currentUser, 
+    userId, 
     sideBarView
 );
 
@@ -17,9 +18,6 @@ const chatSocketHandler = new ChatSocket(
     chatView,
     sideBarView,
 );
-
-const openedChats = new Set();
-
 
 const sideMenuBtn = document.getElementById("side-menu-btn");
 sideMenuBtn.addEventListener("click", function(e) {

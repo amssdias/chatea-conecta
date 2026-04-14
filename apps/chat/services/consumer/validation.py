@@ -1,14 +1,12 @@
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from apps.chat.constants.redis_keys import ID_TO_USERNAME_KEY
 from apps.chat.services import AsyncRedisService
 
 
-async def validate_user_connection(scope):
-    username = scope["cookies"].get("username", "")
-    if not username:
+async def validate_user_connection(user_id):
+    if not user_id:
         return None
-    lower = username.lower()
-    if not await AsyncRedisService.is_user_in_set(REDIS_USERNAME_KEY, lower):
-        return None
+
+    username = await AsyncRedisService.get_value(ID_TO_USERNAME_KEY.format(user_id=user_id))
     return username
 
 

@@ -9,6 +9,10 @@ class AsyncRedisService:
     async_redis_connection = aio_redis_connection  # Singleton
 
     @classmethod
+    async def get_value(cls, redis_key):
+        return await cls.async_redis_connection.get(redis_key)
+
+    @classmethod
     async def is_user_in_set(cls, redis_key, username):
         """
         Check if the username exists in the Redis set.

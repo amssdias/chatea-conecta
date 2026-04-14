@@ -6,9 +6,10 @@ class ChatView {
 
     _parentElement = document.querySelector(".chat-container");
 
-    constructor(username, sideBarView) {
+    constructor(username, userId, sideBarView) {
         this._privateChatsMapping = {}
         this._username = username;
+        this._userId = userId;
         this._sideBarView = sideBarView;
     }
 
@@ -35,13 +36,32 @@ class ChatView {
 
     }
 
+    getPrivateChatUsername(chatName) {
+        const [, userId, userId2] = chatName.split("-");
+        return this._userId !== userId ? userId : userId2;
+    }
+
+    getPrivateChatId(username1, username2) {
+        return `private-${username1}-${username2}`;
+    }
+
+    getChatModal(chatId) {
+        return this._parentElement.querySelector(`[data-group-name=${chatId}]`)
+    }
+
     displayChat(chat) {
         this.hideActiveChat();
         chat.classList.remove("hide");
         chat.classList.add("active");
     }
 
-    createChat(groupChatName, sendMessageHandler) {
+    deleteChat(chat) {
+        if (chat && chat.parentNode) {
+            chat.parentNode.removeChild(chat);
+        }
+    }
+
+    createChat(groupChatName, groupId, sendMessageHandler) {
 
         // Chat header
         const chatHeader = this.createChatHeader(groupChatName);
@@ -50,12 +70,12 @@ class ChatView {
         const chatBox = this.createChatBox();
 
         // Chat form
-        const form = this.createChatForm(sendMessageHandler, groupChatName);
+        const form = this.createChatForm(sendMessageHandler, groupId);
 
         // Create chat
         const chat = document.createElement("div");
         chat.classList.add("chat", "hide");
-        chat.dataset.groupName = groupChatName;
+        chat.dataset.groupName = groupId;
 
         chat.appendChild(chatHeader);
         chat.appendChild(chatBox);
@@ -74,18 +94,7 @@ class ChatView {
         const h4El = document.createElement("h4");
         h4El.classList.add("chat__header-title");
 
-        // Use it in the future
-        const svgElChatClose = `
-        <svg class="chat__header-close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fef3c7">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-                <g id="Edit / Close_Circle">
-                    <path id="Vector" d="M9 9L11.9999 11.9999M11.9999 11.9999L14.9999 14.9999M11.9999 11.9999L9 14.9999M11.9999 11.9999L14.9999 9M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#fef3c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </g>
-        </svg>
-        `;
+        // const username = groupChatName.includes("private") ? this.getPrivateChatUsername(groupChatName) : groupChatName;
 
         h4El.innerHTML = groupChatName;
         chatHeader.appendChild(h4El);
@@ -137,19 +146,27 @@ class ChatView {
         return form;
     }
 
-    displayOtherUserMessage(username, message, groupChatName, createPrivateChatGroup, sendMsgHandler) {
+    displayOtherUserMessage(
+        username, 
+        userId, 
+        message, 
+        groupChatName, 
+        createPrivateChatGroup, 
+        sendMsgHandler
+    ) {
 
-        let chat = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
+        let chat = this.getChatModal(groupChatName);
         
         if (!chat) {
-            const usernameFormatted = toLowerKebabCase(username);
-            const privateChatMapping = this._privateChatsMapping[usernameFormatted]
-            chat = this.createChat(privateChatMapping, sendMsgHandler)
+            const privateChatMapping = this._privateChatsMapping[userId]
+            chat = this.createChat(username, privateChatMapping, sendMsgHandler);
             const addIncomingMsgNotification = true;
             this._sideBarView.addPrivateChat(
+                userId,
                 username,
                 privateChatMapping,
                 this.displayChat.bind(this, chat),
+                this.deleteChat.bind(this, chat),
                 addIncomingMsgNotification
             );
         };
@@ -176,7 +193,8 @@ class ChatView {
             // If last sent was by some other user, create new div
             const div = this.createUserChatMessageElements(
                 msg,
-                username
+                username,
+                userId
             );
             const userMenu = this.createUserMenu(createPrivateChatGroup);
             div.appendChild(userMenu);
@@ -192,7 +210,7 @@ class ChatView {
         // Add notification chat on side menu if not opened
         if (!chat.classList.contains("active")) {
             const isPrivateGroup = groupChatName.includes("private") ? true : false;
-            const groupName = isPrivateGroup ? this._privateChatsMapping[toLowerKebabCase(username)] : groupChatName ;
+            const groupName = isPrivateGroup ? this._privateChatsMapping[userId] : groupChatName ;
             this._sideBarView.addIncomingMsgNotification(groupName)
         }
 
@@ -221,6 +239,7 @@ class ChatView {
             const div = this.createUserChatMessageElements(
                 msg,
                 this._username,
+                this._userId, 
                 true,
             );
             chatBox.appendChild(div);
@@ -234,10 +253,11 @@ class ChatView {
 
     }
 
-    createUserChatMessageElements(message, username, isCurrentUser = false) {
+    createUserChatMessageElements(message, username, userId, isCurrentUser = false) {
         const div = document.createElement("div");
 
         div.setAttribute("data-username", username);
+        div.setAttribute("data-user-id", userId);
         div.classList.add("chat__message");
 
         const userHeader = document.createElement("h5");
@@ -265,10 +285,14 @@ class ChatView {
         menuOption.innerHTML = sendPrivateMsg;
 
         menuOption.addEventListener("click", function() {
+            const userId = this.closest('[data-user-id]')?.dataset.userId;
+            if (!userId) return;
+
             const username = this.closest('[data-username]')?.dataset.username;
             if (!username) return;
 
-            createPrivateChatGroup(username);
+
+            createPrivateChatGroup(userId, username);
         })
 
         let userMenu = document.createElement("div");
@@ -295,19 +319,16 @@ class ChatView {
         })
     }
 
-    openPrivateChatModal(usernameTarget, sendMsgHandler) {
+    openPrivateChatModal(userIdTarget, usernameTarget, sendMsgHandler) {
 
         this.hideActiveChat();
-        
-        const cleanUsernameTarget = toLowerKebabCase(usernameTarget);
-        const cleanCurrentUser = toLowerKebabCase(this._username)
 
         // Check if already exists a unique name for this private chat
-        if (cleanUsernameTarget in this._privateChatsMapping) {
+        if (userIdTarget in this._privateChatsMapping) {
 
             // Check if exists a modal, if not create it
-            const privateChatId = this._privateChatsMapping[usernameTarget];
-            const privateChat = this._parentElement.querySelector(`[data-group-name=${privateChatId}]`)
+            const privateChatId = this._privateChatsMapping[userIdTarget];
+            const privateChat = this.getChatModal(privateChatId);
             if (privateChat) {
 
                 privateChat.classList.add("active");
@@ -315,42 +336,74 @@ class ChatView {
 
             } else {
                 // 1. Create and display chat
-                const chat = this.createChat(privateChatId, sendMsgHandler);
+                const chat = this.createChat(usernameTarget, privateChatId, sendMsgHandler);
                 this.displayChat(chat);
 
                 // 2. Add user private chat to side bar view
                 this._sideBarView.addPrivateChat(
+                    userIdTarget,
                     usernameTarget,
                     privateChatId,
                     this.displayChat.bind(this, chat),
+                    this.deleteChat.bind(this, chat),
+                    false
                 );
                 
             }
             
         } else {
-            const privateChatId = `private-${cleanCurrentUser}-${cleanUsernameTarget}`;
-            
+            const privateChatId = this._getPrivateChatGroupName(this._userId, userIdTarget)
+
             // 1. Create and display chat
-            const chat = this.createChat(privateChatId, sendMsgHandler);
+            const chat = this.createChat(usernameTarget, privateChatId, sendMsgHandler);
             this.displayChat(chat);
-            
+
             // 2. Add user private chat to side bar view
             this._sideBarView.addPrivateChat(
-                cleanUsernameTarget,
+                userIdTarget,
+                usernameTarget,
                 privateChatId,
                 this.displayChat.bind(this, chat),
+                this.deleteChat.bind(this, chat),
+                false
             );
 
             // 3. Add to object of private chats
-            this._privateChatsMapping[cleanUsernameTarget] = privateChatId;
+            this._privateChatsMapping[userIdTarget] = privateChatId;
         }
 
     }
 
     addPrivateChatUser(data) {
-        const fromUsername = toLowerKebabCase(data.from_user);
-        const privateGroup = data.private_group;
-        this._privateChatsMapping[fromUsername] = privateGroup;
+        const fromUserId = data.fromUserId;
+        const privateGroup = data.privateGroup;
+        this._privateChatsMapping[fromUserId] = privateGroup;
+    }
+
+    markPrivateChatAsOffline(userId) {
+        let chatId = this._getPrivateChatGroupName(this._userId, userId);
+        let chatModal = this.getChatModal(chatId);
+        if (!chatModal) {
+            chatId = this.getPrivateChatId(userId, this._username);
+            chatModal = this.getChatModal(chatId);
+            if (!chatModal) return;
+        }
+
+        const nameEl = chatModal.querySelector(".chat__header .chat__header-title");
+        const privateChatName = nameEl.textContent;
+
+        nameEl.textContent = `${privateChatName} (Offline)`
+
+        const formInputEl = chatModal.querySelector(".chat-form .chat-form-input");
+        formInputEl.setAttribute("placeholder", "User is offline");
+        formInputEl.disabled = true;
+
+    }
+
+    _getPrivateChatGroupName(userId, userIdTarget) {
+        userId = userId.replace(" ", "-");
+        userIdTarget = userIdTarget.replace(" ", "-");
+        return `private-${userId}-${userIdTarget}`.toLowerCase();
     }
 
 }

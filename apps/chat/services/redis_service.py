@@ -1,10 +1,15 @@
 from django.conf import settings
+from django.utils.http import int_to_base36
 
 from apps.chat.utils.redis_connection import redis_connection
 
 
 class RedisService:
     redis_connection = redis_connection  # Singleton sync Redis connection
+
+    @classmethod
+    def get_key(cls, key):
+        return cls.redis_connection.get(key)
 
     @classmethod
     def key_exists(cls, redis_key):
@@ -39,6 +44,20 @@ class RedisService:
         """
         lower_username = username.lower()
         return cls.redis_connection.sadd(redis_key, lower_username)
+
+    @classmethod
+    def set_unique(cls, key, value):
+        """
+        Store a key/value pair only if the key doesn't exist yet.
+        Returns True if created, False if key already existed.
+        """
+        return cls.redis_connection.set(key, value, nx=True)
+
+    @classmethod
+    def create_user_id(cls):
+        n = cls.redis_connection.incr("user:next_id")
+        short_id = int_to_base36(n)
+        return f"u_{short_id.zfill(5)}"
 
     @classmethod
     def delete_key(cls, redis_key):

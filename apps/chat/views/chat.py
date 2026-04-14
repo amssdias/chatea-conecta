@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, ID_TO_USERNAME_KEY, USERNAME_TO_UUID_KEY
 from apps.chat.services import RedisService
 
 GROUPS = [
@@ -33,13 +33,16 @@ class ChatView(View):
     def get(self, request):
         username = self.request.COOKIES.get("username", "")
         if not username or not RedisService.is_member(
-            REDIS_USERNAME_KEY, username.lower()
+                REDIS_ALL_USERNAMES_KEY, username.lower()
         ):
             response = redirect("chat:home")
             response.delete_cookie("username")
+            response.delete_cookie("user_id")
             return response
+
+        user_id = RedisService.get_key(USERNAME_TO_UUID_KEY.format(username=username))
         return render(
-            request, "chat/chat.html", context={"username": username, "groups": None}
+            request, "chat/chat.html", context={"username": username, "user_id": user_id, "groups": None}
         )
 
     def post(self, request):
@@ -52,24 +55,31 @@ class ChatView(View):
         # Check if username already exists in Redis
         lower_username = username.lower()
         if (
-            RedisService.is_member(REDIS_USERNAME_KEY, lower_username) or
-            User.objects.filter(username__iexact=lower_username).exists()
+                RedisService.is_member(REDIS_ALL_USERNAMES_KEY, lower_username) or
+                User.objects.filter(username__iexact=username).exists()
         ):
             messages.error(request, _("Username already taken"))
             return redirect("chat:home")
 
-        # Add the username to the Redis set
-        RedisService.add_to_set(REDIS_USERNAME_KEY, lower_username)
+        # Add the username to the Redis set and unique ID
+        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, lower_username)
+        user_id = RedisService.create_user_id()
+        RedisService.set_unique(ID_TO_USERNAME_KEY.format(user_id=user_id), username)
+        RedisService.set_unique(USERNAME_TO_UUID_KEY.format(username=username), user_id)
 
         response = render(
             request,
             "chat/chat.html",
             context={
                 "username": username,
+                "user_id": user_id,
                 "groups": None,
             },
         )
         response.set_cookie(
             "username", username, httponly=True, secure=settings.COOKIES_SECURE
+        )
+        response.set_cookie(
+            "user_id", user_id, httponly=True, secure=settings.COOKIES_SECURE
         )
         return response

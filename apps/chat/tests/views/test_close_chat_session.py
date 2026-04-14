@@ -1,8 +1,9 @@
-from django.test import TestCase, Client
 from unittest.mock import patch
+
+from django.test import TestCase, Client
 from django.urls import reverse
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 
 
 @patch("apps.chat.views.close_chat_session.RedisService.is_member", autospec=True)
@@ -27,7 +28,7 @@ class TestCloseChatSessionView(TestCase):
         mock_is_member.return_value = True
         self.client.cookies["username"] = "testuser"
         self.client.post(self.url)
-        mock_remove_from_set.assert_called_once_with("asgi:usernames", "testuser")
+        mock_remove_from_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, "testuser")
 
     def test_username_cookie_deleted(self, mock_remove_from_set, mock_is_member):
         mock_is_member.return_value = False
@@ -55,7 +56,7 @@ class TestCloseChatSessionView(TestCase):
         username = "TestUser"
         self.client.cookies["username"] = username
         self.client.post(self.url)
-        mock_remove_from_set.assert_called_once_with(REDIS_USERNAME_KEY, username)
+        mock_remove_from_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, username)
 
     def test_redirect_status_code(self, mock_remove_from_set, mock_is_member):
         mock_is_member.return_value = False
@@ -69,14 +70,14 @@ class TestCloseChatSessionView(TestCase):
         self.client.cookies["username"] = "testuser"
         response = self.client.post(self.url)
 
-        mock_remove_from_set.assert_called_once_with(REDIS_USERNAME_KEY, "testuser")
+        mock_remove_from_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, "testuser")
         self.assertEqual(response.status_code, 302)
 
     def test_multiple_users(self, mock_remove_from_set, mock_is_member):
         mock_is_member.return_value = True
         self.client.cookies["username"] = "user1"
         self.client.post(self.url)
-        mock_remove_from_set.assert_called_once_with(REDIS_USERNAME_KEY, "user1")
+        mock_remove_from_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, "user1")
 
         self.client.cookies["username"] = "user2"
         self.client.post(self.url)

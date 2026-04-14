@@ -12,9 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-import sentry_sdk
 
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -172,7 +171,7 @@ REDIS_URL = f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
 # Django Cache
 DJANGO_REDIS_CACHE_DB = os.getenv("DJANGO_REDIS_CACHE_DB", "0")
-DJANGO_REDIS_KEY_PREFIX = "django-chat-app:"
+DJANGO_REDIS_KEY_PREFIX = "chatconnect"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",

@@ -1,9 +1,11 @@
-from django.test import TestCase, Client
 from unittest.mock import patch
-from django.urls import reverse
-from django.contrib import messages
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from django.contrib import messages
+from django.test import TestCase, Client
+from django.urls import reverse
+
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
+
 
 @patch("apps.chat.views.chat.RedisService.is_member", autospec=True)
 @patch("apps.chat.views.chat.RedisService.add_to_set", autospec=True)
@@ -35,7 +37,7 @@ class ChatViewTests(TestCase):
         self.assertRedirects(response, reverse("chat:home"))
         self.assertEqual(response.cookies.get("username").get("value"), None)
 
-        mock_is_member.assert_called_once_with(REDIS_USERNAME_KEY, self.username)
+        mock_is_member.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, self.username)
 
     def test_get_request_valid_username(self, mock_add_to_set, mock_is_member):
         mock_is_member.return_value = True
@@ -49,7 +51,7 @@ class ChatViewTests(TestCase):
         self.assertEqual(context["username"], self.username)
         self.assertIsNone(context["groups"])
 
-        mock_is_member.assert_called_once_with(REDIS_USERNAME_KEY, self.username)
+        mock_is_member.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, self.username)
 
     def test_get_request_ensure_groups_context(self, mock_add_to_set, mock_is_member):
         mock_is_member.return_value = True
@@ -67,8 +69,8 @@ class ChatViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "chat/chat.html")
         self.assertEqual(response.context["username"], "anotheruser")
-    
-        mock_is_member.assert_called_once_with(REDIS_USERNAME_KEY, "anotheruser")
+
+        mock_is_member.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, "anotheruser")
 
     @patch("apps.chat.views.chat.RedisService.get_group_size", return_value=5)
     def test_post_request_missing_username(self, mock_get_group_size, mock_add_to_set, mock_is_member):
@@ -93,7 +95,7 @@ class ChatViewTests(TestCase):
             [msg.message for msg in list(messages.get_messages(response.wsgi_request))],
         )
 
-        mock_is_member.assert_called_once_with(REDIS_USERNAME_KEY, self.username)
+        mock_is_member.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, self.username)
 
     def test_post_request_successful_username_addition(self, mock_add_to_set, mock_is_member):
         mock_is_member.return_value = False
@@ -103,8 +105,8 @@ class ChatViewTests(TestCase):
         self.assertTemplateUsed(response, "chat/chat.html")
         self.assertEqual(response.cookies["username"].value, self.username)
 
-        mock_add_to_set.assert_called_once_with(REDIS_USERNAME_KEY, self.username)
-        mock_is_member.assert_called_once_with(REDIS_USERNAME_KEY, self.username)
+        mock_add_to_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, self.username)
+        mock_is_member.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, self.username)
 
     def test_post_request_username_with_spaces(self, mock_add_to_set, mock_is_member):
         mock_is_member.return_value = False
@@ -114,7 +116,7 @@ class ChatViewTests(TestCase):
         self.assertTemplateUsed(response, "chat/chat.html")
         self.assertEqual(response.cookies["username"].value, "userwithspaces")
 
-        mock_add_to_set.assert_called_once_with(REDIS_USERNAME_KEY, "userwithspaces")
+        mock_add_to_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, "userwithspaces")
 
     def test_post_request_username_case_sensitivity(self, mock_add_to_set, mock_is_member):
         mock_is_member.return_value = False
@@ -126,8 +128,8 @@ class ChatViewTests(TestCase):
         self.assertTemplateUsed(response, "chat/chat.html")
         self.assertEqual(response.cookies["username"].value, username)
 
-        mock_add_to_set.assert_called_once_with(REDIS_USERNAME_KEY, username_lower)
-        mock_is_member.assert_called_once_with(REDIS_USERNAME_KEY, username_lower)
+        mock_add_to_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, username_lower)
+        mock_is_member.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, username_lower)
 
     @patch("apps.chat.views.chat.RedisService.get_group_size", return_value=5)
     def test_post_request_empty_username_field(self, mock_get_group_size, mock_add_to_set, mock_is_member):
@@ -150,4 +152,4 @@ class ChatViewTests(TestCase):
         self.assertTemplateUsed(response, "chat/chat.html")
         self.assertEqual(response.cookies["username"].value, username)
 
-        mock_add_to_set.assert_called_once_with(REDIS_USERNAME_KEY, username)
+        mock_add_to_set.assert_called_once_with(REDIS_ALL_USERNAMES_KEY, username)

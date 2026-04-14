@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 from apps.chat.services import RedisService
 
 
@@ -21,5 +21,5 @@ class CloseChatSessionView(View):
 
     @staticmethod
     def remove_username_from_redis(username):
-        if RedisService.is_member(REDIS_USERNAME_KEY, username):
-            RedisService.remove_from_set(REDIS_USERNAME_KEY, username)
+        if RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username):
+            RedisService.remove_from_set(REDIS_ALL_USERNAMES_KEY, username)

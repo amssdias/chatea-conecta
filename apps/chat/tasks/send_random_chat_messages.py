@@ -5,7 +5,7 @@ import time
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
+from apps.chat.constants.redis_keys import REDIS_HAS_ACTIVE_USERS_KEY, TASK_LOCK_KEY
 from apps.chat.services.message_service import MessageService
 from apps.chat.services.redis_service import RedisService
 from chat_connect.celery import app
@@ -20,7 +20,7 @@ def send_random_messages(group):
     service = MessageService()
     channel_layer = get_channel_layer()
 
-    while RedisService.key_exists(HAS_USERS):
+    while RedisService.key_exists(REDIS_HAS_ACTIVE_USERS_KEY):
 
         user_message = service.get_message_to_send()
 
