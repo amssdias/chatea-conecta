@@ -6,8 +6,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from apps.chat.constants.redis_keys import USER_PROMOTIONAL_LINKS
+from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 from apps.chat.services.django_cache_service import DjangoCacheService
-from apps.chat.services.redis_service import RedisService
 
 User = get_user_model()
 

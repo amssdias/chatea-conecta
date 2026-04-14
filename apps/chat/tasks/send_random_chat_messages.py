@@ -6,8 +6,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from apps.chat.constants.redis_keys import REDIS_HAS_ACTIVE_USERS_KEY, TASK_LOCK_KEY
+from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 from apps.chat.services.message_service import MessageService
-from apps.chat.services.redis_service import RedisService
 from chat_connect.celery import app
 
 logger = logging.getLogger("chat_connect")
