@@ -1,4 +1,3 @@
-USER_GROUP_NOTIFICATION = "user_notification_{}"
 USER_PRIVATE_GROUP = "private-{}-{}"
 
 # WebSocket actions

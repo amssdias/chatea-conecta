@@ -9,9 +9,6 @@ async def handle_send_message(consumer, data):
 
     # Send regular messages to the corresponding group
     message = data.get("message")
-    print("---------------------------------------")
-    print("-------- Sending message...")
-    print("---------------------------------------")
 
     # Send message to room group
     await consumer.channel_layer.group_send(
