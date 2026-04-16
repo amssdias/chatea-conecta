@@ -1,12 +1,15 @@
-from apps.chat.infrastructure.redis.async_client import aio_redis_client
+from apps.chat.infrastructure.redis.async_client import get_aio_redis_client
 
 
 class AsyncRedisService:
-    async_redis_client = aio_redis_client
+
+    @classmethod
+    def get_client(cls):
+        return get_aio_redis_client()
 
     @classmethod
     async def get_value(cls, redis_key):
-        return await cls.async_redis_client.get(redis_key)
+        return await cls.get_client().get(redis_key)
 
     @classmethod
     async def remove_username_from_set(cls, redis_key, username):
@@ -17,7 +20,7 @@ class AsyncRedisService:
         :param username: The username to remove.
         :return: Number of removed members (0 if the user wasn't in the set).
         """
-        removed_count = await cls.async_redis_client.srem(redis_key, username)
+        removed_count = await cls.get_client().srem(redis_key, username)
         return removed_count
 
     @classmethod
@@ -29,7 +32,7 @@ class AsyncRedisService:
         :param value: The value to set. Default is "locked".
         :return: True if the key was set, False otherwise.
         """
-        was_set = await cls.async_redis_client.setnx(lock_key, value)
+        was_set = await cls.get_client().setnx(lock_key, value)
         return was_set
 
     @classmethod
@@ -40,7 +43,7 @@ class AsyncRedisService:
         :param redis_key: The Redis key representing the set.
         :return: The size of the set.
         """
-        group_size = await cls.async_redis_client.scard(redis_key)
+        group_size = await cls.get_client().scard(redis_key)
         return group_size
 
     @classmethod
@@ -51,5 +54,5 @@ class AsyncRedisService:
         :param redis_key: The Redis key to delete.
         :return: Number of keys deleted (1 if successful, 0 if the key didn't exist).
         """
-        result = await cls.async_redis_client.delete(redis_key)
+        result = await cls.get_client().delete(redis_key)
         return result

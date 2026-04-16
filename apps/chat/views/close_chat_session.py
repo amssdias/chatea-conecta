@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views import View
 
 from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
-from apps.chat.services import RedisService
+from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 
 
 class CloseChatSessionView(View):

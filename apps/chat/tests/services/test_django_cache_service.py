@@ -13,7 +13,7 @@ from apps.chat.constants.redis_keys import (
     USER_PROMOTIONAL_IDS,
 )
 from apps.chat.models import ConversationFlow
-from apps.chat.services import DjangoCacheService
+from apps.chat.services.django_cache_service import DjangoCacheService
 from apps.chat.tests.factories.conversation_flow_factory import ConversationFlowFactory
 from apps.chat.tests.factories.topic_factory import TopicFactory
 from apps.users.tests.factories.profile import ProfileFactory

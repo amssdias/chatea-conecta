@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, ID_TO_USERNAME_KEY, USERNAME_TO_UUID_KEY
-from apps.chat.services import RedisService
+from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 
 GROUPS = [
     ("Galicia", "galicia"),

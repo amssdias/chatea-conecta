@@ -1,7 +1,7 @@
 from asgiref.sync import sync_to_async
 
 from apps.chat.constants.redis_keys import TASK_LOCK_KEY
-from apps.chat.services import AsyncRedisService
+from apps.chat.infrastructure.redis.async_redis_service import AsyncRedisService
 from apps.chat.tasks.send_random_chat_messages import send_random_messages
 
 
