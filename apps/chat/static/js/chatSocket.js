@@ -36,7 +36,6 @@ class ChatSocket extends WebSocket {
 
     handleNotifyUsersCount(data) {
         const onlineUsersCount = data.users_online;
-        // this.chatView.displayNUsersOnline(onlineUsersCount);
         this.sideMenuView.updateUsersCountOnline(onlineUsersCount);
     }
 
