@@ -10,9 +10,9 @@ class SideBarView {
         this._parentElement.classList.toggle("open-side-menu");
     }
 
-    getPrivateChat(username) {
+    getPrivateChat(userId) {
         return this._parentElement.querySelector(
-            `.side-menu__private-chats__list [data-user-id-target="${username}"]`
+            `.side-menu__private-chats__list [data-user-id-target="${userId}"]`
         );
     }
 
@@ -45,10 +45,6 @@ class SideBarView {
             listItem.remove();
 
             deleteChatCallBack();
-
-            // TODO: Display the user the main chat
-            console.log("clicked on close");
-            console.log(privateChatMappgingId);
         })
 
         listItem.appendChild(icon);
@@ -85,18 +81,18 @@ class SideBarView {
         this.addIncomingMessageClass(group);
     }
 
-    setPrivateChatOffline(username) {
+    setPrivateChatOffline(userId) {
         // TODO: Add (offline) to here as well on the name
-        const chatItem = this.getPrivateChat(username);
+        const chatItem = this.getPrivateChat(userId);
 
         if (!chatItem) {
-            console.warn(`Private chat not found for username: ${username}`);
+            console.warn(`Private chat not found for username: ${userId}`);
             return;
         }
 
         const statusIcon = this.getStatusIcon(chatItem);
         if (!statusIcon) {
-            console.warn(`Status icon not found for username: ${username}`);
+            console.warn(`Status icon not found for username: ${userId}`);
             return;
         }
 
@@ -146,7 +142,6 @@ class SideBarView {
         const button = document.createElement("button");
         button.className = "side-menu__private-chats__list-item--link";
         button.title = "online";
-        button.dataset.userIdTarget = userIdTarget;
         button.textContent = `🧑 ${usernameTarget}`;
 
         button.addEventListener("click", () => {
