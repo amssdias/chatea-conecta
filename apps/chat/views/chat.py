@@ -32,8 +32,11 @@ User = get_user_model()
 class ChatView(View):
     def get(self, request):
         username = self.request.COOKIES.get("username", "")
-        if not username or not RedisService.is_member(
-                REDIS_ALL_USERNAMES_KEY, username.lower()
+        user_id = self.request.COOKIES.get("user_id", "")
+        if (
+                not username or
+                not user_id or
+                not RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username.lower())
         ):
             response = redirect("chat:home")
             response.delete_cookie("username")
