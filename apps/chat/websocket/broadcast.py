@@ -13,7 +13,7 @@ async def notify_group_online_count(consumer, group_name: str, online_count: int
     )
 
 
-async def broadcast_private_chat_user_offline(consumer, username):
+async def broadcast_private_chat_user_offline(consumer):
     """
     Broadcast an "offline" presence event to all private chat users of the given user.
 
@@ -25,7 +25,6 @@ async def broadcast_private_chat_user_offline(consumer, username):
     Args:
         consumer: The WebSocket consumer instance that holds channel_layer
                   and the mapping of private chats (`private_chats`).
-        username: The username of the user who just went offline.
     """
 
     for private_username, chat_id in consumer.private_chats.items():
@@ -33,7 +32,6 @@ async def broadcast_private_chat_user_offline(consumer, username):
             USER_NOTIFICATION_GROUP.format(username=private_username),
             {
                 "type": "user.offline",
-                "private_chat_username": username,
                 "user_id": consumer.id,
             },
         )

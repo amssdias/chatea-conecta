@@ -52,7 +52,6 @@ class ChatView(View):
         username = request.POST.get("username", "").strip()
         if not username:
             messages.error(request, _("You need to put an username"))
-            # Redirect to home page
             return redirect("chat:home")
 
         # Check if username already exists in Redis

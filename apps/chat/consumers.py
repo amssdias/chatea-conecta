@@ -50,7 +50,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             f"---- {self.scope['cookies'].get('username')} DISCONNECTING FROM WEBSOCKET ----"
         )
         username = self.scope["cookies"].get("username")
-        await broadcast_private_chat_user_offline(self, username)
+        await broadcast_private_chat_user_offline(self)
         await self.unregister_user_from_all_groups()
         await cleanup_user_presence(username, self.id)
         await update_chat_activity_status()
@@ -117,13 +117,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def user_offline(self, event):
-        username = event["private_chat_username"]
         user_id = event["user_id"]
         await self.send(
             text_data=json.dumps(
                 {
                     "type": PRIVATE_CHAT_PARTICIPANT_OFFLINE,
-                    "username": username,
                     "userId": user_id,
                 }
             )

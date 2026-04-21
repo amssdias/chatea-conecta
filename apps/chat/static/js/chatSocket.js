@@ -63,7 +63,7 @@ class ChatSocket extends WebSocket {
         this.sideMenuView.setPrivateChatOffline(data.userId);
 
         // On user chat, make a way to target him as offline
-        this.chatView.markPrivateChatAsOffline(data.username);
+        this.chatView.markPrivateChatAsOffline(data.userId);
     }
 
     registerGroupUser(groupChatName) {
