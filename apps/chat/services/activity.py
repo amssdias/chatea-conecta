@@ -36,17 +36,3 @@ async def cleanup_user_presence(username, user_id):
     await AsyncRedisService.remove_username_from_set(REDIS_ALL_USERNAMES_KEY, username)
     await AsyncRedisService.delete_key(ID_TO_USERNAME_KEY.format(user_id=user_id))
     await AsyncRedisService.delete_key(USERNAME_TO_UUID_KEY.format(username=username))
-
-
-async def get_username_by_user_id(user_id):
-    """
-    Returns the username associated with the given user ID from Redis.
-
-    If the user ID is not provided or there is no existing mapping in Redis,
-    the function returns ``None``.
-    """
-    if not user_id:
-        return None
-
-    username = await AsyncRedisService.get_value(ID_TO_USERNAME_KEY.format(user_id=user_id))
-    return username
