@@ -36,7 +36,7 @@ class ChatView(View):
         if (
                 not username or
                 not user_id or
-                not RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username.lower())
+                not RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username)
         ):
             response = redirect("chat:home")
             response.delete_cookie("username")
@@ -55,17 +55,16 @@ class ChatView(View):
             return redirect("chat:home")
 
         # Check if username already exists in Redis
-        lower_username = username.lower()
         if (
-                RedisService.is_member(REDIS_ALL_USERNAMES_KEY, lower_username) or
+                RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username) or
                 User.objects.filter(username__iexact=username).exists()
         ):
             messages.error(request, _("Username already taken"))
             return redirect("chat:home")
 
         # Add the username to the Redis set and unique ID
-        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, lower_username)
         user_id = RedisService.create_user_id()
+        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, username)
         RedisService.set_unique(ID_TO_USERNAME_KEY.format(user_id=user_id), username)
         RedisService.set_unique(USERNAME_TO_UUID_KEY.format(username=username), user_id)
 
