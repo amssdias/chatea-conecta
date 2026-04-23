@@ -18,7 +18,7 @@ USERNAME_TO_UUID_KEY = f"{REDIS_NAMESPACE}:user:username:{{username}}"
 ID_TO_USERNAME_KEY = f"{REDIS_NAMESPACE}:user:id:{{user_id}}"
 
 # Notification group for one user
-USER_NOTIFICATION_GROUP = f"{REDIS_NAMESPACE}.user.inbox.{{username}}"
+USER_NOTIFICATION_GROUP = f"{REDIS_NAMESPACE}.user.inbox.{{user_id}}"
 
 # Private chat group (for a chat between 2 UUIDs)
 PRIVATE_CHAT_KEY = f"{REDIS_NAMESPACE}:chat:{{chat_id}}"

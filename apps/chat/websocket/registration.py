@@ -9,7 +9,7 @@ async def register_user_to_group(consumer, group_name: str):
 
 
 async def register_user_to_group_notification(consumer, user_id: str):
-    user_notification_group = USER_NOTIFICATION_GROUP.format(username=user_id)
+    user_notification_group = USER_NOTIFICATION_GROUP.format(user_id=user_id)
     await register_user_to_group(consumer, user_notification_group)
 
 

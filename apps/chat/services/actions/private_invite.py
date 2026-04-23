@@ -16,7 +16,7 @@ async def handle_private_invite(consumer, data):
 
     # Notify the other user, so he's added to the private group
     await consumer.channel_layer.group_send(
-        USER_NOTIFICATION_GROUP.format(username=user_id_target),
+        USER_NOTIFICATION_GROUP.format(user_id=user_id_target),
         {
             "type": "chat.invite",
             "from_user_id": consumer.id,

@@ -27,9 +27,9 @@ async def broadcast_private_chat_user_offline(consumer):
                   and the mapping of private chats (`private_chats`).
     """
 
-    for private_username, chat_id in consumer.private_chats.items():
+    for private_user_id, chat_id in consumer.private_chats.items():
         await consumer.channel_layer.group_send(
-            USER_NOTIFICATION_GROUP.format(username=private_username),
+            USER_NOTIFICATION_GROUP.format(user_id=private_user_id),
             {
                 "type": "user.offline",
                 "user_id": consumer.id,
