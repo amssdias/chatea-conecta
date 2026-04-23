@@ -11,7 +11,8 @@ class ChatSocket extends WebSocket {
             notify_users_count: this.handleNotifyUsersCount.bind(this),
             send_message: this.handleSendMessage.bind(this),
             private_invite: this.handleChatInvite.bind(this),
-            private_chat_participant_offline: this.handlePrivateChatOffline.bind(this)
+            private_chat_participant_offline: this.handlePrivateChatOffline.bind(this),
+            error_action: this.handle_error_socket_action.bind(this)
         };
     }
 
@@ -32,6 +33,7 @@ class ChatSocket extends WebSocket {
         console.error("Chat socket closed unexpectedly");
         const chatClosedEl = document.getElementById("chat-closed");
         chatClosedEl.classList.remove("hide");
+        this.close();
     };
 
     handleNotifyUsersCount(data) {
@@ -115,6 +117,10 @@ class ChatSocket extends WebSocket {
             "type": "private_invite",
             "target_user_id": userIdTarget
         }));
+    }
+
+    handle_error_socket_action(data) {
+        this.handleClose()
     }
 
 }
