@@ -1,5 +1,4 @@
 import { convertLinksToAnchors } from "../utils/create_elements.js";
-import { toLowerKebabCase } from "../utils/stringUtils.js";
 
 
 class ChatView {
