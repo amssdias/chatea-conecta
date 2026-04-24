@@ -42,7 +42,7 @@ class ChatSocket extends WebSocket {
     }
 
     handleSendMessage(data) {
-        if (data.username === currentUser) {
+        if (data.userId === userId) {
             this.chatView.updateCurrentUserBackgroundMessage(data.message);
         } else {
             this.chatView.displayOtherUserMessage(
