@@ -1,4 +1,9 @@
 class ChatSocket extends WebSocket {
+    static ACTION_TYPES = {
+        PRIVATE_INVITE: "private_invite",
+        REGISTER_GROUP: "register_group",
+        SEND_MESSAGE: "send_message",
+    };
 
     constructor(url, chatView, sideBarView) {
         super(url);
@@ -71,7 +76,7 @@ class ChatSocket extends WebSocket {
     registerGroupUser(groupChatName) {
         this.send(
             JSON.stringify({
-                "type": "register_group",
+                "type": ChatSocket.ACTION_TYPES.REGISTER_GROUP,
                 "group": groupChatName,
             })
         );
@@ -99,7 +104,7 @@ class ChatSocket extends WebSocket {
     sendMessage(groupName, message) {
         this.send(
             JSON.stringify({
-                "type": "send_message",
+                "type": ChatSocket.ACTION_TYPES.SEND_MESSAGE,
                 "group": groupName,
                 "message": message
             })
@@ -114,7 +119,7 @@ class ChatSocket extends WebSocket {
         );
 
         this.send(JSON.stringify({
-            "type": "private_invite",
+            "type": ChatSocket.ACTION_TYPES.PRIVATE_INVITE,
             "target_user_id": userIdTarget
         }));
     }
