@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -7,24 +9,6 @@ from django.views import View
 
 from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, ID_TO_USERNAME_KEY, USERNAME_TO_UUID_KEY
 from apps.chat.infrastructure.redis.sync_redis_service import RedisService
-
-GROUPS = [
-    ("Galicia", "galicia"),
-    ("Asturias", "asturias"),
-    ("Cantabria", "cantabria"),
-    ("País Vasco", "pais_vasco"),
-    ("Navarra", "navarra"),
-    ("La Rioja", "la_rioja"),
-    ("Castilla y León", "castilla_leon"),
-    ("Aragón", "aragon"),
-    ("Cataluña", "cataluna"),
-    ("Madrid", "madrid"),
-    ("Extremadura", "extremadura"),
-    ("Castilla-La Mancha", "castilla_la_mancha"),
-    ("Comunidad Valenciana", "valencia"),
-    ("Región de Murcia", "region_murcia"),
-    ("Andalucía", "andalucia"),
-]
 
 User = get_user_model()
 
@@ -54,6 +38,14 @@ class ChatView(View):
             messages.error(request, _("You need to put an username"))
             return redirect("chat:home")
 
+        USERNAME_REGEX = re.compile(r"^[A-Za-z0-9_-]{3,20}$")
+        if not USERNAME_REGEX.fullmatch(username):
+            messages.error(
+                request,
+                _("Username must be 3-20 characters and can only contain letters, numbers, '_' and '-'"),
+            )
+            return redirect("chat:home")
+
         # Check if username already exists in Redis
         if (
                 RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username) or
@@ -74,7 +66,6 @@ class ChatView(View):
             context={
                 "username": username,
                 "user_id": user_id,
-                "groups": None,
             },
         )
         response.set_cookie(
