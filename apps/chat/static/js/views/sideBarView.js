@@ -12,7 +12,7 @@ class SideBarView {
 
     getPrivateChat(userId) {
         return this._parentElement.querySelector(
-            `.side-menu__private-chats__list [data-user-id-target="${userId}"]`
+            `.side-menu__private-chats__list [data-group-name="${userId}"]`
         );
     }
 
@@ -82,21 +82,30 @@ class SideBarView {
     }
 
     setPrivateChatOffline(userId) {
-        // TODO: Add (offline) to here as well on the name
+        this.setPrivateChatStatus(userId, "offline");
+    }
+
+    setPrivateChatOnline(userId) {
+        this.setPrivateChatStatus(userId, "online");
+    }
+
+    setPrivateChatStatus(userId, status) {
         const chatItem = this.getPrivateChat(userId);
 
         if (!chatItem) {
-            console.warn(`Private chat not found for username: ${userId}`);
+            console.warn(`Private chat not found for user ID: ${userId}`);
             return;
         }
 
         const statusIcon = this.getStatusIcon(chatItem);
+
         if (!statusIcon) {
-            console.warn(`Status icon not found for username: ${userId}`);
+            console.warn(`Status icon not found for user ID: ${userId}`);
             return;
         }
 
-        statusIcon.classList.replace("online", "offline");
+        statusIcon.classList.toggle("online", status === "online");
+        statusIcon.classList.toggle("offline", status === "offline");
     }
 
     _createListItem(incomingMessage, userIdTarget, privateChatMappgingId) {

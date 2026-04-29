@@ -1,7 +1,8 @@
 import json
 import logging
 
-from apps.chat.constants.consumer import PRIVATE_INVITE, REGISTER_GROUP, SEND_MESSAGE, ERROR_ACTION
+from apps.chat.constants.consumer import PRIVATE_INVITE, REGISTER_GROUP, SEND_MESSAGE, ERROR_ACTION, HEARTBEAT
+from apps.chat.services.actions.heartbeat import handle_heartbeat
 from apps.chat.services.actions.private_invite import handle_private_invite
 from apps.chat.services.actions.register_group import handle_register_group
 from apps.chat.services.actions.send_message import handle_send_message
@@ -9,6 +10,7 @@ from apps.chat.services.actions.send_message import handle_send_message
 logger = logging.getLogger("chat_connect")
 
 ACTION_MAP = {
+    HEARTBEAT: handle_heartbeat,
     REGISTER_GROUP: handle_register_group,
     PRIVATE_INVITE: handle_private_invite,
     SEND_MESSAGE: handle_send_message,

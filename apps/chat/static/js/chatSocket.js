@@ -1,5 +1,6 @@
 class ChatSocket extends WebSocket {
     static ACTION_TYPES = {
+        HEARTBEAT: "heartbeat",
         PRIVATE_INVITE: "private_invite",
         REGISTER_GROUP: "register_group",
         SEND_MESSAGE: "send_message",
@@ -9,7 +10,9 @@ class ChatSocket extends WebSocket {
         super(url);
         this.chatView = chatView;
         this.sideMenuView = sideBarView;
+        this._heartbeatInterval = null;
         this.onmessage = (event) => this.handleMessage(event);
+        this.onopen = (event) => this.handleOpen(event);
         this.onclose = (event) => this.handleClose(event);
 
         this.messageHandlers = {
@@ -17,8 +20,33 @@ class ChatSocket extends WebSocket {
             send_message: this.handleSendMessage.bind(this),
             private_invite: this.handleChatInvite.bind(this),
             private_chat_participant_offline: this.handlePrivateChatOffline.bind(this),
-            error_action: this.handle_error_socket_action.bind(this)
+            error_action: this.handle_error_socket_action.bind(this),
+            private_chats_restored: this.handle_private_chats_restored.bind(this),
+            private_chat_participant_online: this.handle_private_chat_participant_online.bind(this)
         };
+    }
+
+    handleOpen(event) {
+        this.startHeartbeat();
+    }
+
+    startHeartbeat() {
+        this.stopHeartbeat();
+
+        this._heartbeatInterval = setInterval(() => {
+            if (this.readyState === WebSocket.OPEN) {
+                this.send(JSON.stringify({
+                    type: ChatSocket.ACTION_TYPES.HEARTBEAT,
+                }));
+            }
+        }, 30000);
+    }
+
+    stopHeartbeat() {
+        if (this._heartbeatInterval) {
+            clearInterval(this._heartbeatInterval);
+            this._heartbeatInterval = null;
+        }
     }
 
     handleMessage(event) {
@@ -35,6 +63,8 @@ class ChatSocket extends WebSocket {
     };
 
     handleClose(e) {
+        this.stopHeartbeat();
+
         console.error("Chat socket closed unexpectedly");
         const chatClosedEl = document.getElementById("chat-closed");
         chatClosedEl.classList.remove("hide");
@@ -62,15 +92,15 @@ class ChatSocket extends WebSocket {
     }
 
     handleChatInvite(data) {
-        this.chatView.addPrivateChatUser(data);
+        this.chatView.addPrivateChatUser(data.fromUserId, data.privateGroup);
     }
 
-    handlePrivateChatOffline(data) {       
+    handlePrivateChatOffline(data) {
         // Change color of side bar private chat
-        this.sideMenuView.setPrivateChatOffline(data.userId);
+        this.sideMenuView.setPrivateChatOffline(data.privateGroupId);
 
         // On user chat, make a way to target him as offline
-        this.chatView.markPrivateChatAsOffline(data.userId);
+        this.chatView.markPrivateChatAsOffline(data.privateGroupId);
     }
 
     registerGroupUser(groupChatName) {
@@ -126,6 +156,17 @@ class ChatSocket extends WebSocket {
 
     handle_error_socket_action(data) {
         this.handleClose()
+    }
+
+    handle_private_chats_restored(data) {
+        this.chatView.restorePrivateChatsState(data.privateChats);
+    }
+
+    handle_private_chat_participant_online(data) {
+        console.log("Handle Private CHAT ONLINE");
+        this.sideMenuView.setPrivateChatOnline(data.privateGroupId);
+        this.chatView.addPrivateChatUser(data.userId, data.privateGroupId);
+        this.chatView.markPrivateChatAsOnline(data.privateGroupId);
     }
 
 }

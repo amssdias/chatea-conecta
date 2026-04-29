@@ -364,30 +364,58 @@ class ChatView {
 
     }
 
-    addPrivateChatUser(data) {
-        const fromUserId = data.fromUserId;
-        const privateGroup = data.privateGroup;
+    addPrivateChatUser(fromUserId, privateGroup) {
         this._privateChatsMapping[fromUserId] = privateGroup;
     }
 
-    markPrivateChatAsOffline(userId) {
-        let chatId = this._getPrivateChatGroupName(this._userId, userId);
-        let chatModal = this.getChatModal(chatId);
+    restorePrivateChatsState(privateChats) {
+        this._privateChatsMapping = privateChats || {};
+    }
+
+    markPrivateChatAsOnline(privateGroupId) {
+        this.markPrivateChatStatus(privateGroupId, "online");
+    }
+
+    markPrivateChatAsOffline(privateGroupId) {
+        this.markPrivateChatStatus(privateGroupId, "offline");
+    }
+
+    markPrivateChatStatus(privateGroupId, status) {
+        const chatModal = this.getChatModal(privateGroupId);
+
         if (!chatModal) {
-            chatId = this.getPrivateChatId(userId, this._username);
-            chatModal = this.getChatModal(chatId);
-            if (!chatModal) return;
+            return;
         }
 
+        const isOffline = status === "offline";
+
+        this.updatePrivateChatHeaderStatus(chatModal, isOffline);
+        this.updatePrivateChatInputStatus(chatModal, isOffline);
+    }
+
+    updatePrivateChatHeaderStatus(chatModal, isOffline) {
         const nameEl = chatModal.querySelector(".chat__header .chat__header-title");
-        const privateChatName = nameEl.textContent;
 
-        nameEl.textContent = `${privateChatName} (Offline)`
+        if (!nameEl) {
+            return;
+        }
 
+        const cleanName = nameEl.textContent.replace(" (Offline)", "");
+
+        nameEl.textContent = isOffline
+            ? `${cleanName} (Offline)`
+            : cleanName;
+    }
+
+    updatePrivateChatInputStatus(chatModal, isOffline) {
         const formInputEl = chatModal.querySelector(".chat-form .chat-form-input");
-        formInputEl.setAttribute("placeholder", "User is offline");
-        formInputEl.disabled = true;
 
+        if (!formInputEl) {
+            return;
+        }
+
+        formInputEl.placeholder = isOffline ? "User is offline" : "";
+        formInputEl.disabled = isOffline;
     }
 
     _getPrivateChatGroupName(userId, userIdTarget) {

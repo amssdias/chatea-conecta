@@ -1,8 +1,8 @@
+from apps.chat.constants.cache_expiration import ONLINE_USER_TTL
 from apps.chat.constants.redis_keys import (
     REDIS_HAS_ACTIVE_USERS_KEY,
     REDIS_ALL_USERNAMES_KEY,
-    ID_TO_USERNAME_KEY,
-    USERNAME_TO_UUID_KEY,
+    USER_ONLINE_KEY,
 )
 from apps.chat.infrastructure.redis.async_redis_service import AsyncRedisService
 
@@ -34,5 +34,46 @@ async def cleanup_user_presence(username, user_id):
     This is typically used when a user disconnects from the chat.
     """
     await AsyncRedisService.remove_username_from_set(REDIS_ALL_USERNAMES_KEY, username)
-    await AsyncRedisService.delete_key(ID_TO_USERNAME_KEY.format(user_id=user_id))
-    await AsyncRedisService.delete_key(USERNAME_TO_UUID_KEY.format(username=username))
+
+
+async def mark_user_online(user_id: str) -> None:
+    """
+    Mark a user as online while they have an active websocket connection.
+
+    The TTL acts as a safety net in case the websocket disconnect cleanup
+    does not run correctly.
+    """
+    await AsyncRedisService.set_value(
+        USER_ONLINE_KEY.format(user_id=user_id),
+        "1",
+        ex=ONLINE_USER_TTL,
+    )
+
+
+async def mark_user_offline(user_id: str) -> None:
+    """
+    Remove the user's online marker.
+    """
+    await AsyncRedisService.delete_key(USER_ONLINE_KEY.format(user_id=user_id))
+
+
+async def is_user_online(user_id: str) -> bool:
+    """
+    Return True if the user currently has an active websocket presence marker.
+    """
+    return bool(
+        await AsyncRedisService.get_value(USER_ONLINE_KEY.format(user_id=user_id))
+    )
+
+
+async def register_username_as_active(username: str) -> None:
+    """
+    Add the connected user's username back to the active usernames set.
+
+    Used on websocket connect/reconnect so refreshes restore the username
+    availability state in Redis.
+    """
+    await AsyncRedisService.add_to_set(
+        REDIS_ALL_USERNAMES_KEY,
+        username.lower(),
+    )

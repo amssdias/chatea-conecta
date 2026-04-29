@@ -8,11 +8,19 @@ from apps.chat.constants.consumer import (
     NOTIFY_USERS_COUNT,
     PRIVATE_INVITE,
     PRIVATE_CHAT_PARTICIPANT_OFFLINE,
+    PRIVATE_CHAT_PARTICIPANT_ONLINE,
 )
 from apps.chat.services.activity import (
     update_chat_activity_status,
     cleanup_user_presence,
     get_online_users_count,
+    mark_user_offline,
+    mark_user_online,
+    register_username_as_active,
+)
+from apps.chat.services.private_chats import (
+    restore_user_private_chat_groups,
+    save_user_private_chat_group,
 )
 from apps.chat.websocket.broadcast import (
     notify_group_online_count,
@@ -34,16 +42,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.username = self.scope["cookies"].get("username", "").lower()
         self.groups = set()
         self.private_chats = {}
+
         await self.accept()
+
+        await mark_user_online(self.id)
+
+        # This is in case a user refreshs the page
+        await register_username_as_active(self.username)
+        await restore_user_private_chat_groups(self)
 
     async def disconnect(self, close_code):
         """
-        Handles the cleanup when a user disconnects from the WebSocket.
+        Handle cleanup when a user disconnects from the WebSocket.
 
         Steps:
-        1. Remove the user from Redis to update the list of active users.
-        2. Unregister the user from all groups they were a part of and notify remaining users about the updated online count.
-        3. Reassess the activity status of the chat to update the `REDIS_HAS_ACTIVE_USERS_KEY` key.
+        1. Notify users in existing private chats that this user is offline.
+        2. Unregister the user from all chat groups and notify remaining users about updated online counts.
+        3. Clean up the user's presence data in Redis.
+        4. Mark the user as offline.
+        5. Reassess the global chat activity status and update the active-users Redis key.
         """
 
         logger.info(
@@ -53,6 +70,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await broadcast_private_chat_user_offline(self)
         await self.unregister_user_from_all_groups()
         await cleanup_user_presence(username, self.id)
+        await mark_user_offline(self.id)
         await update_chat_activity_status()
 
     async def unregister_user_from_all_groups(self):
@@ -82,7 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         """Receive message from room group"""
         message = event["message"]
-        user_id = event["user_id"]
+        user_id = event.get("user_id")  # TODO: bots dont have ID
         username = event["username"]
         group = event["group"]
 
@@ -104,6 +122,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_id = event["from_user_id"]
 
         await register_user_to_group(self, private_group)
+        await save_user_private_chat_group(self.id, user_id, private_group)
         self.private_chats[user_id] = private_group
 
         await self.send(
@@ -118,13 +137,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def user_offline(self, event):
         user_id = event["user_id"]
+        chat_id = event["chat_id"]
+        self.private_chats.pop(user_id, None)
+
         await self.send(
             text_data=json.dumps(
                 {
                     "type": PRIVATE_CHAT_PARTICIPANT_OFFLINE,
                     "userId": user_id,
+                    "privateGroupId": chat_id,
                 }
             )
         )
 
-        del self.private_chats[user_id]
+    async def private_chat_participant_online(self, event):
+        user_id = event["user_id"]
+        private_group_id = event["private_group_id"]
+
+        if user_id == self.id:
+            return
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "type": PRIVATE_CHAT_PARTICIPANT_ONLINE,
+                    "userId": user_id,
+                    "privateGroupId": private_group_id,
+                }
+            )
+        )
