@@ -163,7 +163,6 @@ class ChatSocket extends WebSocket {
     }
 
     handle_private_chat_participant_online(data) {
-        console.log("Handle Private CHAT ONLINE");
         this.sideMenuView.setPrivateChatOnline(data.privateGroupId);
         this.chatView.addPrivateChatUser(data.userId, data.privateGroupId);
         this.chatView.markPrivateChatAsOnline(data.privateGroupId);
