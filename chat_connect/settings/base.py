@@ -213,7 +213,7 @@ CELERY_TIMEZONE = "UTC"
 CELERY_BEAT_SCHEDULE = {
     "send-random-messages-tick-every-5-seconds": {
         "task": "apps.chat.tasks.send_random_messages_tick",
-        "schedule": 5.0,
+        "schedule": 3.0,
         "args": ("chatea",),
     },
 }

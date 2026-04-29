@@ -1,4 +1,5 @@
 import logging
+import random
 
 from asgiref.sync import async_to_sync
 from celery import shared_task
@@ -9,23 +10,28 @@ from apps.chat.services.message_service import MessageService
 
 logger = logging.getLogger("chat_connect")
 
+BOT_MESSAGE_SEND_PROBABILITY = 0.9
+
 
 @shared_task(name="apps.chat.tasks.send_random_messages_tick")
-def send_random_messages_tick(group: str):
-    logger.info("Running 'send_random_messages_tick' for group: %s", group)
+def send_random_messages_tick(group: str) -> None:
+    """
+    Send one random bot message to the chat group if there are online users.
 
+    This task is triggered periodically by Celery Beat. It intentionally sends
+    messages frequently to make the chat feel active, while occasionally
+    skipping ticks to avoid a perfectly mechanical rhythm.
+    """
     if not has_online_users():
-        logger.info("No online users found. Skipping bot message tick.")
+        return
+
+    if random.random() > BOT_MESSAGE_SEND_PROBABILITY:
         return
 
     service = MessageService()
     user_message = service.get_message_to_send()
 
     if not user_message:
-        logger.warning(
-            "No message available to send for group '%s'. Skipping tick.",
-            group,
-        )
         return
 
     channel_layer = get_channel_layer()
@@ -39,5 +45,3 @@ def send_random_messages_tick(group: str):
             "group": group,
         },
     )
-
-    logger.info("Bot message sent to group '%s'.", group)
