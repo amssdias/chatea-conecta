@@ -36,7 +36,7 @@ class ChatView {
     }
 
     getChatModal(chatId) {
-        return this._parentElement.querySelector(`[data-group-name=${chatId}]`)
+        return this._parentElement.querySelector(`[data-group-name="${chatId}"]`);
     }
 
     displayChat(chat) {
@@ -86,7 +86,7 @@ class ChatView {
 
         // const username = groupChatName.includes("private") ? this.getPrivateChatUsername(groupChatName) : groupChatName;
 
-        h4El.innerHTML = groupChatName;
+        h4El.textContent = groupChatName;
         chatHeader.appendChild(h4El);
 
         return chatHeader;
@@ -111,7 +111,7 @@ class ChatView {
 
         const btn = document.createElement("button");
         btn.type = "submit";
-        btn.innerHTML = "Submit";
+        btn.textContent = "Submit";
         btn.classList.add("chat-form-btn");
 
         form.appendChild(inputEl);
@@ -255,7 +255,7 @@ class ChatView {
 
         const userHeader = document.createElement("h5");
         userHeader.classList.add("chat__message-user", "chat__message-user-link");
-        userHeader.innerHTML = username;
+        userHeader.textContent = username;
 
         const paragraph = document.createElement("p");
         paragraph.classList.add("chat__message-text");
