@@ -146,7 +146,8 @@ class ChatView {
     ) {
 
         let chat = this.getChatModal(groupChatName);
-        
+        const isPrivateGroup = groupChatName.includes("private") ? true : false;
+
         if (!chat) {
             const privateChatMapping = this._privateChatsMapping[userId]
             chat = this.createChat(username, privateChatMapping, sendMsgHandler);
@@ -186,8 +187,11 @@ class ChatView {
                 username,
                 userId
             );
-            const userMenu = this.createUserMenu(createPrivateChatGroup);
-            div.appendChild(userMenu);
+
+            if (!isPrivateGroup) {
+                const userMenu = this.createUserMenu(createPrivateChatGroup);
+                div.appendChild(userMenu);
+            }
 
             chatBox.appendChild(div);
 
@@ -199,7 +203,6 @@ class ChatView {
 
         // Add notification chat on side menu if not opened
         if (!chat.classList.contains("active")) {
-            const isPrivateGroup = groupChatName.includes("private") ? true : false;
             const groupName = isPrivateGroup ? this._privateChatsMapping[userId] : groupChatName ;
             this._sideBarView.addIncomingMsgNotification(groupName)
         }
