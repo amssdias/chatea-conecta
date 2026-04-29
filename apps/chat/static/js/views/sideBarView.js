@@ -23,26 +23,30 @@ class SideBarView {
         countUsers.textContent = usersCountOnline;
     }
 
-    addPrivateChat(userIdTarget, usernameTarget, privateGroupId, openChatCallback, deleteChatCallback, incomingMessage=false) {
+    addPrivateChat(
+        userIdTarget,
+        usernameTarget,
+        privateGroupId,
+        openChatCallback,
+        deleteChatCallback,
+        incomingMessage = false
+    ) {
         const listItem = this._createListItem(incomingMessage, userIdTarget, privateGroupId);
         const icon = this._createOnlineIcon();
-        const button = this._createChatButton(userIdTarget, usernameTarget, openChatCallback);
-        const closeBtnEl = this._createCloseBtn();
-        closeBtnEl.addEventListener("click", function(e) {
-            e.stopPropagation();
-            e.preventDefault();
+        const button = this._createChatButton(userIdTarget, usernameTarget);
+        const closeBtn = this._createCloseBtn();
 
-            listItem.remove();
+        this._bindPrivateChatEvents(
+            listItem,
+            button,
+            closeBtn,
+            openChatCallback,
+            deleteChatCallback
+        );
 
-            deleteChatCallback();
-        })
+        listItem.append(icon, button, closeBtn);
 
-        listItem.appendChild(icon);
-        listItem.appendChild(button);
-        listItem.appendChild(closeBtnEl);
-
-        const container = this._getPrivateChatsContainer();
-        container.appendChild(listItem);
+        this._appendPrivateChat(listItem);
     }
 
     addGroupChat(groupChatName, displayChatCallback) {
@@ -176,15 +180,8 @@ class SideBarView {
         const button = document.createElement("button");
         button.className = "side-menu__private-chats__list-item--link";
         button.title = "online";
-        button.textContent = `🧑 ${usernameTarget}`;
-
-        button.addEventListener("click", () => {
-            openChatCallBack();
-            this.toggleSideBar();
-
-            const li = button.parentElement;
-            this.removeIncomingMessageClass(li);
-        });
+        button.textContent = `${usernameTarget}`;
+        button.dataset.userIdTarget = userIdTarget;
 
         return button;
     }
@@ -232,6 +229,39 @@ class SideBarView {
         btnEl.appendChild(svg);
 
         return btnEl;
+    }
+
+    _bindPrivateChatEvents(
+        listItem,
+        button,
+        closeBtn,
+        openChatCallback,
+        deleteChatCallback
+    ) {
+        button.addEventListener("click", () => {
+            openChatCallback();
+            this.toggleSideBar();
+            this.removeIncomingMessageClass(listItem);
+        });
+
+        closeBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            listItem.remove();
+            deleteChatCallback();
+        });
+    }
+
+    _appendPrivateChat(listItem) {
+        const container = this._getPrivateChatsContainer();
+
+        if (!container) {
+            console.warn("Private chats container not found");
+            return;
+        }
+
+        container.appendChild(listItem);
     }
 
 }
