@@ -2,8 +2,8 @@ from apps.chat.constants.redis_keys import USER_NOTIFICATION_GROUP
 from apps.chat.services.activity import is_user_online
 from apps.chat.services.private_chats import save_user_private_chat_group
 from apps.chat.websocket.broadcast import notify_user_offline
+from apps.chat.websocket.group_names import get_private_group_name
 from apps.chat.websocket.registration import (
-    get_private_group_name,
     register_user_to_group,
 )
 
@@ -15,7 +15,7 @@ async def handle_private_invite(consumer, data):
         return
 
     user_is_online = await is_user_online(user_id_target)
-    private_group_id = await get_private_group_name(consumer.id, user_id_target)
+    private_group_id = get_private_group_name(consumer.id, user_id_target)
 
     if not user_is_online:
         await notify_user_offline(
