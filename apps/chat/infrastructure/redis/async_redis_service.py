@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from apps.chat.infrastructure.redis.async_client import get_aio_redis_client
 
 
@@ -56,3 +58,78 @@ class AsyncRedisService:
         """
         result = await cls.get_client().delete(redis_key)
         return result
+
+    @classmethod
+    async def add_to_set(cls, redis_key, value):
+        """
+        Add a username to the Redis set.
+
+        Args:
+            redis_key: Redis key representing the set.
+            value: value to add.
+
+        Returns:
+            Number of elements added to the set.
+        """
+        lower_username = value.lower()
+        return await cls.get_client().sadd(redis_key, lower_username)
+
+    @classmethod
+    async def set_expiration(cls, redis_key, seconds):
+        """
+        Set expiration time for a Redis key.
+        """
+        return await cls.get_client().expire(redis_key, seconds)
+
+    @classmethod
+    async def set_value(cls, key, value, ex=settings.CACHE_TIMEOUT_ONE_DAY, nx=False):
+        """
+        Set a Redis key/value pair.
+
+        Args:
+            key: Redis key.
+            value: Value to store.
+            ex: Optional expiration time in seconds.
+            nx: If True, only set the key if it does not already exist.
+
+        Returns:
+            True if the value was set.
+            False if nx=True and the key already existed.
+        """
+        return bool(
+            await cls.get_client().set(
+                key,
+                value,
+                ex=ex,
+                nx=nx,
+            )
+        )
+
+    @classmethod
+    async def set_hash_value(cls, redis_key, field, value, ex=None):
+        """
+        Set a field/value pair inside a Redis hash.
+
+        Args:
+            redis_key: Redis hash key.
+            field: Hash field to store, e.g. target user ID.
+            value: Hash value to store, e.g. private group name.
+            ex: Optional expiration time in seconds for the whole hash key.
+
+        Returns:
+            Number of fields that were added.
+            Redis returns 1 if a new field was created, 0 if an existing field was updated.
+        """
+        result = await cls.get_client().hset(redis_key, field, value)
+
+        if ex:
+            await cls.get_client().expire(redis_key, ex)
+
+        return result
+
+    @classmethod
+    async def get_hash(cls, redis_key):
+        """
+        Return all fields and values from a Redis hash.
+        """
+        return await cls.get_client().hgetall(redis_key)

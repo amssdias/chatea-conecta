@@ -46,12 +46,19 @@ class RedisService:
         return cls.redis_client.sadd(redis_key, lower_username)
 
     @classmethod
-    def set_unique(cls, key, value):
+    def set_unique(cls, key, value, ttl=settings.CACHE_TIMEOUT_ONE_DAY):
         """
         Store a key/value pair only if the key doesn't exist yet.
-        Returns True if created, False if key already existed.
+
+        Args:
+            key: Redis key.
+            value: Value to store.
+            ttl: Optional expiration time in seconds.
+
+        Returns:
+            True if created, False if key already existed.
         """
-        return cls.redis_client.set(key, value, nx=True)
+        return cls.redis_client.set(key, value, ex=ttl, nx=True)
 
     @classmethod
     def create_user_id(cls):
