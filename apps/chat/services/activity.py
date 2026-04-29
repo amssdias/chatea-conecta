@@ -1,26 +1,14 @@
 from apps.chat.constants.cache_expiration import ONLINE_USER_TTL
 from apps.chat.constants.redis_keys import (
-    REDIS_HAS_ACTIVE_USERS_KEY,
     REDIS_ALL_USERNAMES_KEY,
     USER_ONLINE_KEY,
 )
 from apps.chat.infrastructure.redis.async_redis_service import AsyncRedisService
+from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 
 
 async def get_online_users_count() -> int:
     return await AsyncRedisService.get_group_size(REDIS_ALL_USERNAMES_KEY)
-
-
-async def update_chat_activity_status():
-    """
-    Ensures the chat remains active by checking the group size and updating the REDIS_HAS_ACTIVE_USERS_KEY key.
-    """
-    group_size = await get_online_users_count()
-
-    if group_size:
-        await AsyncRedisService.set_if_not_exists(REDIS_HAS_ACTIVE_USERS_KEY, "true")
-    else:
-        await AsyncRedisService.delete_key(REDIS_HAS_ACTIVE_USERS_KEY)
 
 
 async def cleanup_user_presence(username, user_id):
@@ -78,3 +66,11 @@ async def register_username_as_active(username: str) -> None:
         REDIS_ALL_USERNAMES_KEY,
         username.lower(),
     )
+
+
+def has_online_users() -> bool:
+    """
+    Return True if at least one user currently has an active websocket presence marker.
+    """
+    pattern = USER_ONLINE_KEY.format(user_id="*")
+    return RedisService.has_keys_matching_pattern(pattern)

@@ -130,3 +130,10 @@ class RedisService:
     def get_group_size(cls, redis_key: str) -> int:
         """Returns the size of a Redis set synchronously"""
         return cls.redis_client.scard(redis_key)
+
+    @classmethod
+    def has_keys_matching_pattern(cls, pattern: str) -> bool:
+        for _ in cls.redis_client.scan_iter(match=pattern, count=1):
+            return True
+
+        return False

@@ -210,6 +210,14 @@ CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL = 60
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_TIMEZONE = "UTC"
 
+CELERY_BEAT_SCHEDULE = {
+    "send-random-messages-tick-every-5-seconds": {
+        "task": "apps.chat.tasks.send_random_messages_tick",
+        "schedule": 5.0,
+        "args": ("chatea",),
+    },
+}
+
 # AWS - S3
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
