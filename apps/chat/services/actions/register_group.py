@@ -23,7 +23,7 @@ async def handle_register_group(consumer, data):
     await register_user_to_group_notification(consumer, consumer.id)
     await update_chat_activity_status()
 
-    online_count = await get_online_users_count() + 60
+    online_count = (await get_online_users_count()) + 60
     await notify_group_online_count(consumer, group_name=group, online_count=online_count)
     await start_bot_messages_task(group)
     return None
