@@ -21,6 +21,7 @@ const chatSocketHandler = new ChatSocket(
     SOCKET_URL,
     chatView,
     sideBarView,
+    userId,
 );
 
 const sideMenuBtn = document.getElementById("side-menu-btn");
@@ -45,6 +46,6 @@ window.addEventListener('beforeunload', function (event) {
 });
 
 
-chatSocketHandler.addEventListener('open', () => {
+chatSocketHandler.onOpen(() => {
     chatSocketHandler.createMainChat("Chatea");
 });
