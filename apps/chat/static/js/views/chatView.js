@@ -1,4 +1,4 @@
-import { convertLinksToAnchors } from "../utils/create_elements.js";
+import { appendTextWithLinks } from "../utils/create_elements.js";
 
 
 class ChatView {
@@ -180,13 +180,11 @@ class ChatView {
             .from(chatMessagesEl.querySelectorAll(".chat__message--current-user"))
             .reverse();
 
-        const userMsg = convertLinksToAnchors(userMessage);
-
         currentUserMessages.forEach(userChatMessage => {
             const userMessages = userChatMessage.querySelectorAll(".chat__message-text");
 
             userMessages.forEach(message => {
-                if (message.innerHTML === userMsg) {
+                if (message.textContent === userMessage) {
                     message.classList.remove("background-color-text-sending");
                 }
             });
@@ -433,7 +431,8 @@ class ChatView {
             paragraph.classList.add("background-color-text-sending");
         }
 
-        paragraph.innerHTML = message;
+        appendTextWithLinks(paragraph, message);
+        // paragraph.innerHTML = message;
 
         return paragraph;
     }
@@ -489,15 +488,14 @@ class ChatView {
         showUserMenu = false,
     }) {
         const lastMessage = chatBox.lastElementChild;
-        const formattedMessage = convertLinksToAnchors(message);
         const shouldScroll = this._shouldScrollToBottom(chatBox);
 
         if (lastMessage && lastMessage.dataset.username === username) {
-            const paragraph = this._createMessageParagraph(formattedMessage, isCurrentUser);
+            const paragraph = this._createMessageParagraph(message, isCurrentUser);
             lastMessage.appendChild(paragraph);
         } else {
             const messageElement = this._createUserChatMessageElements(
-                formattedMessage,
+                message,
                 username,
                 userId,
                 isCurrentUser
