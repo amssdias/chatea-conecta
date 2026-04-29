@@ -14,7 +14,6 @@ from apps.chat.services.activity import (
     update_chat_activity_status,
     cleanup_user_presence,
     get_online_users_count,
-    mark_user_offline,
     mark_user_online,
     register_username_as_active,
 )
@@ -70,7 +69,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await broadcast_private_chat_user_offline(self)
         await self.unregister_user_from_all_groups()
         await cleanup_user_presence(username, self.id)
-        await mark_user_offline(self.id)
         await update_chat_activity_status()
 
     async def unregister_user_from_all_groups(self):

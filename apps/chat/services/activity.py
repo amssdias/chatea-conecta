@@ -33,7 +33,8 @@ async def cleanup_user_presence(username, user_id):
 
     This is typically used when a user disconnects from the chat.
     """
-    await AsyncRedisService.remove_username_from_set(REDIS_ALL_USERNAMES_KEY, username)
+    await AsyncRedisService.remove_username_from_set(REDIS_ALL_USERNAMES_KEY, username.lower())
+    await mark_user_offline(user_id)
 
 
 async def mark_user_online(user_id: str) -> None:
