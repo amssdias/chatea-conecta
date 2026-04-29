@@ -7,17 +7,5 @@ async def handle_send_message(consumer, data):
         await consumer.close(code=401, reason="No group")
         return None
 
-    # Send regular messages to the corresponding group
     message = data.get("message")
-
-    # Send message to room group
-    await consumer.channel_layer.group_send(
-        group,
-        {
-            "type": "chat.message",
-            "message": message,
-            "username": consumer.username,
-            "user_id": consumer.id,
-            "group": group,
-        },
-    )
+    await broadcast_chat_message(consumer, group, message)

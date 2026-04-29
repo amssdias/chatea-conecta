@@ -91,3 +91,17 @@ async def send_private_chats_restored(consumer, private_chats: dict) -> None:
             }
         )
     )
+
+
+async def broadcast_chat_message(consumer, group: str, message: str) -> None:
+    """Broadcast a regular chat message to a room group."""
+    await consumer.channel_layer.group_send(
+        group,
+        {
+            "type": "chat.message",
+            "message": message,
+            "username": consumer.username,
+            "user_id": consumer.id,
+            "group": group,
+        },
+    )
