@@ -10,9 +10,9 @@ class SideBarView {
         this._parentElement.classList.toggle("open-side-menu");
     }
 
-    getPrivateChat(userId) {
+    getPrivateChat(privateGroupId) {
         return this._parentElement.querySelector(
-            `.side-menu__private-chats__list [data-group-name="${userId}"]`
+            `.side-menu__private-chats__list [data-group-name="${privateGroupId}"]`
         );
     }
 
@@ -81,26 +81,26 @@ class SideBarView {
         this.addIncomingMessageClass(group);
     }
 
-    setPrivateChatOffline(userId) {
-        this.setPrivateChatStatus(userId, "offline");
+    setPrivateChatOffline(privateGroupId) {
+        this.setPrivateChatStatus(privateGroupId, "offline");
     }
 
-    setPrivateChatOnline(userId) {
-        this.setPrivateChatStatus(userId, "online");
+    setPrivateChatOnline(privateGroupId) {
+        this.setPrivateChatStatus(privateGroupId, "online");
     }
 
-    setPrivateChatStatus(userId, status) {
-        const chatItem = this.getPrivateChat(userId);
+    setPrivateChatStatus(privateGroupId, status) {
+        const chatItem = this.getPrivateChat(privateGroupId);
 
         if (!chatItem) {
-            console.warn(`Private chat not found for user ID: ${userId}`);
+            console.warn(`Private chat not found for group ID: ${privateGroupId}`);
             return;
         }
 
         const statusIcon = this.getStatusIcon(chatItem);
 
         if (!statusIcon) {
-            console.warn(`Status icon not found for user ID: ${userId}`);
+            console.warn(`Status icon not found for group ID: ${privateGroupId}`);
             return;
         }
 
