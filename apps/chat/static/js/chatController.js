@@ -5,12 +5,16 @@ import ChatSocket from "./chatSocket.js";
 import { SOCKET_URL } from "./config.js";
 
 const chatGroups = document.getElementById("chat-groups");
+const translations = {
+    sendPrivateMsg,
+};
 
 const sideBarView = new SideBarView();
 const chatView = new ChatView(
     currentUser, 
     userId, 
-    sideBarView
+    sideBarView,
+    translations
 );
 
 const chatSocketHandler = new ChatSocket(
@@ -21,7 +25,7 @@ const chatSocketHandler = new ChatSocket(
 
 const sideMenuBtn = document.getElementById("side-menu-btn");
 sideMenuBtn.addEventListener("click", function(e) {
-    sideBarView.hideSideBar();
+    sideBarView.toggleSideBar();
 })
 
 // Make sure if window is resized the chat ocupies the whole space
