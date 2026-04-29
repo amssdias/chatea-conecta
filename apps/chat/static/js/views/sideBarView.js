@@ -2,22 +2,8 @@ class SideBarView {
 
     _parentElement = document.getElementById("side-menu");
 
-    constructor(username) {
-        this._username = username;
-    }
-
-    hideSideBar() {
+    toggleSideBar() {
         this._parentElement.classList.toggle("open-side-menu");
-    }
-
-    getPrivateChat(privateGroupId) {
-        return this._parentElement.querySelector(
-            `.side-menu__private-chats__list [data-group-name="${privateGroupId}"]`
-        );
-    }
-
-    getStatusIcon(chatItem) {
-        return chatItem.querySelector(".side-menu__connected-icon");
     }
 
     addIncomingMessageClass(el) {
@@ -29,14 +15,18 @@ class SideBarView {
     }
 
     updateUsersCountOnline(usersCountOnline) {
-        const countUsers = this._parentElement.querySelector("#side-menu-header-count-users");
-        countUsers.innerHTML = usersCountOnline;
+        const countUsers = this._getUsersCountElement();
+        if (!countUsers) {
+            console.warn("Users count element not found");
+            return;
+        }
+        countUsers.textContent = usersCountOnline;
     }
 
-    addPrivateChat(userIdTarget, usernameTarget, privateChatMappgingId, openChatCallBack, deleteChatCallBack, incomingMessage=false) {
-        const listItem = this._createListItem(incomingMessage, userIdTarget, privateChatMappgingId);
+    addPrivateChat(userIdTarget, usernameTarget, privateGroupId, openChatCallback, deleteChatCallback, incomingMessage=false) {
+        const listItem = this._createListItem(incomingMessage, userIdTarget, privateGroupId);
         const icon = this._createOnlineIcon();
-        const button = this._createChatButton(userIdTarget, usernameTarget, openChatCallBack);
+        const button = this._createChatButton(userIdTarget, usernameTarget, openChatCallback);
         const closeBtnEl = this._createCloseBtn();
         closeBtnEl.addEventListener("click", function(e) {
             e.stopPropagation();
@@ -44,19 +34,19 @@ class SideBarView {
 
             listItem.remove();
 
-            deleteChatCallBack();
+            deleteChatCallback();
         })
 
         listItem.appendChild(icon);
         listItem.appendChild(button);
         listItem.appendChild(closeBtnEl);
 
-        const container = this._parentElement.querySelector(".side-menu__private-chats .side-menu__private-chats__list");
+        const container = this._getPrivateChatsContainer();
         container.appendChild(listItem);
     }
 
-    addGroupChat(groupChatName, displayChatCallBack) {
-        const sideMenuGroups = this._parentElement.querySelector("#side-menu-groups");
+    addGroupChat(groupChatName, displayChatCallback) {
+        const sideMenuGroups = this._getGroupChatsContainer();
 
         const groupContainer = document.createElement("div");
         groupContainer.classList.add("side-menu__group-chat--item", "margin-bottom-xxsmall");
@@ -67,8 +57,8 @@ class SideBarView {
         btnGroup.textContent = groupChatName;
         btnGroup.addEventListener("click", () => {
             this.removeIncomingMessageClass(groupContainer);
-            this.hideSideBar();
-            displayChatCallBack();
+            this.toggleSideBar();
+            displayChatCallback();
         })
 
         groupContainer.appendChild(btnGroup);
@@ -77,7 +67,12 @@ class SideBarView {
     }
 
     addIncomingMsgNotification(groupChatName) {
-        let group = this._parentElement.querySelector(`[data-group-name=${groupChatName}]`);
+        const group = this._getChatByGroupName(groupChatName);
+        if (!group) {
+            console.warn(`Group chat not found: ${groupChatName}`);
+            return;
+        }
+
         this.addIncomingMessageClass(group);
     }
 
@@ -90,14 +85,14 @@ class SideBarView {
     }
 
     setPrivateChatStatus(privateGroupId, status) {
-        const chatItem = this.getPrivateChat(privateGroupId);
+        const chatItem = this._getPrivateChatElement(privateGroupId);
 
         if (!chatItem) {
             console.warn(`Private chat not found for group ID: ${privateGroupId}`);
             return;
         }
 
-        const statusIcon = this.getStatusIcon(chatItem);
+        const statusIcon = this._getStatusIconElement(chatItem);
 
         if (!statusIcon) {
             console.warn(`Status icon not found for group ID: ${privateGroupId}`);
@@ -108,11 +103,41 @@ class SideBarView {
         statusIcon.classList.toggle("offline", status === "offline");
     }
 
-    _createListItem(incomingMessage, userIdTarget, privateChatMappgingId) {
+    _getUsersCountElement() {
+        return this._parentElement.querySelector("#side-menu-header-count-users");
+    }
+
+    _getPrivateChatsContainer() {
+        return this._parentElement.querySelector(
+            ".side-menu__private-chats .side-menu__private-chats__list"
+        );
+    }
+
+    _getGroupChatsContainer() {
+        return this._parentElement.querySelector("#side-menu-groups");
+    }
+
+    _getPrivateChatElement(privateGroupId) {
+        return this._parentElement.querySelector(
+            `.side-menu__private-chats__list [data-group-name="${privateGroupId}"]`
+        );
+    }
+
+    _getStatusIconElement(chatItem) {
+        return chatItem.querySelector(".side-menu__connected-icon");
+    }
+
+    _getChatByGroupName(groupChatName) {
+        return this._parentElement.querySelector(
+            `[data-group-name="${groupChatName}"]`
+        );
+    }
+
+    _createListItem(incomingMessage, userIdTarget, privateGroupId) {
         const li = document.createElement("li");
         li.className = "side-menu__private-chats__list-item margin-bottom-xxsmall";
         li.dataset.userIdTarget = userIdTarget;
-        li.dataset.groupName = privateChatMappgingId;
+        li.dataset.groupName = privateGroupId;
         if (incomingMessage) this.addIncomingMessageClass(li);
 
         return li;
@@ -155,7 +180,7 @@ class SideBarView {
 
         button.addEventListener("click", () => {
             openChatCallBack();
-            this.hideSideBar();
+            this.toggleSideBar();
 
             const li = button.parentElement;
             this.removeIncomingMessageClass(li);
