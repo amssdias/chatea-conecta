@@ -56,7 +56,7 @@ class ChatView(View):
 
         # Add the username to the Redis set and unique ID
         user_id = RedisService.create_user_id()
-        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, username)
+        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, username.lower())
         RedisService.set_unique(ID_TO_USERNAME_KEY.format(user_id=user_id), username)
         RedisService.set_unique(USERNAME_TO_UUID_KEY.format(username=username), user_id)
 
