@@ -1,8 +1,17 @@
 from __future__ import annotations
 
-from apps.chat.constants.bot_message_redis_keys import BOT_MESSAGE_CACHE_LOADED, BOT_USER_IDS, BOT_USERNAMES, \
-    BOT_TOPIC_IDS, BOT_TOPIC_MESSAGES, BOT_MESSAGE_SENT
-from apps.chat.constants.cache_expiration import BOT_MESSAGE_CACHE_TTL, BOT_MESSAGE_SENT_TTL
+from apps.chat.constants.bot_message_redis_keys import (
+    BOT_MESSAGE_CACHE_LOADED,
+    BOT_USER_IDS,
+    BOT_USERNAMES,
+    BOT_TOPIC_IDS,
+    BOT_TOPIC_MESSAGES,
+    BOT_MESSAGE_SENT,
+)
+from apps.chat.constants.cache_expiration import (
+    BOT_MESSAGE_CACHE_TTL,
+    BOT_MESSAGE_SENT_TTL,
+)
 from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 
 
@@ -14,7 +23,7 @@ class BotMessageRedisStore:
     but it does not contain business logic or database queries.
     """
 
-    def __init__(self, redis_service: type[RedisService] = RedisService):
+    def __init__(self, redis_service=RedisService):
         self.redis_service = redis_service
 
     def is_cache_loaded(self) -> bool:
@@ -63,10 +72,7 @@ class BotMessageRedisStore:
             return
 
         user_ids = [str(user_id) for user_id in users.keys()]
-        usernames = {
-            str(user_id): username
-            for user_id, username in users.items()
-        }
+        usernames = {str(user_id): username for user_id, username in users.items()}
 
         self.redis_service.add_to_set(BOT_USER_IDS, *user_ids)
         self.redis_service.store_hash(BOT_USERNAMES, usernames)
@@ -140,8 +146,7 @@ class BotMessageRedisStore:
         redis_key = BOT_TOPIC_MESSAGES.format(topic_id=topic_id)
 
         redis_messages = {
-            str(message_id): message
-            for message_id, message in messages.items()
+            str(message_id): message for message_id, message in messages.items()
         }
 
         self.redis_service.store_hash(redis_key, redis_messages)
@@ -162,10 +167,7 @@ class BotMessageRedisStore:
 
         messages = self.redis_service.get_hash(redis_key)
 
-        return {
-            int(message_id): message
-            for message_id, message in messages.items()
-        }
+        return {int(message_id): message for message_id, message in messages.items()}
 
     def message_was_sent(self, message_id: int) -> bool:
         """
