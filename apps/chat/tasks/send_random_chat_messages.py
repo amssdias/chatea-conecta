@@ -6,7 +6,7 @@ from celery import shared_task
 from channels.layers import get_channel_layer
 
 from apps.chat.services.activity import has_online_users
-from apps.chat.services.message_service import MessageService
+from apps.chat.services.bot_message_service import BotMessageService
 
 logger = logging.getLogger("chat_connect")
 
@@ -28,7 +28,7 @@ def send_random_messages_tick(group: str) -> None:
     if random.random() > BOT_MESSAGE_SEND_PROBABILITY:
         return
 
-    service = MessageService()
+    service = BotMessageService()
     user_message = service.get_message_to_send()
 
     if not user_message:

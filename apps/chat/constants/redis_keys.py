@@ -1,8 +1,3 @@
-USER_IDS = "user_ids"
-USER_PROMOTIONAL_IDS = "user_promotional_ids"
-USER_PROMOTIONAL_LINKS = "user_promotional_links"
-TOPIC_IDS = "topic_ids"
-
 # =============================================================================
 # Namespace
 # =============================================================================
