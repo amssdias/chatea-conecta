@@ -47,17 +47,14 @@ class BotMessageService:
         self._ensure_cache_is_loaded()
 
         user_id = self.redis_store.get_random_bot_user_id()
-
         if user_id is None:
             return None
 
         username = self.redis_store.get_bot_username(user_id)
-
         if not username:
             return None
 
         selected_message = self._select_message()
-
         if selected_message is None:
             return None
 
