@@ -6,7 +6,7 @@ from typing import TypedDict
 from apps.chat.infrastructure.redis.bot_message_redis_store import (
     BotMessageRedisStore,
 )
-from apps.chat.services.bot_cache_loader import BotCacheLoader
+from apps.chat.services.bots.bot_cache_loader import BotCacheLoader
 
 
 class BotMessage(TypedDict):

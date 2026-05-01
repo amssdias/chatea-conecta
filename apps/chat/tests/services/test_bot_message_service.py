@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 from django.test import SimpleTestCase
 
-from apps.chat.services.bot_message_service import BotMessageService
+from apps.chat.services.bots.bot_message_service import BotMessageService
 
 
 class BotMessageServiceTestCase(SimpleTestCase):
@@ -154,7 +154,7 @@ class BotMessageServiceTestCase(SimpleTestCase):
             self.service.MAX_TOPIC_ATTEMPTS,
         )
 
-    @patch("apps.chat.services.bot_message_service.random.shuffle")
+    @patch("apps.chat.services.bots.bot_message_service.random.shuffle")
     def test_select_unsent_message_returns_first_unsent_message_after_shuffle(self, mock_shuffle):
         messages = {
             501: "First message",
@@ -187,7 +187,7 @@ class BotMessageServiceTestCase(SimpleTestCase):
         self.assertIsNone(result)
         self.redis_store.message_was_sent.assert_not_called()
 
-    @patch("apps.chat.services.bot_message_service.random.shuffle")
+    @patch("apps.chat.services.bots.bot_message_service.random.shuffle")
     def test_select_unsent_message_does_not_check_remaining_messages_after_finding_one(
             self,
             mock_shuffle,

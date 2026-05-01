@@ -6,7 +6,7 @@ from celery import shared_task
 from channels.layers import get_channel_layer
 
 from apps.chat.services.activity import has_online_users
-from apps.chat.services.bot_message_service import BotMessageService
+from apps.chat.services.bots.bot_message_service import BotMessageService
 
 logger = logging.getLogger("chat_connect")
 

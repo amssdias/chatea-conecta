@@ -2,7 +2,7 @@ from unittest.mock import Mock, call, patch
 
 from django.test import TestCase
 
-from apps.chat.services.bot_cache_loader import BotCacheLoader
+from apps.chat.services.bots.bot_cache_loader import BotCacheLoader
 from apps.chat.tests.factories import (
     ConversationFlowFactory,
     TopicFactory,
