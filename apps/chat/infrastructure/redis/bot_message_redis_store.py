@@ -7,11 +7,13 @@ from apps.chat.constants.bot_message_redis_keys import (
     BOT_TOPIC_IDS,
     BOT_TOPIC_MESSAGES,
     BOT_MESSAGE_SENT,
+    REDIS_BOT_USER_IDS_KEY,
 )
 from apps.chat.constants.cache_expiration import (
     BOT_MESSAGE_CACHE_TTL,
     BOT_MESSAGE_SENT_TTL,
 )
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 
 
@@ -194,3 +196,12 @@ class BotMessageRedisStore:
             value="1",
             timeout=BOT_MESSAGE_SENT_TTL,
         )
+
+    def register_bot_user(self, user_id: str, username: str) -> None:
+        normalized_username = username.lower()
+
+        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, normalized_username)
+        RedisService.add_to_set(REDIS_BOT_USER_IDS_KEY, user_id)
+
+    def is_bot_user(self, user_id: str) -> bool:
+        return RedisService.is_member(REDIS_BOT_USER_IDS_KEY, user_id)

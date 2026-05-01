@@ -59,3 +59,5 @@ BOT_PROMOTIONAL_TOPIC_IDS = f"{REDIS_NAMESPACE}:{FEATURE}:promotional_topic_ids"
 BOT_PROMOTIONAL_TOPIC_MESSAGES = (
     f"{REDIS_NAMESPACE}:{FEATURE}:promotional_topics:{{topic_id}}:messages"
 )
+
+REDIS_BOT_USER_IDS_KEY = f"{REDIS_NAMESPACE}:{FEATURE}:ids"

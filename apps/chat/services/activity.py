@@ -1,3 +1,4 @@
+from apps.chat.constants.bot_message_redis_keys import REDIS_BOT_USER_IDS_KEY
 from apps.chat.constants.cache_expiration import ONLINE_USER_TTL
 from apps.chat.constants.redis_keys import (
     REDIS_ALL_USERNAMES_KEY,
@@ -74,3 +75,7 @@ def has_online_users() -> bool:
     """
     pattern = USER_ONLINE_KEY.format(user_id="*")
     return RedisService.has_keys_matching_pattern(pattern)
+
+
+async def is_bot_user(user_id: str) -> bool:
+    return await AsyncRedisService.is_member(REDIS_BOT_USER_IDS_KEY, user_id)

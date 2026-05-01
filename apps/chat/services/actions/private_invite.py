@@ -6,6 +6,7 @@ from apps.chat.websocket.group_names import get_private_group_name
 from apps.chat.websocket.registration import (
     register_user_to_group,
 )
+from apps.chat.websocket.validation import is_bot_user
 
 
 async def handle_private_invite(consumer, data):
@@ -16,8 +17,9 @@ async def handle_private_invite(consumer, data):
 
     user_is_online = await is_user_online(user_id_target)
     private_group_id = get_private_group_name(consumer.id, user_id_target)
+    user_is_bot = await is_bot_user(user_id_target)
 
-    if not user_is_online:
+    if not user_is_online and not user_is_bot:
         await notify_user_offline(
             channel_layer=consumer.channel_layer,
             receiver_user_id=consumer.id,
@@ -31,6 +33,9 @@ async def handle_private_invite(consumer, data):
     await save_user_private_chat_group(consumer.id, user_id_target, private_group_id)
 
     consumer.private_chats[user_id_target] = private_group_id
+
+    if user_is_bot:
+        return
 
     # Notify the other user, so he's added to the private group
     await consumer.channel_layer.group_send(

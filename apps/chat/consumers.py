@@ -96,7 +96,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         """Receive message from room group"""
         message = event["message"]
-        user_id = event.get("user_id")  # TODO: bots dont have ID
+        user_id = event["user_id"]
         username = event["username"]
         group = event["group"]
 

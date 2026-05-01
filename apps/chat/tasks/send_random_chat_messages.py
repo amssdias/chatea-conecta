@@ -41,6 +41,7 @@ def send_random_messages_tick(group: str) -> None:
         {
             "type": "chat.message",
             "message": user_message.get("message"),
+            "user_id": user_message.get("user_id"),
             "username": user_message.get("username"),
             "group": group,
         },

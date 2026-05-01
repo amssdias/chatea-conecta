@@ -41,6 +41,12 @@ class BotCacheLoader:
             ).values_list("id", "username")
         )
 
+        for bot_id, bot_username in users.items():
+            self.redis_store.register_bot_user(
+                user_id=str(bot_id),
+                username=bot_username,
+            )
+
         self.redis_store.store_bot_users(users)
 
     def _load_topics_and_messages(self) -> None:

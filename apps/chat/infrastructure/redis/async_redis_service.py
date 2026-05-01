@@ -133,3 +133,7 @@ class AsyncRedisService:
         Return all fields and values from a Redis hash.
         """
         return await cls.get_client().hgetall(redis_key)
+
+    @classmethod
+    async def is_member(cls, key: str, value: str) -> bool:
+        return bool(await cls.get_client().sismember(key, value))
