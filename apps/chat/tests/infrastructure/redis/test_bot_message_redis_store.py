@@ -140,11 +140,20 @@ class BotMessageRedisStoreTestCase(SimpleTestCase):
         self.assertEqual(result, "alex_bot")
         mock_get_from_hash.assert_called_once_with(BOT_USERNAMES, 10)
 
+    @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.set_expiration")
     @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.add_to_set")
-    def test_store_topic_ids_stores_topic_ids(self, mock_add_to_set):
+    def test_store_topic_ids_stores_topic_ids(self, mock_add_to_set, mock_set_expiration):
         self.store.store_topic_ids({1, 2, 3})
 
-        mock_add_to_set.assert_called_once_with(BOT_TOPIC_IDS, 1, 2, 3)
+        args = mock_add_to_set.call_args.args
+
+        self.assertEqual(args[0], BOT_TOPIC_IDS)
+        self.assertEqual(set(args[1:]), {1, 2, 3})
+
+        mock_set_expiration.assert_called_once_with(
+            BOT_TOPIC_IDS,
+            BOT_MESSAGE_CACHE_TTL,
+        )
 
     @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.set_expiration")
     @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.add_to_set")
