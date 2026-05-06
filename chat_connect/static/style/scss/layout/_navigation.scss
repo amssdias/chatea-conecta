@@ -1,105 +1,221 @@
 .nav-bar {
-    background-color: $primary-dark;
+    background: linear-gradient(120deg, $primary-dark 0%, $accent-dark 100%);
+    box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.16);
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // align-content: center;
-    padding: 1rem 2rem;
-    min-height: 9vh;
+    gap: 1.6rem;
+    padding: 1.2rem 2rem;
+    min-height: 8vh;
+    position: relative;
+    z-index: 20;
 
     @include respond(phone) {
-        flex-wrap: wrap;
-        min-height: 7vh;
-        padding: 0rem 1rem;
-
+        padding: 1rem;
     }
 
     &-logo {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.6rem;
 
         &-svg {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             filter: invert(100%);
-            margin: 0rem 0.6rem;
 
-                @include respond(phone) {
-                    width: 30px;
-                }
-        }
-
-        h2 {
             @include respond(phone) {
-                font-size: 2.6rem;
+                width: 30px;
+                height: 30px;
             }
         }
     }
 
-    & form {
+    &__toggle {
+        display: none;
+    }
+
+    &__toggle-btn {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
         margin-left: auto;
-        margin-right: 2rem;
+        padding: 0.6rem;
+        border-radius: 0.8rem;
+        cursor: pointer;
+
+        span {
+            display: block;
+            width: 2.2rem;
+            height: 0.2rem;
+            background-color: $bg-light;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        @include respond(phone) {
+            display: flex;
+        }
+    }
+
+    &__menu {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+
+        form {
+            margin: 0;
+        }
+
+        @include respond(phone) {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: rgba(35, 33, 33, 0.97);
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
     }
 
     &__links {
-        z-index: 1000;
         display: flex;
-        justify-content: flex-end;
         align-items: center;
-
-        padding: 1rem;
-
-        @include respond(phone) {
-            justify-content: center;
-        }
     }
 
     &-link {
-        border: 0.2rem solid $bg-light;
-        padding: 0.5rem 1.5rem;
-        border-radius: 2rem;
-
+        border: 0.2rem solid rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.08);
+        padding: 0.6rem 1.4rem;
+        border-radius: 3rem;
         text-decoration: none;
         color: $bg-light;
-
         cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 
-        &-home {
-            width: 32px;
-            height: 32px;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.18);
+            border-color: $bg-light;
+            transform: translateY(-1px);
         }
 
+        &-home {
+            width: 30px;
+            height: 30px;
+            display: block;
+        }
+    }
+
+
+    .nav-chat-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-right: 1rem;
+        padding: 0.9rem 1.4rem;
+        border: 0.2rem solid rgba(255, 255, 255, 0.72);
+        border-radius: 3rem;
+        background-color: rgba(255, 255, 255, 0.12);
+        color: $bg-light;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+        svg {
+            width: 1.8rem;
+            height: 1.8rem;
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.22);
+            border-color: $bg-light;
+            transform: translateY(-1px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(251, 251, 251, 0.35);
+        }
+
+        @include respond(phone) {
+            width: 100%;
+            justify-content: center;
+            margin: 0;
+        }
+    }
+
+    .btn-close-session {
+        border: 0.2rem solid rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: $bg-light;
+        padding: 1rem 1.6rem;
+        border-radius: 3rem;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+    }
+
+    &__toggle:checked ~ &__menu {
+        max-height: 15rem;
+        padding: 1rem;
+    }
+
+    &__toggle:checked + &__toggle-btn span:nth-child(1) {
+        transform: translateY(0.7rem) rotate(45deg);
+    }
+
+    &__toggle:checked + &__toggle-btn span:nth-child(2) {
+        opacity: 0;
+    }
+
+    &__toggle:checked + &__toggle-btn span:nth-child(3) {
+        transform: translateY(-0.7rem) rotate(-45deg);
     }
 }
 
 .side-menu {
 	position: fixed;
-	top: 0;
-	bottom: 0;
-	right: 70%;
-	left: 0;
-	transform: translateX(-100%);
+	top: 8.6rem;
+	bottom: 1.2rem;
+	left: 1.2rem;
+	width: min(34rem, calc(100vw - 2.4rem));
+	transform: translateX(-110%);
 
-	animation-duration: 1s;
+	animation-duration: 0.35s;
 	animation-fill-mode: forwards;
 
-	background-color: $bg-medium;
-	border-right: 2px solid black;
-	padding: 1rem 2rem;
+	background: rgba(251, 251, 251, 0.97);
+	backdrop-filter: blur(4px);
+	border: 1px solid rgba(57, 57, 57, 0.25);
+	border-radius: 1.2rem;
+	box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.2);
+	padding: 1.2rem 1.6rem;
 
-	z-index: 10;
+	z-index: 19;
 
-	
-    @include respond(tab-port) {
-        right: 60%;
-    }
-
-	
-    @include respond(phone) {
-        right: 40%;
-    }
+	@include respond(phone) {
+		top: 7rem;
+		bottom: 0.8rem;
+		left: 0.8rem;
+		width: calc(100vw - 1.6rem);
+	}
 
 	&__connected-icon {
 		width: 1rem;
@@ -107,9 +223,8 @@
 
 	&__header {
 		border-bottom: 2px solid $primary-dark;
-		
 		padding: 1rem 0rem;
-		
+
 		&__title {
 			font-size: 2rem;
 			text-align: center;
@@ -125,20 +240,23 @@
 		border-bottom: 1px solid $primary-dark;
 
 		&--item {
-
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-
-			padding: 0.7rem;
+			padding: 0.8rem;
 			font-size: 1.4rem;
+			border-radius: 0.8rem;
 
+			&:hover {
+				background-color: rgba(194, 29, 3, 0.06);
+			}
 		}
 
 		&-btn {
 			border: none;
 			color: $accent-dark;
 			cursor: pointer;
+			background: transparent;
 
 			&:hover {
 				color: $primary-dark;
@@ -147,21 +265,14 @@
 	}
 
 	&__private-chats {
-
 		&-title {
 			font-size: 1.8rem;
 		}
 
 		&__list {
 			list-style-type: none;
-
 			height: 40rem;
-
 			overflow-y: auto;
-
-			// @include respond(tab-port) {
-			// 	height: 33rem;
-			// }
 
 			@include respond(phone) {
 				height: 33rem;
@@ -170,10 +281,14 @@
 			&-item {
 				display: flex;
 				align-items: center;
-
 				font-size: 1.4rem;
-				padding: 0.7rem;
-				
+				padding: 0.8rem;
+				border-radius: 0.8rem;
+
+				&:hover {
+					background-color: rgba(194, 29, 3, 0.06);
+				}
+
 				&--link {
 					border: none;
 					cursor: pointer;
@@ -183,10 +298,8 @@
 
 				&--close {
 					display: flex;
-
 					width: 2.2rem;
 					margin-left: auto;
-
 					border: none;
 					background: transparent;
 					cursor: pointer;
