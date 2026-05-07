@@ -29,6 +29,9 @@
     <!-- Header -->
     <div class="side-menu__header margin-bottom-xsmall" id="side-menu-header">
         <h2 class="side-menu__header__title margin-bottom-xxsmall">{% trans "Chats" %} - {{ username }}</h2>
+        <button class="side-menu__close-btn" id="side-menu-close-btn" type="button" aria-label="Close chats menu">
+            &times;
+        </button>
         <p class="side-menu__header__online">
             <svg class="side-menu__connected-icon margin-right-xxsmall online" fill="#000000" viewBox="0 0 32 32"
                  xmlns="http://www.w3.org/2000/svg">
@@ -55,16 +58,6 @@
         </ul>
     </div>
 
-    <button class="side-menu--btn" id="side-menu-btn">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-                <path d="M4 6H20M4 12H20M4 18H20" stroke="#D81159" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-            </g>
-        </svg>
-    </button>
 </div>
 
     <div class="chat-app">

@@ -25,7 +25,15 @@ const chatSocketHandler = new ChatSocket(
 );
 
 const sideMenuBtn = document.getElementById("side-menu-btn");
+const navToggle = document.getElementById("nav-toggle");
+const sideMenuCloseBtn = document.getElementById("side-menu-close-btn");
+
 sideMenuBtn.addEventListener("click", function(e) {
+    if (navToggle) navToggle.checked = false;
+    sideBarView.toggleSideBar();
+})
+
+sideMenuCloseBtn.addEventListener("click", function(e) {
     sideBarView.toggleSideBar();
 })
 
