@@ -10,6 +10,22 @@ Chatea-Conecta - {% trans "Privacy Policy" %}
     {% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
 {% endblock description %}
 
+{% block og_title %}
+{% blocktrans %}Chatea-Conecta - Privacy Policy{% endblocktrans %}
+{% endblock og_title %}
+
+{% block og_description %}
+{% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
+{% endblock og_description %}
+
+{% block twitter_title %}
+{% blocktrans %}Chatea-Conecta - Privacy Policy{% endblocktrans %}
+{% endblock twitter_title %}
+
+{% block twitter_description %}
+{% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
+{% endblock twitter_description %}
+
 {% block scripts %}
 {% endblock scripts %}
 
@@ -35,45 +51,3 @@ Chatea-Conecta - {% trans "Privacy Policy" %}
 
     <div class="privacy-policy-section">
         <h3 class="heading-tertiary heading-tertiary-dark-amber">2. {% trans "How We Use Your Information" %}</h3>
-        <p class="paragraph">{% trans "The username is used exclusively to facilitate the chat functionality within the app. We do not store usernames permanently; they are temporarily cached using a secure caching service (Redis) and are automatically removed when you leave the page." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">3. {% trans "Cookies" %}</h3>
-        <p class="paragraph">{% trans "We use cookies to enhance your experience. A single cookie is used to store the username you create for the duration of your session. This cookie is deleted once the session ends or the page is refreshed." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">4. {% trans "Data Storage and Security" %}</h3>
-        <ul class="privacy-policy-section__list">
-            <li class="paragraph">{% trans "Usernames are stored temporarily in Redis, a secure caching service, and are automatically deleted when the user exits the page." %}</li>
-            <li class="paragraph">{% trans "We implement reasonable technical measures to ensure that the temporary data processed by our app is secure." %}</li>
-        </ul>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">5. {% trans "Third Parties" %}</h3>
-        <p class="paragraph">{% trans "We do not share, sell, or disclose your information to third parties." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">6. {% trans "Age Restrictions" %}</h3>
-        <p class="paragraph">{% trans "Our app is intended for users aged 18 and older. By using this app, you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for ensuring compliance with this restriction." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">7. {% trans "Your Rights" %}</h3>
-        <p class="paragraph">{% trans "Since we do not store or collect personal information, there are no specific rights for data access, correction, or deletion. If you have concerns about privacy, you may stop using the app at any time." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">8. {% trans "Updates to This Policy" %}</h3>
-        <p class="paragraph">{% trans "We may update this Privacy Policy from time to time. Any changes will be reflected on this page, and the updated date will be indicated at the top." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">9. {% trans "Contact Us" %}</h3>
-        <p class="paragraph">{% trans "If you have any questions or concerns regarding this Privacy Policy, please refrain from using the app." %}</p>
-    </div>
-</section>
-{% endblock content %}

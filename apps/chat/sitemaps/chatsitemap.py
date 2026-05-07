@@ -9,7 +9,7 @@ class ChatStaticViewSitemap(Sitemap):
 
     def items(self):
         # Return a list of named URLs from the chat app
-        return ["chat:home", "chat:live-chat", "chat:close-chat"]
+        return ["chat:home", "chat:faq", "chat:privacy"]
 
     def location(self, item):
         # Generate URLs dynamically using Django's reverse function
@@ -18,10 +18,10 @@ class ChatStaticViewSitemap(Sitemap):
     def priority(self, item):
         if item == "chat:home":
             return 1.0
-        elif item == "chat:live-chat":
-            return 0.9
-        elif item == "chat:close-chat":
-            return 0.3
+        elif item == "chat:faq":
+            return 0.7
+        elif item == "chat:privacy":
+            return 0.5
 
     def get_urls(self, page=1, site=None, protocol=None):
         """

@@ -11,6 +11,22 @@ Chatea-Conecta - {% trans "FAQ" %}
 {% endblock description %}
 
 
+{% block og_title %}
+{% blocktrans %}Chatea-Conecta - FAQ{% endblocktrans %}
+{% endblock og_title %}
+
+{% block og_description %}
+{% trans "Find answers to frequently asked questions about Chatea-Conecta. Learn how it works and more." %}
+{% endblock og_description %}
+
+{% block twitter_title %}
+{% blocktrans %}Chatea-Conecta - FAQ{% endblocktrans %}
+{% endblock twitter_title %}
+
+{% block twitter_description %}
+{% trans "Find answers to frequently asked questions about Chatea-Conecta. Learn how it works and more." %}
+{% endblock twitter_description %}
+
 {% block scripts %}
     <script src="{% static 'js/faq.js' %}" defer></script>
 {% endblock scripts %}
@@ -196,7 +212,7 @@ Chatea-Conecta - {% trans "FAQ" %}
     <div class="faq__question">
         <div class="faq__question__header">
             <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Can I block promotional messages?" %}</h3>
-            
+
             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">

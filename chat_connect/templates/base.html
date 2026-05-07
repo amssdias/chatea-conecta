@@ -19,11 +19,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
     <meta name="description" content="{% block description %}{% endblock description %}">
+    <meta name="robots" content="index,follow">
     <meta name="keywords" content="{% trans 'anonymous chat, free chat room, online chat, global chat, adult chat room' %}">
     <meta name="author" content="Andre Dias">
 
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
-    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <link rel="canonical" href="{% block canonical_url %}{{ SITE_URL }}{{ request.path }}{% endblock canonical_url %}">
+
+    <meta property="og:title" content="{% block og_title %}{% trans 'Chatea-Conecta' %}{% endblock og_title %}">
+    <meta property="og:description"
+          content="{% block og_description %}{% trans 'Free anonymous online chat to meet new people instantly.' %}{% endblock og_description %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}">
+    <meta property="og:url" content="{% block og_url %}{{ SITE_URL }}{{ request.path }}{% endblock og_url %}">
+    {# TODO: Replace favicon with a dedicated 1200x630 social preview image when available. #}
+    <meta property="og:image"
+          content="{% block og_image %}{{ SITE_URL }}{% static 'img/favicon.ico' %}{% endblock og_image %}">
+
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock twitter_card %}">
+    <meta name="twitter:title"
+          content="{% block twitter_title %}{% trans 'Chatea-Conecta' %}{% endblock twitter_title %}">
+    <meta name="twitter:description"
+          content="{% block twitter_description %}{% trans 'Free anonymous online chat to meet new people instantly.' %}{% endblock twitter_description %}">
+    <meta name="twitter:image"
+          content="{% block twitter_image %}{{ SITE_URL }}{% static 'img/favicon.ico' %}{% endblock twitter_image %}">
 
     {% for hreflang in hreflang_urls %}
         <link rel="alternate" hreflang="{{ hreflang.lang }}" href="{{ hreflang.url }}" />

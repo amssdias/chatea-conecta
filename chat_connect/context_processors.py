@@ -1,4 +1,5 @@
 import re
+from urllib.parse import urljoin
 
 from django.conf import settings
 
@@ -18,13 +19,13 @@ def hreflang_context(request):
         lang_path = f"/{lang_code.rstrip('/')}{clean_path}"  # Add language prefix
         hreflang_urls.append({
             "lang": lang_code,
-            "url": request.build_absolute_uri(lang_path),  # Build absolute URL
+            "url": urljoin(f"{settings.SITE_URL}/", lang_path.lstrip("/")),  # Build absolute URL
         })
 
     # Add the x-default fallback (without a language prefix)
     hreflang_urls.append({
         "lang": "x-default",
-        "url": request.build_absolute_uri(clean_path if clean_path != "/" else "/"),
+        "url": urljoin(f"{settings.SITE_URL}/", (clean_path if clean_path != "/" else "/").lstrip("/"))
     })
 
-    return {"hreflang_urls": hreflang_urls}
+    return {"hreflang_urls": hreflang_urls, "SITE_URL": settings.SITE_URL}

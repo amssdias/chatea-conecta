@@ -1,7 +1,7 @@
-User-agent: Googlebot
-Disallow:
-
 User-agent: *
-Disallow: /
+Disallow:
+Disallow: /chatea-admin/
+Disallow: /ws/
+Disallow: /close-chat/
 
 Sitemap: https://chatea-conecta.com/sitemap.xml

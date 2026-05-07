@@ -29,6 +29,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 ALLOWED_HOSTS = []
 
+SITE_URL = os.getenv("SITE_URL", "https://chatea-conecta.com").rstrip("/")
+
 # Application definition
 DJANGO_APPS = [
     "django.contrib.admin",
