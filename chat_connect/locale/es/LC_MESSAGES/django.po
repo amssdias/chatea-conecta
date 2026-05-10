@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 22:04+0000\n"
+"POT-Creation-Date: 2026-05-09 23:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,21 +22,29 @@ msgstr ""
 msgid "Send private message"
 msgstr "Enviar mensaje privado"
 
-#: apps/chat/templates/chat/chat.html:22
+#: apps/chat/templates/chat/chat.html:17
+msgid ""
+"You can currently only have 3 private chats available. Remove one from your "
+"list to open this chat."
+msgstr ""
+"Actualmente solo puedes tener 3 chats privados disponibles. Elimina uno de "
+"tu lista para abrir este chat."
+
+#: apps/chat/templates/chat/chat.html:23
 msgid "Sorry there was a problem with the connection, try sign up again."
 msgstr ""
 "Lo sentimos, hubo un problema con la conexión. Intenta registrarte de nuevo."
 
-#: apps/chat/templates/chat/chat.html:23
+#: apps/chat/templates/chat/chat.html:24
 msgid "Go back home"
 msgstr "Volver a la página principal"
 
-#: apps/chat/templates/chat/chat.html:31
+#: apps/chat/templates/chat/chat.html:32
 #: chat_connect/templates/navigation.html:24
 msgid "Chats"
 msgstr "Chats"
 
-#: apps/chat/templates/chat/chat.html:45
+#: apps/chat/templates/chat/chat.html:46
 msgid "people online"
 msgstr "personas conectadas"
 
@@ -49,8 +57,8 @@ msgid ""
 "Username must be 3-20 characters and can only contain letters, numbers, '_' "
 "and '-'"
 msgstr ""
-"El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener "
-"letras, números, '_' y '-'"
+"El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede "
+"contener letras, números, '_' y '-'"
 
 #: apps/chat/views/chat.py:54
 msgid "Username already taken"
@@ -71,11 +79,11 @@ msgstr ""
 "chat anónimo, sala de chat gratis, chat en línea, chat global, sala de chat "
 "para adultos"
 
-#: chat_connect/templates/base.html:29 chat_connect/templates/base.html:37
+#: chat_connect/templates/base.html:29 chat_connect/templates/base.html:40
 msgid "Chatea-Conecta"
 msgstr "Chatea-Conecta"
 
-#: chat_connect/templates/base.html:30 chat_connect/templates/base.html:38
+#: chat_connect/templates/base.html:31 chat_connect/templates/base.html:42
 msgid "Free anonymous online chat to meet new people instantly."
 msgstr "Chat anónimo online gratis para conocer gente nueva al instante."
 
@@ -425,11 +433,11 @@ msgstr ""
 msgid "Why Use Chatea-Conecta? The Best Free Chat Online!"
 msgstr "¿Por Qué Usar Chatea-Conecta? ¡El Mejor Chat Online Gratis!"
 
-#: chat_connect/templates/index.html:193
+#: chat_connect/templates/index.html:194
 msgid "No Sign-Ups, No Hassle"
 msgstr "Sin Registro, Sin Complicaciones"
 
-#: chat_connect/templates/index.html:196
+#: chat_connect/templates/index.html:197
 msgid ""
 "Just pick a nickname and start chatting instantly. No personal details or "
 "registration required!"
@@ -437,20 +445,20 @@ msgstr ""
 "Solo elige un apodo y empieza a chatear al instante. ¡No necesitas datos "
 "personales ni registrarte!"
 
-#: chat_connect/templates/index.html:203
+#: chat_connect/templates/index.html:205
 msgid "Chat Worldwide"
 msgstr "Chat Mundial"
 
-#: chat_connect/templates/index.html:206
+#: chat_connect/templates/index.html:208
 msgid "Connect with users from Europe, Latin America, and beyond in real-time."
 msgstr "Conecta con personas de Europa, América Latina y más allá."
 
-#: chat_connect/templates/index.html:228
+#: chat_connect/templates/index.html:233
 #, python-format
 msgid "100%% Private & Anonymous"
 msgstr "100%% Privado y Anónimo"
 
-#: chat_connect/templates/index.html:231
+#: chat_connect/templates/index.html:236
 msgid ""
 "No accounts, no tracking, no worries. Your conversations stay completely "
 "private."

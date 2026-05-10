@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 22:10+0000\n"
+"POT-Creation-Date: 2026-05-09 23:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,20 +22,28 @@ msgstr ""
 msgid "Send private message"
 msgstr "Send private message"
 
-#: apps/chat/templates/chat/chat.html:22
+#: apps/chat/templates/chat/chat.html:17
+msgid ""
+"You can currently only have 3 private chats available. Remove one from your "
+"list to open this chat."
+msgstr ""
+"You can currently only have 3 private chats available. Remove one from your "
+"list to open this chat."
+
+#: apps/chat/templates/chat/chat.html:23
 msgid "Sorry there was a problem with the connection, try sign up again."
 msgstr "Sorry there was a problem with the connection, try sign up again."
 
-#: apps/chat/templates/chat/chat.html:23
+#: apps/chat/templates/chat/chat.html:24
 msgid "Go back home"
 msgstr "Go back home"
 
-#: apps/chat/templates/chat/chat.html:31
+#: apps/chat/templates/chat/chat.html:32
 #: chat_connect/templates/navigation.html:24
 msgid "Chats"
 msgstr "Chats"
 
-#: apps/chat/templates/chat/chat.html:45
+#: apps/chat/templates/chat/chat.html:46
 msgid "people online"
 msgstr "people online"
 
@@ -67,11 +75,11 @@ msgid ""
 msgstr ""
 "anonymous chat, free chat room, online chat, global chat, adult chat room"
 
-#: chat_connect/templates/base.html:29 chat_connect/templates/base.html:37
+#: chat_connect/templates/base.html:29 chat_connect/templates/base.html:40
 msgid "Chatea-Conecta"
 msgstr "Chatea-Conecta"
 
-#: chat_connect/templates/base.html:30 chat_connect/templates/base.html:38
+#: chat_connect/templates/base.html:31 chat_connect/templates/base.html:42
 msgid "Free anonymous online chat to meet new people instantly."
 msgstr "Free anonymous online chat to meet new people instantly."
 
@@ -96,7 +104,8 @@ msgstr "FAQ"
 #: chat_connect/templates/index.html:6 chat_connect/templates/index.html:14
 #: chat_connect/templates/index.html:22
 msgid "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta"
-msgstr "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta"
+msgstr ""
+"Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta"
 
 #: chat_connect/templates/index.html:10
 msgid ""
@@ -380,30 +389,30 @@ msgstr ""
 msgid "Why Use Chatea-Conecta? The Best Free Chat Online!"
 msgstr ""
 
-#: chat_connect/templates/index.html:193
+#: chat_connect/templates/index.html:194
 msgid "No Sign-Ups, No Hassle"
 msgstr ""
 
-#: chat_connect/templates/index.html:196
+#: chat_connect/templates/index.html:197
 msgid ""
 "Just pick a nickname and start chatting instantly. No personal details or "
 "registration required!"
 msgstr ""
 
-#: chat_connect/templates/index.html:203
+#: chat_connect/templates/index.html:205
 msgid "Chat Worldwide"
 msgstr ""
 
-#: chat_connect/templates/index.html:206
+#: chat_connect/templates/index.html:208
 msgid "Connect with users from Europe, Latin America, and beyond in real-time."
 msgstr ""
 
-#: chat_connect/templates/index.html:228
+#: chat_connect/templates/index.html:233
 #, python-format
 msgid "100%% Private & Anonymous"
 msgstr ""
 
-#: chat_connect/templates/index.html:231
+#: chat_connect/templates/index.html:236
 msgid ""
 "No accounts, no tracking, no worries. Your conversations stay completely "
 "private."

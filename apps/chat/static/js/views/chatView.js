@@ -197,6 +197,12 @@ class ChatView {
     // =========================
 
     openPrivateChatModal(userIdTarget, usernameTarget, sendMsgHandler) {
+        const existingPrivateChatId = this._privateChatsMapping[userIdTarget];
+        const privateChatId = existingPrivateChatId || this._getPrivateChatGroupName(this._userId, userIdTarget);
+        if (!this._sideBarView.canOpenPrivateChat(privateChatId)) {
+            this._sideBarView.showPrivateChatLimitMessage();
+            return false;
+        }
 
         this.hideActiveChat();
 
@@ -204,7 +210,6 @@ class ChatView {
         if (userIdTarget in this._privateChatsMapping) {
 
             // Check if exists a modal, if not create it
-            const privateChatId = this._privateChatsMapping[userIdTarget];
             const privateChat = this._getChatElement(privateChatId);
             if (privateChat) {
 
@@ -229,8 +234,6 @@ class ChatView {
             }
             
         } else {
-            const privateChatId = this._getPrivateChatGroupName(this._userId, userIdTarget);
-
             // 1. Create and display chat
             const chat = this.createChat(usernameTarget, privateChatId, sendMsgHandler);
             this.displayChat(chat);
@@ -248,6 +251,7 @@ class ChatView {
             // 3. Add to object of private chats
             this._privateChatsMapping[userIdTarget] = privateChatId;
         }
+        return true;
 
     }
 

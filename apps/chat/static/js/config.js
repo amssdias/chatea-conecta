@@ -1,2 +1,3 @@
 const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 export const SOCKET_URL = `${protocol}://${window.location.host}/ws/chat/`;
+export const MAX_FREE_PRIVATE_CHATS = 3;

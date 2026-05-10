@@ -1,3 +1,5 @@
+import { MAX_FREE_PRIVATE_CHATS } from "../config.js";
+
 class SideBarView {
 
     _parentElement = document.getElementById("side-menu");
@@ -47,6 +49,16 @@ class SideBarView {
         listItem.append(icon, button, closeBtn);
 
         this._appendPrivateChat(listItem);
+        this._refreshPrivateChatAvailability();
+    }
+
+    canOpenPrivateChat(privateGroupId) {
+        const { isOpenable } = this._getPrivateChatAvailability(privateGroupId);
+        return isOpenable;
+    }
+
+    showPrivateChatLimitMessage() {
+        window.alert(privateChatLimitMessage);
     }
 
     addGroupChat(groupChatName, displayChatCallback) {
@@ -239,6 +251,10 @@ class SideBarView {
         deleteChatCallback
     ) {
         button.addEventListener("click", () => {
+            if (!this.canOpenPrivateChat(listItem.dataset.groupName)) {
+                this.showPrivateChatLimitMessage();
+                return;
+            }
             openChatCallback();
             this.toggleSideBar();
             this.removeIncomingMessageClass(listItem);
@@ -249,6 +265,7 @@ class SideBarView {
             event.preventDefault();
 
             listItem.remove();
+            this._refreshPrivateChatAvailability();
             deleteChatCallback();
         });
     }
@@ -263,6 +280,63 @@ class SideBarView {
 
         container.appendChild(listItem);
     }
+    _refreshPrivateChatAvailability() {
+        const container = this._getPrivateChatsContainer();
+        if (!container) return;
+
+        const chats = container.querySelectorAll(".side-menu__private-chats__list-item");
+        chats.forEach((chat, index) => {
+            const isLocked = index >= MAX_FREE_PRIVATE_CHATS;
+            chat.dataset.locked = isLocked ? "true" : "false";
+
+            const chatButton = chat.querySelector(".side-menu__private-chats__list-item--link");
+            const closeButton = chat.querySelector(".side-menu__private-chats__list-item--close");
+            let lockIndicator = chat.querySelector(".side-menu__private-chats__list-item--lock");
+
+            if (!lockIndicator) {
+                lockIndicator = document.createElement("span");
+                lockIndicator.className = "side-menu__private-chats__list-item--lock";
+                lockIndicator.style.display = "none";
+                chat.insertBefore(lockIndicator, chatButton);
+            }
+
+            if (chatButton) {
+                chatButton.title = isLocked ? "locked" : "online";
+                chatButton.style.cursor = isLocked ? "not-allowed" : "pointer";
+                chatButton.style.textDecoration = isLocked ? "line-through" : "none";
+            }
+            chat.style.opacity = isLocked ? "0.55" : "1";
+            if (lockIndicator) lockIndicator.style.display = isLocked ? "inline" : "none";
+            if (closeButton) closeButton.style.opacity = isLocked ? "0.8" : "1";
+        });
+    }
+
+    _getPrivateChatAvailability(privateGroupId) {
+        const container = this._getPrivateChatsContainer();
+        if (!container) {
+            return { isOpenable: false, isKnownChat: false };
+        }
+
+        const chats = Array.from(
+            container.querySelectorAll(".side-menu__private-chats__list-item")
+        );
+
+        const chatIndex = chats.findIndex((chat) => chat.dataset.groupName === privateGroupId);
+        const isKnownChat = chatIndex >= 0;
+
+        if (isKnownChat) {
+            return {
+                isOpenable: chatIndex < MAX_FREE_PRIVATE_CHATS,
+                isKnownChat: true,
+            };
+        }
+
+        return {
+            isOpenable: chats.length < MAX_FREE_PRIVATE_CHATS,
+            isKnownChat: false,
+        };
+    }
+
 
 }
 

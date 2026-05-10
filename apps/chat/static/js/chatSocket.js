@@ -163,11 +163,15 @@ class ChatSocket {
     }
 
     createPrivateChatGroup(userIdTarget, usernameTarget) {
-        this.chatView.openPrivateChatModal(
+        const openedPrivateChat = this.chatView.openPrivateChatModal(
             userIdTarget,
             usernameTarget,
             this.sendMessage.bind(this),
         );
+
+        if (!openedPrivateChat) {
+            return;
+        }
 
         this._sendPayload({
             "type": ChatSocket.ACTION_TYPES.PRIVATE_INVITE,
