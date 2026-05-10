@@ -101,6 +101,39 @@ services:
     networks:
       - chat-network
 
+  celery-beat:
+    container_name: celery-beat-chat
+    build:
+      context: .
+      dockerfile: deployments/production/Dockerfile
+    depends_on:
+      - my-redis
+      - db
+      - chat-app
+      - celery
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=chat-app-db
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST=my-redis
+      - REDIS_PORT=6379
+      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
+      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
+      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - APP_NAME=celery-beat
+      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
+    command: [ "celery", "-A", "chat_connect", "beat", "--loglevel=info" ]
+    networks:
+      - chat-network
+
 volumes:
   db_data:
 
