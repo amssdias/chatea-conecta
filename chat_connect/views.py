@@ -12,14 +12,16 @@ def health_check(request):
 
 
 def robots_txt(request):
+    sitemap_url = build_production_url("/sitemap.xml")
     content = """User-agent: *
 Disallow:
 Disallow: /chatea-admin/
 Disallow: /ws/
 Disallow: /close-chat/
 
-Sitemap: https://chatea-conecta.com/sitemap.xml
+Sitemap: {sitemap_url}
 """
+    content = content.format(sitemap_url=sitemap_url)
     return HttpResponse(content, content_type="text/plain")
 
 

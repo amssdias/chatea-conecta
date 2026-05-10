@@ -14,6 +14,11 @@ User = get_user_model()
 
 
 class ChatView(View):
+    @staticmethod
+    def _add_noindex_header(response):
+        response["X-Robots-Tag"] = "noindex, nofollow"
+        return response
+
     def get(self, request):
         username = self.request.COOKIES.get("username", "")
         user_id = self.request.COOKIES.get("user_id", "")
@@ -25,18 +30,20 @@ class ChatView(View):
             response = redirect("chat:home")
             response.delete_cookie("username")
             response.delete_cookie("user_id")
-            return response
+            return self._add_noindex_header(response)
 
         user_id = RedisService.get_key(USERNAME_TO_UUID_KEY.format(username=username))
-        return render(
+        response = render(
             request, "chat/chat.html", context={"username": username, "user_id": user_id, "groups": None}
         )
+        return self._add_noindex_header(response)
 
     def post(self, request):
         username = request.POST.get("username", "").strip()
         if not username:
             messages.error(request, _("You need to put an username"))
-            return redirect("chat:home")
+            response = redirect("chat:home")
+            return self._add_noindex_header(response)
 
         USERNAME_REGEX = re.compile(r"^[A-Za-z0-9_-]{3,20}$")
         if not USERNAME_REGEX.fullmatch(username):
@@ -44,7 +51,8 @@ class ChatView(View):
                 request,
                 _("Username must be 3-20 characters and can only contain letters, numbers, '_' and '-'"),
             )
-            return redirect("chat:home")
+            response = redirect("chat:home")
+            return self._add_noindex_header(response)
 
         # Check if username already exists in Redis
         if (
@@ -52,7 +60,8 @@ class ChatView(View):
                 User.objects.filter(username__iexact=username).exists()
         ):
             messages.error(request, _("Username already taken"))
-            return redirect("chat:home")
+            response = redirect("chat:home")
+            return self._add_noindex_header(response)
 
         # Add the username to the Redis set and unique ID
         user_id = RedisService.create_user_id()
@@ -74,4 +83,4 @@ class ChatView(View):
         response.set_cookie(
             "user_id", user_id, httponly=True, secure=settings.COOKIES_SECURE
         )
-        return response
+        return self._add_noindex_header(response)

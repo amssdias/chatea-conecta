@@ -100,6 +100,15 @@
         color: $bg-light;
         cursor: pointer;
         transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+        font-size: 1.6rem;
+
+        @include respond(tab-port) {
+            font-size: 1.8rem; // 14.4px because root is 8px
+        }
+
+        @include respond(phone) {
+            font-size: 1.6rem; // 16px because root is back to 10px
+        }
 
         &:hover {
             background-color: rgba(255, 255, 255, 0.18);
