@@ -31,12 +31,14 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         mock_get_private_group_name.assert_not_called()
 
     @patch("apps.chat.services.actions.private_invite.notify_user_offline", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock)
     @patch("apps.chat.services.actions.private_invite.get_private_group_name")
     @patch("apps.chat.services.actions.private_invite.is_user_online", new_callable=AsyncMock)
     async def test_notifies_current_user_when_target_user_is_offline(
             self,
             mock_is_user_online,
             mock_get_private_group_name,
+            mock_is_bot_user,
             mock_notify_user_offline,
     ):
         target_user_id = "20"
@@ -52,6 +54,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         }
 
         mock_is_user_online.return_value = False
+        mock_is_bot_user.return_value = False
         mock_get_private_group_name.return_value = private_group_id
 
         await handle_private_invite(consumer, data)
@@ -70,12 +73,14 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
 
     @patch("apps.chat.services.actions.private_invite.save_user_private_chat_group", new_callable=AsyncMock)
     @patch("apps.chat.services.actions.private_invite.register_user_to_group", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock)
     @patch("apps.chat.services.actions.private_invite.get_private_group_name")
     @patch("apps.chat.services.actions.private_invite.is_user_online", new_callable=AsyncMock)
     async def test_registers_saves_and_sends_invite_when_target_user_is_online(
             self,
             mock_is_user_online,
             mock_get_private_group_name,
+            mock_is_bot_user,
             mock_register_user_to_group,
             mock_save_user_private_chat_group,
     ):
@@ -93,6 +98,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         }
 
         mock_is_user_online.return_value = True
+        mock_is_bot_user.return_value = False
         mock_get_private_group_name.return_value = private_group_id
 
         await handle_private_invite(consumer, data)
