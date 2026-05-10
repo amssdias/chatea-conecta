@@ -1,5 +1,7 @@
 .faq {
     padding: 6rem 20rem;
+    font-size: 1.6rem;
+    line-height: 1.6;
 
     @include respond(tab-land) {
         padding: 6rem 13rem;
@@ -7,6 +9,8 @@
 
     @include respond(phone) {
         padding: 2rem 3rem;
+        font-size: 1.6rem;
+        line-height: 1.65;
     }
 
     &__question {
@@ -48,6 +52,8 @@
 
         & p {
             padding: 1rem 0rem;
+            font-size: 1.6rem;
+            line-height: 1.6;
         }
     }
 

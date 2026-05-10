@@ -1,5 +1,7 @@
 .privacy-policy {
     padding: 6rem 20rem;
+    font-size: 1.6rem;
+    line-height: 1.6;
 
     @include respond(tab-land) {
         padding: 6rem 13rem;
@@ -7,6 +9,8 @@
 
     @include respond(phone) {
         padding: 2rem 3rem;
+        font-size: 1.6rem;
+        line-height: 1.65;
     }
 
     &-heading {
@@ -22,6 +26,32 @@
         &__list {
             list-style-type: none;
         }
+    }
+
+    p,
+    li {
+        font-size: 1.6rem;
+        line-height: 1.6;
+    }
+
+    h2,
+    h3 {
+        line-height: 1.4;
+    }
+
+    ul,
+    ol {
+        margin-top: 1.2rem;
+        margin-bottom: 1.6rem;
+        padding-left: 2.4rem;
+    }
+
+    li {
+        margin-bottom: 0.8rem;
+    }
+
+    li:last-child {
+        margin-bottom: 0;
     }
 
 }

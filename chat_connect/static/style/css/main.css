@@ -464,6 +464,8 @@ body {
 
 .faq {
   padding: 6rem 20rem;
+  font-size: 1.6rem;
+  line-height: 1.6;
 }
 @media only screen and (max-width: 75em) {
   .faq {
@@ -473,6 +475,8 @@ body {
 @media only screen and (max-width: 37.5em) {
   .faq {
     padding: 2rem 3rem;
+    font-size: 1.6rem;
+    line-height: 1.65;
   }
 }
 .faq__question {
@@ -510,6 +514,8 @@ body {
 }
 .faq__question p {
   padding: 1rem 0rem;
+  font-size: 1.6rem;
+  line-height: 1.6;
 }
 
 .chat-form {
@@ -633,7 +639,7 @@ body {
   color: #4b4848;
 }
 .form-nickname__paragraph {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .message-error {
@@ -685,7 +691,7 @@ body {
   fill: white;
 }
 .modal-content {
-  font-size: 130%;
+  font-size: 1.6rem;
   border: 0px solid #813c58;
   border-radius: 1rem;
   overflow-y: scroll;
@@ -696,6 +702,8 @@ body {
 
 .privacy-policy {
   padding: 6rem 20rem;
+  font-size: 1.6rem;
+  line-height: 1.6;
 }
 @media only screen and (max-width: 75em) {
   .privacy-policy {
@@ -705,6 +713,8 @@ body {
 @media only screen and (max-width: 37.5em) {
   .privacy-policy {
     padding: 2rem 3rem;
+    font-size: 1.6rem;
+    line-height: 1.65;
   }
 }
 .privacy-policy-heading {
@@ -715,6 +725,27 @@ body {
 }
 .privacy-policy-section__list {
   list-style-type: none;
+}
+.privacy-policy p,
+.privacy-policy li {
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+.privacy-policy h2,
+.privacy-policy h3 {
+  line-height: 1.4;
+}
+.privacy-policy ul,
+.privacy-policy ol {
+  margin-top: 1.2rem;
+  margin-bottom: 1.6rem;
+  padding-left: 2.4rem;
+}
+.privacy-policy li {
+  margin-bottom: 0.8rem;
+}
+.privacy-policy li:last-child {
+  margin-bottom: 0;
 }
 
 .chat-app {
@@ -764,6 +795,7 @@ body {
 .footer p {
   color: #fbfbfb;
   margin-bottom: 2rem;
+  line-height: 1.6;
 }
 @media only screen and (max-width: 37.5em) {
   .footer p {
@@ -778,13 +810,14 @@ body {
 }
 .footer__links__delimiter {
   color: #fbfbfb;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   margin: 0rem 2rem;
 }
 .footer__links__link {
   text-decoration: none;
   color: #fbfbfb;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  line-height: 1.5;
   transition: 0.2s;
 }
 .footer__links__link:hover {
@@ -953,7 +986,7 @@ body {
   border-radius: 3rem;
   background-color: rgba(255, 255, 255, 0.12);
   color: #fbfbfb;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
@@ -1150,6 +1183,10 @@ body {
   .section-about, .section-features {
     padding: 6rem 3rem;
   }
+}
+.section-about p, .section-features p {
+  font-size: 1.6rem;
+  line-height: 1.6;
 }
 
 @media only screen and (max-width: 56.25em) {
