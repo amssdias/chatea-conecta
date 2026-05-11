@@ -16,6 +16,7 @@ factory-boy = "*"
 sentry-sdk = {extras = ["django"], version = "*"}
 boto3 = "*"
 watchtower = "*"
+stripe = "*"
 
 [dev-packages]
 django-browser-reload = "*"
