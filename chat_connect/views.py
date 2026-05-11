@@ -1,5 +1,7 @@
+from urllib.parse import urlparse, urljoin
 from xml.etree.ElementTree import Element, SubElement, tostring
 
+from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -10,15 +12,31 @@ def health_check(request):
 
 
 def robots_txt(request):
-    content = """User-agent: Googlebot
+    sitemap_url = build_production_url("/sitemap.xml")
+    content = """User-agent: *
 Disallow:
+Disallow: /chatea-admin/
+Disallow: /ws/
+Disallow: /close-chat/
 
-User-agent: *
-Disallow: /
-
-Sitemap: https://chatea-conecta.com/sitemap.xml
+Sitemap: {sitemap_url}
 """
+    content = content.format(sitemap_url=sitemap_url)
     return HttpResponse(content, content_type="text/plain")
+
+
+def build_production_url(url_or_path: str) -> str:
+    """
+    Build a production absolute URL from either a relative path or an absolute URL.
+    """
+    parsed_url = urlparse(url_or_path)
+
+    if parsed_url.scheme and parsed_url.netloc:
+        path = parsed_url.path
+    else:
+        path = url_or_path
+
+    return urljoin(settings.SITE_URL.rstrip("/") + "/", path.lstrip("/"))
 
 
 def multilingual_sitemap(request, sitemaps, **kwargs):
@@ -27,6 +45,7 @@ def multilingual_sitemap(request, sitemaps, **kwargs):
     """
 
     current_site = get_current_site(request)
+    site_url = settings.SITE_URL.rstrip("/")
 
     # Parse the XML content
     root = Element(
@@ -41,7 +60,7 @@ def multilingual_sitemap(request, sitemaps, **kwargs):
         for url_info in site.get_urls(site=current_site, protocol=request.scheme):
             url = SubElement(root, "url")
             loc = SubElement(url, "loc")
-            loc.text = url_info["location"]
+            loc.text = build_production_url(url_info["location"])
 
             if "alternates" in url_info:
                 for alternate in url_info["alternates"]:
@@ -51,7 +70,7 @@ def multilingual_sitemap(request, sitemaps, **kwargs):
                         {
                             "rel": "alternate",
                             "hreflang": alternate["hreflang"],
-                            "href": request.build_absolute_uri(alternate["href"]),
+                            "href": build_production_url(alternate["href"]),
                         },
                     )
 

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Chatea-Conecta - {% trans "Security" %}{% endblock title %}
+{% block description %}{% trans "Read current security-related information for Chatea-Conecta." %}{% endblock description %}
+
+{% block header %}<header class="header-privacy"><h1 class="heading-primary">{% trans "Security" %}</h1></header>{% endblock header %}
+
+{% block content %}
+<section class="privacy-policy" aria-labelledby="security-heading">
+    <h2 id="security-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "Current security information" %}</h2>
+    <ul>
+        <li>{% trans "Chat access is session-gated: users are redirected to the homepage when required session cookies are missing or invalid." %}</li>
+        <li>{% trans "User session cookies are set as HttpOnly and can be configured as Secure in deployment settings." %}</li>
+        <li>{% trans "The site supports HTTPS-oriented security settings in production, including HSTS and secure cookie settings." %}</li>
+    </ul>
+    <p class="paragraph margin-top-xsmall">{% trans "For legal and privacy details, please review our Privacy Policy and Terms and Conditions pages." %}</p>
+</section>
+{% endblock content %}

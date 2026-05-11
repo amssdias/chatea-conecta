@@ -2,10 +2,26 @@
 
 <footer class="footer">
     <p class="paragraph">Chatea-Conecta: {% trans "The best free anonymous chat room for adults. Connect instantly with people worldwide." %}</p>
-    
+
     <div class="footer_links">
-        <a class="footer__links__link" href="{% url 'chat:privacy' %}" rel="noopener noreferrer">{% trans "Privacy Policy" %}</a>
-        <span class="footer__links__delimiter"> | </span>
-        <a class="footer__links__link" href="{% url 'chat:faq' %}" rel="noopener noreferrer">{% trans "FAQ" %}</a>
+        <div class="text-align-left">
+            <a class="footer__links__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+            <span class="footer__links__delimiter"> | </span>
+            <a class="footer__links__link" href="{% url 'chat:faq' %}" rel="noopener noreferrer">{% trans "FAQ" %}</a>
+        </div>
+        <br>
+        <div class="text-align-left">
+            <a class="footer__links__link" href="{% url 'chat:privacy' %}" rel="noopener noreferrer">{% trans "Privacy Policy" %}</a>
+            <span class="footer__links__delimiter"> | </span>
+            <a class="footer__links__link" href="{% url 'chat:terms' %}" rel="noopener noreferrer">{% trans "Terms" %}</a>
+            <span class="footer__links__delimiter"> | </span>
+            <a class="footer__links__link" href="{% url 'chat:security' %}" rel="noopener noreferrer">{% trans "Security" %}</a>
+        </div>
+        <br>
+        <div class="text-align-left">
+            <a class="footer__links__link" href="{% url 'chat:about' %}" rel="noopener noreferrer">{% trans "About" %}</a>
+            <span class="footer__links__delimiter"> | </span>
+            <a class="footer__links__link" href="{% url 'chat:contact' %}" rel="noopener noreferrer">{% trans "Contact" %}</a>
+        </div>
     </div>
 </footer>

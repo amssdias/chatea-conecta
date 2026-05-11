@@ -1,46 +1,48 @@
 import logging
 import random
-import time
 
 from asgiref.sync import async_to_sync
+from celery import shared_task
 from channels.layers import get_channel_layer
 
-from apps.chat.constants.redis_keys import HAS_USERS, TASK_LOCK_KEY
-from apps.chat.services.message_service import MessageService
-from apps.chat.services.redis_service import RedisService
-from chat_connect.celery import app
+from apps.chat.services.activity import has_online_users
+from apps.chat.services.bots.bot_message_service import BotMessageService
 
 logger = logging.getLogger("chat_connect")
 
+BOT_MESSAGE_SEND_PROBABILITY = 0.9
 
-@app.task
-def send_random_messages(group):
-    logger.info(f"Starting 'send_random_messages' task for group: {group}")
 
-    service = MessageService()
+@shared_task(name="apps.chat.tasks.send_random_messages_tick")
+def send_random_messages_tick(group: str) -> None:
+    """
+    Send one random bot message to the chat group if there are online users.
+
+    This task is triggered periodically by Celery Beat. It intentionally sends
+    messages frequently to make the chat feel active, while occasionally
+    skipping ticks to avoid a perfectly mechanical rhythm.
+    """
+    if not has_online_users():
+        return
+
+    if random.random() > BOT_MESSAGE_SEND_PROBABILITY:
+        return
+
+    service = BotMessageService()
+    user_message = service.get_message_to_send()
+
+    if not user_message:
+        return
+
     channel_layer = get_channel_layer()
 
-    while RedisService.key_exists(HAS_USERS):
-
-        user_message = service.get_message_to_send()
-
-        if user_message:
-            time.sleep(random.randint(1, 5))
-            async_to_sync(channel_layer.group_send)(
-                group,
-                {
-                    "type": "chat.message",
-                    "message": user_message.get("message"),
-                    "username": user_message.get("username"),
-                    "group": group,
-                },
-            )
-        else:
-            logger.warning(
-                f"'send_random_messages' task for group '{group}' stopped because there are no more users or messages to send."
-            )
-            break
-
-    logger.info(f"'send_random_messages' task for group '{group}' completed.")
-    RedisService.delete_key(TASK_LOCK_KEY)
-    return
+    async_to_sync(channel_layer.group_send)(
+        group,
+        {
+            "type": "chat.message",
+            "message": user_message.get("message"),
+            "user_id": user_message.get("user_id"),
+            "username": user_message.get("username"),
+            "group": group,
+        },
+    )

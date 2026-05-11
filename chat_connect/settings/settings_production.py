@@ -1,4 +1,8 @@
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from .base import *
+import sentry_sdk
 
 DEBUG = False
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
@@ -53,10 +57,15 @@ CHANNEL_LAYERS = {
 
 # Sentry configuration
 sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DNS"),
+    dsn=os.getenv("SENTRY_DSN"),
+    integrations=[
+        DjangoIntegration(),
+        CeleryIntegration(),
+    ],
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for tracing.
-    traces_sample_rate=1.0,
+    traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", "0.1")),
+    environment=os.getenv("SENTRY_ENVIRONMENT", "production"),
     _experiments={
         # Set continuous_profiling_auto_start to True
         # to automatically start the profiler on when
@@ -109,7 +118,8 @@ LOGGING = {
     },
 }
 
-if os.getenv("SKIP_CLOUDWATCH"):
+SKIP_CLOUDWATCH = os.getenv("SKIP_CLOUDWATCH", "false").lower() in ("1", "true", "yes")
+if SKIP_CLOUDWATCH:
     LOGGING = {"version": 1}
 
 # Time in minutes to expire messages sent

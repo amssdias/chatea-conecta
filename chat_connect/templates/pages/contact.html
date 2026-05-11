@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Chatea-Conecta - {% trans "Contact" %}{% endblock title %}
+{% block description %}{% trans "Contact Chatea-Conecta for questions and support." %}{% endblock description %}
+
+{% block header %}<header class="header-privacy"><h1 class="heading-primary">{% trans "Contact" %}</h1></header>{% endblock header %}
+
+{% block content %}
+<section class="privacy-policy" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "Get in touch" %}</h2>
+    <p class="paragraph">{% trans "For questions or support, please contact us at:" %} <strong>support@chatea-conecta.com</strong></p>
+    <p class="paragraph">{% trans "This email address appears in our current public terms content and may be updated in the future." %}</p>
+</section>
+{% endblock content %}

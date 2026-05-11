@@ -6,6 +6,22 @@
 .background-color-text-sending {background-color: $accent-light !important;}
 .hide {display: none !important;}
 .online {fill:$color-green-dark-1;}
-.offline {fill: $color-grey-dark-2;}
+.offline {fill: $primary-dark;}
 // .selected {background-color: $color-light-amber-3 !important;}
 .text-align-center {text-align: center;}
+.text-align-left {text-align: left;}
+
+// Side menu
+.open-side-menu {
+    animation: openSideMenu;
+}
+
+.close-side.menu {
+    animation: closeSideMenu;
+}
+
+.incoming-message {
+    background: linear-gradient(45deg, #FFFFFF, #45B649);
+    border: 1px solid #45B649;
+    border-radius: 2rem;
+}

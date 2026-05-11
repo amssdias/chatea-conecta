@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -5,71 +7,80 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
-from apps.chat.constants.redis_keys import REDIS_USERNAME_KEY
-from apps.chat.services import RedisService
-
-GROUPS = [
-    ("Galicia", "galicia"),
-    ("Asturias", "asturias"),
-    ("Cantabria", "cantabria"),
-    ("País Vasco", "pais_vasco"),
-    ("Navarra", "navarra"),
-    ("La Rioja", "la_rioja"),
-    ("Castilla y León", "castilla_leon"),
-    ("Aragón", "aragon"),
-    ("Cataluña", "cataluna"),
-    ("Madrid", "madrid"),
-    ("Extremadura", "extremadura"),
-    ("Castilla-La Mancha", "castilla_la_mancha"),
-    ("Comunidad Valenciana", "valencia"),
-    ("Región de Murcia", "region_murcia"),
-    ("Andalucía", "andalucia"),
-]
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, ID_TO_USERNAME_KEY, USERNAME_TO_UUID_KEY
+from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 
 User = get_user_model()
 
 
 class ChatView(View):
+    @staticmethod
+    def _add_noindex_header(response):
+        response["X-Robots-Tag"] = "noindex, nofollow"
+        return response
+
     def get(self, request):
         username = self.request.COOKIES.get("username", "")
-        if not username or not RedisService.is_member(
-            REDIS_USERNAME_KEY, username.lower()
+        user_id = self.request.COOKIES.get("user_id", "")
+        if (
+                not username or
+                not user_id or
+                not RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username)
         ):
             response = redirect("chat:home")
             response.delete_cookie("username")
-            return response
-        return render(
-            request, "chat/chat.html", context={"username": username, "groups": None}
+            response.delete_cookie("user_id")
+            return self._add_noindex_header(response)
+
+        user_id = RedisService.get_key(USERNAME_TO_UUID_KEY.format(username=username))
+        response = render(
+            request, "chat/chat.html", context={"username": username, "user_id": user_id, "groups": None}
         )
+        return self._add_noindex_header(response)
 
     def post(self, request):
         username = request.POST.get("username", "").strip()
         if not username:
             messages.error(request, _("You need to put an username"))
-            # Redirect to home page
-            return redirect("chat:home")
+            response = redirect("chat:home")
+            return self._add_noindex_header(response)
+
+        USERNAME_REGEX = re.compile(r"^[A-Za-z0-9_-]{3,20}$")
+        if not USERNAME_REGEX.fullmatch(username):
+            messages.error(
+                request,
+                _("Username must be 3-20 characters and can only contain letters, numbers, '_' and '-'"),
+            )
+            response = redirect("chat:home")
+            return self._add_noindex_header(response)
 
         # Check if username already exists in Redis
-        lower_username = username.lower()
         if (
-            RedisService.is_member(REDIS_USERNAME_KEY, lower_username) or
-            User.objects.filter(username__iexact=lower_username).exists()
+                RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username) or
+                User.objects.filter(username__iexact=username).exists()
         ):
             messages.error(request, _("Username already taken"))
-            return redirect("chat:home")
+            response = redirect("chat:home")
+            return self._add_noindex_header(response)
 
-        # Add the username to the Redis set
-        RedisService.add_to_set(REDIS_USERNAME_KEY, lower_username)
+        # Add the username to the Redis set and unique ID
+        user_id = RedisService.create_user_id()
+        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, username.lower())
+        RedisService.set_unique(ID_TO_USERNAME_KEY.format(user_id=user_id), username)
+        RedisService.set_unique(USERNAME_TO_UUID_KEY.format(username=username), user_id)
 
         response = render(
             request,
             "chat/chat.html",
             context={
                 "username": username,
-                "groups": None,
+                "user_id": user_id,
             },
         )
         response.set_cookie(
             "username", username, httponly=True, secure=settings.COOKIES_SECURE
         )
-        return response
+        response.set_cookie(
+            "user_id", user_id, httponly=True, secure=settings.COOKIES_SECURE
+        )
+        return self._add_noindex_header(response)

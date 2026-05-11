@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Chatea-Conecta - {% trans "About" %}{% endblock title %}
+{% block description %}{% trans "Learn about Chatea-Conecta, a free anonymous chat platform for real-time conversations." %}{% endblock description %}
+
+{% block header %}<header class="header-privacy"><h1 class="heading-primary">{% trans "About Chatea-Conecta" %}</h1></header>{% endblock header %}
+
+{% block content %}
+<section class="privacy-policy" aria-labelledby="about-heading">
+    <h2 id="about-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "What is Chatea-Conecta?" %}</h2>
+    <p class="paragraph">{% trans "Chatea-Conecta is a free and anonymous online chat platform where people can connect and chat in real time without registration." %}</p>
+    <p class="paragraph">{% trans "The platform is designed for casual conversations with users from different regions, with quick access through a nickname-based session." %}</p>
+</section>
+{% endblock content %}

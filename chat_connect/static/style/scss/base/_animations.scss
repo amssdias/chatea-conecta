@@ -37,3 +37,24 @@
         transform: translate(0rem);
     }
 }
+
+@keyframes openSideMenu {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes closeSideMenu {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+

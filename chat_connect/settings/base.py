@@ -12,9 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-import sentry_sdk
 
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -29,6 +28,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 ALLOWED_HOSTS = []
+
+SITE_URL = os.getenv("SITE_URL", "https://chatea-conecta.com").rstrip("/")
 
 # Application definition
 DJANGO_APPS = [
@@ -172,7 +173,7 @@ REDIS_URL = f"{REDIS_PROTOCOL}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
 # Django Cache
 DJANGO_REDIS_CACHE_DB = os.getenv("DJANGO_REDIS_CACHE_DB", "0")
-DJANGO_REDIS_KEY_PREFIX = "django-chat-app:"
+DJANGO_REDIS_KEY_PREFIX = "chatconnect"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -185,11 +186,14 @@ CACHES = {
 }
 CACHE_MIDDLEWARE_SECONDS = 60 * 15  # Cache for 15 minutes
 
-
+SECONDS_IN_MINUTE = 60
+SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60
+SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
 CACHE_TIMEOUT_FIVE_MIN = 300
-CACHE_TIMEOUT_ONE_DAY = 86400
-CACHE_TIMEOUT_ONE_WEEK = 604800
-CACHE_TIMEOUT_ONE_MONTH = 2592000
+
+CACHE_TIMEOUT_ONE_DAY = SECONDS_IN_DAY
+CACHE_TIMEOUT_ONE_WEEK = SECONDS_IN_DAY * 7
+CACHE_TIMEOUT_ONE_MONTH = SECONDS_IN_DAY * 30
 
 # Web Socket - Channels
 REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")
@@ -207,6 +211,14 @@ CELERY_BROKER_URL = f"{REDIS_URL}/{REDIS_DB_CELERY}"
 CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL = 60
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_TIMEZONE = "UTC"
+
+CELERY_BEAT_SCHEDULE = {
+    "send-random-messages-tick-every-5-seconds": {
+        "task": "apps.chat.tasks.send_random_messages_tick",
+        "schedule": 3.0,
+        "args": ("chatea",),
+    },
+}
 
 # AWS - S3
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
