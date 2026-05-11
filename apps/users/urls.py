@@ -5,5 +5,5 @@ from apps.users import views
 app_name = "users"
 
 urlpatterns = [
-    path("signup/", views.signup_view, name="signup"),
+    path("signup/", views.SignUpView.as_view(), name="signup"),
 ]

@@ -1,6 +1,6 @@
-from .signup import signup_view
+from .signup import SignUpView
 
 
 __all__ = [
-    "signup_view",
+    "SignUpView",
 ]
