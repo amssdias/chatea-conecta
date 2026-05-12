@@ -27,9 +27,6 @@
 
                 <form method="post" class="auth-form" aria-describedby="login-help">
                     {% csrf_token %}
-                    {% if form.non_field_errors %}
-                        <div class="auth-form__errors">{{ form.non_field_errors }}</div>
-                    {% endif %}
                     {{ form.as_p }}
                     <input type="hidden" name="next" value="{{ next }}">
                     <div class="auth-form__actions">
