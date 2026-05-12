@@ -12,11 +12,11 @@ from apps.users.services.create_user import create_user_account_from_signup_form
 class SignUpView(FormView):
     template_name = "registration/signup.html"
     form_class = SignUpForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("chat:home")
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("home")
+            return redirect("chat:home")
 
         return super().dispatch(request, *args, **kwargs)
 
