@@ -36,11 +36,10 @@ class SignUpView(FormView):
     def form_valid(self, form):
         user = create_user_account_from_signup_form(form=form)
 
-        login(self.request, user)
-
         intent = self.get_signup_intent()
 
         if intent == SignupIntent.PRO:
+            login(self.request, user)
             session = create_pro_checkout_session(
                 user=user,
                 request=self.request,
