@@ -1,1 +1,43 @@
-<input type="hidden" name="intent" value="{{ intent }}">
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign Up" %} | Chatea Conecta{% endblock title %}
+{% block description %}{% trans "Create your account to start chatting." %}{% endblock description %}
+{% block robots %}noindex,nofollow{% endblock robots %}
+
+{% block header %}
+    <header class="header-privacy">
+        <h1 class="heading-primary">{% trans "Sign Up" %}</h1>
+    </header>
+{% endblock header %}
+
+{% block content %}
+    <section class="auth-page" aria-labelledby="signup-heading">
+        <div class="auth-page__container">
+            <article class="auth-page__card">
+                <h2 id="signup-heading" class="auth-page__title">{% trans "Create your account" %}</h2>
+                <p class="auth-page__description">{% trans "Fill out the form below to join Chatea Conecta." %}</p>
+
+                {% if intent == "pro" %}
+                    <p class="auth-form__help">{% trans "After creating your account, you will continue to the Pro checkout." %}</p>
+                {% endif %}
+
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="intent" value="{{ intent }}">
+                    {% if form.non_field_errors %}
+                        <div class="auth-form__errors">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    {{ form.as_p }}
+                    <div class="auth-form__actions">
+                        <button class="auth-form__button" type="submit">{% trans "Create account" %}</button>
+                    </div>
+                </form>
+
+                <p class="auth-form__footer">{% trans "Already have an account?" %}
+                    <a href="{% url 'login' %}">{% trans "Log in" %}</a>.
+                </p>
+            </article>
+        </div>
+    </section>
+{% endblock content %}

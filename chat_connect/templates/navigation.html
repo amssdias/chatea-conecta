@@ -18,8 +18,7 @@
         {% if username %}
             <button class="side-menu--btn nav-chat-trigger" id="side-menu-btn" type="button" aria-label="Open chats menu">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M4 6H20M4 12H20M4 18H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round"></path>
+                    <path d="M4 6H20M4 12H20M4 18H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <span>{% trans "Chats" %}</span>
             </button>
@@ -29,15 +28,15 @@
             </form>
         {% else %}
             {% url "chat:home" as home_url %}
-            {% if request.path != home_url %}
-            <div class="nav-bar__links">
-                <a class="nav-bar-link margin-right-xxsmall" href="{% url 'chat:home' %}">
-                    <img src="{% static 'img/home-btn.svg' %}" class="nav-bar-link-home" aria-label="Chatea conecta Home"/>
-                </a>
-                <a class="nav-bar-link margin-right-xxsmall" href="{% url 'chat:faq' %}">{% trans "FAQ" %}</a>
-                <a class="nav-bar-link" href="{% url 'chat:security' %}">{% trans "Security" %}</a>
-            </div>
-            {% endif %}
+                <div class="nav-bar__links">
+                    {% if request.path != home_url %}
+                        <a class="nav-bar-link margin-right-xxsmall" href="{% url 'chat:home' %}">
+                            <img src="{% static 'img/home-btn.svg' %}" class="nav-bar-link-home" aria-label="Chatea conecta Home"/>
+                        </a>
+                    {% endif %}
+                    <a class="nav-bar-link margin-right-xxsmall" href="{% url 'login' %}">{% trans "Login" %}</a>
+                    <a class="btn btn-home" href="{% url 'users:signup' %}">{% trans "Sign up" %}</a>
+                </div>
         {% endif %}
     </div>
 </nav>

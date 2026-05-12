@@ -12,30 +12,37 @@
 {% endblock header %}
 
 {% block content %}
-<section class="privacy-policy" aria-labelledby="login-heading">
-    {% if user.is_authenticated %}
-        <h2 id="login-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "You are already signed in" %}</h2>
-        <p class="paragraph margin-bottom-xsmall">{% trans "Your account is already active in this browser." %}</p>
-        <p class="paragraph"><a href="{% url 'chat:home' %}">{% trans "Go back to chat home" %}</a></p>
-    {% else %}
-        <h2 id="login-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "Access your account" %}</h2>
-        <p class="paragraph margin-bottom-xsmall">{% trans "Enter your username and password to continue." %}</p>
+<section class="auth-page" aria-labelledby="login-heading">
+    <div class="auth-page__container">
+        <article class="auth-page__card">
+            {% if user.is_authenticated %}
+                <h2 id="login-heading" class="auth-page__title">{% trans "You are already signed in" %}</h2>
+                <p class="auth-page__description">{% trans "Your account is already active in this browser." %}</p>
+                <p class="auth-form__footer">
+                    <a href="{% url 'chat:home' %}">{% trans "Go back to chat home" %}</a>
+                </p>
+            {% else %}
+                <h2 id="login-heading" class="auth-page__title">{% trans "Access your account" %}</h2>
+                <p class="auth-page__description">{% trans "Enter your username and password to continue." %}</p>
 
-        {% if form.errors %}
-            <p class="message-error margin-bottom-xsmall">{% trans "Please fix the errors below and try again." %}</p>
-        {% endif %}
+                <form method="post" class="auth-form" aria-describedby="login-help">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="auth-form__errors">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <div class="auth-form__actions">
+                        <button class="auth-form__button" type="submit">{% trans "Log in" %}</button>
+                    </div>
+                </form>
 
-        <form method="post" class="form-nickname" aria-describedby="login-help">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="hidden" name="next" value="{{ next }}">
-            <button class="form-nickname__btn" type="submit">{% trans "Log in" %}</button>
-        </form>
-
-        <p id="login-help" class="paragraph margin-top-xsmall">
-            <a href="{% url 'password_reset' %}">{% trans "Forgot your password? Reset it here." %}</a>
-        </p>
-        <p class="paragraph">{% trans "Need an account? Signup will be available soon." %}</p>
-    {% endif %}
+                <p id="login-help" class="auth-form__footer">
+                    <a href="{% url 'password_reset' %}">{% trans "Forgot your password? Reset it here." %}</a>
+                </p>
+                <p class="auth-form__footer">{% trans "Need an account?" %} <a href="{% url 'users:signup' %}">{% trans "Create one here" %}</a>.</p>
+            {% endif %}
+        </article>
+    </div>
 </section>
 {% endblock content %}

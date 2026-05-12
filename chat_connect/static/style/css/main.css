@@ -642,6 +642,134 @@ body {
   font-size: 1.4rem;
 }
 
+.auth-page {
+  padding: 3rem 2rem 8rem;
+}
+.auth-page__container {
+  max-width: 68rem;
+  margin: 0 auto;
+}
+.auth-page__card {
+  background-color: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 1.2rem;
+  padding: 3rem;
+  box-shadow: 0 0.8rem 2.2rem rgba(0, 0, 0, 0.12);
+}
+.auth-page__title {
+  font-size: 2.6rem;
+  color: #232121;
+  margin-bottom: 1rem;
+}
+.auth-page__description {
+  font-size: 1.6rem;
+  color: #232121;
+  margin-bottom: 2.2rem;
+}
+@media only screen and (max-width: 37.5em) {
+  .auth-page {
+    padding: 2rem 1.6rem 5rem;
+  }
+  .auth-page__card {
+    padding: 2.2rem 1.8rem;
+  }
+  .auth-page__title {
+    font-size: 2.2rem;
+  }
+}
+
+.auth-form p {
+  margin-bottom: 1.4rem;
+}
+.auth-form label {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #232121;
+  margin-bottom: 0.6rem;
+}
+.auth-form input,
+.auth-form select,
+.auth-form textarea {
+  width: 100%;
+  min-height: 4.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.8rem;
+  padding: 1rem 1.2rem;
+  font-size: 1.6rem;
+  color: #232121;
+  background-color: #fff;
+}
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+  outline: 0.3rem solid rgba(205, 127, 50, 0.35);
+  border-color: #fd5732;
+}
+.auth-form .helptext {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 1.35rem;
+  color: rgba(0, 0, 0, 0.72);
+}
+.auth-form ul.errorlist {
+  list-style: none;
+  margin: 0 0 0.8rem;
+  padding: 0.8rem 1rem;
+  font-size: 1.35rem;
+  color: #8f1f1f;
+  background-color: #fdecec;
+  border: 1px solid #f4caca;
+  border-radius: 0.6rem;
+}
+.auth-form__errors {
+  margin-bottom: 1.4rem;
+}
+.auth-form__errors ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.8rem 1rem;
+  font-size: 1.35rem;
+  color: #8f1f1f;
+  background-color: #fdecec;
+  border: 1px solid #f4caca;
+  border-radius: 0.6rem;
+}
+.auth-form__help {
+  margin-bottom: 1.4rem;
+  padding: 0.9rem 1.1rem;
+  font-size: 1.4rem;
+  border-radius: 0.6rem;
+  background-color: rgba(205, 127, 50, 0.12);
+  color: #232121;
+}
+.auth-form__actions {
+  margin-top: 2rem;
+}
+.auth-form__button {
+  width: 100%;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: #fd5732;
+  color: #fbfbfb;
+  font-size: 1.7rem;
+  font-weight: 700;
+  padding: 1.2rem 1.6rem;
+  cursor: pointer;
+}
+.auth-form__button:hover {
+  background-color: #c21d03;
+}
+.auth-form__button:focus {
+  outline: 0.3rem solid #d97706;
+  outline-offset: 0.2rem;
+}
+.auth-form__footer {
+  margin-top: 1.6rem;
+  font-size: 1.45rem;
+  color: #232121;
+}
+
 .message-error {
   padding: 2rem 1rem;
   font-size: 1.6rem;
