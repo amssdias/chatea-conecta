@@ -35,9 +35,9 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path("chatea-admin/", admin.site.urls),
-    path("", include("apps.chat.urls")),
     path("accounts/", include("apps.users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("", include("apps.chat.urls")),
 )
 
 if settings.DEBUG:

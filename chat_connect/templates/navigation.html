@@ -22,7 +22,7 @@
                 </svg>
                 <span>{% trans "Chats" %}</span>
             </button>
-            <form action="{% url 'chat:close-chat' %}" method="POST">
+        <form action="{% url 'users:logout' %}" method="POST">
                 {% csrf_token %}
                 <button class="btn btn-close-session" type="submit">{% trans "Leave chat" %}</button>
             </form>
