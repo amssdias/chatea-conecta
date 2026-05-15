@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Payment successful" %}{% endblock title %}
+{% block description %}{% trans "Your Pro plan payment was successful and your subscription is now active." %}{% endblock description %}
+
+{% block content %}
+<section class="checkout-result checkout-result--success">
+	<div class="checkout-result__container">
+		<article class="checkout-result__card" aria-live="polite">
+			<div class="checkout-result__icon" aria-hidden="true">
+				<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="32" cy="32" r="30"/>
+					<path d="M20 33.5L28.5 42L45 24" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</div>
+
+			<h1 class="checkout-result__title">{% trans "Payment successful" %}</h1>
+			<p class="checkout-result__message">
+				{% blocktrans %}Your Pro plan is now active. You can continue chatting with premium access right away.{%
+				endblocktrans %}
+			</p>
+
+			{% if session_info %}
+			<dl class="checkout-result__details">
+				{% if session_info.payment_status %}
+				<div class="checkout-result__detail-item">
+					<dt>{% trans "Payment status" %}</dt>
+					<dd>{{ session_info.payment_status }}</dd>
+				</div>
+				{% endif %}
+
+				{% if session_info.customer_email %}
+				<div class="checkout-result__detail-item">
+					<dt>{% trans "Customer email" %}</dt>
+					<dd>{{ session_info.customer_email }}</dd>
+				</div>
+				{% endif %}
+
+				{% if session_info.amount_total %}
+				<div class="checkout-result__detail-item">
+					<dt>{% trans "Amount" %}</dt>
+					<dd>{{ session_info.amount_total }}{% if session_info.currency %} {{ session_info.currency|upper
+						}}{% endif %}
+					</dd>
+				</div>
+				{% endif %}
+
+				{% if session_info.subscription_id %}
+				<div class="checkout-result__detail-item">
+					<dt>{% trans "Subscription ID" %}</dt>
+					<dd>{{ session_info.subscription_id }}</dd>
+				</div>
+				{% endif %}
+			</dl>
+			{% endif %}
+
+			<div class="checkout-result__actions">
+				<a href="{% url 'chat:live-chat' %}" class="checkout-result__button checkout-result__button--primary">{%
+					trans "Go to chat" %}</a>
+				<a href="{% url 'chat:home' %}" class="checkout-result__button checkout-result__button--secondary">{%
+					trans "Back to home" %}</a>
+			</div>
+
+			<p class="checkout-result__help">
+				{% blocktrans %}If your Pro access does not appear immediately, refresh the page or contact support.{%
+				endblocktrans %}
+			</p>
+		</article>
+	</div>
+</section>
+{% endblock content %}
