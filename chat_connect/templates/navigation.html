@@ -22,6 +22,12 @@
                 </svg>
                 <span>{% trans "Chats" %}</span>
             </button>
+
+        <form action="{% url 'subscriptions:create_pro_checkout_session' %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-home" type="submit">{% trans "Go Pro" %}</button>
+        </form>
+
         <form action="{% url 'users:logout' %}" method="POST">
                 {% csrf_token %}
                 <button class="btn btn-close-session" type="submit">{% trans "Leave chat" %}</button>
