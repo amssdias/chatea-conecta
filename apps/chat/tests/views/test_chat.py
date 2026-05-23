@@ -81,6 +81,9 @@ class ChatViewTests(TestCase):
         mock_is_member.return_value = True
         mock_get_key.return_value = self.user_id
 
+        user = UserFactory()
+        self.client.force_login(user)
+
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
@@ -107,6 +110,9 @@ class ChatViewTests(TestCase):
         self.client.cookies["user_id"] = cookie_user_id
         mock_is_member.return_value = True
         mock_get_key.return_value = redis_user_id
+
+        user = UserFactory()
+        self.client.force_login(user)
 
         response = self.client.get(self.url)
 

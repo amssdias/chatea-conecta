@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 
+from apps.chat.services.register_user import register_user_on_redis
 from apps.subscriptions.services.create_pro_subscription import create_pro_checkout_session
 from apps.users.constants import SignupIntent
 from apps.users.forms import SignUpForm
@@ -36,17 +38,37 @@ class SignUpView(FormView):
     def form_valid(self, form):
         user = create_user_account_from_signup_form(form=form)
 
+        login(self.request, user)
+        register_user_on_redis(user.username)
         intent = self.get_signup_intent()
 
         if intent == SignupIntent.PRO:
-            login(self.request, user)
             session = create_pro_checkout_session(
                 user=user,
                 request=self.request,
             )
-            return redirect(session.url)
 
-        return redirect(self.get_success_url())
+            response = redirect(session.url)
+        else:
+            response = redirect("chat:live-chat")
+
+        response.set_cookie(
+            key="username",
+            value=user.username,
+            httponly=True,
+            secure=settings.COOKIES_SECURE,
+            samesite="Lax",
+        )
+
+        response.set_cookie(
+            key="user_id",
+            value=user.id,
+            httponly=True,
+            secure=settings.COOKIES_SECURE,
+            samesite="Lax",
+        )
+
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

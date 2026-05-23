@@ -50,30 +50,83 @@
         <h2 class="heading-secondary text-align-center margin-bottom-xxsmall">{% trans "Welcome to Chatea-Conecta – The Best Free Anonymous Chat Room!" %}</h2>
     </div>
 
-    <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
+    {% if request.user.is_authenticated %}
+    <form class="form-nickname form-nickname--authenticated" method="POST" action="{% url 'chat:live-chat' %}">
         {% csrf_token %}
-        <input class="form-nickname__input" type="text" name="username" aria-label="{% trans 'Username' %}" placeholder="{% trans 'Write your username...' %}">
-        <div class="form-nickname__legal-confirmations">
-            <div class="margin-bottom-xxsmall">
-                <input class="form-nickname__checkbox margin-right-xxsmall" aria-label="{% trans 'Terms and conditions' %}" required type="checkbox" name="terms-conditions" id="terms-conditions-checkbox">
-                <label class="form-nickname__checkbox-label" for="terms-conditions-checkbox">
-                    {% blocktrans %}I agree to the <span class="link-tc" id="terms-and-conditions">Terms and Conditions</span>  of the site.{% endblocktrans %}
-                </label>
-            </div>
-            <div class="margin-bottom-xsmall">
-                <input class="form-nickname__checkbox margin-right-xxsmall" aria-label="{% trans 'Age verification' %}" required type="checkbox" name="age-verification" id="age-verification-checkbox">
-                <label class="form-nickname__checkbox-label" for="age-verification-checkbox">{% trans "I confirm that I am 18 years old or older." %}</label>
-            </div>
-        </div>
+
         {% for message in messages %}
-            <p class="message-error">{{ message }}</p>
+        <p class="message-error">{{ message }}</p>
         {% endfor %}
 
-        <button class="form-nickname__btn" type="submit">{% trans "Start Chatting Now" %}</button>
+        <button class="form-nickname__btn form-nickname__btn--enter" type="submit">
+            {% trans "Enter Chatroom" %}
+        </button>
+
         <p class="form-nickname__paragraph margin-top-xxsmall">
-            {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{% endblocktrans %}
+            {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{%
+            endblocktrans %}
         </p>
     </form>
+    {% else %}
+    <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
+        {% csrf_token %}
+
+        <input
+                class="form-nickname__input"
+                type="text"
+                name="username"
+                aria-label="{% trans 'Username' %}"
+                placeholder="{% trans 'Write your username...' %}"
+        >
+
+        <div class="form-nickname__legal-confirmations">
+            <div class="margin-bottom-xxsmall">
+                <input
+                        class="form-nickname__checkbox margin-right-xxsmall"
+                        aria-label="{% trans 'Terms and conditions' %}"
+                        required
+                        type="checkbox"
+                        name="terms-conditions"
+                        id="terms-conditions-checkbox"
+                >
+
+                <label class="form-nickname__checkbox-label" for="terms-conditions-checkbox">
+                    {% blocktrans %}I agree to the <span class="link-tc"
+                                                         id="terms-and-conditions">Terms and Conditions</span> of the
+                    site.{% endblocktrans %}
+                </label>
+            </div>
+
+            <div class="margin-bottom-xsmall">
+                <input
+                        class="form-nickname__checkbox margin-right-xxsmall"
+                        aria-label="{% trans 'Age verification' %}"
+                        required
+                        type="checkbox"
+                        name="age-verification"
+                        id="age-verification-checkbox"
+                >
+
+                <label class="form-nickname__checkbox-label" for="age-verification-checkbox">
+                    {% trans "I confirm that I am 18 years old or older." %}
+                </label>
+            </div>
+        </div>
+
+        {% for message in messages %}
+        <p class="message-error">{{ message }}</p>
+        {% endfor %}
+
+        <button class="form-nickname__btn" type="submit">
+            {% trans "Start Chatting Now" %}
+        </button>
+
+        <p class="form-nickname__paragraph margin-top-xxsmall">
+            {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{%
+            endblocktrans %}
+        </p>
+    </form>
+    {% endif %}
 
     <!-- Modal Terms and Conditions -->
     <div class="modal hide" id="modal-terms-conditions">

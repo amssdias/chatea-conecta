@@ -6,18 +6,18 @@ from django.urls import reverse
 from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 
 
-@patch("apps.chat.views.close_chat_session.RedisService.is_member", autospec=True)
-@patch("apps.chat.views.close_chat_session.RedisService.remove_from_set", autospec=True)
+@patch("apps.chat.views.home_chat.RedisService.is_member", autospec=True)
+@patch("apps.chat.views.home_chat.RedisService.remove_from_set", autospec=True)
 class TestCloseChatSessionView(TestCase):
     
     @classmethod
     def setUpTestData(cls):
-        cls.url = reverse("chat:close-chat")
+        cls.url = reverse("users:logout")
     
     def setUp(self):
         self.client = Client()
 
-    @patch("apps.chat.views.close_chat_session.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
     def test_redirect_when_no_username_cookie(self, mock_get_group_size, mock_remove_from_set, mock_is_member):
         response = self.client.post(self.url)
         self.assertRedirects(response, reverse("chat:home"))
@@ -44,7 +44,7 @@ class TestCloseChatSessionView(TestCase):
         self.client.post(self.url)
         mock_remove_from_set.assert_not_called()
 
-    @patch("apps.chat.views.close_chat_session.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
     def test_redirect_when_username_cookie_present(self, mock_get_group_size,  mock_remove_from_set, mock_is_member):
         mock_is_member.return_value = False
         self.client.cookies["username"] = "testuser"

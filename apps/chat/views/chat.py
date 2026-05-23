@@ -7,8 +7,9 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
-from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, ID_TO_USERNAME_KEY, USERNAME_TO_UUID_KEY
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, USERNAME_TO_UUID_KEY
 from apps.chat.infrastructure.redis.sync_redis_service import RedisService
+from apps.chat.services.register_user import register_user_on_redis
 
 User = get_user_model()
 
@@ -25,7 +26,8 @@ class ChatView(View):
         if (
                 not username or
                 not user_id or
-                not RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username)
+                not RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username) or
+                not request.user.is_authenticated
         ):
             response = redirect("chat:home")
             response.delete_cookie("username")
@@ -64,10 +66,7 @@ class ChatView(View):
             return self._add_noindex_header(response)
 
         # Add the username to the Redis set and unique ID
-        user_id = RedisService.create_user_id()
-        RedisService.add_to_set(REDIS_ALL_USERNAMES_KEY, username.lower())
-        RedisService.set_unique(ID_TO_USERNAME_KEY.format(user_id=user_id), username)
-        RedisService.set_unique(USERNAME_TO_UUID_KEY.format(username=username), user_id)
+        user_id = register_user_on_redis(username)
 
         response = render(
             request,
@@ -78,9 +77,9 @@ class ChatView(View):
             },
         )
         response.set_cookie(
-            "username", username, httponly=True, secure=settings.COOKIES_SECURE
+            "username", username, httponly=True, secure=settings.COOKIES_SECURE, samesite="Lax",
         )
         response.set_cookie(
-            "user_id", user_id, httponly=True, secure=settings.COOKIES_SECURE
+            "user_id", user_id, httponly=True, secure=settings.COOKIES_SECURE, samesite="Lax",
         )
         return self._add_noindex_header(response)
