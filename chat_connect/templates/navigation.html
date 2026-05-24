@@ -23,14 +23,21 @@
                 <span>{% trans "Chats" %}</span>
             </button>
 
+        {% if request.user.is_authenticated %}
         <form action="{% url 'subscriptions:create_pro_checkout_session' %}" method="POST">
             {% csrf_token %}
             <button class="btn btn-home" type="submit">{% trans "Go Pro" %}</button>
         </form>
+        {% else %}
+        <form action="{% url 'users:signup' %}" method="GET">
+            <input type="hidden" name="intent" value="pro">
+            <button class="btn btn-home" type="submit">{% trans "Go Pro" %}</button>
+        </form>
+        {% endif %}
 
         <form action="{% url 'users:logout' %}" method="POST">
-                {% csrf_token %}
-                <button class="btn btn-close-session" type="submit">{% trans "Leave chat" %}</button>
+            {% csrf_token %}
+            <button class="btn btn-close-session" type="submit">{% trans "Leave chat" %}</button>
             </form>
         {% else %}
             {% url "chat:home" as home_url %}
