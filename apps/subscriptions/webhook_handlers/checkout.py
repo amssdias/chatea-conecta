@@ -1,13 +1,10 @@
-from apps.subscriptions.emails import send_pro_payment_success_email
-from apps.subscriptions.services.user_subscription import (
-    activate_subscription_from_checkout_session,
-)
+from stripe.checkout import Session
+
+from apps.subscriptions.services.user_subscription import save_stripe_subscription_id
 
 
-def handle_checkout_session_completed(event_object):
-    user_subscription = activate_subscription_from_checkout_session(
-        session=event_object,
+def handle_checkout_session_completed(session: Session):
+    save_stripe_subscription_id(
+        stripe_customer_id=session.customer,
+        stripe_subscription_id=session.subscription
     )
-
-    if user_subscription:
-        send_pro_payment_success_email(user=user_subscription.user)

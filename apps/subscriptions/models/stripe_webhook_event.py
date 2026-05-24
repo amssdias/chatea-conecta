@@ -1,15 +1,16 @@
 from django.db import models
 
+from apps.subscriptions.models.choices import StripeWebhookEventStatus
+
 
 class StripeWebhookEvent(models.Model):
-    class Status(models.TextChoices):
-        PROCESSED = "processed", "Processed"
-        IGNORED = "ignored", "Ignored"
-        FAILED = "failed", "Failed"
-
     stripe_event_id = models.CharField(max_length=255, unique=True)
     event_type = models.CharField(max_length=120)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PROCESSED)
+    status = models.CharField(
+        max_length=20,
+        choices=StripeWebhookEventStatus.choices,
+        default=StripeWebhookEventStatus.PROCESSED
+    )
     error_message = models.TextField(blank=True, null=True)
     processed_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

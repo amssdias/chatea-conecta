@@ -19,10 +19,5 @@ urlpatterns = [
         "checkout/cancel/",
         checkout_cancel_view,
         name="checkout_cancel",
-    ),
-    # path(
-    #     "webhooks/stripe/",
-    #     webhooks.stripe_webhook_view,
-    #     name="stripe_webhook",
-    # ),
+    )
 ]

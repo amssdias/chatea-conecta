@@ -5,5 +5,4 @@ from apps.subscriptions.models import UserSubscription
 
 @admin.register(UserSubscription)
 class UserSubscriptionAdmin(admin.ModelAdmin):
-    list_display = ("stripe_customer_id",)
-    # search_fields = ("topic", "message")
+    list_display = ("user", "stripe_customer_id", "stripe_subscription_id", "status")

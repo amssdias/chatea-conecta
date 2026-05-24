@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
-from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY, USERNAME_TO_UUID_KEY
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 from apps.chat.infrastructure.redis.sync_redis_service import RedisService
 from apps.chat.services.register_user import register_user_on_redis
 
@@ -34,39 +34,52 @@ class ChatView(View):
             response.delete_cookie("user_id")
             return self._add_noindex_header(response)
 
-        user_id = RedisService.get_key(USERNAME_TO_UUID_KEY.format(username=username))
+        user_id = register_user_on_redis(username, user_id=user_id)
         response = render(
-            request, "chat/chat.html", context={"username": username, "user_id": user_id, "groups": None}
+            request,
+            "chat/chat.html",
+            context={
+                "username": username,
+                "user_id": user_id,
+                "is_user_pro": True,
+                "groups": None
+            }
         )
         return self._add_noindex_header(response)
 
     def post(self, request):
-        username = request.POST.get("username", "").strip()
-        if not username:
-            messages.error(request, _("You need to put an username"))
-            response = redirect("chat:home")
-            return self._add_noindex_header(response)
+        if not request.user.is_authenticated:
+            username = request.POST.get("username", "").strip()
+            if not username:
+                messages.error(request, _("You need to put an username"))
+                response = redirect("chat:home")
+                return self._add_noindex_header(response)
 
-        USERNAME_REGEX = re.compile(r"^[A-Za-z0-9_-]{3,20}$")
-        if not USERNAME_REGEX.fullmatch(username):
-            messages.error(
-                request,
-                _("Username must be 3-20 characters and can only contain letters, numbers, '_' and '-'"),
-            )
-            response = redirect("chat:home")
-            return self._add_noindex_header(response)
+            USERNAME_REGEX = re.compile(r"^[A-Za-z0-9_-]{3,20}$")
+            if not USERNAME_REGEX.fullmatch(username):
+                messages.error(
+                    request,
+                    _("Username must be 3-20 characters and can only contain letters, numbers, '_' and '-'"),
+                )
+                response = redirect("chat:home")
+                return self._add_noindex_header(response)
 
-        # Check if username already exists in Redis
-        if (
-                RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username) or
-                User.objects.filter(username__iexact=username).exists()
-        ):
-            messages.error(request, _("Username already taken"))
-            response = redirect("chat:home")
-            return self._add_noindex_header(response)
+            # Check if username already exists in Redis
+            if (
+                    RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username) or
+                    User.objects.filter(username__iexact=username).exists()
+            ):
+                messages.error(request, _("Username already taken"))
+                response = redirect("chat:home")
+                return self._add_noindex_header(response)
+        else:
+            username = request.user.username
 
         # Add the username to the Redis set and unique ID
-        user_id = register_user_on_redis(username)
+        user_id = register_user_on_redis(
+            username,
+            user_id=request.user.id if request.user.is_authenticated else None
+        )
 
         response = render(
             request,

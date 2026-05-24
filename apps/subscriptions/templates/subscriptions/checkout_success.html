@@ -56,10 +56,10 @@
 			{% endif %}
 
 			<div class="checkout-result__actions">
-				<a href="{% url 'chat:live-chat' %}" class="checkout-result__button checkout-result__button--primary">{%
-					trans "Go to chat" %}</a>
-				<a href="{% url 'chat:home' %}" class="checkout-result__button checkout-result__button--secondary">{%
-					trans "Back to home" %}</a>
+				<a href="{% url 'chat:live-chat' %}" class="checkout-result__button checkout-result__button--primary">
+					{% trans "Go to chat" %}</a>
+				<a href="{% url 'chat:home' %}" class="checkout-result__button checkout-result__button--secondary">
+					{% trans "Back to home" %}</a>
 			</div>
 
 			<p class="checkout-result__help">

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-from apps.subscriptions.models.choices import Status
+from apps.subscriptions.models.choices import UserSubscriptionStatus
 
 
 class UserSubscription(models.Model):
@@ -14,8 +14,8 @@ class UserSubscription(models.Model):
 
     status = models.CharField(
         max_length=20,
-        choices=Status.choices,
-        default=Status.INACTIVE,
+        choices=UserSubscriptionStatus.choices,
+        default=UserSubscriptionStatus.INACTIVE,
     )
 
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
@@ -32,11 +32,15 @@ class UserSubscription(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @property
-    def is_pro_active(self):
-        if self.status != Status.ACTIVE:
-            return False
+    def pro(self):
+        if self.status == UserSubscriptionStatus.ACTIVE:
+            return True
 
-        if self.current_period_end and self.current_period_end <= timezone.now():
-            return False
+        if (
+                self.status == UserSubscriptionStatus.PAST_DUE
+                and self.current_period_end
+                and self.current_period_end > timezone.now()
+        ):
+            return True
 
-        return True
+        return False
