@@ -5,16 +5,27 @@ from django.utils import timezone
 
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.models.choices import UserSubscriptionStatus
+from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError
 from apps.subscriptions.webhook_handlers.dtos import PaidSubscriptionDTO, FailedSubscriptionPaymentDTO, \
     StripeSubscriptionSyncDTO, StripeSubscriptionDeletedDTO
 
 User = get_user_model()
 
 
+def get_user_subscription_by_customer_id(stripe_customer_id: str):
+    try:
+        return UserSubscription.objects.get(
+            stripe_customer_id=stripe_customer_id,
+        )
+    except UserSubscription.DoesNotExist as exc:
+        raise UserSubscriptionNotFoundError(
+            "User subscription not found. "
+            f"stripe_customer_id={stripe_customer_id}, "
+        ) from exc
+
+
 def save_stripe_subscription_id(stripe_customer_id, stripe_subscription_id):
-    user_subscription = UserSubscription.objects.get(
-        stripe_customer_id=stripe_customer_id,
-    )
+    user_subscription = get_user_subscription_by_customer_id(stripe_customer_id)
 
     user_subscription.stripe_subscription_id = stripe_subscription_id
     user_subscription.save(update_fields=["stripe_subscription_id"])
@@ -24,17 +35,7 @@ def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> Optional[U
     if paid_subscription.stripe_status != "active":
         return None
 
-    user_subscription = UserSubscription.objects.filter(
-        stripe_subscription_id=paid_subscription.stripe_subscription_id,
-    ).select_related("user").first()
-
-    if not user_subscription:
-        user_subscription = UserSubscription.objects.filter(
-            stripe_customer_id=paid_subscription.stripe_customer_id,
-        ).select_related("user").first()
-
-    if not user_subscription:
-        return None
+    user_subscription = get_user_subscription_by_customer_id(paid_subscription.stripe_customer_id)
 
     user_subscription.status = UserSubscriptionStatus.ACTIVE
     user_subscription.current_period_end = paid_subscription.current_period_end

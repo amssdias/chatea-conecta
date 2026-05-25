@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from apps.subscriptions.models import UserSubscription
+from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError
 from apps.subscriptions.services.user_subscription import save_stripe_subscription_id
 from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
 
@@ -42,7 +42,7 @@ class SaveStripeSubscriptionIdTests(TestCase):
         self.assertIsNone(other_user_subscription.stripe_subscription_id)
 
     def test_raises_error_when_user_subscription_does_not_exist_for_customer(self):
-        with self.assertRaises(UserSubscription.DoesNotExist):
+        with self.assertRaises(UserSubscriptionNotFoundError):
             save_stripe_subscription_id(
                 stripe_customer_id="cus_missing",
                 stripe_subscription_id="sub_123",
