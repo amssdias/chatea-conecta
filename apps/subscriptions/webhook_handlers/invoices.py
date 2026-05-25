@@ -6,6 +6,7 @@ from apps.subscriptions.services.invoice_notifications import mark_invoice_email
 from apps.subscriptions.services.user_subscription import (
     mark_subscription_paid, mark_subscription_payment_failed,
 )
+from apps.subscriptions.webhook_handlers.exceptions import StripeWebhookProcessingError
 from apps.subscriptions.webhook_handlers.mappers import build_paid_subscription_dto_from_invoice, \
     build_failed_subscription_payment_dto_from_invoice
 
@@ -18,7 +19,9 @@ def handle_invoice_paid(invoice: Invoice):
     user_subscription = mark_subscription_paid(paid_subscription)
 
     if not user_subscription:
-        return
+        raise StripeWebhookProcessingError(
+            f"Could not mark subscription as paid. invoice_id={invoice.id}"
+        )
 
     # TODO: Verify if should create email instance before sending
     if _can_send_invoice_email(

@@ -21,7 +21,7 @@ class PaidSubscriptionDTO:
 @dataclass(frozen=True)
 class FailedSubscriptionPaymentDTO:
     stripe_customer_id: str
-    stripe_subscription_id: str | None
+    stripe_subscription_id: str
     stripe_status: str
     latest_invoice_id: str
     invoice_url: str | None

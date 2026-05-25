@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from stripe import Invoice, Subscription
 
 from apps.integrations.stripe.invoices import get_invoice_subscription_id, get_invoice_url
@@ -9,14 +7,23 @@ from apps.integrations.stripe.subscriptions import retrieve_subscription, get_su
 from apps.integrations.stripe.utils import from_stripe_timestamp
 from apps.subscriptions.webhook_handlers.dtos import PaidSubscriptionDTO, FailedSubscriptionPaymentDTO, \
     StripeSubscriptionSyncDTO, StripeSubscriptionDeletedDTO
+from apps.subscriptions.webhook_handlers.exceptions import InvalidStripeInvoiceError, MissingStripeInvoiceCustomerError, \
+    MissingStripeInvoiceSubscriptionError, MissingStripeSubscriptionCustomerError
 
 
-def build_paid_subscription_dto_from_invoice(invoice: Invoice) -> Optional[PaidSubscriptionDTO]:
+def build_paid_subscription_dto_from_invoice(invoice: Invoice) -> PaidSubscriptionDTO:
     stripe_customer_id = invoice.customer
     stripe_subscription_id = get_invoice_subscription_id(invoice)
 
-    if not stripe_customer_id or not stripe_subscription_id:
-        return None
+    if not stripe_customer_id:
+        raise InvalidStripeInvoiceError(
+            f"Missing customer on paid invoice. invoice_id={invoice.id}"
+        )
+
+    if not stripe_subscription_id:
+        raise InvalidStripeInvoiceError(
+            f"Missing subscription on paid invoice. invoice_id={invoice.id}"
+        )
 
     subscription = retrieve_subscription(stripe_subscription_id)
 
@@ -34,31 +41,40 @@ def build_paid_subscription_dto_from_invoice(invoice: Invoice) -> Optional[PaidS
     )
 
 
-def build_failed_subscription_payment_dto_from_invoice(invoice: Invoice) -> Optional[FailedSubscriptionPaymentDTO]:
+def build_failed_subscription_payment_dto_from_invoice(invoice: Invoice) -> FailedSubscriptionPaymentDTO:
     stripe_customer_id = invoice.customer
 
     if not stripe_customer_id:
-        return None
+        raise MissingStripeInvoiceCustomerError(
+            f"Missing customer on failed invoice payment. invoice_id={invoice.id}"
+        )
 
     stripe_subscription_id = get_invoice_subscription_id(invoice)
+
+    if not stripe_subscription_id:
+        raise MissingStripeInvoiceSubscriptionError(
+            f"Missing subscription on failed invoice payment. invoice_id={invoice.id}"
+        )
+
     subscription = retrieve_subscription(stripe_subscription_id)
 
     return FailedSubscriptionPaymentDTO(
         stripe_customer_id=stripe_customer_id,
-        stripe_subscription_id=get_invoice_subscription_id(invoice),
+        stripe_subscription_id=stripe_subscription_id,
         stripe_status=subscription.status,
         latest_invoice_id=invoice.id,
         invoice_url=get_invoice_url(invoice),
     )
 
 
-def build_subscription_sync_dto(
-        subscription: Subscription,
-) -> Optional[StripeSubscriptionSyncDTO]:
+def build_subscription_sync_dto(subscription: Subscription) -> StripeSubscriptionSyncDTO:
     stripe_customer_id = subscription.customer
 
     if not stripe_customer_id:
-        return None
+        raise MissingStripeSubscriptionCustomerError(
+            f"Missing customer on Stripe subscription sync. "
+            f"stripe_subscription_id={subscription.id}"
+        )
 
     return StripeSubscriptionSyncDTO(
         stripe_customer_id=stripe_customer_id,
@@ -72,13 +88,14 @@ def build_subscription_sync_dto(
     )
 
 
-def build_subscription_deleted_dto(
-        subscription: Subscription,
-) -> Optional[StripeSubscriptionDeletedDTO]:
+def build_subscription_deleted_dto(subscription: Subscription) -> StripeSubscriptionDeletedDTO:
     stripe_customer_id = subscription.customer
 
     if not stripe_customer_id:
-        return None
+        raise MissingStripeSubscriptionCustomerError(
+            f"Missing customer on deleted Stripe subscription. "
+            f"stripe_subscription_id={subscription.id}"
+        )
 
     return StripeSubscriptionDeletedDTO(
         stripe_customer_id=stripe_customer_id,
