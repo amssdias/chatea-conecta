@@ -71,14 +71,8 @@ def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> Optional[U
 
 def mark_subscription_payment_failed(
         failed_payment: FailedSubscriptionPaymentDTO
-) -> Optional[UserSubscription]:
-
-    user_subscription = UserSubscription.objects.filter(
-        stripe_customer_id=failed_payment.stripe_customer_id,
-    ).select_related("user").first()
-
-    if not user_subscription:
-        return None
+) -> UserSubscription:
+    user_subscription = get_user_subscription_by_customer_id(failed_payment.stripe_customer_id)
 
     user_subscription.status = map_stripe_subscription_status(
         failed_payment.stripe_status,
