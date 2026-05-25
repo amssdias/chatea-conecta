@@ -85,18 +85,8 @@ def mark_subscription_payment_failed(
 
 def sync_user_subscription_from_stripe(
         subscription_sync: StripeSubscriptionSyncDTO,
-) -> Optional[UserSubscription]:
-    user_subscription = UserSubscription.objects.filter(
-        stripe_subscription_id=subscription_sync.stripe_subscription_id,
-    ).first()
-
-    if not user_subscription:
-        user_subscription = UserSubscription.objects.filter(
-            stripe_customer_id=subscription_sync.stripe_customer_id,
-        ).first()
-
-    if not user_subscription:
-        return None
+) -> UserSubscription:
+    user_subscription = get_user_subscription_by_customer_id(subscription_sync.stripe_customer_id)
 
     subscription_changed = (
             user_subscription.stripe_subscription_id
