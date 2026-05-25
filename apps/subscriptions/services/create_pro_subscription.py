@@ -3,12 +3,12 @@ from django.urls import reverse
 
 from apps.integrations.stripe.checkout import create_subscription_checkout_session
 from apps.integrations.stripe.client import get_stripe_client
+from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.models.choices import UserSubscriptionStatus
-from apps.subscriptions.services.user_subscription import get_or_create_user_subscription_for_checkout
 
 
 def create_pro_checkout_session(user, request):
-    user_subscription = get_or_create_user_subscription_for_checkout(user)
+    user_subscription, _ = UserSubscription.objects.get_or_create(user=user)
 
     if user_subscription.status == UserSubscriptionStatus.ACTIVE:
         raise ValueError("User already has an active subscription.")

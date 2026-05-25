@@ -11,11 +11,6 @@ from apps.subscriptions.webhook_handlers.dtos import PaidSubscriptionDTO, Failed
 User = get_user_model()
 
 
-def get_or_create_user_subscription_for_checkout(user):
-    user_subscription, _ = UserSubscription.objects.get_or_create(user=user)
-    return user_subscription
-
-
 def save_stripe_subscription_id(stripe_customer_id, stripe_subscription_id):
     user_subscription = UserSubscription.objects.get(
         stripe_customer_id=stripe_customer_id,
