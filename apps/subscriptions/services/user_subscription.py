@@ -69,9 +69,7 @@ def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> Optional[U
     return user_subscription
 
 
-def mark_subscription_payment_failed(
-        failed_payment: FailedSubscriptionPaymentDTO
-) -> UserSubscription:
+def mark_subscription_payment_failed(failed_payment: FailedSubscriptionPaymentDTO) -> UserSubscription:
     user_subscription = get_user_subscription_by_customer_id(failed_payment.stripe_customer_id)
 
     user_subscription.status = map_stripe_subscription_status(
@@ -83,9 +81,7 @@ def mark_subscription_payment_failed(
     return user_subscription
 
 
-def sync_user_subscription_from_stripe(
-        subscription_sync: StripeSubscriptionSyncDTO,
-) -> UserSubscription:
+def sync_user_subscription_from_stripe(subscription_sync: StripeSubscriptionSyncDTO) -> UserSubscription:
     user_subscription = get_user_subscription_by_customer_id(subscription_sync.stripe_customer_id)
 
     subscription_changed = (
@@ -123,10 +119,7 @@ def sync_user_subscription_from_stripe(
     return user_subscription
 
 
-def map_stripe_subscription_status(
-        stripe_status: str,
-        cancel_at_period_end: bool,
-) -> str:
+def map_stripe_subscription_status(stripe_status: str, cancel_at_period_end: bool) -> str:
     if stripe_status == "active":
         return UserSubscriptionStatus.ACTIVE
 
