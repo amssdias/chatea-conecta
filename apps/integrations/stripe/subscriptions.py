@@ -7,6 +7,12 @@ from apps.integrations.stripe.utils import from_stripe_timestamp
 
 
 def retrieve_subscription(stripe_subscription_id: str):
+    """
+    Retrieve a Stripe Subscription object by its Stripe subscription ID.
+
+    Stripe API reference:
+    https://docs.stripe.com/api/subscriptions/object?api-version=2026-02-25.clover
+    """
     stripe_client = get_stripe_client()
 
     return stripe_client.v1.subscriptions.retrieve(
