@@ -145,21 +145,8 @@ def map_stripe_subscription_status(
     return UserSubscriptionStatus.INACTIVE
 
 
-def mark_subscription_deleted(
-        deleted_subscription: StripeSubscriptionDeletedDTO,
-) -> Optional[UserSubscription]:
-
-    user_subscription = UserSubscription.objects.filter(
-        stripe_subscription_id=deleted_subscription.stripe_subscription_id,
-    ).first()
-
-    if not user_subscription:
-        user_subscription = UserSubscription.objects.filter(
-            stripe_customer_id=deleted_subscription.stripe_customer_id,
-        ).first()
-
-    if not user_subscription:
-        return None
+def mark_subscription_deleted(deleted_subscription: StripeSubscriptionDeletedDTO) -> UserSubscription:
+    user_subscription = get_user_subscription_by_customer_id(deleted_subscription.stripe_customer_id)
 
     user_subscription.status = UserSubscriptionStatus.CANCELED
     user_subscription.current_period_end = deleted_subscription.current_period_end
