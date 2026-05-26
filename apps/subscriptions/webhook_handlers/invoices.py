@@ -13,8 +13,6 @@ from apps.subscriptions.webhook_handlers.mappers import build_paid_subscription_
 
 def handle_invoice_paid(invoice: Invoice):
     paid_subscription = build_paid_subscription_dto_from_invoice(invoice)
-    if not paid_subscription:
-        return
 
     user_subscription = mark_subscription_paid(paid_subscription)
 
@@ -36,13 +34,8 @@ def handle_invoice_paid(invoice: Invoice):
 
 def handle_invoice_payment_failed(invoice: Invoice):
     failed_payment = build_failed_subscription_payment_dto_from_invoice(invoice)
-    if not failed_payment:
-        return
 
     user_subscription = mark_subscription_payment_failed(failed_payment)
-
-    if not user_subscription:
-        return
 
     # TODO: Verify if should create email instance before sending
     if mark_invoice_email_as_sent(
