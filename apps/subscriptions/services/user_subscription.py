@@ -1,11 +1,9 @@
-from typing import Optional
-
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.models.choices import UserSubscriptionStatus
-from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError
+from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError, InvalidStripeSubscriptionStatusError
 from apps.subscriptions.webhook_handlers.dtos import PaidSubscriptionDTO, FailedSubscriptionPaymentDTO, \
     StripeSubscriptionSyncDTO, StripeSubscriptionDeletedDTO
 
@@ -31,9 +29,14 @@ def save_stripe_subscription_id(stripe_customer_id, stripe_subscription_id):
     user_subscription.save(update_fields=["stripe_subscription_id"])
 
 
-def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> Optional[UserSubscription]:
+def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> UserSubscription:
     if paid_subscription.stripe_status != "active":
-        return None
+        raise InvalidStripeSubscriptionStatusError(
+            f"Expected active subscription after paid invoice. "
+            f"stripe_customer_id={paid_subscription.stripe_customer_id}, "
+            f"stripe_subscription_id={paid_subscription.stripe_subscription_id}, "
+            f"stripe_status={paid_subscription.stripe_status}"
+        )
 
     user_subscription = get_user_subscription_by_customer_id(paid_subscription.stripe_customer_id)
 
