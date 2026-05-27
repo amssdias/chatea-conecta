@@ -18,7 +18,7 @@ class UserSubscription(models.Model):
         default=UserSubscriptionStatus.INACTIVE,
     )
 
-    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
 
     started_at = models.DateTimeField(blank=True, null=True)
