@@ -9,7 +9,7 @@ class UserSubscription(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="subscriptions",
+        related_name="subscription",
     )
 
     status = models.CharField(
