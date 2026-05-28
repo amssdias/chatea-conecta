@@ -189,7 +189,7 @@
     }
 
     &__toggle:checked ~ &__menu {
-        max-height: 15rem;
+        max-height: 18rem;
         padding: 1rem;
     }
 
@@ -343,4 +343,64 @@
 			}
 		}
 	}
+}
+
+
+.nav-pro-actions {
+  display: flex;
+  align-items: center;
+}
+
+.nav-pro-form {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-pro-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+
+  // Important:
+  // Do not set custom padding, height, font-size or border-radius here.
+  // Let .btn and .btn-home control the size so it matches the navbar.
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+  line-height: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &__icon {
+    line-height: 1;
+  }
+
+  &--upgrade {
+    // Same size as .btn-home, only special PRO color.
+    background: linear-gradient(135deg, #ffd166, #ff9f1c);
+    color: #1f1300;
+  }
+
+  &--active {
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: #ffffff;
+  }
+
+  &--warning {
+    background: linear-gradient(135deg, #facc15, #fb923c);
+    color: #1f1300;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-pro-actions,
+  .nav-pro-form,
+  .nav-pro-btn {
+    width: 100%;
+  }
 }
