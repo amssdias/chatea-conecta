@@ -8,3 +8,19 @@ class UserSubscriptionNotFoundError(SubscriptionServiceError):
 
 class InvalidStripeSubscriptionStatusError(SubscriptionServiceError):
     """Raised when a Stripe subscription has an unexpected status for the current operation."""
+
+
+class SubscriptionMissingStripeIdError(SubscriptionServiceError):
+    """Raised when the local subscription has no Stripe subscription ID."""
+
+
+class SubscriptionAlreadyCancellingError(SubscriptionServiceError):
+    """Raised when the subscription is already scheduled for cancellation."""
+
+
+class SubscriptionCannotBeCancelledError(SubscriptionServiceError):
+    """Raised when the subscription status does not allow cancellation."""
+
+
+class SubscriptionCancellationProviderError(SubscriptionServiceError):
+    """Raised when Stripe cannot cancel the subscription."""

@@ -26,3 +26,17 @@ def get_subscription_current_period_end(subscription):
             return from_stripe_timestamp(item.current_period_end)
 
     return None
+
+
+def schedule_stripe_subscription_cancellation(stripe_subscription_id: str):
+    """
+    Schedule a Stripe subscription to cancel at the end of the current billing period.
+    """
+    stripe_client = get_stripe_client()
+
+    return stripe_client.v1.subscriptions.update(
+        stripe_subscription_id,
+        {
+            "cancel_at_period_end": True,
+        },
+    )

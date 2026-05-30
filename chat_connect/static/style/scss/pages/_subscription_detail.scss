@@ -1,0 +1,411 @@
+.subscription-detail {
+    min-height: clamp(52rem, 75vh, 72rem);
+    padding: 6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba($primary-light, 0.2) 0%, rgba($bg-light, 0.95) 60%);
+
+    &__container {
+        width: 100%;
+        max-width: 72rem;
+    }
+
+    &__card {
+        background-color: $color-white;
+        border: 1px solid rgba($accent-light, 0.45);
+        border-radius: 2rem;
+        box-shadow: 0 1.4rem 4rem rgba($accent-dark, 0.12);
+        padding: 4.2rem;
+        text-align: center;
+    }
+
+    &__icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        margin: 0 auto 1.6rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        circle {
+            stroke: rgba($accent-dark, 0.35);
+            fill: rgba($primary-light, 0.18);
+            stroke-width: 4;
+        }
+
+        path {
+            stroke: $accent-dark;
+            stroke-width: 4;
+        }
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.6rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 10rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+
+        &--active {
+            color: darken($color-green-dark-1, 12%);
+            background-color: rgba($color-green-dark-1, 0.12);
+            border: 1px solid rgba($color-green-dark-1, 0.35);
+        }
+
+        &--warning {
+            color: $color-dark-amber-3;
+            background-color: rgba($color-light-amber, 0.65);
+            border: 1px solid rgba($color-dark-amber-1, 0.35);
+        }
+
+        &--inactive {
+            color: $text-light;
+            background-color: rgba($bg-medium, 0.85);
+            border: 1px solid rgba($accent-light, 0.45);
+        }
+    }
+
+    &__title {
+        font-size: 3.2rem;
+        color: $accent-dark;
+        margin-bottom: 1.2rem;
+    }
+
+    &__message {
+        color: $text-light;
+        font-size: 1.9rem;
+        line-height: 1.5;
+        margin: 0 auto 2.4rem;
+        max-width: 56rem;
+    }
+
+    &__details {
+        text-align: left;
+        background-color: $bg-medium;
+        border-radius: 1.2rem;
+        padding: 2rem;
+        margin: 0 auto 2.8rem;
+        max-width: 52rem;
+    }
+
+    &__detail-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 1.2rem;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba($accent-light, 0.45);
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        dt {
+            color: $text-light;
+            font-size: 1.5rem;
+        }
+
+        dd {
+            color: $text-dark;
+            font-weight: 600;
+            font-size: 1.3rem;
+            text-align: right;
+            word-break: break-word;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    &__form {
+        margin: 0;
+    }
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 4.6rem;
+        padding: 1.2rem 2rem;
+        border-radius: 1rem;
+        border: 1px solid transparent;
+        font-size: 1.7rem;
+        font-weight: 600;
+        font-family: inherit;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &--primary {
+            background-color: $button-bg;
+            color: $button-text;
+
+            &:hover {
+                background-color: $button-hover-bg;
+                color: $button-hover-text;
+            }
+        }
+
+        &--secondary {
+            background-color: transparent;
+            color: $accent-dark;
+            border-color: rgba($accent-light, 0.8);
+
+            &:hover {
+                background-color: rgba($bg-medium, 0.85);
+            }
+        }
+
+        &--warning {
+            background-color: $color-light-amber;
+            color: $color-dark-amber-3;
+            border-color: rgba($color-dark-amber-1, 0.45);
+
+            &:hover {
+                background-color: darken($color-light-amber, 5%);
+            }
+        }
+
+        &--danger {
+            background-color: transparent;
+            color: $color-dark-amber-3;
+            border-color: rgba($color-dark-amber-1, 0.8);
+
+            &:hover {
+                background-color: rgba($color-light-amber, 0.65);
+            }
+        }
+    }
+
+    &__help {
+        color: $text-light;
+        font-size: 1.5rem;
+    }
+
+    @include respond(tab-port) {
+        padding: 5rem 1.8rem;
+
+        &__card {
+            padding: 3.2rem;
+        }
+    }
+
+    @include respond(phone) {
+        min-height: auto;
+        padding: 3.2rem 1.2rem;
+
+        &__title {
+            font-size: 2.8rem;
+        }
+
+        &__message {
+            font-size: 1.7rem;
+        }
+
+        &__details {
+            padding: 1.6rem;
+        }
+
+        &__detail-item {
+            flex-direction: column;
+            align-items: flex-start;
+
+            dd {
+                text-align: left;
+            }
+        }
+
+        &__actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__form,
+        &__button {
+            width: 100%;
+        }
+
+        &__modal {
+            padding: 1.2rem;
+        }
+
+        &__modal-card {
+            padding: 3rem 2rem 2.4rem;
+        }
+
+        &__modal-title {
+            font-size: 2.3rem;
+        }
+
+        &__modal-message {
+            font-size: 1.6rem;
+        }
+
+        &__modal-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+    }
+
+    &__messages {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2.4rem;
+        text-align: left;
+    }
+
+    &__alert {
+        padding: 1.4rem 1.6rem;
+        border-radius: 1.2rem;
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 1.4;
+        border: 1px solid transparent;
+
+        &--success {
+            color: darken($color-green-dark-1, 12%);
+            background-color: rgba($color-green-dark-1, 0.12);
+            border-color: rgba($color-green-dark-1, 0.35);
+        }
+
+        &--info {
+            color: $accent-dark;
+            background-color: rgba($primary-light, 0.16);
+            border-color: rgba($accent-light, 0.45);
+        }
+
+        &--warning {
+            color: $color-dark-amber-3;
+            background-color: rgba($color-light-amber, 0.65);
+            border-color: rgba($color-dark-amber-1, 0.35);
+        }
+
+        &--error {
+            color: $color-dark-amber-3;
+            background-color: rgba($color-light-amber, 0.5);
+            border-color: rgba($color-dark-amber-1, 0.55);
+        }
+    }
+
+    &__modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    &__modal:target {
+        display: flex;
+    }
+
+    &__modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background-color: rgba($accent-dark, 0.58);
+        backdrop-filter: blur(0.4rem);
+    }
+
+    &__modal-card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 52rem;
+        background-color: $color-white;
+        border: 1px solid rgba($accent-light, 0.45);
+        border-radius: 2rem;
+        box-shadow: 0 2rem 6rem rgba($accent-dark, 0.28);
+        padding: 3.2rem;
+        text-align: center;
+        animation: subscription-modal-in 0.18s ease-out;
+    }
+
+    &__modal-close {
+        position: absolute;
+        top: 1.4rem;
+        right: 1.6rem;
+        width: 3.2rem;
+        height: 3.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        text-decoration: none;
+        color: $text-light;
+        font-size: 2.8rem;
+        line-height: 1;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: rgba($bg-medium, 0.9);
+            color: $accent-dark;
+        }
+    }
+
+    &__modal-icon {
+        width: 6.4rem;
+        height: 6.4rem;
+        margin: 0 auto 1.8rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        circle {
+            fill: rgba($color-light-amber, 0.55);
+            stroke: rgba($color-dark-amber-1, 0.55);
+            stroke-width: 4;
+        }
+
+        path {
+            stroke: $color-dark-amber-3;
+            stroke-width: 4;
+        }
+    }
+
+    &__modal-title {
+        color: $accent-dark;
+        font-size: 2.6rem;
+        margin-bottom: 1.2rem;
+    }
+
+    &__modal-message {
+        color: $text-light;
+        font-size: 1.7rem;
+        line-height: 1.55;
+        margin-bottom: 2.4rem;
+    }
+
+    &__modal-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+    }
+
+    @keyframes subscription-modal-in {
+        from {
+            opacity: 0;
+            transform: translateY(1.2rem) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+}
