@@ -1,8 +1,8 @@
+from django.db import transaction
 from stripe import Invoice
 
-from apps.subscriptions.emails import send_pro_payment_failed_email, send_pro_payment_success_email
-from apps.subscriptions.models import StripeInvoiceNotification
-from apps.subscriptions.services.invoice_notifications import mark_invoice_email_as_sent, _can_send_invoice_email
+from apps.subscriptions.models.choices import EmailType
+from apps.subscriptions.services.invoice_notifications import queue_invoice_email_notification
 from apps.subscriptions.services.user_subscription import (
     mark_subscription_paid, mark_subscription_payment_failed,
 )
@@ -14,20 +14,18 @@ from apps.subscriptions.webhook_handlers.mappers import build_paid_subscription_
 def handle_invoice_paid(invoice: Invoice):
     paid_subscription = build_paid_subscription_dto_from_invoice(invoice)
 
-    user_subscription = mark_subscription_paid(paid_subscription)
+    with transaction.atomic():
+        user_subscription = mark_subscription_paid(paid_subscription)
 
-    if not user_subscription:
-        raise StripeWebhookProcessingError(
-            f"Could not mark subscription as paid. invoice_id={invoice.id}"
-        )
+        if not user_subscription:
+            raise StripeWebhookProcessingError(
+                f"Could not mark subscription as paid. invoice_id={invoice.id}"
+            )
 
-    # TODO: Verify if should create email instance before sending
-    if _can_send_invoice_email(
-            paid_subscription.latest_invoice_id,
-            StripeInvoiceNotification.EmailType.PAYMENT_SUCCEEDED,
-    ):
-        send_pro_payment_success_email(
-            user=user_subscription.user,
+        queue_invoice_email_notification(
+            stripe_invoice_id=paid_subscription.latest_invoice_id,
+            email_type=EmailType.PAYMENT_SUCCEEDED,
+            user_id=user_subscription.user_id,
             invoice_url=paid_subscription.invoice_url,
         )
 
@@ -35,14 +33,12 @@ def handle_invoice_paid(invoice: Invoice):
 def handle_invoice_payment_failed(invoice: Invoice):
     failed_payment = build_failed_subscription_payment_dto_from_invoice(invoice)
 
-    user_subscription = mark_subscription_payment_failed(failed_payment)
+    with transaction.atomic():
+        user_subscription = mark_subscription_payment_failed(failed_payment)
 
-    # TODO: Verify if should create email instance before sending
-    if mark_invoice_email_as_sent(
-            failed_payment.latest_invoice_id,
-            StripeInvoiceNotification.EmailType.PAYMENT_FAILED,
-    ):
-        send_pro_payment_failed_email(
-            user=user_subscription.user,
+        queue_invoice_email_notification(
+            stripe_invoice_id=failed_payment.latest_invoice_id,
+            email_type=EmailType.PAYMENT_FAILED,
+            user_id=user_subscription.user_id,
             invoice_url=failed_payment.invoice_url,
         )
