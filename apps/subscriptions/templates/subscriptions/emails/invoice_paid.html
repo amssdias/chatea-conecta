@@ -1,0 +1,175 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+	<meta charset="UTF-8">
+	<title>{% trans "Your Pro payment was processed" %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #fbfbfb; font-family: Arial, Helvetica, sans-serif; color: #232121;">
+<div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
+	{% trans "Your Chatea-Conecta Pro payment was successful." %}
+</div>
+
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+	   style="width: 100%; background-color: #fbfbfb; margin: 0; padding: 0;">
+	<tr>
+		<td align="center" style="padding: 32px 16px; background: #fbfbfb;">
+			<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+				   style="width: 100%; max-width: 620px; margin: 0 auto;">
+				<tr>
+					<td align="center" style="padding: 0 0 20px;">
+						<h1 style="margin: 0; color: #c21d03; font-size: 28px; line-height: 1.2; font-weight: 800;">
+							Chatea-Conecta
+						</h1>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="background-color: #ffffff; border: 1px solid #e3e3e3; border-radius: 20px; padding: 36px 28px; text-align: center; box-shadow: 0 14px 40px rgba(57, 57, 57, 0.12);">
+						<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td align="center" style="padding-bottom: 18px;">
+									<div style="width: 68px; height: 68px; line-height: 68px; border-radius: 50%; background-color: #f0f9df; border: 1px solid #b8dd6f; color: #5f9500; font-size: 34px; font-weight: 800; text-align: center;">
+										✓
+									</div>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center" style="padding-bottom: 14px;">
+                                        <span style="display: inline-block; padding: 8px 16px; border-radius: 999px; background-color: #f0f9df; border: 1px solid #b8dd6f; color: #5f9500; font-size: 14px; font-weight: 700;">
+                                            {% trans "Payment successful" %}
+                                        </span>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center">
+									<h2 style="margin: 0 0 14px; color: #393939; font-size: 30px; line-height: 1.15; font-weight: 800;">
+										{% trans "Your Pro subscription is active" %}
+									</h2>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center">
+									<p style="margin: 0 auto 26px; max-width: 500px; color: #4b4848; font-size: 17px; line-height: 1.55;">
+										{% blocktrans trimmed %}
+										Thanks for your payment. Your Pro access is now active, so you can keep enjoying
+										unlimited private chats.
+										{% endblocktrans %}
+									</p>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center" style="padding-bottom: 28px;">
+									<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+										   style="max-width: 480px; background-color: #f1f1f1; border-radius: 12px; padding: 18px 20px;">
+										<tr>
+											<td style="padding: 9px 0; border-bottom: 1px solid #d8d8d8;">
+                                                    <span style="display: block; margin-bottom: 4px; color: #4b4848; font-size: 14px;">
+                                                        {% trans "Plan" %}
+                                                    </span>
+												<span style="display: block; color: #232121; font-size: 15px; font-weight: 700;">
+                                                        {% trans "Chatea-Conecta Pro" %}
+                                                    </span>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="padding: 9px 0; border-bottom: 1px solid #d8d8d8;">
+                                                    <span style="display: block; margin-bottom: 4px; color: #4b4848; font-size: 14px;">
+                                                        {% trans "Status" %}
+                                                    </span>
+												<span style="display: block; color: #232121; font-size: 15px; font-weight: 700;">
+                                                        {% trans "Active" %}
+                                                    </span>
+											</td>
+										</tr>
+
+										{% if invoice_url %}
+										<tr>
+											<td style="padding: 9px 0;">
+                                                        <span style="display: block; margin-bottom: 4px; color: #4b4848; font-size: 14px;">
+                                                            {% trans "Invoice" %}
+                                                        </span>
+												<span style="display: block; color: #232121; font-size: 15px; font-weight: 700;">
+                                                            <a href="{{ invoice_url }}"
+															   style="color: #c21d03; text-decoration: underline;">
+                                                                {% trans "View invoice" %}
+                                                            </a>
+                                                        </span>
+											</td>
+										</tr>
+										{% endif %}
+									</table>
+								</td>
+							</tr>
+
+							{% if chat_url or site_url %}
+							<tr>
+								<td align="center" style="padding-bottom: 16px;">
+									<a href="{% if chat_url %}{{ chat_url }}{% else %}{{ site_url }}{% endif %}"
+									   style="display: inline-block; background-color: #fd5732; color: #fbfbfb; padding: 13px 24px; border-radius: 10px; font-size: 16px; font-weight: 700; text-decoration: none;">
+										{% if chat_url %}
+										{% trans "Enter Chatroom" %}
+										{% else %}
+										{% trans "Go to Chatea-Conecta" %}
+										{% endif %}
+									</a>
+								</td>
+							</tr>
+							{% endif %}
+
+							{% if subscription_url %}
+							<tr>
+								<td align="center" style="padding-bottom: 20px;">
+									<a href="{{ subscription_url }}"
+									   style="color: #c21d03; font-size: 15px; font-weight: 700; text-decoration: underline;">
+										{% trans "Manage your subscription" %}
+									</a>
+								</td>
+							</tr>
+							{% endif %}
+
+							<tr>
+								<td align="center">
+									<p style="margin: 0 auto; max-width: 480px; color: #4b4848; font-size: 14px; line-height: 1.5;">
+										{% blocktrans trimmed %}
+										Keep this email as confirmation of your payment. If you did not expect this
+										payment, contact support.
+										{% endblocktrans %}
+									</p>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="center" style="padding: 22px 12px 0; color: #4b4848; font-size: 13px; line-height: 1.5;">
+						<p style="margin: 0 0 8px;">
+							{% trans "You are receiving this email because you have a Chatea-Conecta account." %}
+						</p>
+
+						{% if support_email %}
+						<p style="margin: 0;">
+							{% trans "Need help?" %}
+							<a href="mailto:{{ support_email }}"
+							   style="color: #c21d03; font-weight: 700; text-decoration: underline;">
+								{{ support_email }}
+							</a>
+						</p>
+						{% endif %}
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
