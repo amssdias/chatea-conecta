@@ -6,7 +6,6 @@ from django.test import TestCase
 from django.utils import timezone
 
 from apps.subscriptions.models.choices import UserSubscriptionStatus
-from apps.subscriptions.services.exceptions import InvalidStripeSubscriptionStatusError
 from apps.subscriptions.services.user_subscription import mark_subscription_paid
 from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
 
@@ -92,25 +91,6 @@ class MarkSubscriptionPaidTests(TestCase):
                 "updated_at",
             ],
         )
-
-    @patch(f"{MODULE_PATH}.get_user_subscription_by_customer_id")
-    def test_raises_error_when_stripe_status_is_not_active(self, mock_get_user_subscription_by_customer_id):
-        paid_subscription = self.build_paid_subscription_dto(
-            stripe_customer_id="cus_123",
-            stripe_subscription_id="sub_123",
-            stripe_status="past_due",
-        )
-
-        with self.assertRaisesMessage(
-                InvalidStripeSubscriptionStatusError,
-                "Expected active subscription after paid invoice. "
-                "stripe_customer_id=cus_123, "
-                "stripe_subscription_id=sub_123, "
-                "stripe_status=past_due",
-        ):
-            mark_subscription_paid(paid_subscription)
-
-        mock_get_user_subscription_by_customer_id.assert_not_called()
 
     @patch(f"{MODULE_PATH}.get_user_subscription_by_customer_id")
     def test_keeps_existing_started_at_when_subscription_id_did_not_change(self,

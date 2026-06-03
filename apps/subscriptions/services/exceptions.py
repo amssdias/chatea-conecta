@@ -6,10 +6,6 @@ class UserSubscriptionNotFoundError(SubscriptionServiceError):
     """Raised when a local user subscription cannot be found."""
 
 
-class InvalidStripeSubscriptionStatusError(SubscriptionServiceError):
-    """Raised when a Stripe subscription has an unexpected status for the current operation."""
-
-
 class SubscriptionMissingStripeIdError(SubscriptionServiceError):
     """Raised when the local subscription has no Stripe subscription ID."""
 
