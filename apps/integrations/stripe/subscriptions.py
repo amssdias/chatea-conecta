@@ -40,3 +40,11 @@ def schedule_stripe_subscription_cancellation(stripe_subscription_id: str):
             "cancel_at_period_end": True,
         },
     )
+
+
+def get_subscription_current_period_start(subscription):
+    for item in subscription.items.data:
+        if item.price.id == settings.STRIPE_PRO_MONTHLY_PRICE_ID:
+            return from_stripe_timestamp(item.current_period_start)
+
+    return None
