@@ -42,12 +42,12 @@ def handle_stripe_webhook_event(event: Event) -> bool:
         },
     )
 
-    # if not created and webhook_event.status in [
-    #     StripeWebhookEventStatus.PROCESSED,
-    #     StripeWebhookEventStatus.IGNORED,
-    # ]:
-    #     logger.info("Stripe webhook event already handled: %s", event_id)
-    #     return False
+    if not created and webhook_event.status in [
+        StripeWebhookEventStatus.PROCESSED,
+        StripeWebhookEventStatus.IGNORED,
+    ]:
+        logger.info("Stripe webhook event already handled: %s", event_id)
+        return False
 
     handler = STRIPE_EVENT_HANDLERS.get(event_type)
     if not handler:
