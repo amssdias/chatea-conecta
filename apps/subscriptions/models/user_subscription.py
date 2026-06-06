@@ -22,6 +22,7 @@ class UserSubscription(models.Model):
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
 
     started_at = models.DateTimeField(blank=True, null=True)
+    current_period_start = models.DateTimeField(blank=True, null=True)
     current_period_end = models.DateTimeField(blank=True, null=True)
 
     cancel_at_period_end = models.BooleanField(default=False)
