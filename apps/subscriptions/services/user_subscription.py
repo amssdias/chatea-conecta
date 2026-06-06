@@ -54,6 +54,7 @@ def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> UserSubscr
     user_subscription = get_user_subscription_by_customer_id(paid_subscription.stripe_customer_id)
 
     user_subscription.status = UserSubscriptionStatus.ACTIVE
+    user_subscription.current_period_start = paid_subscription.current_period_start
     user_subscription.current_period_end = paid_subscription.current_period_end
     user_subscription.cancel_at_period_end = paid_subscription.cancel_at_period_end
     user_subscription.canceled_at = paid_subscription.canceled_at
@@ -74,6 +75,7 @@ def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> UserSubscr
             "stripe_subscription_id",
             "status",
             "started_at",
+            "current_period_start",
             "current_period_end",
             "cancel_at_period_end",
             "canceled_at",
@@ -117,6 +119,7 @@ def sync_user_subscription_from_stripe(
         user_subscription.started_at = subscription_sync.started_at
 
     user_subscription.stripe_subscription_id = subscription_sync.stripe_subscription_id
+    user_subscription.current_period_start = subscription_sync.current_period_start
     user_subscription.current_period_end = subscription_sync.current_period_end
     user_subscription.cancel_at_period_end = subscription_sync.cancel_at_period_end
     user_subscription.canceled_at = subscription_sync.canceled_at
@@ -132,6 +135,7 @@ def sync_user_subscription_from_stripe(
             "stripe_subscription_id",
             "status",
             "started_at",
+            "current_period_start",
             "current_period_end",
             "cancel_at_period_end",
             "canceled_at",
@@ -172,6 +176,7 @@ def mark_subscription_deleted(
     )
 
     user_subscription.status = UserSubscriptionStatus.CANCELED
+    user_subscription.current_period_start = deleted_subscription.current_period_start
     user_subscription.current_period_end = deleted_subscription.current_period_end
     user_subscription.cancel_at_period_end = deleted_subscription.cancel_at_period_end
     user_subscription.canceled_at = deleted_subscription.canceled_at
@@ -184,6 +189,7 @@ def mark_subscription_deleted(
     user_subscription.save(
         update_fields=[
             "status",
+            "current_period_start",
             "current_period_end",
             "cancel_at_period_end",
             "canceled_at",
