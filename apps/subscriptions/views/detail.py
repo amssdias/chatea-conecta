@@ -32,6 +32,7 @@ def subscription_detail_view(request):
         "status": user_subscription.status if user_subscription else UserSubscriptionStatus.INACTIVE,
         "plan_name": "PRO",
         "started_at": user_subscription.started_at if user_subscription else None,
+        "current_period_start": user_subscription.current_period_start if user_subscription else None,
         "current_period_end": user_subscription.current_period_end if user_subscription else None,
         "cancel_at_period_end": user_subscription.cancel_at_period_end if user_subscription else False,
         "canceled_at": user_subscription.canceled_at if user_subscription else None,

@@ -94,14 +94,25 @@
 
 				{% if subscription.started_at %}
 				<div class="subscription-detail__detail-item">
-					<dt>{% trans "Started on" %}</dt>
+					<dt>{% trans "Subscription started on" %}</dt>
 					<dd>{{ subscription.started_at|date:"d M Y" }}</dd>
+				</div>
+				{% endif %}
+
+				{% if subscription.current_period_start %}
+				<div class="subscription-detail__detail-item">
+					<dt>{% trans "Current paid period started" %}</dt>
+					<dd>{{ subscription.current_period_start|date:"d M Y" }}</dd>
 				</div>
 				{% endif %}
 
 				{% if subscription.current_period_end %}
 				<div class="subscription-detail__detail-item">
-					<dt>{% trans "Current period ends" %}</dt>
+					{% if subscription.cancel_at_period_end %}
+					<dt>{% trans "Access until" %}</dt>
+					{% else %}
+					<dt>{% trans "Renews on" %}</dt>
+					{% endif %}
 					<dd>{{ subscription.current_period_end|date:"d M Y" }}</dd>
 				</div>
 				{% endif %}
