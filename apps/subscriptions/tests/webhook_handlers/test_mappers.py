@@ -81,6 +81,7 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
 
     @patch(f"{MODULE_PATH}.get_invoice_url")
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     @patch(f"{MODULE_PATH}.retrieve_subscription")
     @patch(f"{MODULE_PATH}.get_invoice_subscription_id")
@@ -89,14 +90,19 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
             mock_get_invoice_subscription_id,
             mock_retrieve_subscription,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
             mock_get_invoice_url,
     ):
         started_at = datetime(2024, 3, 9, tzinfo=timezone.utc)
         canceled_at = None
         ended_at = None
+
+        current_period_start = datetime(2024, 3, 9, tzinfo=timezone.utc)
         current_period_end = datetime(2024, 4, 9, tzinfo=timezone.utc)
 
+        mock_get_subscription_current_period_start.return_value = current_period_start
+        mock_get_subscription_current_period_end.return_value = current_period_end
         mock_get_invoice_subscription_id.return_value = "sub_123"
         mock_retrieve_subscription.return_value = self.subscription
         mock_from_stripe_timestamp.side_effect = [
@@ -104,7 +110,6 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
             canceled_at,
             ended_at,
         ]
-        mock_get_subscription_current_period_end.return_value = current_period_end
         mock_get_invoice_url.return_value = "https://stripe.com/invoice/in_123"
 
         result = build_paid_subscription_dto_from_invoice(self.invoice)
@@ -114,6 +119,7 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
         self.assertEqual(result.stripe_subscription_id, "sub_123")
         self.assertEqual(result.stripe_status, "active")
         self.assertEqual(result.started_at, started_at)
+        self.assertEqual(result.current_period_start, current_period_start)
         self.assertEqual(result.current_period_end, current_period_end)
         self.assertFalse(result.cancel_at_period_end)
         self.assertIsNone(result.canceled_at)
@@ -126,6 +132,9 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
         mock_get_subscription_current_period_end.assert_called_once_with(
             self.subscription
         )
+        mock_get_subscription_current_period_start.assert_called_once_with(
+            self.subscription
+        )
         mock_get_invoice_url.assert_called_once_with(self.invoice)
 
         mock_from_stripe_timestamp.assert_any_call(self.subscription.start_date)
@@ -135,6 +144,7 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
 
     @patch(f"{MODULE_PATH}.get_invoice_url")
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     @patch(f"{MODULE_PATH}.retrieve_subscription")
     @patch(f"{MODULE_PATH}.get_invoice_subscription_id")
@@ -143,6 +153,7 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
             mock_get_invoice_subscription_id,
             mock_retrieve_subscription,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
             mock_get_invoice_url,
     ):
@@ -150,6 +161,7 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
         self.subscription.cancel_at_period_end = True
 
         started_at = datetime(2024, 3, 9, tzinfo=timezone.utc)
+        current_period_start = datetime(2024, 3, 9, tzinfo=timezone.utc)
         current_period_end = datetime(2024, 4, 9, tzinfo=timezone.utc)
 
         mock_get_invoice_subscription_id.return_value = "sub_123"
@@ -159,6 +171,7 @@ class BuildPaidSubscriptionDTOFromInvoiceTests(SimpleTestCase):
             None,
             None,
         ]
+        mock_get_subscription_current_period_start.return_value = current_period_start
         mock_get_subscription_current_period_end.return_value = current_period_end
         mock_get_invoice_url.return_value = "https://stripe.com/invoice/in_123"
 
@@ -261,13 +274,16 @@ class BuildSubscriptionSyncDTOTests(SimpleTestCase):
         )
 
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     def test_builds_subscription_sync_dto(
             self,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
     ):
         started_at = datetime(2024, 3, 9, tzinfo=timezone.utc)
+        current_period_start = datetime(2024, 3, 9, tzinfo=timezone.utc)
         current_period_end = datetime(2024, 4, 9, tzinfo=timezone.utc)
 
         mock_from_stripe_timestamp.side_effect = [
@@ -275,6 +291,7 @@ class BuildSubscriptionSyncDTOTests(SimpleTestCase):
             None,
             None,
         ]
+        mock_get_subscription_current_period_start.return_value = current_period_start
         mock_get_subscription_current_period_end.return_value = current_period_end
 
         result = build_subscription_sync_dto(self.subscription)
@@ -299,10 +316,12 @@ class BuildSubscriptionSyncDTOTests(SimpleTestCase):
         self.assertEqual(mock_from_stripe_timestamp.call_count, 3)
 
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     def test_raises_error_when_subscription_has_no_customer(
             self,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
     ):
         self.subscription.customer = None
@@ -314,19 +333,23 @@ class BuildSubscriptionSyncDTOTests(SimpleTestCase):
             build_subscription_sync_dto(self.subscription)
 
         mock_from_stripe_timestamp.assert_not_called()
+        mock_get_subscription_current_period_start.assert_not_called()
         mock_get_subscription_current_period_end.assert_not_called()
 
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     def test_builds_dto_for_subscription_canceling_at_period_end(
             self,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
     ):
         self.subscription.status = "active"
         self.subscription.cancel_at_period_end = True
 
         started_at = datetime(2024, 3, 9, tzinfo=timezone.utc)
+        current_period_start = datetime(2024, 3, 9, tzinfo=timezone.utc)
         current_period_end = datetime(2024, 4, 9, tzinfo=timezone.utc)
 
         mock_from_stripe_timestamp.side_effect = [
@@ -334,6 +357,7 @@ class BuildSubscriptionSyncDTOTests(SimpleTestCase):
             None,
             None,
         ]
+        mock_get_subscription_current_period_start.return_value = current_period_start
         mock_get_subscription_current_period_end.return_value = current_period_end
 
         result = build_subscription_sync_dto(self.subscription)
@@ -356,20 +380,24 @@ class BuildSubscriptionDeletedDTOTests(SimpleTestCase):
         )
 
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     def test_builds_subscription_deleted_dto(
             self,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
     ):
         canceled_at = datetime(2024, 3, 9, tzinfo=timezone.utc)
         ended_at = datetime(2024, 3, 10, tzinfo=timezone.utc)
+        current_period_start = datetime(2024, 3, 9, tzinfo=timezone.utc)
         current_period_end = datetime(2024, 4, 9, tzinfo=timezone.utc)
 
         mock_from_stripe_timestamp.side_effect = [
             canceled_at,
             ended_at,
         ]
+        mock_get_subscription_current_period_start.return_value = current_period_start
         mock_get_subscription_current_period_end.return_value = current_period_end
 
         result = build_subscription_deleted_dto(self.subscription)
@@ -391,10 +419,12 @@ class BuildSubscriptionDeletedDTOTests(SimpleTestCase):
         )
 
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     def test_raises_error_when_subscription_has_no_customer(
             self,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
     ):
         self.subscription.customer = None
@@ -406,25 +436,30 @@ class BuildSubscriptionDeletedDTOTests(SimpleTestCase):
             build_subscription_deleted_dto(self.subscription)
 
         mock_from_stripe_timestamp.assert_not_called()
+        mock_get_subscription_current_period_start.assert_not_called()
         mock_get_subscription_current_period_end.assert_not_called()
 
     @patch(f"{MODULE_PATH}.get_subscription_current_period_end")
+    @patch(f"{MODULE_PATH}.get_subscription_current_period_start")
     @patch(f"{MODULE_PATH}.from_stripe_timestamp")
     def test_builds_dto_when_subscription_was_cancel_at_period_end(
             self,
             mock_from_stripe_timestamp,
+            mock_get_subscription_current_period_start,
             mock_get_subscription_current_period_end,
     ):
         self.subscription.cancel_at_period_end = True
 
         canceled_at = datetime(2024, 3, 9, tzinfo=timezone.utc)
         ended_at = datetime(2024, 3, 10, tzinfo=timezone.utc)
+        current_period_start = datetime(2024, 3, 9, tzinfo=timezone.utc)
         current_period_end = datetime(2024, 4, 9, tzinfo=timezone.utc)
 
         mock_from_stripe_timestamp.side_effect = [
             canceled_at,
             ended_at,
         ]
+        mock_get_subscription_current_period_start.return_value = current_period_start
         mock_get_subscription_current_period_end.return_value = current_period_end
 
         result = build_subscription_deleted_dto(self.subscription)

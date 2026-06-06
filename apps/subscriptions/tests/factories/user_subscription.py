@@ -15,6 +15,7 @@ class UserSubscriptionFactory(factory.django.DjangoModelFactory):
     stripe_subscription_id = None
 
     started_at = None
+    current_period_start = None
     current_period_end = None
 
     cancel_at_period_end = False
@@ -33,6 +34,7 @@ class UserSubscriptionFactory(factory.django.DjangoModelFactory):
             status=UserSubscriptionStatus.ACTIVE,
             stripe_subscription_id=factory.Sequence(lambda n: f"sub_{n}"),
             started_at=factory.LazyFunction(timezone.now),
+            current_period_start=factory.LazyFunction(timezone.now),
             current_period_end=factory.LazyFunction(
                 lambda: timezone.now() + timezone.timedelta(days=30)
             ),
@@ -42,6 +44,7 @@ class UserSubscriptionFactory(factory.django.DjangoModelFactory):
             status=UserSubscriptionStatus.ACTIVE,
             stripe_subscription_id=factory.Sequence(lambda n: f"sub_{n}"),
             started_at=factory.LazyFunction(timezone.now),
+            current_period_start=factory.LazyFunction(timezone.now),
             current_period_end=factory.LazyFunction(
                 lambda: timezone.now() + timezone.timedelta(days=30)
             ),
@@ -54,6 +57,7 @@ class UserSubscriptionFactory(factory.django.DjangoModelFactory):
             started_at=factory.LazyFunction(
                 lambda: timezone.now() - timezone.timedelta(days=30)
             ),
+            current_period_start=factory.LazyFunction(timezone.now),
             current_period_end=factory.LazyFunction(timezone.now),
             cancel_at_period_end=False,
             canceled_at=factory.LazyFunction(timezone.now),

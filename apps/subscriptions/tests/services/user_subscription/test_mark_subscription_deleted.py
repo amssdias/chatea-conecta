@@ -16,6 +16,7 @@ class MarkSubscriptionDeletedTests(TestCase):
     def build_deleted_subscription_dto(
             self,
             stripe_customer_id="cus_123",
+            current_period_start=None,
             current_period_end=None,
             cancel_at_period_end=False,
             canceled_at=None,
@@ -23,6 +24,7 @@ class MarkSubscriptionDeletedTests(TestCase):
     ):
         return SimpleNamespace(
             stripe_customer_id=stripe_customer_id,
+            current_period_start=current_period_start,
             current_period_end=current_period_end,
             cancel_at_period_end=cancel_at_period_end,
             canceled_at=canceled_at,
@@ -39,12 +41,14 @@ class MarkSubscriptionDeletedTests(TestCase):
             ended_at=None,
         )
 
+        current_period_start = timezone.now()
         current_period_end = timezone.now() + timedelta(days=10)
         canceled_at = timezone.now()
         ended_at = timezone.now() + timedelta(days=1)
 
         deleted_subscription = self.build_deleted_subscription_dto(
             stripe_customer_id="cus_123",
+            current_period_start=current_period_start,
             current_period_end=current_period_end,
             cancel_at_period_end=True,
             canceled_at=canceled_at,
@@ -69,6 +73,7 @@ class MarkSubscriptionDeletedTests(TestCase):
         mock_save.assert_called_once_with(
             update_fields=[
                 "status",
+                "current_period_start",
                 "current_period_end",
                 "cancel_at_period_end",
                 "canceled_at",

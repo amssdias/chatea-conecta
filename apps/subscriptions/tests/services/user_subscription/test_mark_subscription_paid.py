@@ -19,6 +19,7 @@ class MarkSubscriptionPaidTests(TestCase):
             stripe_subscription_id="sub_123",
             stripe_status="active",
             started_at=None,
+            current_period_start=None,
             current_period_end=None,
             cancel_at_period_end=False,
             canceled_at=None,
@@ -29,6 +30,7 @@ class MarkSubscriptionPaidTests(TestCase):
             stripe_subscription_id=stripe_subscription_id,
             stripe_status=stripe_status,
             started_at=started_at or timezone.now(),
+            current_period_start=current_period_start or timezone.now(),
             current_period_end=current_period_end or timezone.now() + timedelta(days=30),
             cancel_at_period_end=cancel_at_period_end,
             canceled_at=canceled_at,
@@ -49,6 +51,7 @@ class MarkSubscriptionPaidTests(TestCase):
         )
 
         started_at = timezone.now() - timedelta(days=1)
+        current_period_start = timezone.now()
         current_period_end = timezone.now() + timedelta(days=30)
 
         paid_subscription = self.build_paid_subscription_dto(
@@ -56,6 +59,7 @@ class MarkSubscriptionPaidTests(TestCase):
             stripe_subscription_id="sub_123",
             stripe_status="active",
             started_at=started_at,
+            current_period_start=current_period_start,
             current_period_end=current_period_end,
             cancel_at_period_end=False,
             canceled_at=None,
@@ -73,6 +77,7 @@ class MarkSubscriptionPaidTests(TestCase):
         self.assertEqual(user_subscription.status, UserSubscriptionStatus.ACTIVE)
         self.assertEqual(user_subscription.stripe_subscription_id, "sub_123")
         self.assertEqual(user_subscription.started_at, started_at)
+        self.assertEqual(user_subscription.current_period_start, current_period_start)
         self.assertEqual(user_subscription.current_period_end, current_period_end)
         self.assertFalse(user_subscription.cancel_at_period_end)
         self.assertIsNone(user_subscription.canceled_at)
@@ -84,6 +89,7 @@ class MarkSubscriptionPaidTests(TestCase):
                 "stripe_subscription_id",
                 "status",
                 "started_at",
+                "current_period_start",
                 "current_period_end",
                 "cancel_at_period_end",
                 "canceled_at",

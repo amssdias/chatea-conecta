@@ -23,6 +23,7 @@ class TestHandleInvoicePaid(TestCase):
             stripe_subscription_id="sub_test_123",
             stripe_status="active",
             started_at=now,
+            current_period_start=now,
             current_period_end=now,
             cancel_at_period_end=False,
             canceled_at=None,
