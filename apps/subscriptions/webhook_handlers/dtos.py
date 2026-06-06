@@ -10,6 +10,7 @@ class PaidSubscriptionDTO:
     stripe_subscription_id: str
     stripe_status: str
     started_at: datetime | None
+    current_period_start: datetime | None
     current_period_end: datetime | None
     cancel_at_period_end: bool
     canceled_at: datetime | None
@@ -33,6 +34,7 @@ class StripeSubscriptionSyncDTO:
     stripe_subscription_id: str
     stripe_status: str
     started_at: datetime | None
+    current_period_start: datetime | None
     current_period_end: datetime | None
     cancel_at_period_end: bool
     canceled_at: datetime | None
@@ -45,5 +47,6 @@ class StripeSubscriptionDeletedDTO:
     stripe_subscription_id: str
     canceled_at: datetime | None
     ended_at: datetime | None
+    current_period_start: datetime | None
     current_period_end: datetime | None
     cancel_at_period_end: bool
