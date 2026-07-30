@@ -75,6 +75,7 @@ class ChatView(View):
             context=self._build_context(
                 username=username,
                 user_id=redis_user_id,
+                is_user_pro=(request.user.is_authenticated and request.user.is_pro),
             ),
         )
 
@@ -83,11 +84,11 @@ class ChatView(View):
 
         return self._add_noindex_header(response)
 
-    def _build_context(self, username, user_id):
+    def _build_context(self, username, user_id, is_user_pro=False):
         return {
             "username": username,
             "user_id": user_id,
-            "is_user_pro": True,  # TODO: Validate this
+            "is_user_pro": is_user_pro,
             "groups": None,
         }
 
