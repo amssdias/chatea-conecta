@@ -15,8 +15,9 @@
     <script type="text/javascript">
         let currentUser = "{{ username }}";
         let userId = "{{ user_id }}";
+        let isPro = "{{ is_user_pro|yesno:'true,false' }}" === "true";
         let sendPrivateMsg = "{{ _('Send private message') }}";
-        let privateChatLimitMessage = "{{ _('You can currently only have 3 private chats available. Remove one from your list to open this chat.') }}";
+        let privateChatLimitMessage = "{{ _('Free accounts can have up to 3 private chats. Upgrade to Pro to open more private chats.') }}";
     </script>
 
 

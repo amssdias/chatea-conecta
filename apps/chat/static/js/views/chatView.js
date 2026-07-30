@@ -5,12 +5,14 @@ class ChatView {
 
     _parentElement = document.querySelector(".chat-container");
 
-    constructor(username, userId, sideBarView, translations = {}) {
+    constructor(username, userId, sideBarView, translations = {}, isPro = false) {
         this._privateChatsMapping = {};
         this._username = username;
         this._userId = userId;
         this._sideBarView = sideBarView;
         this._translations = translations;
+        this._isPro = isPro;
+        this._leavePrivateChatHandler = null;
     }
 
     // =========================

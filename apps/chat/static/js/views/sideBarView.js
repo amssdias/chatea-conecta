@@ -4,6 +4,10 @@ class SideBarView {
 
     _parentElement = document.getElementById("side-menu");
 
+    constructor(isPro = false) {
+        this._isPro = isPro;
+    }
+
     toggleSideBar() {
         this._parentElement.classList.toggle("open-side-menu");
     }
@@ -286,7 +290,7 @@ class SideBarView {
 
         const chats = container.querySelectorAll(".side-menu__private-chats__list-item");
         chats.forEach((chat, index) => {
-            const isLocked = index >= MAX_FREE_PRIVATE_CHATS;
+            const isLocked = !this._isPro && index >= MAX_FREE_PRIVATE_CHATS;
             chat.dataset.locked = isLocked ? "true" : "false";
 
             const chatButton = chat.querySelector(".side-menu__private-chats__list-item--link");
@@ -326,13 +330,13 @@ class SideBarView {
 
         if (isKnownChat) {
             return {
-                isOpenable: chatIndex < MAX_FREE_PRIVATE_CHATS,
+                isOpenable: this._isPro || chatIndex < MAX_FREE_PRIVATE_CHATS,
                 isKnownChat: true,
             };
         }
 
         return {
-            isOpenable: chats.length < MAX_FREE_PRIVATE_CHATS,
+            isOpenable: this._isPro || chats.length < MAX_FREE_PRIVATE_CHATS,
             isKnownChat: false,
         };
     }
