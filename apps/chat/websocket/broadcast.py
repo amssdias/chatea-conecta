@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import json
 
 from apps.chat.constants.consumer import PRIVATE_CHATS_RESTORED
+from apps.chat.constants.private_chat import PRIVATE_CHAT_ACCESS_DENIED
 from apps.chat.constants.redis_keys import USER_NOTIFICATION_GROUP
 
 
@@ -88,6 +91,25 @@ async def send_private_chats_restored(consumer, private_chats: dict) -> None:
             {
                 "type": PRIVATE_CHATS_RESTORED,
                 "privateChats": private_chats,
+            }
+        )
+    )
+
+
+async def send_private_chat_access_denied(
+    consumer,
+    reason: str,
+    message: str,
+    target_user_id: str | None = None,
+) -> None:
+    """Tell the client why a private-chat request was rejected."""
+    await consumer.send(
+        text_data=json.dumps(
+            {
+                "type": PRIVATE_CHAT_ACCESS_DENIED,
+                "reason": reason,
+                "message": message,
+                "targetUserId": target_user_id,
             }
         )
     )
