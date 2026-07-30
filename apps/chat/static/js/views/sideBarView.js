@@ -1,4 +1,4 @@
-import { MAX_FREE_PRIVATE_CHATS } from "../config.js";
+import {MAX_FREE_PRIVATE_CHATS} from "../config.js";
 
 class SideBarView {
 
@@ -63,6 +63,14 @@ class SideBarView {
 
     showPrivateChatLimitMessage() {
         window.alert(privateChatLimitMessage);
+    }
+
+    removePrivateChat(privateGroupId) {
+        const chat = this._getPrivateChatElement(privateGroupId);
+        if (!chat) return;
+
+        chat.remove();
+        this._refreshPrivateChatAvailability();
     }
 
     addGroupChat(groupChatName, displayChatCallback) {

@@ -1,4 +1,4 @@
-import { appendTextWithLinks } from "../utils/create_elements.js";
+import {appendTextWithLinks} from "../utils/create_elements.js";
 
 
 class ChatView {
@@ -255,6 +255,12 @@ class ChatView {
         }
         return true;
 
+    }
+
+    removePrivateChat(userIdTarget, privateGroupId) {
+        delete this._privateChatsMapping[userIdTarget];
+        this.deleteChat(this._getChatElement(privateGroupId));
+        this._sideBarView.removePrivateChat(privateGroupId);
     }
 
     addPrivateChatUser(fromUserId, privateGroup) {

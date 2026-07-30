@@ -111,6 +111,22 @@ class ChatSocket {
         this.chatView.markPrivateChatAsOffline(data.privateGroupId);
     }
 
+    handlePrivateChatError(data) {
+        if (data.targetUserId) {
+            const privateGroupId = this.chatView._privateChatsMapping[
+                data.targetUserId
+                ];
+            if (privateGroupId) {
+                this.chatView.removePrivateChat(
+                    data.targetUserId,
+                    privateGroupId,
+                );
+            }
+        }
+
+        window.alert(data.message || privateChatLimitMessage);
+    }
+
     handleErrorSocketAction(data) {
         console.error("Socket error action received:", data);
         this._showChatClosedMessage();
@@ -194,6 +210,7 @@ class ChatSocket {
             send_message: this.handleSendMessage.bind(this),
             private_invite: this.handleChatInvite.bind(this),
             private_chat_participant_offline: this.handlePrivateChatOffline.bind(this),
+            private_chat_access_denied: this.handlePrivateChatError.bind(this),
             error_action: this.handleErrorSocketAction.bind(this),
             private_chats_restored: this.handlePrivateChatsRestored.bind(this),
             private_chat_participant_online: this.handlePrivateChatParticipantOnline.bind(this),
