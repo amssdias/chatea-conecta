@@ -1,10 +1,12 @@
 from smtplib import SMTPException
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.mail import BadHeaderError, EmailMultiAlternatives
 from django.core.validators import validate_email
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 
 class EmailRecipientError(ValueError):
@@ -85,8 +87,16 @@ def send_pro_payment_success_email(user, invoice_url=None):
     context = {
         "invoice_url": invoice_url,
         "site_url": site_url,
-        "chat_url": None,
-        "subscription_url": None,
+        "chat_url": (
+            urljoin(site_url + "/", reverse("chat:live-chat").lstrip("/"))
+            if site_url
+            else None
+        ),
+        "subscription_url": (
+            urljoin(site_url + "/", reverse("subscriptions:detail").lstrip("/"))
+            if site_url
+            else None
+        ),
         "support_email": support_email,
     }
 
@@ -121,7 +131,11 @@ def send_pro_payment_failed_email(user, invoice_url=None, payment_update_url=Non
         "invoice_url": invoice_url,
         "payment_update_url": payment_update_url,
         "site_url": site_url,
-        "subscription_url": None,
+        "subscription_url": (
+            urljoin(site_url + "/", reverse("subscriptions:detail").lstrip("/"))
+            if site_url
+            else None
+        ),
         "support_email": support_email,
     }
 
