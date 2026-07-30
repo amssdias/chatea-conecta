@@ -35,7 +35,9 @@ class UserSubscription(models.Model):
     @property
     def pro(self):
         if self.status == UserSubscriptionStatus.ACTIVE:
-            return True
+            return (
+                not self.current_period_end or self.current_period_end > timezone.now()
+            )
 
         if (
                 self.status == UserSubscriptionStatus.PAST_DUE
