@@ -9,4 +9,5 @@ def create_user_account_from_signup_form(*, form):
     user = form.save()
 
     Profile.objects.get_or_create(user=user)
+    UserSubscription.objects.get_or_create(user=user)
     return user
