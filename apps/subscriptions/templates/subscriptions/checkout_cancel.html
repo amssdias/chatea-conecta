@@ -22,8 +22,12 @@
 			</p>
 
 			<div class="checkout-result__actions">
-				<a href="{% url 'subscriptions:create_pro_checkout_session' %}"
-				   class="checkout-result__button checkout-result__button--primary">{% trans "Try again" %}</a>
+				<form method="post" action="{% url 'subscriptions:create_pro_checkout_session' %}">
+					{% csrf_token %}
+					<button type="submit" class="checkout-result__button checkout-result__button--primary">
+						{% trans "Try again" %}
+					</button>
+				</form>
 				<a href="{% url 'chat:live-chat' %}" class="checkout-result__button checkout-result__button--secondary">{%
 					trans "Back to chat" %}</a>
 			</div>
