@@ -1,7 +1,15 @@
+from django.utils.translation import gettext as _
+
+from apps.chat.constants.private_chat import (
+    FREE_PRIVATE_CHAT_LIMIT,
+    PRIVATE_CHAT_LIMIT_REACHED,
+)
 from apps.chat.constants.redis_keys import USER_NOTIFICATION_GROUP
 from apps.chat.services.activity import is_user_online
 from apps.chat.services.private_chats import save_user_private_chat_group
+from apps.chat.services.subscription_access import user_has_pro_access
 from apps.chat.websocket.broadcast import notify_user_offline
+from apps.chat.websocket.broadcast import send_private_chat_access_denied
 from apps.chat.websocket.group_names import get_private_group_name
 from apps.chat.websocket.registration import (
     register_user_to_group,
@@ -21,6 +29,22 @@ async def handle_private_invite(consumer, data):
         return
 
     if consumer.private_chats.get(user_id_target):
+        return
+
+    if (
+        not await user_has_pro_access(consumer.id)
+        and len(consumer.private_chats) >= FREE_PRIVATE_CHAT_LIMIT
+    ):
+        await send_private_chat_access_denied(
+            consumer=consumer,
+            reason=PRIVATE_CHAT_LIMIT_REACHED,
+            message=_(
+                "Free accounts can have up to %(limit)s private chats. "
+                "Upgrade to Pro to open more private chats."
+            )
+            % {"limit": FREE_PRIVATE_CHAT_LIMIT},
+            target_user_id=user_id_target,
+        )
         return
 
     user_is_online = await is_user_online(user_id_target)
