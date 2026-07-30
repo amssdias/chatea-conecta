@@ -12,8 +12,12 @@ class User(AbstractUser):
 
     @property
     def is_pro(self):
-        return self.subscription.pro
+        subscription = getattr(self, "subscription", None)
+        return bool(subscription and subscription.pro)
 
     @property
     def needs_payment_configuration(self):
-        return self.subscription.status == UserSubscriptionStatus.PAST_DUE
+        subscription = getattr(self, "subscription", None)
+        return bool(
+            subscription and subscription.status == UserSubscriptionStatus.PAST_DUE
+        )
