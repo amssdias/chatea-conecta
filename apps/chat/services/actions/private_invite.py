@@ -12,6 +12,14 @@ from apps.chat.websocket.validation import is_bot_user
 async def handle_private_invite(consumer, data):
     user_id_target = data.get("target_user_id")
 
+    if user_id_target is None:
+        return
+
+    user_id_target = str(user_id_target)
+
+    if user_id_target == str(consumer.id):
+        return
+
     if consumer.private_chats.get(user_id_target):
         return
 
