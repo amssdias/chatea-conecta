@@ -6,6 +6,7 @@ from apps.subscriptions.views import (
     checkout_cancel_view,
     subscription_detail_view,
     cancel_subscription_view,
+    create_billing_portal_session_view,
 )
 
 app_name = "subscriptions"
@@ -35,5 +36,10 @@ urlpatterns = [
         "cancel/",
         cancel_subscription_view,
         name="cancel",
+    ),
+    path(
+        "billing-portal/",
+        create_billing_portal_session_view,
+        name="billing_portal",
     ),
 ]
