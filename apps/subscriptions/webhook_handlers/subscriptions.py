@@ -31,7 +31,11 @@ def handle_customer_subscription_deleted(subscription: Subscription):
         return
 
     user_subscription = mark_subscription_deleted(deleted_subscription)
+
+    if user_subscription is None:
+        return
+
     send_subscription_canceled_email_task.delay(
-        user_id=user_subscription.user.id,
+        user_id=user_subscription.user_id,
         ended_at=user_subscription.ended_at,
     )
