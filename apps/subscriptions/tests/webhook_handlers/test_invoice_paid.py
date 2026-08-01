@@ -8,7 +8,6 @@ from django.utils import timezone
 
 from apps.subscriptions.models.choices import EmailType
 from apps.subscriptions.webhook_handlers.dtos import PaidSubscriptionDTO
-from apps.subscriptions.webhook_handlers.exceptions import StripeWebhookProcessingError
 from apps.subscriptions.webhook_handlers.invoices import handle_invoice_paid
 
 
@@ -79,17 +78,13 @@ class TestHandleInvoicePaid(TestCase):
             invoice_url=self.paid_subscription.invoice_url,
         )
 
-    def test_raises_error_when_subscription_could_not_be_marked_as_paid(self):
+    def test_does_not_queue_email_for_stale_subscription_event(self):
         self.build_paid_subscription_dto_from_invoice_mock.return_value = (
             self.paid_subscription
         )
         self.mark_subscription_paid_mock.return_value = None
 
-        with self.assertRaisesRegex(
-                StripeWebhookProcessingError,
-                "Could not mark subscription as paid. invoice_id=in_test_123",
-        ):
-            handle_invoice_paid(self.invoice)
+        handle_invoice_paid(self.invoice)
 
         self.build_paid_subscription_dto_from_invoice_mock.assert_called_once_with(
             self.invoice

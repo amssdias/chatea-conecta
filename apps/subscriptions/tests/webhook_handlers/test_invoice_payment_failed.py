@@ -65,6 +65,23 @@ class TestHandleInvoicePaymentFailed(TestCase):
             invoice_url=self.failed_payment.invoice_url,
         )
 
+    def test_does_not_queue_email_for_stale_subscription_event(self):
+        self.build_failed_subscription_payment_dto_from_invoice_mock.return_value = (
+            self.failed_payment
+        )
+        self.mark_subscription_payment_failed_mock.return_value = None
+
+        handle_invoice_payment_failed(self.invoice)
+
+        self.build_failed_subscription_payment_dto_from_invoice_mock.assert_called_once_with(
+            self.invoice
+        )
+        self.atomic_mock.assert_called_once_with()
+        self.mark_subscription_payment_failed_mock.assert_called_once_with(
+            self.failed_payment
+        )
+        self.queue_invoice_email_notification_mock.assert_not_called()
+
     def test_propagates_mark_subscription_payment_failed_errors(self):
         self.build_failed_subscription_payment_dto_from_invoice_mock.return_value = self.failed_payment
         self.mark_subscription_payment_failed_mock.side_effect = RuntimeError(
