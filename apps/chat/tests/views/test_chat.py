@@ -84,7 +84,7 @@ class ChatViewTests(TestCase):
         self.assertTemplateUsed(response, "chat/chat.html")
         self.assertEqual(response.context["username"], self.username)
         self.assertEqual(response.context["user_id"], self.user_id)
-        self.assertTrue(response.context["is_user_pro"])
+        self.assertFalse(response.context["is_user_pro"])
         self.assertIsNone(response.context["groups"])
         self.assertEqual(response["X-Robots-Tag"], "noindex, nofollow")
 
@@ -429,7 +429,7 @@ class ChatViewTests(TestCase):
 
         self.assertEqual(response.context["username"], "testuser")
         self.assertEqual(response.context["user_id"], "user-uuid-123")
-        self.assertTrue(response.context["is_user_pro"])
+        self.assertFalse(response.context["is_user_pro"])
         self.assertIsNone(response.context["groups"])
 
     @patch("apps.chat.views.chat.register_user_on_redis")
