@@ -32,7 +32,7 @@ async def handle_private_invite(consumer, data):
         return
 
     if (
-        not await user_has_pro_access(consumer.id)
+        not await user_has_pro_access(consumer.user)
         and len(consumer.private_chats) >= FREE_PRIVATE_CHAT_LIMIT
     ):
         await send_private_chat_access_denied(

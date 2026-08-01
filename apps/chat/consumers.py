@@ -33,11 +33,21 @@ logger = logging.getLogger("chat_connect")
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        logger.info(
-            f"---- {self.scope['cookies'].get('username')} CONNECTED TO WEBSOCKET ----"
-        )
-        self.id = self.scope["cookies"].get("user_id")
-        self.username = self.scope["cookies"].get("username", "").lower()
+        self.user = self.scope["user"]
+
+        if self.user.is_authenticated:
+            self.id = str(self.user.pk)
+            self.username = self.user.get_username().lower()
+        else:
+            self.id = self.scope["cookies"].get("user_id")
+            self.username = self.scope["cookies"].get("username", "").lower()
+
+        if not self.id or not self.username:
+            await self.close(code=4001, reason="Invalid chat identity")
+            return
+
+        logger.info("---- %s CONNECTED TO WEBSOCKET ----", self.username)
+
         self.groups = set()
         self.private_chats = {}
 
