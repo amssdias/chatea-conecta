@@ -1,8 +1,10 @@
 import logging
 from datetime import datetime
+from typing import Optional
 
 import stripe
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.utils import timezone
 
 from apps.integrations.stripe.subscriptions import (
@@ -43,32 +45,57 @@ def get_user_subscription_by_customer_id(stripe_customer_id: str):
         ) from exc
 
 
-def save_stripe_subscription_id(stripe_customer_id, stripe_subscription_id):
-    user_subscription = get_user_subscription_by_customer_id(stripe_customer_id)
+def _get_user_subscription_for_update(stripe_customer_id: str) -> UserSubscription:
+    try:
+        return UserSubscription.objects.select_for_update().get(
+            stripe_customer_id=stripe_customer_id,
+        )
+    except UserSubscription.DoesNotExist as exc:
+        raise UserSubscriptionNotFoundError(
+            "User subscription not found. " f"stripe_customer_id={stripe_customer_id}, "
+        ) from exc
 
-    user_subscription.stripe_subscription_id = stripe_subscription_id
-    user_subscription.save(update_fields=["stripe_subscription_id"])
 
-
-def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> UserSubscription:
-    user_subscription = get_user_subscription_by_customer_id(paid_subscription.stripe_customer_id)
-
-    user_subscription.status = UserSubscriptionStatus.ACTIVE
-    user_subscription.current_period_start = paid_subscription.current_period_start
-    user_subscription.current_period_end = paid_subscription.current_period_end
-    user_subscription.cancel_at_period_end = paid_subscription.cancel_at_period_end
-    user_subscription.canceled_at = paid_subscription.canceled_at
-    user_subscription.ended_at = paid_subscription.ended_at
-
-    subscription_changed = (
-            user_subscription.stripe_subscription_id
-            != paid_subscription.stripe_subscription_id
+def _log_ignored_non_current_subscription_event(
+    user_subscription: UserSubscription,
+    stripe_customer_id: str,
+    stripe_subscription_id: str,
+) -> None:
+    logger.info(
+        "Ignoring Stripe event for non-current subscription. "
+        "customer_id=%s current_subscription_id=%s event_subscription_id=%s",
+        stripe_customer_id,
+        user_subscription.stripe_subscription_id,
+        stripe_subscription_id,
     )
 
-    if subscription_changed or not user_subscription.started_at:
-        user_subscription.started_at = paid_subscription.started_at
 
-    user_subscription.stripe_subscription_id = paid_subscription.stripe_subscription_id
+@transaction.atomic
+def sync_user_subscription_from_checkout(
+    subscription_sync: StripeSubscriptionSyncDTO,
+) -> UserSubscription:
+    """
+    Establish the subscription coming from Checkout as the current one.
+
+    This is the only place allowed to replace ``stripe_subscription_id``. It writes a
+    complete snapshot of the Stripe state so that lifecycle events which arrived
+    before Checkout could safely be ignored.
+    """
+    user_subscription = _get_user_subscription_for_update(
+        subscription_sync.stripe_customer_id,
+    )
+
+    user_subscription.stripe_subscription_id = subscription_sync.stripe_subscription_id
+    user_subscription.status = map_stripe_subscription_status(
+        subscription_sync.stripe_status,
+        subscription_sync.cancel_at_period_end,
+    )
+    user_subscription.started_at = subscription_sync.started_at
+    user_subscription.current_period_start = subscription_sync.current_period_start
+    user_subscription.current_period_end = subscription_sync.current_period_end
+    user_subscription.cancel_at_period_end = subscription_sync.cancel_at_period_end
+    user_subscription.canceled_at = subscription_sync.canceled_at
+    user_subscription.ended_at = subscription_sync.ended_at
 
     user_subscription.save(
         update_fields=[
@@ -87,12 +114,69 @@ def mark_subscription_paid(paid_subscription: PaidSubscriptionDTO) -> UserSubscr
     return user_subscription
 
 
+@transaction.atomic
+def mark_subscription_paid(
+    paid_subscription: PaidSubscriptionDTO,
+) -> Optional[UserSubscription]:
+    user_subscription = _get_user_subscription_for_update(
+        paid_subscription.stripe_customer_id
+    )
+
+    if (
+        user_subscription.stripe_subscription_id
+        != paid_subscription.stripe_subscription_id
+    ):
+        _log_ignored_non_current_subscription_event(
+            user_subscription,
+            paid_subscription.stripe_customer_id,
+            paid_subscription.stripe_subscription_id,
+        )
+        return None
+
+    user_subscription.status = UserSubscriptionStatus.ACTIVE
+    user_subscription.current_period_start = paid_subscription.current_period_start
+    user_subscription.current_period_end = paid_subscription.current_period_end
+    user_subscription.cancel_at_period_end = paid_subscription.cancel_at_period_end
+    user_subscription.canceled_at = paid_subscription.canceled_at
+    user_subscription.ended_at = paid_subscription.ended_at
+
+    if not user_subscription.started_at:
+        user_subscription.started_at = paid_subscription.started_at
+
+    user_subscription.save(
+        update_fields=[
+            "status",
+            "started_at",
+            "current_period_start",
+            "current_period_end",
+            "cancel_at_period_end",
+            "canceled_at",
+            "ended_at",
+            "updated_at",
+        ],
+    )
+
+    return user_subscription
+
+
+@transaction.atomic
 def mark_subscription_payment_failed(
-        failed_payment: FailedSubscriptionPaymentDTO,
-) -> UserSubscription:
-    user_subscription = get_user_subscription_by_customer_id(
+    failed_payment: FailedSubscriptionPaymentDTO,
+) -> Optional[UserSubscription]:
+    user_subscription = _get_user_subscription_for_update(
         failed_payment.stripe_customer_id
     )
+
+    if (
+        user_subscription.stripe_subscription_id
+        != failed_payment.stripe_subscription_id
+    ):
+        _log_ignored_non_current_subscription_event(
+            user_subscription,
+            failed_payment.stripe_customer_id,
+            failed_payment.stripe_subscription_id,
+        )
+        return None
 
     user_subscription.status = map_stripe_subscription_status(
         failed_payment.stripe_status,
@@ -103,22 +187,28 @@ def mark_subscription_payment_failed(
     return user_subscription
 
 
+@transaction.atomic
 def sync_user_subscription_from_stripe(
-        subscription_sync: StripeSubscriptionSyncDTO,
-) -> UserSubscription:
-    user_subscription = get_user_subscription_by_customer_id(
+    subscription_sync: StripeSubscriptionSyncDTO,
+) -> Optional[UserSubscription]:
+    user_subscription = _get_user_subscription_for_update(
         subscription_sync.stripe_customer_id
     )
 
-    subscription_changed = (
-            user_subscription.stripe_subscription_id
-            != subscription_sync.stripe_subscription_id
-    )
+    if (
+        user_subscription.stripe_subscription_id
+        != subscription_sync.stripe_subscription_id
+    ):
+        _log_ignored_non_current_subscription_event(
+            user_subscription,
+            subscription_sync.stripe_customer_id,
+            subscription_sync.stripe_subscription_id,
+        )
+        return None
 
-    if subscription_changed or not user_subscription.started_at:
+    if not user_subscription.started_at:
         user_subscription.started_at = subscription_sync.started_at
 
-    user_subscription.stripe_subscription_id = subscription_sync.stripe_subscription_id
     user_subscription.current_period_start = subscription_sync.current_period_start
     user_subscription.current_period_end = subscription_sync.current_period_end
     user_subscription.cancel_at_period_end = subscription_sync.cancel_at_period_end
@@ -132,7 +222,6 @@ def sync_user_subscription_from_stripe(
 
     user_subscription.save(
         update_fields=[
-            "stripe_subscription_id",
             "status",
             "started_at",
             "current_period_start",
@@ -168,12 +257,24 @@ def map_stripe_subscription_status(
     return UserSubscriptionStatus.INACTIVE
 
 
+@transaction.atomic
 def mark_subscription_deleted(
-        deleted_subscription: StripeSubscriptionDeletedDTO,
-) -> UserSubscription:
-    user_subscription = get_user_subscription_by_customer_id(
+    deleted_subscription: StripeSubscriptionDeletedDTO,
+) -> Optional[UserSubscription]:
+    user_subscription = _get_user_subscription_for_update(
         deleted_subscription.stripe_customer_id
     )
+
+    if (
+        user_subscription.stripe_subscription_id
+        != deleted_subscription.stripe_subscription_id
+    ):
+        _log_ignored_non_current_subscription_event(
+            user_subscription,
+            deleted_subscription.stripe_customer_id,
+            deleted_subscription.stripe_subscription_id,
+        )
+        return None
 
     user_subscription.status = UserSubscriptionStatus.CANCELED
     user_subscription.current_period_start = deleted_subscription.current_period_start
