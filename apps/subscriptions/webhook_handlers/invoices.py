@@ -6,7 +6,6 @@ from apps.subscriptions.services.invoice_notifications import queue_invoice_emai
 from apps.subscriptions.services.user_subscription import (
     mark_subscription_paid, mark_subscription_payment_failed,
 )
-from apps.subscriptions.webhook_handlers.exceptions import StripeWebhookProcessingError
 from apps.subscriptions.webhook_handlers.mappers import build_paid_subscription_dto_from_invoice, \
     build_failed_subscription_payment_dto_from_invoice
 
@@ -17,10 +16,8 @@ def handle_invoice_paid(invoice: Invoice):
     with transaction.atomic():
         user_subscription = mark_subscription_paid(paid_subscription)
 
-        if not user_subscription:
-            raise StripeWebhookProcessingError(
-                f"Could not mark subscription as paid. invoice_id={invoice.id}"
-            )
+        if user_subscription is None:
+            return
 
         queue_invoice_email_notification(
             stripe_invoice_id=paid_subscription.latest_invoice_id,
@@ -35,6 +32,9 @@ def handle_invoice_payment_failed(invoice: Invoice):
 
     with transaction.atomic():
         user_subscription = mark_subscription_payment_failed(failed_payment)
+
+        if user_subscription is None:
+            return
 
         queue_invoice_email_notification(
             stripe_invoice_id=failed_payment.latest_invoice_id,
