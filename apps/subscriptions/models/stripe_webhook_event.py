@@ -9,7 +9,7 @@ class StripeWebhookEvent(models.Model):
     status = models.CharField(
         max_length=20,
         choices=StripeWebhookEventStatus.choices,
-        default=StripeWebhookEventStatus.PROCESSED
+        default=StripeWebhookEventStatus.PENDING,
     )
     error_message = models.TextField(blank=True, null=True)
     processed_at = models.DateTimeField(blank=True, null=True)

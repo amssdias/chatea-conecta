@@ -10,6 +10,8 @@ class UserSubscriptionStatus(models.TextChoices):
 
 
 class StripeWebhookEventStatus(models.TextChoices):
+    PENDING = "pending", "Pending"
+    PROCESSING = "processing", "Processing"
     PROCESSED = "processed", "Processed"
     IGNORED = "ignored", "Ignored"
     FAILED = "failed", "Failed"
