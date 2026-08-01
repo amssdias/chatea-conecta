@@ -32,29 +32,18 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         mock_is_user_online.assert_not_awaited()
         mock_get_private_group_name.assert_not_called()
 
-    @patch(
-        "apps.chat.services.actions.private_invite.notify_user_offline",
-        new_callable=AsyncMock,
-    )
-    @patch(
-        "apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock
-    )
+    @patch("apps.chat.services.actions.private_invite.notify_user_offline", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock)
     @patch("apps.chat.services.actions.private_invite.get_private_group_name")
-    @patch(
-        "apps.chat.services.actions.private_invite.is_user_online",
-        new_callable=AsyncMock,
-    )
-    @patch(
-        "apps.chat.services.actions.private_invite.user_has_pro_access",
-        new_callable=AsyncMock,
-    )
+    @patch("apps.chat.services.actions.private_invite.is_user_online", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.user_has_pro_access", new_callable=AsyncMock)
     async def test_notifies_current_user_when_target_user_is_offline(
-        self,
-        mock_user_has_pro_access,
-        mock_is_user_online,
-        mock_get_private_group_name,
-        mock_is_bot_user,
-        mock_notify_user_offline,
+            self,
+            mock_user_has_pro_access,
+            mock_is_user_online,
+            mock_get_private_group_name,
+            mock_is_bot_user,
+            mock_notify_user_offline,
     ):
         target_user_id = "20"
         private_group_id = "private-chat-10-20"
