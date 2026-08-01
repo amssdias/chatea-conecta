@@ -5,7 +5,9 @@ from unittest.mock import patch
 from django.test import TestCase
 from django.utils import timezone
 
+from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.models.choices import UserSubscriptionStatus
+from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError
 from apps.subscriptions.services.user_subscription import mark_subscription_paid
 from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
 
@@ -37,11 +39,10 @@ class MarkSubscriptionPaidTests(TestCase):
             ended_at=ended_at,
         )
 
-    @patch(f"{MODULE_PATH}.get_user_subscription_by_customer_id")
-    def test_marks_subscription_as_paid(self, mock_get_user_subscription_by_customer_id):
+    def test_marks_subscription_as_paid(self):
         user_subscription = UserSubscriptionFactory(
             stripe_customer_id="cus_123",
-            stripe_subscription_id=None,
+            stripe_subscription_id="sub_123",
             status=UserSubscriptionStatus.INACTIVE,
             started_at=None,
             current_period_end=None,
@@ -66,27 +67,23 @@ class MarkSubscriptionPaidTests(TestCase):
             ended_at=None,
         )
 
-        mock_get_user_subscription_by_customer_id.return_value = user_subscription
-
-        with patch.object(user_subscription, "save", wraps=user_subscription.save) as mock_save:
+        with patch.object(UserSubscription, "save", autospec=True) as mock_save:
+            mock_save.side_effect = lambda instance, **kwargs: None
             result = mark_subscription_paid(paid_subscription)
 
-        user_subscription.refresh_from_db()
+        self.assertEqual(result.pk, user_subscription.pk)
+        self.assertEqual(result.status, UserSubscriptionStatus.ACTIVE)
+        self.assertEqual(result.stripe_subscription_id, "sub_123")
+        self.assertEqual(result.started_at, started_at)
+        self.assertEqual(result.current_period_start, current_period_start)
+        self.assertEqual(result.current_period_end, current_period_end)
+        self.assertFalse(result.cancel_at_period_end)
+        self.assertIsNone(result.canceled_at)
+        self.assertIsNone(result.ended_at)
 
-        self.assertEqual(result, user_subscription)
-        self.assertEqual(user_subscription.status, UserSubscriptionStatus.ACTIVE)
-        self.assertEqual(user_subscription.stripe_subscription_id, "sub_123")
-        self.assertEqual(user_subscription.started_at, started_at)
-        self.assertEqual(user_subscription.current_period_start, current_period_start)
-        self.assertEqual(user_subscription.current_period_end, current_period_end)
-        self.assertFalse(user_subscription.cancel_at_period_end)
-        self.assertIsNone(user_subscription.canceled_at)
-        self.assertIsNone(user_subscription.ended_at)
-
-        mock_get_user_subscription_by_customer_id.assert_called_once_with("cus_123")
         mock_save.assert_called_once_with(
+            result,
             update_fields=[
-                "stripe_subscription_id",
                 "status",
                 "started_at",
                 "current_period_start",
@@ -98,9 +95,29 @@ class MarkSubscriptionPaidTests(TestCase):
             ],
         )
 
-    @patch(f"{MODULE_PATH}.get_user_subscription_by_customer_id")
-    def test_keeps_existing_started_at_when_subscription_id_did_not_change(self,
-                                                                           mock_get_user_subscription_by_customer_id):
+    def test_persists_paid_state(self):
+        user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+            status=UserSubscriptionStatus.INACTIVE,
+        )
+
+        current_period_end = timezone.now() + timedelta(days=30)
+
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+            current_period_end=current_period_end,
+        )
+
+        mark_subscription_paid(paid_subscription)
+
+        user_subscription.refresh_from_db()
+
+        self.assertEqual(user_subscription.status, UserSubscriptionStatus.ACTIVE)
+        self.assertEqual(user_subscription.current_period_end, current_period_end)
+
+    def test_keeps_existing_started_at_when_subscription_id_did_not_change(self):
         existing_started_at = timezone.now() - timedelta(days=90)
         new_started_at = timezone.now()
 
@@ -117,46 +134,13 @@ class MarkSubscriptionPaidTests(TestCase):
             started_at=new_started_at,
         )
 
-        mock_get_user_subscription_by_customer_id.return_value = user_subscription
-
         mark_subscription_paid(paid_subscription)
 
         user_subscription.refresh_from_db()
 
         self.assertEqual(user_subscription.started_at, existing_started_at)
 
-    @patch(f"{MODULE_PATH}.get_user_subscription_by_customer_id")
-    def test_updates_started_at_when_subscription_id_changed(self, mock_get_user_subscription_by_customer_id):
-        old_started_at = timezone.now() - timedelta(days=90)
-        new_started_at = timezone.now()
-
-        user_subscription = UserSubscriptionFactory(
-            stripe_customer_id="cus_123",
-            stripe_subscription_id="sub_old",
-            status=UserSubscriptionStatus.ACTIVE,
-            started_at=old_started_at,
-        )
-
-        paid_subscription = self.build_paid_subscription_dto(
-            stripe_customer_id="cus_123",
-            stripe_subscription_id="sub_new",
-            started_at=new_started_at,
-        )
-
-        mock_get_user_subscription_by_customer_id.return_value = user_subscription
-
-        mark_subscription_paid(paid_subscription)
-
-        user_subscription.refresh_from_db()
-
-        self.assertEqual(user_subscription.stripe_subscription_id, "sub_new")
-        self.assertEqual(user_subscription.started_at, new_started_at)
-
-    @patch(f"{MODULE_PATH}.get_user_subscription_by_customer_id")
-    def test_sets_started_at_when_missing_even_if_subscription_id_did_not_change(
-            self,
-            mock_get_user_subscription_by_customer_id,
-    ):
+    def test_sets_started_at_when_missing_even_if_subscription_id_did_not_change(self):
         started_at = timezone.now()
 
         user_subscription = UserSubscriptionFactory(
@@ -172,10 +156,104 @@ class MarkSubscriptionPaidTests(TestCase):
             started_at=started_at,
         )
 
-        mock_get_user_subscription_by_customer_id.return_value = user_subscription
-
         mark_subscription_paid(paid_subscription)
 
         user_subscription.refresh_from_db()
 
         self.assertEqual(user_subscription.started_at, started_at)
+
+    def test_ignores_event_for_non_current_subscription(self):
+        original_started_at = timezone.now() - timedelta(days=90)
+        original_period_start = timezone.now() - timedelta(days=5)
+        original_period_end = timezone.now() + timedelta(days=25)
+        original_canceled_at = None
+        original_ended_at = None
+
+        user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_new",
+            status=UserSubscriptionStatus.ACTIVE,
+            started_at=original_started_at,
+            current_period_start=original_period_start,
+            current_period_end=original_period_end,
+            cancel_at_period_end=False,
+            canceled_at=original_canceled_at,
+            ended_at=original_ended_at,
+        )
+
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_old",
+            stripe_status="past_due",
+            started_at=timezone.now() - timedelta(days=365),
+            current_period_start=timezone.now() - timedelta(days=180),
+            current_period_end=timezone.now() - timedelta(days=150),
+            cancel_at_period_end=True,
+            canceled_at=timezone.now() - timedelta(days=150),
+            ended_at=timezone.now() - timedelta(days=150),
+        )
+
+        result = mark_subscription_paid(paid_subscription)
+        user_subscription.refresh_from_db()
+
+        self.assertIsNone(result)
+        self.assertEqual(user_subscription.stripe_subscription_id, "sub_new")
+        self.assertEqual(user_subscription.status, UserSubscriptionStatus.ACTIVE)
+        self.assertEqual(user_subscription.started_at, original_started_at)
+        self.assertEqual(user_subscription.current_period_start, original_period_start)
+        self.assertEqual(user_subscription.current_period_end, original_period_end)
+        self.assertFalse(user_subscription.cancel_at_period_end)
+        self.assertEqual(user_subscription.canceled_at, original_canceled_at)
+        self.assertEqual(user_subscription.ended_at, original_ended_at)
+
+    def test_ignores_event_when_no_subscription_is_current_yet(self):
+        user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id=None,
+            status=UserSubscriptionStatus.INACTIVE,
+        )
+
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+        )
+
+        result = mark_subscription_paid(paid_subscription)
+        user_subscription.refresh_from_db()
+
+        self.assertIsNone(result)
+        self.assertIsNone(user_subscription.stripe_subscription_id)
+        self.assertEqual(user_subscription.status, UserSubscriptionStatus.INACTIVE)
+
+    def test_locks_the_user_subscription_row(self):
+        user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+            status=UserSubscriptionStatus.INACTIVE,
+        )
+
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+        )
+
+        with patch.object(
+            UserSubscription.objects,
+            "select_for_update",
+        ) as select_for_update_mock:
+            select_for_update_mock.return_value.get.return_value = user_subscription
+
+            mark_subscription_paid(paid_subscription)
+
+        select_for_update_mock.assert_called_once_with()
+        select_for_update_mock.return_value.get.assert_called_once_with(
+            stripe_customer_id="cus_123",
+        )
+
+    def test_raises_error_when_user_subscription_does_not_exist(self):
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_customer_id="cus_missing",
+        )
+
+        with self.assertRaises(UserSubscriptionNotFoundError):
+            mark_subscription_paid(paid_subscription)
