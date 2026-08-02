@@ -95,10 +95,15 @@ class ChatView(View):
     def _get_submitted_username(self, request):
         return request.POST.get("username", "").strip()
 
-    def _get_cookie_user_data(self, request):
-        username = request.COOKIES.get(self.username_cookie_name, "")
-        user_id = request.COOKIES.get(self.user_id_cookie_name, "")
-        return username, user_id
+    def _get_guest_session_data(self, request):
+        identity = read_guest_token(
+            request.COOKIES.get(self.guest_session_cookie_name, "")
+        )
+
+        if identity is None:
+            return "", ""
+
+        return identity
 
     def _validate_guest_username(self, username):
         if not username:
