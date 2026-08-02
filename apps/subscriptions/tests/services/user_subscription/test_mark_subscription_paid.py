@@ -10,6 +10,7 @@ from apps.subscriptions.models.choices import UserSubscriptionStatus
 from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError
 from apps.subscriptions.services.user_subscription import mark_subscription_paid
 from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
+from apps.users.tests.factories import UserFactory
 
 MODULE_PATH = "apps.subscriptions.services.user_subscription"
 
@@ -116,6 +117,74 @@ class MarkSubscriptionPaidTests(TestCase):
 
         self.assertEqual(user_subscription.status, UserSubscriptionStatus.ACTIVE)
         self.assertEqual(user_subscription.current_period_end, current_period_end)
+
+    def test_maps_status_from_stripe_instead_of_always_activating(self):
+        """
+        The subscription is re-read from Stripe when the invoice event is handled,
+        so it may no longer be active by then. The local status must follow the
+        retrieved Stripe status rather than being forced to ACTIVE.
+        """
+        cases = [
+            ("active", UserSubscriptionStatus.ACTIVE),
+            ("trialing", UserSubscriptionStatus.ACTIVE),
+            ("past_due", UserSubscriptionStatus.PAST_DUE),
+            ("canceled", UserSubscriptionStatus.CANCELED),
+            ("unpaid", UserSubscriptionStatus.CANCELED),
+            ("incomplete_expired", UserSubscriptionStatus.CANCELED),
+            ("incomplete", UserSubscriptionStatus.INACTIVE),
+            ("paused", UserSubscriptionStatus.INACTIVE),
+        ]
+
+        for index, (stripe_status, expected_status) in enumerate(cases):
+            with self.subTest(stripe_status=stripe_status):
+                stripe_customer_id = f"cus_{stripe_status}_{index}"
+                stripe_subscription_id = f"sub_{stripe_status}_{index}"
+
+                user_subscription = UserSubscriptionFactory(
+                    user=UserFactory(
+                        username=f"paid-status-{index}",
+                        email=f"paid-status-{index}@example.com",
+                    ),
+                    stripe_customer_id=stripe_customer_id,
+                    stripe_subscription_id=stripe_subscription_id,
+                    status=UserSubscriptionStatus.INACTIVE,
+                )
+
+                paid_subscription = self.build_paid_subscription_dto(
+                    stripe_customer_id=stripe_customer_id,
+                    stripe_subscription_id=stripe_subscription_id,
+                    stripe_status=stripe_status,
+                )
+
+                mark_subscription_paid(paid_subscription)
+
+                user_subscription.refresh_from_db()
+
+                self.assertEqual(user_subscription.status, expected_status)
+
+    def test_does_not_activate_a_subscription_canceled_before_the_event_is_processed(self):
+        user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+            status=UserSubscriptionStatus.CANCELED,
+        )
+
+        canceled_at = timezone.now()
+
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_status="canceled",
+            cancel_at_period_end=True,
+            canceled_at=canceled_at,
+            ended_at=canceled_at,
+        )
+
+        mark_subscription_paid(paid_subscription)
+
+        user_subscription.refresh_from_db()
+
+        self.assertEqual(user_subscription.status, UserSubscriptionStatus.CANCELED)
+        self.assertEqual(user_subscription.canceled_at, canceled_at)
+        self.assertEqual(user_subscription.ended_at, canceled_at)
 
     def test_keeps_existing_started_at_when_subscription_id_did_not_change(self):
         existing_started_at = timezone.now() - timedelta(days=90)
