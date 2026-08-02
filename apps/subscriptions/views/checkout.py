@@ -1,25 +1,45 @@
 import logging
 
 import stripe
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 
 from apps.integrations.stripe.checkout_sessions import retrieve_checkout_session
 from apps.subscriptions.services.create_pro_subscription import create_pro_checkout_session
+from apps.subscriptions.services.exceptions import (
+    CheckoutConfigurationError,
+    CheckoutProviderError,
+    SubscriptionAlreadyActiveError,
+)
 from apps.subscriptions.services.user_subscription import get_user_subscription
 
 logger = logging.getLogger(__name__)
+
+CHECKOUT_UNAVAILABLE_MESSAGE = _(
+    "We could not start the PRO checkout right now. Please try again later."
+)
 
 
 @login_required
 @require_POST
 def create_pro_checkout_session_view(request):
-    session = create_pro_checkout_session(
-        user=request.user,
-        request=request,
-    )
+    try:
+        session = create_pro_checkout_session(
+            user=request.user,
+            request=request,
+        )
+
+    except SubscriptionAlreadyActiveError:
+        messages.info(request, _("You already have an active PRO subscription."))
+        return redirect("subscriptions:detail")
+
+    except (CheckoutConfigurationError, CheckoutProviderError):
+        messages.error(request, CHECKOUT_UNAVAILABLE_MESSAGE)
+        return redirect("subscriptions:detail")
 
     return redirect(session.url)
 
