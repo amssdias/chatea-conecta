@@ -44,7 +44,7 @@ class ChatView(View):
             request=request,
             username=username,
             user_id=user_id,
-            set_cookies=False,
+            is_guest=True,
         )
 
     def post(self, request):
@@ -53,7 +53,6 @@ class ChatView(View):
                 request=request,
                 username=request.user.username,
                 user_id=request.user.id,
-                set_cookies=True,
             )
 
         username = self._get_submitted_username(request)
@@ -66,10 +65,10 @@ class ChatView(View):
             request=request,
             username=username,
             user_id=None,
-            set_cookies=True,
+            is_guest=True,
         )
 
-    def _register_and_render_chat(self, request, username, user_id=None, set_cookies=True):
+    def _register_and_render_chat(self, request, username, user_id=None, is_guest=False):
         redis_user_id = register_user_on_redis(username, user_id=user_id)
 
         response = render(
@@ -82,7 +81,9 @@ class ChatView(View):
             ),
         )
 
-        if set_cookies:
+        if is_guest:
+            self._set_guest_session_cookie(request, response, username, redis_user_id)
+        else:
             self._set_chat_cookies(response, username, redis_user_id)
 
         return self._add_noindex_header(response)
