@@ -100,6 +100,8 @@ celerybeat-schedule.*
 
 # Environments
 .env
+.env.*
+!.env.example
 .venv
 env/
 venv/
@@ -107,6 +109,10 @@ ENV/
 env.bak/
 venv.bak/
 redis.conf
+
+# Plaintext production credential dumps - never commit
+prod.txt
+prod*.txt
 
 # mkdocs documentation
 /site
