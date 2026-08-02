@@ -133,7 +133,10 @@ def mark_subscription_paid(
         )
         return None
 
-    user_subscription.status = UserSubscriptionStatus.ACTIVE
+    user_subscription.status = map_stripe_subscription_status(
+        paid_subscription.stripe_status,
+        paid_subscription.cancel_at_period_end,
+    )
     user_subscription.current_period_start = paid_subscription.current_period_start
     user_subscription.current_period_end = paid_subscription.current_period_end
     user_subscription.cancel_at_period_end = paid_subscription.cancel_at_period_end
