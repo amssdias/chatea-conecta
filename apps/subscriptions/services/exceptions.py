@@ -20,3 +20,15 @@ class SubscriptionCannotBeCancelledError(SubscriptionServiceError):
 
 class SubscriptionCancellationProviderError(SubscriptionServiceError):
     """Raised when Stripe cannot cancel the subscription."""
+
+
+class SubscriptionAlreadyActiveError(SubscriptionServiceError):
+    """Raised when checkout is requested for an already active subscription."""
+
+
+class CheckoutConfigurationError(SubscriptionServiceError):
+    """Raised when the Stripe pricing configuration needed for checkout is missing."""
+
+
+class CheckoutProviderError(SubscriptionServiceError):
+    """Raised when Stripe cannot create the customer or the Checkout Session."""
