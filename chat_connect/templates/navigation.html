@@ -92,7 +92,7 @@
                             <img src="{% static 'img/home-btn.svg' %}" class="nav-bar-link-home" aria-label="Chatea conecta Home"/>
                         </a>
                     {% endif %}
-                    <a class="nav-bar-link margin-right-xxsmall" href="{% url 'login' %}">{% trans "Login" %}</a>
+                    <a class="nav-bar-link margin-right-xxsmall" href="{% url 'users:login' %}">{% trans "Login" %}</a>
                     <a class="btn btn-home" href="{% url 'users:signup' %}">{% trans "Sign up" %}</a>
                 </div>
         {% endif %}

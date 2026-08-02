@@ -142,5 +142,5 @@ class CancelSubscriptionViewTests(TestCase):
         response = self.client.post(self.url)
 
         self.assertEqual(response.status_code, 302)
-        self.assertIn(settings.LOGIN_URL, response.url)
+        self.assertIn(reverse(settings.LOGIN_URL), response.url)
         self.mock_cancel_user_subscription.assert_not_called()
