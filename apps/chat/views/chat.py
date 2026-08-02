@@ -1,5 +1,3 @@
-import re
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -8,12 +6,17 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
+from apps.chat.constants.username import USERNAME_REGEX
 from apps.chat.infrastructure.redis.sync_redis_service import RedisService
+from apps.chat.services.guest_session import (
+    GUEST_SESSION_COOKIE,
+    claim_guest_identity,
+    issue_guest_token,
+    read_guest_token,
+)
 from apps.chat.services.register_user import register_user_on_redis
 
 User = get_user_model()
-
-USERNAME_REGEX = re.compile(r"^[A-Za-z0-9_-]{3,20}$")
 
 
 class ChatView(View):
