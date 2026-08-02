@@ -1,7 +1,8 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from django.test import RequestFactory, TestCase
+import stripe
+from django.test import RequestFactory, TestCase, override_settings
 
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.models.choices import UserSubscriptionStatus
@@ -11,12 +12,18 @@ from apps.subscriptions.services.create_pro_subscription import (
     build_customer_idempotency_key,
     create_pro_checkout_session,
 )
+from apps.subscriptions.services.exceptions import (
+    CheckoutConfigurationError,
+    CheckoutProviderError,
+    SubscriptionAlreadyActiveError,
+)
 from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
 from apps.users.tests.factories import UserFactory
 
 MODULE_PATH = "apps.subscriptions.services.create_pro_subscription"
 
 
+@override_settings(STRIPE_PRO_MONTHLY_PRICE_ID="price_test")
 class CreateProCheckoutSessionTests(TestCase):
     def setUp(self):
         self.user = UserFactory()
@@ -97,9 +104,9 @@ class CreateProCheckoutSessionTests(TestCase):
         The customer ID is committed before the Checkout Session call, so a failed
         session does not orphan a Stripe customer that no local row points at.
         """
-        self.mock_create_session.side_effect = ValueError("Stripe is down")
+        self.mock_create_session.side_effect = stripe.APIConnectionError("Stripe is down")
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(CheckoutProviderError):
             create_pro_checkout_session(user=self.user, request=self.request)
 
         user_subscription = UserSubscription.objects.get(user=self.user)
@@ -112,11 +119,37 @@ class CreateProCheckoutSessionTests(TestCase):
             stripe_customer_id="cus_existing",
         )
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SubscriptionAlreadyActiveError):
             create_pro_checkout_session(user=self.user, request=self.request)
 
         self.mock_create_customer.assert_not_called()
         self.mock_create_session.assert_not_called()
+
+    @override_settings(STRIPE_PRO_MONTHLY_PRICE_ID=None)
+    def test_raises_configuration_error_before_touching_stripe_when_price_is_missing(self):
+        with self.assertRaises(CheckoutConfigurationError):
+            create_pro_checkout_session(user=self.user, request=self.request)
+
+        self.mock_create_customer.assert_not_called()
+        self.mock_create_session.assert_not_called()
+
+    def test_wraps_stripe_errors_from_customer_creation(self):
+        self.mock_create_customer.side_effect = stripe.APIConnectionError(
+            "Network is unreachable"
+        )
+
+        with self.assertRaises(CheckoutProviderError):
+            create_pro_checkout_session(user=self.user, request=self.request)
+
+        self.mock_create_session.assert_not_called()
+
+    def test_wraps_stripe_errors_from_checkout_session_creation(self):
+        self.mock_create_session.side_effect = stripe.InvalidRequestError(
+            "No such price", param="price"
+        )
+
+        with self.assertRaises(CheckoutProviderError):
+            create_pro_checkout_session(user=self.user, request=self.request)
 
 
 class IdempotencyKeyTests(TestCase):
