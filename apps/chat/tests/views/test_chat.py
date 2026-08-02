@@ -1,11 +1,17 @@
 from unittest.mock import patch
 
+from django.conf import settings
 from django.contrib.messages import get_messages
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from apps.chat.constants.redis_keys import (
     REDIS_ALL_USERNAMES_KEY,
+)
+from apps.chat.services.guest_session import (
+    GUEST_SESSION_COOKIE,
+    issue_guest_token,
+    read_guest_token,
 )
 from apps.users.tests.factories import UserFactory
 
@@ -18,64 +24,89 @@ class ChatViewTests(TestCase):
         self.username = "testuser"
         self.user_id = "user-uuid-123"
 
-    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_redirects_when_username_cookie_is_missing(self, mock_is_member, mock_get_group_size):
-        self.client.cookies["user_id"] = self.user_id
-
-        response = self.client.get(self.url)
-
-        self.assertRedirects(response, self.home_url)
-
-        mock_is_member.assert_not_called()
-
-        self.assertEqual(response.cookies["username"].value, "")
-        self.assertEqual(response.cookies["user_id"].value, "")
-
-    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_redirects_when_user_id_cookie_is_missing(self, mock_is_member, mock_get_group_size):
-        self.client.cookies["username"] = self.username
-
-        response = self.client.get(self.url)
-
-        self.assertRedirects(response, self.home_url)
-
-        mock_is_member.assert_not_called()
-
-        self.assertEqual(response.cookies["username"].value, "")
-        self.assertEqual(response.cookies["user_id"].value, "")
-
-    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_redirects_when_username_is_not_registered_in_redis(self, mock_is_member, mock_get_group_size):
-        self.client.cookies["username"] = self.username
-        self.client.cookies["user_id"] = self.user_id
-        mock_is_member.return_value = False
-
-        response = self.client.get(self.url)
-
-        self.assertRedirects(response, self.home_url)
-
-        mock_is_member.assert_called_once_with(
-            REDIS_ALL_USERNAMES_KEY,
-            self.username,
+    def given_guest_session(self, username=None, user_id=None):
+        """Give the test client a signed guest session cookie."""
+        self.client.cookies[GUEST_SESSION_COOKIE] = issue_guest_token(
+            username or self.username,
+            user_id or self.user_id,
         )
 
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_redirects_when_the_guest_session_cookie_is_missing(self, mock_claim, mock_get_group_size):
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, self.home_url)
+
+        mock_claim.assert_not_called()
+
+        self.assertEqual(response.cookies[GUEST_SESSION_COOKIE].value, "")
+
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_redirects_when_the_guest_session_cookie_is_not_signed(self, mock_claim, mock_get_group_size):
+        self.client.cookies[GUEST_SESSION_COOKIE] = "testuser:user-uuid-123"
+
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, self.home_url)
+
+        mock_claim.assert_not_called()
+
+        self.assertEqual(response.cookies[GUEST_SESSION_COOKIE].value, "")
+
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_redirects_when_the_guest_session_cookie_was_tampered_with(self, mock_claim, mock_get_group_size):
+        token = issue_guest_token(self.username, self.user_id)
+        self.client.cookies[GUEST_SESSION_COOKIE] = token[:-1] + ("a" if token[-1] != "a" else "b")
+
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, self.home_url)
+
+        mock_claim.assert_not_called()
+
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_ignores_forged_plaintext_identity_cookies(self, mock_claim, mock_get_group_size):
+        """Regression: a nickname used to be impersonated with plain cookies alone."""
+        self.client.cookies["username"] = "victim"
+        self.client.cookies["user_id"] = "u_00001"
+
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, self.home_url)
+
+        mock_claim.assert_not_called()
+
         self.assertEqual(response.cookies["username"].value, "")
         self.assertEqual(response.cookies["user_id"].value, "")
 
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_redirects_when_the_nickname_belongs_to_another_user_id(self, mock_claim, mock_get_group_size):
+        self.given_guest_session()
+        mock_claim.return_value = False
+
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, self.home_url)
+
+        mock_claim.assert_called_once_with(self.username, self.user_id)
+
+        self.assertEqual(response.cookies[GUEST_SESSION_COOKIE].value, "")
+
     @patch("apps.chat.views.chat.register_user_on_redis")
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_renders_chat_when_cookies_are_valid_and_username_exists_in_redis(
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_renders_chat_when_the_signed_session_is_valid(
             self,
-            mock_is_member,
+            mock_claim,
             mock_register_user_on_redis,
     ):
-        self.client.cookies["username"] = self.username
-        self.client.cookies["user_id"] = self.user_id
+        self.given_guest_session()
 
-        mock_is_member.return_value = True
+        mock_claim.return_value = True
         mock_register_user_on_redis.return_value = self.user_id
 
         response = self.client.get(self.url)
@@ -88,10 +119,7 @@ class ChatViewTests(TestCase):
         self.assertIsNone(response.context["groups"])
         self.assertEqual(response["X-Robots-Tag"], "noindex, nofollow")
 
-        mock_is_member.assert_called_once_with(
-            REDIS_ALL_USERNAMES_KEY,
-            self.username,
-        )
+        mock_claim.assert_called_once_with(self.username, self.user_id)
         mock_register_user_on_redis.assert_called_once_with(
             self.username,
             user_id=self.user_id,
@@ -101,19 +129,57 @@ class ChatViewTests(TestCase):
         self.assertNotIn("user_id", response.cookies)
 
     @patch("apps.chat.views.chat.register_user_on_redis")
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_uses_registered_user_id_returned_by_service_for_guest_session(
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_reissues_the_guest_session_cookie(
             self,
-            mock_is_member,
+            mock_claim,
             mock_register_user_on_redis,
     ):
-        cookie_user_id = "old-cookie-user-id"
+        self.given_guest_session()
+
+        mock_claim.return_value = True
+        mock_register_user_on_redis.return_value = self.user_id
+
+        response = self.client.get(self.url)
+
+        cookie = response.cookies[GUEST_SESSION_COOKIE]
+
+        self.assertEqual(read_guest_token(cookie.value), (self.username, self.user_id))
+        self.assertTrue(cookie["httponly"])
+        self.assertEqual(cookie["samesite"], "Lax")
+
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_clears_legacy_identity_cookies_left_on_the_browser(
+            self,
+            mock_claim,
+            mock_register_user_on_redis,
+    ):
+        self.given_guest_session()
+        self.client.cookies["username"] = self.username
+        self.client.cookies["user_id"] = self.user_id
+
+        mock_claim.return_value = True
+        mock_register_user_on_redis.return_value = self.user_id
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.cookies["username"].value, "")
+        self.assertEqual(response.cookies["user_id"].value, "")
+
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_uses_registered_user_id_returned_by_service_for_guest_session(
+            self,
+            mock_claim,
+            mock_register_user_on_redis,
+    ):
+        token_user_id = "old-token-user-id"
         registered_user_id = "fresh-redis-user-id"
 
-        self.client.cookies["username"] = self.username
-        self.client.cookies["user_id"] = cookie_user_id
+        self.given_guest_session(user_id=token_user_id)
 
-        mock_is_member.return_value = True
+        mock_claim.return_value = True
         mock_register_user_on_redis.return_value = registered_user_id
 
         response = self.client.get(self.url)
@@ -124,44 +190,8 @@ class ChatViewTests(TestCase):
 
         mock_register_user_on_redis.assert_called_once_with(
             self.username,
-            user_id=cookie_user_id,
+            user_id=token_user_id,
         )
-
-    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_redirects_when_both_cookies_are_missing(self, mock_is_member, mock_get_group_size):
-        response = self.client.get(self.url)
-
-        self.assertRedirects(response, self.home_url)
-
-        mock_is_member.assert_not_called()
-
-        self.assertEqual(response.cookies["username"].value, "")
-        self.assertEqual(response.cookies["user_id"].value, "")
-
-    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_redirects_when_username_cookie_is_empty(self, mock_is_member, mock_get_group_size):
-        self.client.cookies["username"] = ""
-        self.client.cookies["user_id"] = self.user_id
-
-        response = self.client.get(self.url)
-
-        self.assertRedirects(response, self.home_url)
-
-        mock_is_member.assert_not_called()
-
-    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
-    @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_get_redirects_when_user_id_cookie_is_empty(self, mock_is_member, mock_get_group_size):
-        self.client.cookies["username"] = self.username
-        self.client.cookies["user_id"] = ""
-
-        response = self.client.get(self.url)
-
-        self.assertRedirects(response, self.home_url)
-
-        mock_is_member.assert_not_called()
 
     @patch("apps.chat.views.chat.register_user_on_redis")
     @patch("apps.chat.views.chat.RedisService.is_member")
@@ -359,7 +389,7 @@ class ChatViewTests(TestCase):
 
     @patch("apps.chat.views.chat.register_user_on_redis")
     @patch("apps.chat.views.chat.RedisService.is_member")
-    def test_post_success_sets_username_and_user_id_cookies(
+    def test_post_success_sets_a_signed_guest_session_cookie(
             self,
             mock_is_member,
             mock_register_user_on_redis,
@@ -372,8 +402,27 @@ class ChatViewTests(TestCase):
             data={"username": "testuser"},
         )
 
-        self.assertEqual(response.cookies["username"].value, "testuser")
-        self.assertEqual(response.cookies["user_id"].value, "user-uuid-123")
+        token = response.cookies[GUEST_SESSION_COOKIE].value
+
+        self.assertEqual(read_guest_token(token), ("testuser", "user-uuid-123"))
+
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    @patch("apps.chat.views.chat.RedisService.is_member")
+    def test_post_success_does_not_expose_the_identity_in_plain_cookies(
+            self,
+            mock_is_member,
+            mock_register_user_on_redis,
+    ):
+        mock_is_member.return_value = False
+        mock_register_user_on_redis.return_value = "user-uuid-123"
+
+        response = self.client.post(
+            self.url,
+            data={"username": "testuser"},
+        )
+
+        self.assertNotIn("username", response.cookies)
+        self.assertNotIn("user_id", response.cookies)
 
     @patch("apps.chat.views.chat.register_user_on_redis")
     @patch("apps.chat.views.chat.RedisService.is_member")
@@ -390,8 +439,27 @@ class ChatViewTests(TestCase):
             data={"username": "testuser"},
         )
 
-        self.assertTrue(response.cookies["username"]["httponly"])
-        self.assertTrue(response.cookies["user_id"]["httponly"])
+        self.assertTrue(response.cookies[GUEST_SESSION_COOKIE]["httponly"])
+
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    @patch("apps.chat.views.chat.RedisService.is_member")
+    def test_post_success_expires_the_guest_session_cookie(
+            self,
+            mock_is_member,
+            mock_register_user_on_redis,
+    ):
+        mock_is_member.return_value = False
+        mock_register_user_on_redis.return_value = "user-uuid-123"
+
+        response = self.client.post(
+            self.url,
+            data={"username": "testuser"},
+        )
+
+        self.assertEqual(
+            response.cookies[GUEST_SESSION_COOKIE]["max-age"],
+            settings.GUEST_SESSION_MAX_AGE,
+        )
 
     @override_settings(COOKIES_SECURE=True)
     @patch("apps.chat.views.chat.register_user_on_redis")
@@ -409,8 +477,7 @@ class ChatViewTests(TestCase):
             data={"username": "testuser"},
         )
 
-        self.assertTrue(response.cookies["username"]["secure"])
-        self.assertTrue(response.cookies["user_id"]["secure"])
+        self.assertTrue(response.cookies[GUEST_SESSION_COOKIE]["secure"])
 
     @patch("apps.chat.views.chat.register_user_on_redis")
     @patch("apps.chat.views.chat.RedisService.is_member")
@@ -443,8 +510,7 @@ class ChatViewTests(TestCase):
         registered_user_id = str(user.id)
 
         self.client.force_login(user)
-        self.client.cookies["username"] = "guestuser"
-        self.client.cookies["user_id"] = "guest-user-id"
+        self.given_guest_session(username="guestuser", user_id="guest-user-id")
 
         mock_register_user_on_redis.return_value = registered_user_id
 
