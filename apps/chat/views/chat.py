@@ -35,7 +35,7 @@ class ChatView(View):
                 user_id=request.user.id,
             )
 
-        username, user_id = self._get_cookie_user_data(request)
+        username, user_id = self._get_guest_session_data(request)
 
         if not self._has_valid_guest_session(username, user_id):
             return self._redirect_home_and_clear_cookies()
@@ -148,14 +148,37 @@ class ChatView(View):
         return self._add_noindex_header(response)
 
     def _set_chat_cookies(self, response, username, user_id):
-        cookie_options = {
+        response.set_cookie(self.username_cookie_name, username, **self.cookie_options)
+        response.set_cookie(self.user_id_cookie_name, user_id, **self.cookie_options)
+
+    def _set_guest_session_cookie(self, request, response, username, user_id):
+        """
+        Hand the guest a freshly signed token. Reissuing it on every render keeps
+        the cookie lifetime in step with the Redis mapping, whose TTL is also
+        refreshed each time the identity is claimed.
+        """
+        response.set_cookie(
+            self.guest_session_cookie_name,
+            issue_guest_token(username, user_id),
+            max_age=settings.GUEST_SESSION_MAX_AGE,
+            **self.cookie_options,
+        )
+
+        self._clear_legacy_identity_cookies(request, response)
+
+    def _clear_legacy_identity_cookies(self, request, response):
+        """Guests used to carry their identity in plain cookies. Drop leftovers."""
+        for cookie_name in (self.username_cookie_name, self.user_id_cookie_name):
+            if cookie_name in request.COOKIES:
+                response.delete_cookie(cookie_name)
+
+    @property
+    def cookie_options(self):
+        return {
             "httponly": True,
             "secure": settings.COOKIES_SECURE,
             "samesite": "Lax",
         }
-
-        response.set_cookie(self.username_cookie_name, username, **cookie_options)
-        response.set_cookie(self.user_id_cookie_name, user_id, **cookie_options)
 
     @staticmethod
     def _add_noindex_header(response):
