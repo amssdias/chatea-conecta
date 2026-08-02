@@ -128,11 +128,13 @@ class ChatView(View):
         )
 
     def _has_valid_guest_session(self, username, user_id):
-        return bool(
-            username
-            and user_id
-            and RedisService.is_member(REDIS_ALL_USERNAMES_KEY, username)
-        )
+        """
+        Both values come from a signed token, so they were issued by us. What is
+        left to check is that the nickname is still owned by that id in Redis:
+        membership in the active usernames set says a nickname is in use, not
+        who it belongs to.
+        """
+        return bool(username and user_id and claim_guest_identity(username, user_id))
 
     def _redirect_home_with_error(self, request, error_message):
         messages.error(request, error_message)
