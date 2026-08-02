@@ -1,8 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone as dt_timezone
 from types import SimpleNamespace
 from unittest.mock import patch
 
 import stripe
+from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 
@@ -53,9 +54,25 @@ class CancelUserSubscriptionTests(TestCase):
 
         return UserSubscriptionFactory(**defaults)
 
-    def build_stripe_subscription(self, current_period_end=None):
+    def build_stripe_subscription(self, current_period_end=None, price_id=None):
+        """
+        Build a subscription with the Clover API shape, where the billing period
+        lives on the subscription items rather than on the subscription itself.
+        """
+        items = []
+
+        if current_period_end is not None:
+            items.append(
+                SimpleNamespace(
+                    price=SimpleNamespace(
+                        id=price_id or settings.STRIPE_PRO_MONTHLY_PRICE_ID,
+                    ),
+                    current_period_end=current_period_end,
+                ),
+            )
+
         return SimpleNamespace(
-            current_period_end=current_period_end,
+            items=SimpleNamespace(data=items),
         )
 
     def test_schedules_active_subscription_for_cancellation(self):
@@ -81,7 +98,7 @@ class CancelUserSubscriptionTests(TestCase):
 
         expected_current_period_end = datetime.fromtimestamp(
             current_period_end_timestamp,
-            tz=timezone.get_current_timezone(),
+            tz=dt_timezone.utc,
         )
 
         self.assertEqual(result, user_subscription)
@@ -134,6 +151,56 @@ class CancelUserSubscriptionTests(TestCase):
         self.mock_get_user_subscription.return_value = user_subscription
         self.mock_schedule_stripe_subscription_cancellation.return_value = (
             self.build_stripe_subscription()
+        )
+
+        cancel_user_subscription(self.user)
+
+        user_subscription.refresh_from_db()
+
+        self.assertTrue(user_subscription.cancel_at_period_end)
+        self.assertEqual(user_subscription.current_period_end, current_period_end)
+
+    def test_keeps_existing_current_period_end_when_no_item_matches_the_pro_price(self):
+        current_period_end = timezone.now() + timedelta(days=20)
+
+        user_subscription = self.create_user_subscription(
+            current_period_end=current_period_end,
+        )
+
+        self.mock_get_user_subscription.return_value = user_subscription
+        self.mock_schedule_stripe_subscription_cancellation.return_value = (
+            self.build_stripe_subscription(
+                current_period_end=int((timezone.now() + timedelta(days=10)).timestamp()),
+                price_id="price_other",
+            )
+        )
+
+        cancel_user_subscription(self.user)
+
+        user_subscription.refresh_from_db()
+
+        self.assertTrue(user_subscription.cancel_at_period_end)
+        self.assertEqual(user_subscription.current_period_end, current_period_end)
+
+    def test_ignores_top_level_current_period_end_on_the_subscription(self):
+        """
+        The pinned Clover API does not return a top-level current_period_end.
+        Reading one would mean reading a field the API no longer populates.
+        """
+        current_period_end = timezone.now() + timedelta(days=20)
+
+        user_subscription = self.create_user_subscription(
+            current_period_end=current_period_end,
+        )
+
+        stripe_subscription = self.build_stripe_subscription()
+        stripe_subscription.current_period_end = int(
+            (timezone.now() + timedelta(days=10)).timestamp()
+        )
+
+        self.mock_get_user_subscription.return_value = user_subscription
+        self.mock_schedule_stripe_subscription_cancellation.return_value = (
+            stripe_subscription
         )
 
         cancel_user_subscription(self.user)

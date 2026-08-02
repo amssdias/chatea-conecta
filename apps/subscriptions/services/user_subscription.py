@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 from typing import Optional
 
 import stripe
@@ -8,6 +7,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from apps.integrations.stripe.subscriptions import (
+    get_subscription_current_period_end,
     schedule_stripe_subscription_cancellation,
 )
 from apps.subscriptions.models import UserSubscription
@@ -340,13 +340,10 @@ def cancel_user_subscription(user):
 
     user_subscription.cancel_at_period_end = True
 
-    current_period_end = getattr(stripe_subscription, "current_period_end", None)
+    current_period_end = get_subscription_current_period_end(stripe_subscription)
 
     if current_period_end:
-        user_subscription.current_period_end = datetime.fromtimestamp(
-            current_period_end,
-            tz=timezone.get_current_timezone(),
-        )
+        user_subscription.current_period_end = current_period_end
 
     user_subscription.save(
         update_fields=[
