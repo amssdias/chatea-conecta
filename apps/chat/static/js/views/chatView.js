@@ -398,13 +398,10 @@ class ChatView {
         userHeader.classList.add("chat__message-user", "chat__message-user-link");
         userHeader.textContent = username;
 
-        const paragraph = document.createElement("p");
-        paragraph.classList.add("chat__message-text");
-        paragraph.innerHTML = message;
+        const paragraph = this._createMessageParagraph(message, isCurrentUser);
 
         if (isCurrentUser) {
             div.classList.add("chat__message--current-user");
-            paragraph.classList.add("background-color-text-sending");
         }
 
         div.appendChild(userHeader);
@@ -444,7 +441,6 @@ class ChatView {
         }
 
         appendTextWithLinks(paragraph, message);
-        // paragraph.innerHTML = message;
 
         return paragraph;
     }
