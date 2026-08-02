@@ -16,6 +16,10 @@ from apps.chat.services.activity import (
     mark_user_online,
     register_username_as_active,
 )
+from apps.chat.services.guest_session import (
+    GUEST_SESSION_COOKIE,
+    aresolve_guest_identity,
+)
 from apps.chat.services.private_chats import (
     restore_user_private_chat_groups,
     save_user_private_chat_group,
@@ -39,8 +43,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.id = str(self.user.pk)
             self.username = self.user.get_username().lower()
         else:
-            self.id = self.scope["cookies"].get("user_id")
-            self.username = self.scope["cookies"].get("username", "").lower()
+            identity = await self.resolve_guest_identity()
+
+            if identity is None:
+                await self.close(code=4001, reason="Invalid chat identity")
+                return
+
+            username, self.id = identity
+            self.username = username.lower()
 
         if not self.id or not self.username:
             await self.close(code=4001, reason="Invalid chat identity")
@@ -58,6 +68,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # This is in case a user refreshs the page
         await register_username_as_active(self.username)
         await restore_user_private_chat_groups(self)
+
+    async def resolve_guest_identity(self):
+        """
+        Derive a guest identity from the signed session cookie.
+
+        The cookie is verified end to end here: the signature proves this server
+        issued the identity, and the Redis mapping proves the id still owns that
+        nickname. Nothing else about the request is trusted.
+        """
+        return await aresolve_guest_identity(
+            self.scope["cookies"].get(GUEST_SESSION_COOKIE, "")
+        )
 
     async def disconnect(self, close_code):
         """
