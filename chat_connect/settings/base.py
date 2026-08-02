@@ -208,6 +208,11 @@ CACHE_TIMEOUT_ONE_DAY = SECONDS_IN_DAY
 CACHE_TIMEOUT_ONE_WEEK = SECONDS_IN_DAY * 7
 CACHE_TIMEOUT_ONE_MONTH = SECONDS_IN_DAY * 30
 
+# Lifetime of the signed guest session token and of the Redis keys that map a
+# guest id to its username. Both must use the same value so a token can never
+# outlive the ownership mapping it is checked against.
+GUEST_SESSION_MAX_AGE = SECONDS_IN_DAY
+
 # Web Socket - Channels
 REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")
 REDIS_CHANNEL_LAYER_URL = f"{REDIS_URL}/{REDIS_DB_CHANNEL}"
