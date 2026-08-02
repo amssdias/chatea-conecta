@@ -10,6 +10,7 @@ def create_subscription_checkout_session(
     user_id: int,
     user_email: str,
     stripe_customer_id: str | None = None,
+    idempotency_key: str | None = None,
 ):
     client = get_stripe_client()
 
@@ -34,4 +35,6 @@ def create_subscription_checkout_session(
     else:
         checkout_data["customer_email"] = user_email
 
-    return client.v1.checkout.sessions.create(checkout_data)
+    options = {"idempotency_key": idempotency_key} if idempotency_key else None
+
+    return client.v1.checkout.sessions.create(checkout_data, options=options)
