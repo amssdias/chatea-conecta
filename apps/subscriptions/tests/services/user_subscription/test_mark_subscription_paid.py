@@ -10,7 +10,6 @@ from apps.subscriptions.models.choices import UserSubscriptionStatus
 from apps.subscriptions.services.exceptions import UserSubscriptionNotFoundError
 from apps.subscriptions.services.user_subscription import mark_subscription_paid
 from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
-from apps.users.tests.factories import UserFactory
 
 MODULE_PATH = "apps.subscriptions.services.user_subscription"
 
@@ -141,10 +140,6 @@ class MarkSubscriptionPaidTests(TestCase):
                 stripe_subscription_id = f"sub_{stripe_status}_{index}"
 
                 user_subscription = UserSubscriptionFactory(
-                    user=UserFactory(
-                        username=f"paid-status-{index}",
-                        email=f"paid-status-{index}@example.com",
-                    ),
                     stripe_customer_id=stripe_customer_id,
                     stripe_subscription_id=stripe_subscription_id,
                     status=UserSubscriptionStatus.INACTIVE,
