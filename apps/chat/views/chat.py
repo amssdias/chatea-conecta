@@ -25,6 +25,7 @@ class ChatView(View):
 
     username_cookie_name = "username"
     user_id_cookie_name = "user_id"
+    guest_session_cookie_name = GUEST_SESSION_COOKIE
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -32,7 +33,6 @@ class ChatView(View):
                 request=request,
                 username=request.user.username,
                 user_id=request.user.id,
-                set_cookies=True,
             )
 
         username, user_id = self._get_cookie_user_data(request)
@@ -142,6 +142,7 @@ class ChatView(View):
 
     def _redirect_home_and_clear_cookies(self):
         response = redirect(self.home_route)
+        response.delete_cookie(self.guest_session_cookie_name)
         response.delete_cookie(self.username_cookie_name)
         response.delete_cookie(self.user_id_cookie_name)
         return self._add_noindex_header(response)
