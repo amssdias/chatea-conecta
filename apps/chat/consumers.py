@@ -93,13 +93,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         5. Reassess the global chat activity status and update the active-users Redis key.
         """
 
-        logger.info(
-            f"---- {self.scope['cookies'].get('username')} DISCONNECTING FROM WEBSOCKET ----"
-        )
-        username = self.scope["cookies"].get("username")
+        if not getattr(self, "id", None):
+            # connect() rejected the handshake, so there is no identity to clean up.
+            return
+
+        logger.info(f"---- {self.username} DISCONNECTING FROM WEBSOCKET ----")
+
         await broadcast_private_chat_user_offline(self)
         await self.unregister_user_from_all_groups()
-        await cleanup_user_presence(username, self.id)
+        await cleanup_user_presence(self.username, self.id)
 
     async def unregister_user_from_all_groups(self):
         for group in self.groups:
