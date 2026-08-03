@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import logging
+from decimal import Decimal
 
 import stripe
 from django.contrib import messages
@@ -44,6 +47,53 @@ def create_pro_checkout_session_view(request):
     return redirect(session.url)
 
 
+def _session_was_paid(session) -> bool:
+    """
+    Whether Stripe considers this Checkout Session settled.
+
+    A session the user opened and abandoned stays `open`, and one that timed out
+    becomes `expired`; neither means money moved. `no_payment_required` covers
+    fully discounted or trialing subscriptions, which do complete.
+    """
+    if getattr(session, "status", None) == "complete":
+        return True
+
+    return getattr(session, "payment_status", None) in {"paid", "no_payment_required"}
+
+
+# Stripe reports amounts in the currency's smallest unit, except for currencies
+# that have no minor unit at all.
+# https://docs.stripe.com/currencies#zero-decimal
+ZERO_DECIMAL_CURRENCIES = {
+    "bif", "clp", "djf", "gnf", "jpy", "kmf", "krw", "mga",
+    "pyg", "rwf", "ugx", "vnd", "vuv", "xaf", "xof", "xpf",
+}
+
+
+def _format_amount(amount_total, currency) -> str | None:
+    """Turn a Stripe minor-unit amount into a human amount (999 -> '9.99')."""
+    if amount_total is None:
+        return None
+
+    if (currency or "").lower() in ZERO_DECIMAL_CURRENCIES:
+        return str(amount_total)
+
+    return f"{Decimal(amount_total) / 100:.2f}"
+
+
+def _resolve_checkout_status(session, user_subscription) -> str:
+    # The webhook already confirmed and activated the subscription locally.
+    if user_subscription and user_subscription.pro:
+        return "active"
+
+    # Paid at Stripe, but the webhook has not been processed yet.
+    if _session_was_paid(session):
+        return "pending"
+
+    # Nothing was paid: an abandoned or expired session.
+    return "not_paid"
+
+
 @login_required
 def checkout_success_view(request):
     session_id = request.GET.get("session_id")
@@ -75,14 +125,16 @@ def checkout_success_view(request):
             ):
                 return HttpResponseForbidden("Invalid checkout session.")
 
-            local_is_pro = bool(user_subscription and user_subscription.pro)
-            status = "active" if local_is_pro else "pending"
+            status = _resolve_checkout_status(session, user_subscription)
             session_info = {
                 "status": getattr(session, "status", None),
                 "payment_status": getattr(session, "payment_status", None),
                 "customer_email": getattr(session, "customer_details", None)
                 and getattr(session.customer_details, "email", None),
-                "amount_total": getattr(session, "amount_total", None),
+                "amount_total": _format_amount(
+                    getattr(session, "amount_total", None),
+                    getattr(session, "currency", None),
+                ),
                 "currency": getattr(session, "currency", None),
                 "subscription_id": getattr(session, "subscription", None),
             }
