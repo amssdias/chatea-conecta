@@ -34,16 +34,19 @@ class UserSubscription(models.Model):
 
     @property
     def pro(self):
-        if self.status == UserSubscriptionStatus.ACTIVE:
-            return (
-                not self.current_period_end or self.current_period_end > timezone.now()
-            )
+        """
+        Grant Pro only for a paid status backed by a future period end.
 
-        if (
-                self.status == UserSubscriptionStatus.PAST_DUE
-                and self.current_period_end
-                and self.current_period_end > timezone.now()
-        ):
-            return True
+        A missing ``current_period_end`` is treated as no entitlement rather than an
+        unbounded one: it means the period could not be read from Stripe, and an
+        unbounded read would turn that failure into permanent free Pro.
+        """
+        if self.status not in {
+            UserSubscriptionStatus.ACTIVE,
+            UserSubscriptionStatus.PAST_DUE,
+        }:
+            return False
 
-        return False
+        return bool(
+            self.current_period_end and self.current_period_end > timezone.now()
+        )
