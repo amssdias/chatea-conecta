@@ -56,6 +56,28 @@ def _get_user_subscription_for_update(stripe_customer_id: str) -> UserSubscripti
         ) from exc
 
 
+def _resolve_current_period_end(user_subscription: UserSubscription, current_period_end):
+    """
+    Keep the stored period end when Stripe state could not supply one.
+
+    Overwriting a real period end with ``None`` would widen the entitlement instead of
+    narrowing it, so an unreadable period leaves the existing boundary in place.
+    """
+    if current_period_end:
+        return current_period_end
+
+    if user_subscription.current_period_end:
+        logger.warning(
+            "Stripe event carried no current_period_end; keeping the stored value. "
+            "customer_id=%s subscription_id=%s stored_current_period_end=%s",
+            user_subscription.stripe_customer_id,
+            user_subscription.stripe_subscription_id,
+            user_subscription.current_period_end,
+        )
+
+    return user_subscription.current_period_end
+
+
 def _log_ignored_non_current_subscription_event(
     user_subscription: UserSubscription,
     stripe_customer_id: str,
@@ -96,6 +118,20 @@ def sync_user_subscription_from_checkout(
     user_subscription.cancel_at_period_end = subscription_sync.cancel_at_period_end
     user_subscription.canceled_at = subscription_sync.canceled_at
     user_subscription.ended_at = subscription_sync.ended_at
+
+    if (
+        user_subscription.status == UserSubscriptionStatus.ACTIVE
+        and not user_subscription.current_period_end
+    ):
+        # A snapshot is written verbatim here, so the previous subscription's period end
+        # is not carried over. Without a period end the customer has just paid and holds
+        # no entitlement, which needs to surface rather than fail quietly.
+        logger.error(
+            "Checkout produced an active subscription with no current_period_end. "
+            "customer_id=%s subscription_id=%s",
+            subscription_sync.stripe_customer_id,
+            subscription_sync.stripe_subscription_id,
+        )
 
     user_subscription.save(
         update_fields=[
@@ -138,7 +174,10 @@ def mark_subscription_paid(
         paid_subscription.cancel_at_period_end,
     )
     user_subscription.current_period_start = paid_subscription.current_period_start
-    user_subscription.current_period_end = paid_subscription.current_period_end
+    user_subscription.current_period_end = _resolve_current_period_end(
+        user_subscription,
+        paid_subscription.current_period_end,
+    )
     user_subscription.cancel_at_period_end = paid_subscription.cancel_at_period_end
     user_subscription.canceled_at = paid_subscription.canceled_at
     user_subscription.ended_at = paid_subscription.ended_at
@@ -213,7 +252,10 @@ def sync_user_subscription_from_stripe(
         user_subscription.started_at = subscription_sync.started_at
 
     user_subscription.current_period_start = subscription_sync.current_period_start
-    user_subscription.current_period_end = subscription_sync.current_period_end
+    user_subscription.current_period_end = _resolve_current_period_end(
+        user_subscription,
+        subscription_sync.current_period_end,
+    )
     user_subscription.cancel_at_period_end = subscription_sync.cancel_at_period_end
     user_subscription.canceled_at = subscription_sync.canceled_at
     user_subscription.ended_at = subscription_sync.ended_at
