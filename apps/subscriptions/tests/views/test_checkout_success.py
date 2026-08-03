@@ -260,7 +260,8 @@ class CheckoutSuccessViewTests(TestCase):
         self.assertIsNone(response.context["session_info"])
         self.mock_retrieve.assert_not_called()
 
-    def test_stripe_error_reports_unavailable(self):
+    @patch("apps.subscriptions.views.checkout.logger")
+    def test_stripe_error_reports_unavailable(self, mock_logger):
         self.mock_retrieve.side_effect = stripe.APIConnectionError("boom")
 
         response = self.client.get(self.url, {"session_id": "cs_123"})
