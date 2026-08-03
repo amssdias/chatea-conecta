@@ -160,17 +160,22 @@ class CancelUserSubscriptionTests(TestCase):
         self.assertTrue(user_subscription.cancel_at_period_end)
         self.assertEqual(user_subscription.current_period_end, current_period_end)
 
-    def test_keeps_existing_current_period_end_when_no_item_matches_the_pro_price(self):
-        current_period_end = timezone.now() + timedelta(days=20)
-
+    @patch("apps.integrations.stripe.subscriptions.logger")
+    def test_adopts_the_item_period_end_when_no_item_matches_the_pro_price(self, mock_logger):
+        """
+        An unmatched price still describes a real billing period. Falling back to it
+        keeps the entitlement bounded instead of leaving a stale or absent period end.
+        """
         user_subscription = self.create_user_subscription(
-            current_period_end=current_period_end,
+            current_period_end=timezone.now() + timedelta(days=20),
         )
+
+        fallback_timestamp = int((timezone.now() + timedelta(days=10)).timestamp())
 
         self.mock_get_user_subscription.return_value = user_subscription
         self.mock_schedule_stripe_subscription_cancellation.return_value = (
             self.build_stripe_subscription(
-                current_period_end=int((timezone.now() + timedelta(days=10)).timestamp()),
+                current_period_end=fallback_timestamp,
                 price_id="price_other",
             )
         )
@@ -180,7 +185,10 @@ class CancelUserSubscriptionTests(TestCase):
         user_subscription.refresh_from_db()
 
         self.assertTrue(user_subscription.cancel_at_period_end)
-        self.assertEqual(user_subscription.current_period_end, current_period_end)
+        self.assertEqual(
+            user_subscription.current_period_end,
+            datetime.fromtimestamp(fallback_timestamp, tz=dt_timezone.utc),
+        )
 
     def test_ignores_top_level_current_period_end_on_the_subscription(self):
         """
