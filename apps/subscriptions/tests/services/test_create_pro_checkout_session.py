@@ -99,7 +99,8 @@ class CreateProCheckoutSessionTests(TestCase):
         _, kwargs = self.mock_create_session.call_args
         self.assertEqual(kwargs["stripe_customer_id"], "cus_existing")
 
-    def test_keeps_the_customer_when_creating_the_checkout_session_fails(self):
+    @patch(f"{MODULE_PATH}.logger")
+    def test_keeps_the_customer_when_creating_the_checkout_session_fails(self, mock_logger):
         """
         The customer ID is committed before the Checkout Session call, so a failed
         session does not orphan a Stripe customer that no local row points at.
@@ -126,14 +127,16 @@ class CreateProCheckoutSessionTests(TestCase):
         self.mock_create_session.assert_not_called()
 
     @override_settings(STRIPE_PRO_MONTHLY_PRICE_ID=None)
-    def test_raises_configuration_error_before_touching_stripe_when_price_is_missing(self):
+    @patch(f"{MODULE_PATH}.logger")
+    def test_raises_configuration_error_before_touching_stripe_when_price_is_missing(self, mock_logger):
         with self.assertRaises(CheckoutConfigurationError):
             create_pro_checkout_session(user=self.user, request=self.request)
 
         self.mock_create_customer.assert_not_called()
         self.mock_create_session.assert_not_called()
 
-    def test_wraps_stripe_errors_from_customer_creation(self):
+    @patch(f"{MODULE_PATH}.logger")
+    def test_wraps_stripe_errors_from_customer_creation(self, mock_logger):
         self.mock_create_customer.side_effect = stripe.APIConnectionError(
             "Network is unreachable"
         )
@@ -143,7 +146,8 @@ class CreateProCheckoutSessionTests(TestCase):
 
         self.mock_create_session.assert_not_called()
 
-    def test_wraps_stripe_errors_from_checkout_session_creation(self):
+    @patch(f"{MODULE_PATH}.logger")
+    def test_wraps_stripe_errors_from_checkout_session_creation(self, mock_logger):
         self.mock_create_session.side_effect = stripe.InvalidRequestError(
             "No such price", param="price"
         )
