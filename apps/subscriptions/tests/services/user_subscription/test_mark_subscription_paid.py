@@ -270,6 +270,35 @@ class MarkSubscriptionPaidTests(TestCase):
         self.assertEqual(user_subscription.canceled_at, original_canceled_at)
         self.assertEqual(user_subscription.ended_at, original_ended_at)
 
+    @patch("apps.subscriptions.services.user_subscription.logger")
+    def test_keeps_the_stored_period_end_when_the_event_carries_none(self, mock_logger):
+        """
+        Erasing a real period end would widen a bounded entitlement into an
+        unbounded one, so an unreadable period leaves the stored boundary in place.
+        """
+        stored_period_end = timezone.now() + timedelta(days=12)
+
+        user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+            status=UserSubscriptionStatus.ACTIVE,
+            current_period_end=stored_period_end,
+        )
+
+        paid_subscription = self.build_paid_subscription_dto(
+            stripe_customer_id="cus_123",
+            stripe_subscription_id="sub_123",
+            stripe_status="active",
+        )
+        paid_subscription.current_period_end = None
+
+        result = mark_subscription_paid(paid_subscription)
+        user_subscription.refresh_from_db()
+
+        self.assertEqual(user_subscription.current_period_end, stored_period_end)
+        self.assertEqual(result.status, UserSubscriptionStatus.ACTIVE)
+        self.assertTrue(user_subscription.pro)
+
     def test_ignores_event_when_no_subscription_is_current_yet(self):
         user_subscription = UserSubscriptionFactory(
             stripe_customer_id="cus_123",
