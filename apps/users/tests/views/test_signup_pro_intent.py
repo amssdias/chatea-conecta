@@ -53,7 +53,8 @@ class SignUpProIntentTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "https://checkout.stripe.com/c/pay/cs_123")
 
-    def test_keeps_the_account_and_redirects_when_checkout_fails(self, mock_register):
+    @patch(f"{VIEW_MODULE_PATH}.logger")
+    def test_keeps_the_account_and_redirects_when_checkout_fails(self, mock_logger, mock_register):
         self.mock_create_pro_checkout_session.side_effect = CheckoutProviderError
 
         response = self.client.post(self.url, self.signup_payload())
@@ -67,7 +68,8 @@ class SignUpProIntentTests(TestCase):
             str(user.pk),
         )
 
-    def test_tells_the_user_the_account_exists_when_checkout_fails(self, mock_register):
+    @patch(f"{VIEW_MODULE_PATH}.logger")
+    def test_tells_the_user_the_account_exists_when_checkout_fails(self, mock_logger, mock_register):
         self.mock_create_pro_checkout_session.side_effect = CheckoutConfigurationError
 
         response = self.client.post(self.url, self.signup_payload())
@@ -93,7 +95,8 @@ class SignUpProIntentTests(TestCase):
             user.id,
         )
 
-    def test_session_cookies_are_still_set_when_checkout_fails(self, mock_register):
+    @patch(f"{VIEW_MODULE_PATH}.logger")
+    def test_session_cookies_are_still_set_when_checkout_fails(self, mock_logger, mock_register):
         self.mock_create_pro_checkout_session.side_effect = CheckoutProviderError
 
         response = self.client.post(self.url, self.signup_payload())
@@ -101,7 +104,8 @@ class SignUpProIntentTests(TestCase):
         self.assertEqual(response.cookies["username"].value, "newuser")
         self.assertIn("user_id", response.cookies)
 
-    def test_signing_up_again_after_a_failed_checkout_is_not_needed(self, mock_register):
+    @patch(f"{VIEW_MODULE_PATH}.logger")
+    def test_signing_up_again_after_a_failed_checkout_is_not_needed(self, mock_logger, mock_register):
         """
         The account survives a checkout failure, so a second signup with the same
         username is rejected by uniqueness. The user must be able to retry checkout
