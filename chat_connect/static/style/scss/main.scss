@@ -1,26 +1,34 @@
 @import "abstracts/mixins";
 @import "abstracts/variables";
+@import "abstracts/tokens";
 
 @import "base/animations";
+@import "base/animations-v2";
 @import "base/base";
+@import "base/fonts-v2";
 @import "base/typography";
 @import "base/utilities";
 
 @import "components/button";
 @import "components/chat-closed";
 @import "components/chat-message";
-@import "components/faq";
+@import "components/cta-band";
+@import "components/faq-list";
 @import "components/form-chat";
-@import "components/form-nickname";
+@import "components/auth";
 @import "components/messages";
 @import "components/modal";
-@import "components/privacy";
+@import "components/page";
 
 @import "layout/chat-app";
-@import "layout/footer";
-@import "layout/header";
-@import "layout/navigation";
+@import "layout/side-menu";
+@import "layout/site-footer";
+@import "layout/topbar";
 
-@import "pages/home";
 @import "pages/checkout-result";
 @import "pages/subscription_detail";
+@import "pages/home-v2";
+
+// Last: the shared ink theme rebases legacy typography and component
+// surfaces, so it has to win over every partial above it.
+@import "base/theme";

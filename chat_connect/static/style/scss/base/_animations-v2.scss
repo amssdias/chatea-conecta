@@ -1,0 +1,28 @@
+// Redesign animations. Shared with the chat when that page migrates.
+
+@keyframes ember-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: .3; transform: scale(.62); }
+}
+
+@keyframes typing-dot {
+    0%, 65%, 100% { opacity: .2; transform: translateY(0); }
+    32%           { opacity: 1; transform: translateY(-2px); }
+}
+
+@keyframes arrive {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+// Site-wide on purpose, not just on the redesigned pages: if someone
+// has asked their OS for reduced motion, the legacy animations should
+// stop too.
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

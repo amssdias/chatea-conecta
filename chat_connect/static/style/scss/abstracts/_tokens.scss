@@ -1,0 +1,59 @@
+// =============================================================
+// DESIGN TOKENS - 2026 redesign
+// Additive on purpose: nothing here replaces the legacy amber /
+// rose variables in _variables.scss while pages are migrated one
+// at a time. Delete the legacy ones only when no partial uses them.
+// =============================================================
+
+// --- Surfaces -------------------------------------------------
+$ink:              #14100F; // page background
+$ink-raised:       #1A1614; // cards, rails, alternating sections
+$ink-raised-2:     #1D1917; // sticky bars, inset strips
+$ink-bubble:       #221D1A; // incoming message bubble
+$ink-line:         #2B2422; // hairline divider
+$ink-line-strong:  #3A2E2A; // input borders, quiet buttons
+
+// --- Accent (the only accent on the site) ---------------------
+$ember:            #D1402E;
+$ember-hover:      #E6725F;
+
+// --- PRO (used for PRO surfaces only, never as a second accent)
+$gold:             #F0A868;
+$gold-line:        #4A3B2E;
+$gold-surface:     #241C17;
+
+// --- Text -----------------------------------------------------
+$text-strong:      #F5EDE7; // headings
+$text:             #E8DED6; // body
+$text-muted:       #C9BAB1;
+$text-dim:         #B5A79E;
+$text-quiet:       #9C8F86; // 6.02:1 on $ink. The AA floor for small text.
+                            // Never use anything darker than this for text.
+
+// --- Status ---------------------------------------------------
+$online:           #7FA86B;
+$offline:          #5C534E;
+
+// --- Type -----------------------------------------------------
+// System stacks for now. The redesign was drawn with three custom
+// faces; when the woff2 files land, uncomment the @font-face rules
+// in base/_fonts-v2.scss and swap these three lines back to:
+//
+//     $font-display: 'Archivo', system-ui, sans-serif;
+//     $font-body:    'Instrument Sans', system-ui, sans-serif;
+//     $font-mono:    'JetBrains Mono', ui-monospace, monospace;
+//
+// Nothing else has to change. The `font-stretch: 106%-118%` values
+// scattered through _home-v2.scss and _topbar.scss are the display
+// width axis: inert against a static system face, live the moment
+// the variable Archivo is dropped in. Leave them where they are.
+$font-display:     system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$font-body:        system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$font-mono:        ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+// --- Shape and rhythm ----------------------------------------
+$radius:           4px;   // every panel, card, bubble, input
+$radius-pill:      999px; // every button and badge
+$tap:              44px;  // minimum interactive height
+$gutter:           clamp(20px, 4vw, 56px);
+$section-y:        clamp(56px, 7vw, 104px);

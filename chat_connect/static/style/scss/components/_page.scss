@@ -1,0 +1,741 @@
+// =============================================================
+// Shared secondary-page building blocks.
+//
+// Lifted from the redesign's About / FAQ / Privacy / Security / Terms
+// canvases, which all share the same shell: breadcrumb, page head,
+// optional card grid, then either a document body or a two-column
+// layout. Built once here so the remaining step 3 pages reuse them.
+// px + clamp() like the rest of the redesign - see pages/_home-v2.scss
+// for why rem is avoided.
+// =============================================================
+
+// --- Breadcrumb ----------------------------------------------
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 20px;
+    font-family: $font-mono;
+    font-size: 12.5px;
+    color: $text-quiet;
+
+    &__link {
+        color: $ember-hover;
+        text-decoration: none;
+
+        &:hover { color: $gold; }
+    }
+}
+
+// --- Page head -----------------------------------------------
+.page-head {
+    padding: clamp(40px, 5vw, 72px) $gutter clamp(32px, 4vw, 52px);
+    border-bottom: 1px solid $ink-line;
+
+    &__title {
+        max-width: 22ch;
+        margin-bottom: 18px;
+        font-family: $font-display;
+        font-stretch: 118%;
+        font-size: clamp(34px, 4.6vw, 61px);
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -.035em;
+        color: $text-strong;
+        text-wrap: balance;
+
+        // Short titles ("Privacy policy") want a tighter measure than
+        // sentence-length ones ("Questions about free chat, answered plainly.")
+        &--short { max-width: 20ch; }
+    }
+
+    &__lede {
+        max-width: 62ch;
+        font-size: clamp(16px, 1.4vw, 18.5px);
+        line-height: 1.6;
+        color: $text-dim;
+        text-wrap: pretty;
+    }
+
+    // "Effective 01/05/2025" and similar
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 22px;
+        padding: 8px 14px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius-pill;
+        background-color: $ink-raised-2;
+        font-family: $font-mono;
+        font-size: 12.5px;
+        color: $text-muted;
+    }
+}
+
+// --- Card grid -----------------------------------------------
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    padding: clamp(32px, 4vw, 56px) $gutter;
+}
+
+.card {
+    padding: clamp(22px, 2.6vw, 30px);
+    border: 1px solid $ink-line;
+    border-radius: $radius;
+    background-color: $ink-raised;
+
+    &__title {
+        margin-bottom: 10px;
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+    }
+
+    &__text {
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+
+    // The one highlighted card in a row.
+    &--ember {
+        border-color: transparent;
+        background-color: $ember;
+
+        .card__title { color: #fff; }
+        // Full white rather than the design's .9: on $ember that reads 4.07:1.
+        .card__text  { color: #fff; }
+    }
+}
+
+// --- Outlined pill link --------------------------------------
+.pill-link {
+    min-height: $tap;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 18px;
+    border: 1px solid $ink-line-strong;
+    border-radius: $radius-pill;
+    font-size: 15px;
+    font-weight: 600;
+    color: $text;
+    text-decoration: none;
+
+    &:hover {
+        border-color: $ember;
+        color: $ember-hover;
+    }
+}
+
+.pill-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+// --- Document body (privacy, terms) --------------------------
+.doc {
+    display: flex;
+    flex-direction: column;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 $gutter clamp(56px, 7vw, 96px);
+    border-top: 1px solid $ink-line;
+
+    &__section {
+        padding: clamp(24px, 3vw, 32px) 0;
+        border-bottom: 1px solid $ink-line;
+
+        &:last-child { border-bottom: none; }
+    }
+
+    &__title {
+        margin-bottom: 12px;
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: clamp(18px, 1.7vw, 22px);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+    }
+
+    &__text {
+        max-width: 66ch;
+        font-size: 16.5px;
+        line-height: 1.65;
+        color: $text-dim;
+
+        & + & { margin-top: 14px; }
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        padding-left: 20px;
+    }
+
+    &__item {
+        max-width: 62ch;
+        font-size: 16.5px;
+        line-height: 1.65;
+        color: $text-dim;
+    }
+
+    &__actions {
+        margin-top: 18px;
+    }
+}
+
+// --- Sticky table of contents (FAQ) --------------------------
+.toc {
+    flex: 1 1 250px;
+    min-width: 0;
+    max-width: 300px;
+    align-self: flex-start;
+    position: sticky;
+    top: 92px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &__title {
+        margin-bottom: 4px;
+        font-family: $font-mono;
+        font-size: 11.5px;
+        font-weight: 500;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    &__link {
+        font-size: 15.5px;
+        color: $text-dim;
+        text-decoration: none;
+
+        &:hover { color: $text-strong; }
+
+        &--current {
+            font-weight: 600;
+            color: $text;
+        }
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 14px;
+        padding: 20px;
+        border: 1px solid $ink-line;
+        border-radius: $radius;
+        background-color: $ink-raised;
+    }
+
+    &__presence {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: $font-mono;
+        font-size: 13px;
+        color: $text-quiet;
+
+        &::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: $radius-pill;
+            background-color: $online;
+            animation: ember-pulse 2s ease-in-out infinite;
+            flex: none;
+        }
+    }
+
+    &__count { color: $text; }
+
+    &__cta {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+
+        &:hover { background-color: $ember-hover; }
+    }
+
+    // Below the two-column breakpoint the sidebar is just a block at the
+    // top of the page; sticky would leave it hanging over the content.
+    @include respond(tab-port) {
+        position: static;
+        max-width: none;
+    }
+}
+
+// --- Two-column section --------------------------------------
+// About (text + art), Contact (form + cards), Security (head + art).
+.split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+    padding: clamp(36px, 5vw, 64px) $gutter clamp(56px, 7vw, 96px);
+
+    &--center { align-items: center; }
+
+    &--tight { padding: clamp(40px, 5vw, 72px) $gutter; }
+
+    &__col {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+// --- Decorative art panel ------------------------------------
+// Stands in for the canvases' photography. Same construction as
+// .reasons__feature on the homepage: ember glows over a dot field, no
+// image to license and nothing to break. See pages/_home-v2.scss for
+// how to put a photograph back.
+.art {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    border-radius: $radius;
+    overflow: hidden;
+    background-color: $ink-raised;
+    background-image:
+        radial-gradient(62% 84% at 18% 12%, rgba(209, 64, 46, .32) 0%, rgba(209, 64, 46, 0) 64%),
+        radial-gradient(54% 72% at 84% 74%, rgba(240, 168, 104, .13) 0%, rgba(240, 168, 104, 0) 68%);
+
+    &--wide  { aspect-ratio: 5 / 4; }
+    &--squat { aspect-ratio: 3 / 2; }
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    &::before {
+        background-image: radial-gradient(rgba(245, 237, 231, .075) 1px, transparent 1px);
+        background-size: 22px 22px;
+    }
+
+    &::after { background-color: rgba(20, 16, 15, .22); }
+
+    &__caption {
+        margin-top: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: $text-quiet;
+    }
+}
+
+// --- Rule columns --------------------------------------------
+// Security's "How we protect your session": the .steps treatment
+// without the numbers.
+.rules {
+    padding: clamp(48px, 6vw, 88px) $gutter;
+    border-bottom: 1px solid $ink-line;
+
+    &__heading { margin-bottom: clamp(28px, 3.5vw, 44px); }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: clamp(20px, 2.5vw, 32px);
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+        padding-top: 18px;
+        border-top: 2px solid $ink-line-strong;
+        list-style: none;
+
+        &:first-child { border-top-color: $ember; }
+    }
+
+    &__title {
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: clamp(18px, 1.7vw, 22px);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+    }
+
+    &__text {
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+}
+
+// --- Card extras ---------------------------------------------
+.card {
+    // Bigger panels that carry a list, as on Security.
+    &--lg {
+        padding: clamp(26px, 3vw, 36px);
+
+        .card__title {
+            margin-bottom: 16px;
+            font-stretch: 110%;
+            font-size: clamp(22px, 2vw, 27px);
+            font-weight: 800;
+            letter-spacing: -.025em;
+        }
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 20px;
+    }
+
+    &__item {
+        font-size: 16.5px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+
+    &__link {
+        display: inline-block;
+        margin-top: 18px;
+        font-size: 15.5px;
+        font-weight: 600;
+        color: $ember-hover;
+        text-decoration: none;
+
+        &:hover { color: $gold; }
+    }
+
+    &--ember {
+        .card__item { color: #fff; }
+        .card__link { color: #fff; }
+    }
+}
+
+// --- Closing row ---------------------------------------------
+// Security's footer call to action: no ember panel, just the button.
+.closer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(24px, 4vw, 48px);
+    padding: clamp(48px, 6vw, 80px) $gutter;
+
+    &__body { flex: 1 1 320px; min-width: 0; }
+
+    &__title {
+        max-width: 24ch;
+        margin-bottom: 12px;
+        font-family: $font-display;
+        font-stretch: 115%;
+        font-size: clamp(26px, 2.8vw, 37px);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -.03em;
+        color: $text-strong;
+        text-wrap: balance;
+    }
+
+    &__text {
+        max-width: 56ch;
+        font-size: 16.5px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+
+    &__btn {
+        flex: none;
+        min-height: 56px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 30px;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        font-family: $font-display;
+        font-stretch: 106%;
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+
+        &:hover { background-color: $ember-hover; }
+    }
+}
+
+// --- Page head extras ----------------------------------------
+.page-head {
+    // Used inside a .split, where the section supplies padding and rule.
+    &--bare {
+        padding: 0;
+        border-bottom: none;
+    }
+
+    // Terms: a row of badges rather than a single one.
+    &__badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+
+        .page-head__badge { margin-top: 0; }
+    }
+}
+
+// --- Two-column body with a sticky table of contents ---------
+// Shared by /faq/ and /terms/. .faq-page keeps its own name because the
+// FAQ markup already uses it; both compile to the same rules.
+%with-toc {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: clamp(28px, 4vw, 56px);
+    padding: clamp(36px, 5vw, 64px) $gutter clamp(56px, 7vw, 96px);
+}
+
+.doc-layout {
+    @extend %with-toc;
+
+    &__body {
+        flex: 999 1 520px;
+        min-width: 0;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid $ink-line;
+    }
+}
+
+// --- Numbered document (terms) -------------------------------
+.doc--numbered {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border-top: none;
+
+    .doc__section { padding: clamp(26px, 3vw, 34px) 0; }
+
+    .doc__title {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 14px;
+        font-size: clamp(19px, 1.8vw, 24px);
+    }
+
+    // The body text hangs off the number, as in the canvas.
+    .doc__text,
+    .doc__list { margin-left: 28px; }
+}
+
+.doc__num {
+    font-family: $font-mono;
+    font-size: 14px;
+    font-weight: 500;
+    // $ember on $ink is 4.04:1, under the AA floor at this size. $ember-hover
+    // reads as the same accent and clears it - same swap as .steps__num.
+    color: $ember-hover;
+    padding-top: 5px;
+    flex: none;
+}
+
+// Placeholder in the governing-law clause.
+.doc mark {
+    padding: 2px 7px;
+    border-radius: $radius;
+    background-color: $ink-line-strong;
+    color: $gold;
+}
+
+// --- Contact form --------------------------------------------
+.contact-form {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: clamp(24px, 3vw, 34px);
+    border: 1px solid $ink-line;
+    border-radius: $radius;
+    background-color: $ink-raised;
+
+    &__title {
+        font-family: $font-display;
+        font-stretch: 112%;
+        font-size: clamp(22px, 2.2vw, 29px);
+        font-weight: 800;
+        letter-spacing: -.025em;
+        color: $text-strong;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    &__label {
+        font-family: $font-mono;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    &__input,
+    &__textarea {
+        width: 100%;
+        padding: 0 16px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius;
+        background-color: $ink;
+        font-family: $font-body;
+        font-size: 16.5px;
+        color: $text-strong;
+
+        &::placeholder { color: $text-quiet; }
+
+        &:focus {
+            outline: none;
+            border-color: $ember;
+            box-shadow: 0 0 0 3px rgba(209, 64, 46, .22);
+        }
+    }
+
+    &__input { min-height: 52px; }
+
+    &__textarea {
+        padding: 14px 16px;
+        line-height: 1.55;
+        resize: vertical;
+    }
+
+    &__hint {
+        font-size: 14px;
+        color: $text-quiet;
+    }
+
+    &__error {
+        padding: 10px 14px;
+        border: 1px solid $ember;
+        border-radius: $radius;
+        background-color: rgba(209, 64, 46, .1);
+        font-size: 14.5px;
+        line-height: 1.45;
+        color: $text-strong;
+    }
+
+    &__submit {
+        width: 100%;
+        min-height: 54px;
+        border: none;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        font-family: $font-display;
+        font-stretch: 106%;
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+
+        &:hover { background-color: $ember-hover; }
+        &:active { transform: translateY(1px); }
+    }
+
+    // Honeypot. Never shown, never focusable.
+    &__trap {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+}
+
+// Radio group rendered as selectable chips. The radio itself is visually
+// hidden but still focusable, and :checked drives the chip styling, so
+// this needs no JavaScript.
+.reason-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 0;
+    margin: 0;
+    border: none;
+
+    &__legend {
+        padding: 0;
+        margin-bottom: 10px;
+        font-family: $font-mono;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    &__chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: $tap;
+        padding: 0 16px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius-pill;
+        background-color: $ink;
+        font-size: 15px;
+        font-weight: 600;
+        color: $text-muted;
+        cursor: pointer;
+
+        &:hover {
+            border-color: $ember-hover;
+            color: $text;
+        }
+    }
+
+    &__radio {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+
+        &:checked + .reason-chips__chip {
+            border-color: transparent;
+            background-color: $ember;
+            color: #fff;
+        }
+
+        &:focus-visible + .reason-chips__chip {
+            outline: 2px solid $ember-hover;
+            outline-offset: 3px;
+        }
+    }
+}
+
+// --- Section rule / flush modifiers --------------------------
+// So templates never need an inline style to close a section off.
+.split--ruled,
+.cards--ruled,
+.rules--ruled { border-bottom: 1px solid $ink-line; }
+
+// A card grid nested inside a section that already supplies padding.
+.cards--flush { padding: 0; }

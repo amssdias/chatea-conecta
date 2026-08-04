@@ -1,10 +1,13 @@
+// Repaletted onto the ink tokens during step 3 of the redesign. Only
+// colours changed: the layout, and the `&__modal:target` rule that drives
+// the cancel dialog without JavaScript, are untouched.
 .subscription-detail {
     min-height: clamp(52rem, 75vh, 72rem);
     padding: 6rem 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, rgba($primary-light, 0.2) 0%, rgba($bg-light, 0.95) 60%);
+    background-color: $ink;
 
     &__container {
         width: 100%;
@@ -12,10 +15,10 @@
     }
 
     &__card {
-        background-color: $color-white;
-        border: 1px solid rgba($accent-light, 0.45);
+        background-color: $ink-raised;
+        border: 1px solid $ink-line;
         border-radius: 2rem;
-        box-shadow: 0 1.4rem 4rem rgba($accent-dark, 0.12);
+        box-shadow: none;
         padding: 4.2rem;
         text-align: center;
     }
@@ -31,13 +34,13 @@
         }
 
         circle {
-            stroke: rgba($accent-dark, 0.35);
-            fill: rgba($primary-light, 0.18);
+            stroke: $ink-line-strong;
+            fill: rgba($ember, 0.16);
             stroke-width: 4;
         }
 
         path {
-            stroke: $accent-dark;
+            stroke: $text-strong;
             stroke-width: 4;
         }
     }
@@ -53,32 +56,32 @@
         font-weight: 700;
 
         &--active {
-            color: darken($color-green-dark-1, 12%);
-            background-color: rgba($color-green-dark-1, 0.12);
-            border: 1px solid rgba($color-green-dark-1, 0.35);
+            color: $online;
+            background-color: rgba($online, 0.14);
+            border: 1px solid rgba($online, 0.4);
         }
 
         &--warning {
-            color: $color-dark-amber-3;
-            background-color: rgba($color-light-amber, 0.65);
-            border: 1px solid rgba($color-dark-amber-1, 0.35);
+            color: $gold;
+            background-color: $gold-surface;
+            border: 1px solid $gold-line;
         }
 
         &--inactive {
-            color: $text-light;
-            background-color: rgba($bg-medium, 0.85);
-            border: 1px solid rgba($accent-light, 0.45);
+            color: $text-dim;
+            background-color: $ink-raised-2;
+            border: 1px solid $ink-line;
         }
     }
 
     &__title {
         font-size: 3.2rem;
-        color: $accent-dark;
+        color: $text-strong;
         margin-bottom: 1.2rem;
     }
 
     &__message {
-        color: $text-light;
+        color: $text-dim;
         font-size: 1.9rem;
         line-height: 1.5;
         margin: 0 auto 2.4rem;
@@ -87,7 +90,7 @@
 
     &__details {
         text-align: left;
-        background-color: $bg-medium;
+        background-color: $ink-raised-2;
         border-radius: 1.2rem;
         padding: 2rem;
         margin: 0 auto 2.8rem;
@@ -99,19 +102,19 @@
         justify-content: space-between;
         gap: 1.2rem;
         padding: 0.8rem 0;
-        border-bottom: 1px solid rgba($accent-light, 0.45);
+        border-bottom: 1px solid $ink-line;
 
         &:last-child {
             border-bottom: 0;
         }
 
         dt {
-            color: $text-light;
+            color: $text-dim;
             font-size: 1.5rem;
         }
 
         dd {
-            color: $text-dark;
+            color: $text;
             font-weight: 600;
             font-size: 1.3rem;
             text-align: right;
@@ -147,48 +150,48 @@
         transition: all 0.2s ease;
 
         &--primary {
-            background-color: $button-bg;
-            color: $button-text;
+            background-color: $ember;
+            color: #fff;
 
             &:hover {
-                background-color: $button-hover-bg;
-                color: $button-hover-text;
+                background-color: $ember-hover;
+                color: #fff;
             }
         }
 
         &--secondary {
             background-color: transparent;
-            color: $accent-dark;
-            border-color: rgba($accent-light, 0.8);
+            color: $text-strong;
+            border-color: $ink-line-strong;
 
             &:hover {
-                background-color: rgba($bg-medium, 0.85);
+                background-color: $ink-raised-2;
             }
         }
 
         &--warning {
-            background-color: $color-light-amber;
-            color: $color-dark-amber-3;
-            border-color: rgba($color-dark-amber-1, 0.45);
+            background-color: $gold-surface;
+            color: $gold;
+            border-color: $gold-line;
 
             &:hover {
-                background-color: darken($color-light-amber, 5%);
+                background-color: $gold-line;
             }
         }
 
         &--danger {
             background-color: transparent;
-            color: $color-dark-amber-3;
-            border-color: rgba($color-dark-amber-1, 0.8);
+            color: $gold;
+            border-color: $gold-line;
 
             &:hover {
-                background-color: rgba($color-light-amber, 0.65);
+                background-color: $gold-surface;
             }
         }
     }
 
     &__help {
-        color: $text-light;
+        color: $text-dim;
         font-size: 1.5rem;
     }
 
@@ -274,27 +277,27 @@
         border: 1px solid transparent;
 
         &--success {
-            color: darken($color-green-dark-1, 12%);
-            background-color: rgba($color-green-dark-1, 0.12);
-            border-color: rgba($color-green-dark-1, 0.35);
+            color: $online;
+            background-color: rgba($online, 0.14);
+            border-color: rgba($online, 0.4);
         }
 
         &--info {
-            color: $accent-dark;
-            background-color: rgba($primary-light, 0.16);
-            border-color: rgba($accent-light, 0.45);
+            color: $text-strong;
+            background-color: rgba($ember, 0.12);
+            border-color: $ink-line;
         }
 
         &--warning {
-            color: $color-dark-amber-3;
-            background-color: rgba($color-light-amber, 0.65);
-            border-color: rgba($color-dark-amber-1, 0.35);
+            color: $gold;
+            background-color: $gold-surface;
+            border-color: $gold-line;
         }
 
         &--error {
-            color: $color-dark-amber-3;
-            background-color: rgba($color-light-amber, 0.5);
-            border-color: rgba($color-dark-amber-1, 0.55);
+            color: $gold;
+            background-color: $gold-surface;
+            border-color: $gold-line;
         }
     }
 
@@ -315,7 +318,7 @@
     &__modal-backdrop {
         position: absolute;
         inset: 0;
-        background-color: rgba($accent-dark, 0.58);
+        background-color: rgba(0, 0, 0, 0.66);
         backdrop-filter: blur(0.4rem);
     }
 
@@ -324,10 +327,10 @@
         z-index: 1;
         width: 100%;
         max-width: 52rem;
-        background-color: $color-white;
-        border: 1px solid rgba($accent-light, 0.45);
+        background-color: $ink-raised;
+        border: 1px solid $ink-line;
         border-radius: 2rem;
-        box-shadow: 0 2rem 6rem rgba($accent-dark, 0.28);
+        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.55);
         padding: 3.2rem;
         text-align: center;
         animation: subscription-modal-in 0.18s ease-out;
@@ -344,14 +347,14 @@
         justify-content: center;
         border-radius: 50%;
         text-decoration: none;
-        color: $text-light;
+        color: $text-dim;
         font-size: 2.8rem;
         line-height: 1;
         transition: all 0.2s ease;
 
         &:hover {
-            background-color: rgba($bg-medium, 0.9);
-            color: $accent-dark;
+            background-color: $ink-raised-2;
+            color: $text-strong;
         }
     }
 
@@ -366,25 +369,25 @@
         }
 
         circle {
-            fill: rgba($color-light-amber, 0.55);
-            stroke: rgba($color-dark-amber-1, 0.55);
+            fill: rgba($gold, 0.16);
+            stroke: $gold-line;
             stroke-width: 4;
         }
 
         path {
-            stroke: $color-dark-amber-3;
+            stroke: $gold;
             stroke-width: 4;
         }
     }
 
     &__modal-title {
-        color: $accent-dark;
+        color: $text-strong;
         font-size: 2.6rem;
         margin-bottom: 1.2rem;
     }
 
     &__modal-message {
-        color: $text-light;
+        color: $text-dim;
         font-size: 1.7rem;
         line-height: 1.55;
         margin-bottom: 2.4rem;

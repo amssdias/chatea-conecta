@@ -1,0 +1,51 @@
+// =============================================================
+// Self-hosted redesign faces - NOT ACTIVE YET.
+//
+// The redesign was drawn with Archivo (variable, wdth + wght),
+// Instrument Sans and JetBrains Mono. Those files are not in the
+// repo yet, so abstracts/_tokens.scss currently points the three
+// $font-* tokens at system stacks and this file compiles to
+// nothing.
+//
+// To switch the real faces on:
+//   1. Download the *variable* woff2 for each family and put them at
+//        static/utils/fonts/archivo/Archivo[wdth,wght].woff2
+//        static/utils/fonts/instrument-sans/InstrumentSans[wght].woff2
+//        static/utils/fonts/jetbrains-mono/JetBrainsMono[wght].woff2
+//      (fonts.google.com -> "Get font" -> download, then convert the
+//       .ttf with fonttools: pyftsubset --flavor=woff2)
+//   2. Uncomment the three blocks below.
+//   3. Point $font-display / $font-body / $font-mono in
+//      abstracts/_tokens.scss back at the family names.
+//
+// Archivo must be the VARIABLE file: the display sizes use the width
+// axis via `font-stretch`, and the static family ignores it.
+//
+// Do NOT add a fonts.googleapis.com <link>: third-party font
+// requests on every page hurt LCP and add a consent surface.
+// =============================================================
+
+// @font-face {
+//     font-family: 'Archivo';
+//     src: url('../../utils/fonts/archivo/Archivo[wdth,wght].woff2') format('woff2-variations');
+//     font-weight: 100 900;
+//     font-stretch: 62% 125%;
+//     font-style: normal;
+//     font-display: swap;
+// }
+
+// @font-face {
+//     font-family: 'Instrument Sans';
+//     src: url('../../utils/fonts/instrument-sans/InstrumentSans[wght].woff2') format('woff2-variations');
+//     font-weight: 400 700;
+//     font-style: normal;
+//     font-display: swap;
+// }
+
+// @font-face {
+//     font-family: 'JetBrains Mono';
+//     src: url('../../utils/fonts/jetbrains-mono/JetBrainsMono[wght].woff2') format('woff2-variations');
+//     font-weight: 400 700;
+//     font-style: normal;
+//     font-display: swap;
+// }
