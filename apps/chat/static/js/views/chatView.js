@@ -127,7 +127,9 @@ class ChatView {
             userId,
             message,
             createPrivateChatGroup,
-            showUserMenu: !isPrivateGroup,
+            // Only in the main room: inside a private chat you are already
+            // talking to that person.
+            canOpenPrivateChat: !isPrivateGroup,
         });
 
         const notificationGroupName = isPrivateGroup
@@ -387,7 +389,80 @@ class ChatView {
     // Private message element creation
     // =========================
 
-    _createUserChatMessageElements(message, username, userId, isCurrentUser = false) {
+    // Six avatar colours, picked from the username so the same person keeps
+    // the same colour for everyone in the room without the server sending one.
+    _avatarVariant(username) {
+        let hash = 0;
+        for (let i = 0; i < username.length; i++) {
+            hash = (hash * 31 + username.charCodeAt(i)) >>> 0;
+        }
+        return (hash % 6) + 1;
+    }
+
+    _createAvatar(username) {
+        const avatar = document.createElement("span");
+        avatar.classList.add(
+            "chat__message-avatar",
+            `chat__message-avatar--${this._avatarVariant(username)}`
+        );
+        avatar.setAttribute("aria-hidden", "true");
+        avatar.textContent = username.charAt(0).toUpperCase();
+        return avatar;
+    }
+
+    // Messages are never stored, so everything rendered here arrived just now
+    // and the client clock is the honest source for the timestamp.
+    _createTimestamp() {
+        const now = new Date();
+        const time = document.createElement("time");
+        time.classList.add("chat__message-time");
+        time.dateTime = now.toISOString();
+        time.textContent = now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+        return time;
+    }
+
+    // Makes a nickname (or its avatar) open a private chat when clicked.
+    // Keyboard support too: these are not <button>s, so Enter and Space have
+    // to be wired by hand for anyone not using a mouse.
+    _makeOpenPrivateChat(el, onOpenPrivateChat) {
+        el.classList.add("chat__message-user-link");
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.title = this._translations.sendPrivateMsg || "Send private message";
+
+        const open = () => {
+            // Read the identity back off the message block rather than closing
+            // over the values. dataset always yields strings, and the socket
+            // sends user_id as a number - _getPrivateChatGroupName calls
+            // .replace() on it, so a raw number throws.
+            const block = el.closest("[data-user-id][data-username]");
+            if (!block) return;
+
+            const { userId, username } = block.dataset;
+            if (!userId || !username) return;
+
+            onOpenPrivateChat(userId, username);
+        };
+
+        el.addEventListener("click", open);
+        el.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                open();
+            }
+        });
+    }
+
+    _createUserChatMessageElements(
+        message,
+        username,
+        userId,
+        isCurrentUser = false,
+        onOpenPrivateChat = null
+    ) {
         const div = document.createElement("div");
 
         div.setAttribute("data-username", username);
@@ -395,41 +470,35 @@ class ChatView {
         div.classList.add("chat__message");
 
         const userHeader = document.createElement("h5");
-        userHeader.classList.add("chat__message-user", "chat__message-user-link");
+        userHeader.classList.add("chat__message-user");
         userHeader.textContent = username;
 
+        const avatar = this._createAvatar(username);
         const paragraph = this._createMessageParagraph(message, isCurrentUser);
 
         if (isCurrentUser) {
             div.classList.add("chat__message--current-user");
         }
 
+        // Clicking the nickname or the avatar opens a private chat with that
+        // person. Never on your own name, and never inside a private chat -
+        // the caller decides by passing null.
+        if (onOpenPrivateChat && !isCurrentUser) {
+            this._makeOpenPrivateChat(userHeader, onOpenPrivateChat);
+            this._makeOpenPrivateChat(avatar, onOpenPrivateChat);
+            avatar.removeAttribute("aria-hidden");
+            avatar.setAttribute("aria-label", username);
+        }
+
+        // Only the first message of a run gets these: consecutive messages from
+        // the same person append a paragraph to this block instead of building
+        // a new one, which is the grouping the design shows.
+        div.appendChild(avatar);
         div.appendChild(userHeader);
+        div.appendChild(this._createTimestamp());
         div.appendChild(paragraph);
 
         return div;
-    }
-
-    _createUserMenu(createPrivateChatGroup) {
-        const menuOption = document.createElement("button");
-        menuOption.classList.add("chat__message-menu-btn");
-        menuOption.textContent = this._translations.sendPrivateMsg || "Private message";
-
-        menuOption.addEventListener("click", function() {
-            const userId = this.closest('[data-user-id]')?.dataset.userId;
-            if (!userId) return;
-
-            const username = this.closest('[data-username]')?.dataset.username;
-            if (!username) return;
-
-
-            createPrivateChatGroup(userId, username);
-        })
-
-        let userMenu = document.createElement("div");
-        userMenu.classList.add("chat__message-menu");
-        userMenu.appendChild(menuOption);
-        return userMenu;
     }
 
     _createMessageParagraph(message, isCurrentUser = false) {
@@ -493,7 +562,7 @@ class ChatView {
         message,
         isCurrentUser = false,
         createPrivateChatGroup = null,
-        showUserMenu = false,
+        canOpenPrivateChat = false,
     }) {
         const lastMessage = chatBox.lastElementChild;
         const shouldScroll = this._shouldScrollToBottom(chatBox);
@@ -506,13 +575,9 @@ class ChatView {
                 message,
                 username,
                 userId,
-                isCurrentUser
+                isCurrentUser,
+                canOpenPrivateChat ? createPrivateChatGroup : null
             );
-
-            if (showUserMenu && createPrivateChatGroup) {
-                const userMenu = this._createUserMenu(createPrivateChatGroup);
-                messageElement.appendChild(userMenu);
-            }
 
             chatBox.appendChild(messageElement);
         }
@@ -564,8 +629,12 @@ class ChatView {
     }
 
     _getPrivateChatGroupName(userId, userIdTarget) {
-        userId = userId.replace(" ", "-");
-        userIdTarget = userIdTarget.replace(" ", "-");
+        // Coerced because callers are not consistent: dataset gives strings but
+        // the socket payload gives user_id as a number, and a number has no
+        // .replace(). Must stay in step with USER_PRIVATE_GROUP in
+        // apps/chat/constants/consumer.py.
+        userId = String(userId).replace(" ", "-");
+        userIdTarget = String(userIdTarget).replace(" ", "-");
         return `private-${userId}-${userIdTarget}`.toLowerCase();
     }
 
