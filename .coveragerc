@@ -1,6 +1,12 @@
 [run]
-source = apps.chat
+source =
+    apps.chat
+    apps.integrations
+    apps.subscriptions
+    apps.users
+
 branch = True
+
 omit =
     */migrations/*
     */tests/*
