@@ -1,4 +1,3 @@
-.margin-top-xxsmall {margin-top: 1rem;}
 .margin-top-xsmall {margin-top: 2rem;}
 .margin-bottom-xsmall {margin-bottom: 2rem;}
 .margin-bottom-xxsmall {margin-bottom: 1rem;}
@@ -8,16 +7,10 @@
 .online {fill:$color-green-dark-1;}
 .offline {fill: $primary-dark;}
 // .selected {background-color: $color-light-amber-3 !important;}
-.text-align-center {text-align: center;}
-.text-align-left {text-align: left;}
 
 // Side menu
 .open-side-menu {
     animation: openSideMenu;
-}
-
-.close-side.menu {
-    animation: closeSideMenu;
 }
 
 .incoming-message {

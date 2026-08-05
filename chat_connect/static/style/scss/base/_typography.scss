@@ -5,17 +5,6 @@ body {
 }
 
 
-.heading-primary {
-    font-size: 5rem;
-    color: $primary-dark;
-    font-weight: 600;
-    text-align: center;
-
-    @include respond(phone) {
-        font-size: 3rem;
-    }
-}
-
 .heading-secondary {
     font-size: 3rem;
     color: $primary-main;
@@ -30,28 +19,6 @@ body {
 .heading-tertiary {
     font-size: 2.5rem;
     font-weight: 500;
-
-    &-white {
-        color: $color-white;
-    }
-
-    &-dark-amber {
-        color: $accent-dark;
-    }
-
-}
-
-.heading-quaternary {
-    font-size: 2rem;
-}
-
-.heading-quinary {
-    font-size: 2.5rem;
-    color: $color-dark-amber-3;
-
-    @include respond(phone) {
-        font-size: 2rem;
-    }
 }
 
 .paragraph {

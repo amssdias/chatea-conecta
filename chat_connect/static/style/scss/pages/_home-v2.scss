@@ -5,13 +5,7 @@
 // html{font-size} per breakpoint (10px -> 8px at tab-port), so rem
 // values here would shrink unevenly against the fluid layout.
 //
-// New block names on purpose: nothing in this file can collide with
-// layout/_header.scss or the legacy components.
 // =============================================================
-
-// The .theme-ink page theme used to live here. It moved to
-// base/_theme.scss in step 2, when base.html made it the site-wide
-// default instead of a homepage-only class.
 
 // --- Hero -----------------------------------------------------
 .hero {
@@ -168,11 +162,6 @@
         text-underline-offset: 2px;
 
         &:hover { color: $gold; }
-    }
-
-    &__strong {
-        font-weight: 600;
-        color: $text-strong;
     }
 
     &__error {

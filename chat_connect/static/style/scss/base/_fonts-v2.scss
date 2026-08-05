@@ -1,17 +1,20 @@
 // =============================================================
-// Self-hosted variable fonts for the redesign.
-//
-// GENERATED - do not hand-edit. Regenerate by re-running the fetch
-// script, which pulls from the Google Fonts CSS API and writes the
-// unicode-range and font-stretch values exactly as Google reports
-// them. All three are SIL Open Font License 1.1.
+// Self-hosted variable fonts. All three are SIL Open Font License 1.1.
 //
 // Self-hosted on purpose: a fonts.googleapis.com <link> costs a
 // third-party round trip on every page and adds a consent surface.
 //
-// Only latin and latin-ext are shipped - enough for English and
-// Spanish. Archivo is the VARIABLE file: the display sizes drive the
-// width axis through font-stretch, which a static family ignores.
+// Archivo is the VARIABLE file - the font-stretch values through
+// _home-v2.scss, _topbar.scss and _page.scss drive its width axis, and
+// a static Archivo would silently ignore every one of them.
+//
+// Only latin and latin-ext ship, which covers English and Spanish. To
+// add a language or refresh a family, request the CSS with a browser
+// User-Agent so Google answers woff2 rather than ttf:
+//   fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&display=swap
+// then download the subset files it lists into utils/fonts/ and copy its
+// @font-face blocks here verbatim - the unicode-range values have to
+// match the files they point at.
 // =============================================================
 
 @font-face {

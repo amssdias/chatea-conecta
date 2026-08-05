@@ -321,7 +321,6 @@
         radial-gradient(54% 72% at 84% 74%, rgba(240, 168, 104, .13) 0%, rgba(240, 168, 104, 0) 68%);
 
     &--wide  { aspect-ratio: 5 / 4; }
-    &--squat { aspect-ratio: 3 / 2; }
 
     &::before,
     &::after {
@@ -734,8 +733,7 @@
 // --- Section rule / flush modifiers --------------------------
 // So templates never need an inline style to close a section off.
 .split--ruled,
-.cards--ruled,
-.rules--ruled { border-bottom: 1px solid $ink-line; }
+.cards--ruled { border-bottom: 1px solid $ink-line; }
 
 // A card grid nested inside a section that already supplies padding.
 .cards--flush { padding: 0; }
