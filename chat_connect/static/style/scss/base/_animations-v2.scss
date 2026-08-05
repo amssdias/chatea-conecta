@@ -15,6 +15,15 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
+// Unread marker. A ring that expands and fades rather than a blinking dot:
+// it catches the eye once per cycle and then gets out of the way, which
+// matters on a sidebar you are looking at for a long time.
+@keyframes unread-ping {
+    0%   { box-shadow: 0 0 0 0 rgba(209, 64, 46, .5); }
+    70%  { box-shadow: 0 0 0 7px rgba(209, 64, 46, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(209, 64, 46, 0); }
+}
+
 // Site-wide on purpose, not just on the redesigned pages: if someone
 // has asked their OS for reduced motion, the legacy animations should
 // stop too.
