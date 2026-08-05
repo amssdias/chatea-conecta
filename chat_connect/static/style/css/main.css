@@ -25,22 +25,6 @@ ORDER: Base + typography > general layout + grid > page layout > components
     transform: translate(0rem);
   }
 }
-@keyframes openSideMenu {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-@keyframes closeSideMenu {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
 @keyframes ember-pulse {
   0%, 100% {
     opacity: 1;
@@ -69,6 +53,17 @@ ORDER: Base + typography > general layout + grid > page layout > components
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+@keyframes unread-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(209, 64, 46, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(209, 64, 46, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(209, 64, 46, 0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -210,30 +205,8 @@ body {
   margin-right: 1rem;
 }
 
-.background-color-text-sending {
-  background-color: #bebebe !important;
-}
-
 .hide {
   display: none !important;
-}
-
-.online {
-  fill: #84cc16;
-}
-
-.offline {
-  fill: #c21d03;
-}
-
-.open-side-menu {
-  animation: openSideMenu;
-}
-
-.incoming-message {
-  background: linear-gradient(45deg, #FFFFFF, #45B649);
-  border: 1px solid #45B649;
-  border-radius: 2rem;
 }
 
 .btn {
@@ -1357,6 +1330,9 @@ body {
   padding: 14px 12px 0;
 }
 .side-menu__group-chat--item {
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
   border-radius: 4px;
 }
 .side-menu__group-chat--item:hover {
@@ -1366,7 +1342,8 @@ body {
   display: flex;
   align-items: center;
   gap: 11px;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   min-height: 56px;
   padding: 9px 12px;
   border: none;
@@ -1380,14 +1357,6 @@ body {
   text-align: left;
   color: #C9BAB1;
   cursor: pointer;
-}
-.side-menu__group-chat-btn::before {
-  content: "";
-  width: 3px;
-  align-self: stretch;
-  border-radius: 2px;
-  background-color: #3A2E2A;
-  flex: none;
 }
 .side-menu__private-chats {
   flex: 1 1 auto;
@@ -1420,22 +1389,6 @@ body {
 }
 .side-menu__private-chats__list-item:hover {
   background-color: #1D1917;
-}
-.side-menu__private-chats__list-item.incoming-message {
-  background: none;
-  border: none;
-}
-.side-menu__private-chats__list-item.incoming-message .side-menu__private-chats__list-item--link {
-  color: #F5EDE7;
-}
-.side-menu__private-chats__list-item.incoming-message::after {
-  content: "";
-  width: 8px;
-  height: 8px;
-  margin-left: auto;
-  border-radius: 999px;
-  background-color: #D1402E;
-  flex: none;
 }
 .side-menu__private-chats__list-item--link {
   flex: 1;
@@ -1488,6 +1441,48 @@ body {
   border: none;
   background: none;
   color: #F0A868;
+  flex: none;
+}
+
+.side-menu__group-chat--item.incoming-message,
+.side-menu__private-chats__list-item.incoming-message {
+  background-color: rgba(209, 64, 46, 0.1);
+}
+.side-menu__group-chat--item.incoming-message:hover,
+.side-menu__private-chats__list-item.incoming-message:hover {
+  background-color: rgba(209, 64, 46, 0.16);
+}
+.side-menu__group-chat--item.incoming-message::before,
+.side-menu__private-chats__list-item.incoming-message::before {
+  background-color: #D1402E;
+}
+.side-menu__group-chat--item.incoming-message .side-menu__group-chat-btn,
+.side-menu__group-chat--item.incoming-message .side-menu__private-chats__list-item--link,
+.side-menu__private-chats__list-item.incoming-message .side-menu__group-chat-btn,
+.side-menu__private-chats__list-item.incoming-message .side-menu__private-chats__list-item--link {
+  color: #F5EDE7;
+}
+.side-menu__group-chat--item.incoming-message::after,
+.side-menu__private-chats__list-item.incoming-message::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  margin-left: auto;
+  border-radius: 999px;
+  background-color: #D1402E;
+  animation: unread-ping 2.4s ease-out infinite;
+  flex: none;
+}
+
+.side-menu__group-chat--item::before,
+.side-menu__private-chats__list-item::before {
+  content: "";
+  width: 3px;
+  min-height: 34px;
+  align-self: stretch;
+  margin: 9px 0;
+  border-radius: 2px;
+  background-color: #3A2E2A;
   flex: none;
 }
 
