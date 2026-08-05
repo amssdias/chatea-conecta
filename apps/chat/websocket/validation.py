@@ -3,6 +3,9 @@ from apps.chat.infrastructure.redis.async_redis_service import AsyncRedisService
 from apps.chat.websocket.exceptions import WebSocketValidationError
 
 
+CLIENT_ALLOWED_GROUPS = frozenset({"chatea"})
+
+
 def validate_group_payload(data: dict) -> str:
     group = data.get("group")
 
@@ -12,6 +15,10 @@ def validate_group_payload(data: dict) -> str:
     normalized_group = group.strip().lower()
     if not normalized_group:
         raise WebSocketValidationError("Missing group")
+
+    # Avoid registrations to user inbox groups and others
+    if normalized_group not in CLIENT_ALLOWED_GROUPS:
+        raise WebSocketValidationError("Invalid group")
 
     return normalized_group
 
