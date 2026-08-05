@@ -115,7 +115,12 @@
     }
 
     // [JS] sideBarView.js:80
+    // Laid out like the private rows below so the shared .incoming-message
+    // treatment can hang its marker off either one.
     &__group-chat--item {
+        display: flex;
+        align-items: center;
+        padding-right: 12px;
         border-radius: $radius;
 
         &:hover { background-color: $ink-raised-2; }
@@ -126,7 +131,8 @@
         display: flex;
         align-items: center;
         gap: 11px;
-        width: 100%;
+        flex: 1;
+        min-width: 0;
         min-height: 56px;
         padding: 9px 12px;
         border: none;
@@ -140,16 +146,6 @@
         text-align: left;
         color: $text-muted;
         cursor: pointer;
-
-        // The accent bar the design puts down the side of a rail row.
-        &::before {
-            content: "";
-            width: 3px;
-            align-self: stretch;
-            border-radius: 2px;
-            background-color: $ink-line-strong;
-            flex: none;
-        }
     }
 
     &__private-chats {
@@ -186,24 +182,6 @@
         border-radius: $radius;
 
         &:hover { background-color: $ink-raised-2; }
-
-        // [JS] sideBarView.js:16 - a message landed in a chat you are not looking at
-        &.incoming-message {
-            background: none;
-            border: none;
-
-            .side-menu__private-chats__list-item--link { color: $text-strong; }
-
-            &::after {
-                content: "";
-                width: 8px;
-                height: 8px;
-                margin-left: auto;
-                border-radius: $radius-pill;
-                background-color: $ember;
-                flex: none;
-            }
-        }
 
         // [JS] sideBarView.js:205 - the button carrying the nickname
         &--link {
@@ -259,6 +237,59 @@
             color: $gold;
             flex: none;
         }
+    }
+}
+
+// --- Unread ---------------------------------------------------
+// [JS] sideBarView.js:16 adds .incoming-message, :20 removes it. It is
+// resolved by data-group-name, which matches BOTH the group row and a
+// private row - so this is written once for either, rather than nested
+// under one of them.
+//
+// Three signals rather than one, because a single dot is easy to miss in
+// peripheral vision: the row is tinted, its accent bar and nickname lift
+// to full strength, and a dot pings on the right.
+.side-menu__group-chat--item.incoming-message,
+.side-menu__private-chats__list-item.incoming-message {
+    background-color: rgba(209, 64, 46, .1);
+
+    &:hover { background-color: rgba(209, 64, 46, .16); }
+
+    // The accent bar down the left of a rail row, as in the canvas.
+    &::before {
+        background-color: $ember;
+    }
+
+    .side-menu__group-chat-btn,
+    .side-menu__private-chats__list-item--link {
+        color: $text-strong;
+    }
+
+    &::after {
+        content: "";
+        width: 9px;
+        height: 9px;
+        margin-left: auto;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        animation: unread-ping 2.4s ease-out infinite;
+        flex: none;
+    }
+}
+
+// The bar itself, on every rail row. Quiet by default; the rule above
+// turns it ember when something is waiting.
+.side-menu__group-chat--item,
+.side-menu__private-chats__list-item {
+    &::before {
+        content: "";
+        width: 3px;
+        min-height: 34px;
+        align-self: stretch;
+        margin: 9px 0;
+        border-radius: 2px;
+        background-color: $ink-line-strong;
+        flex: none;
     }
 }
 
