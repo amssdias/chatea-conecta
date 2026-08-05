@@ -11,7 +11,6 @@
 
 // --- Colours -------------------------------------------------
 $color-light-amber:   #fef3c7;
-$color-light-amber-2: #fcd34d;
 $color-light-amber-3: #fde68a;
 $color-dark-amber-2:  #d97706;
 $color-green-dark-1:  #84cc16;
@@ -20,27 +19,9 @@ $color-red-wine:      #813c58;
 $primary-dark:  #c21d03; // h1, CTA hover
 $primary-main:  #fd5732; // h2, CTA
 
-$accent-dark:   #393939; // headings
 $accent-light:  #bebebe; // secondary text, borders
 
 $text-dark:     #232121; // main text
 $text-light:    #4b4848; // secondary text, input labels
 
 $bg-light:      #fbfbfb; // main background
-$bg-medium:     #f1f1f1; // input fields
-
-// --- Sour Gummy ----------------------------------------------
-// The chat page's body font. Retired with the rest of the legacy
-// palette when the chat is redesigned.
-@include font-face("Sour Gummy", "SourGummy_Expanded-Thin", 100, normal);
-@include font-face("Sour Gummy", "SourGummy_Expanded-ThinItalic", 100, italic);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-ExtraLight", 200, normal);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-ExtraLightItalic", 200, italic);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-Light", 300, normal);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-Italic", 300, italic);
-@include font-face("Sour Gummy", "SourGummy-Regular", 400, normal);
-@include font-face("Sour Gummy", "SourGummy-Medium", 500, normal);
-@include font-face("Sour Gummy", "SourGummy-SemiBold", 600, normal);
-@include font-face("Sour Gummy", "SourGummy-Bold", 700, normal);
-@include font-face("Sour Gummy", "SourGummy-ExtraBold", 800, normal);
-@include font-face("Sour Gummy", "SourGummy-Black", 900, normal);
