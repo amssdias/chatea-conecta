@@ -1,20 +1,6 @@
-.margin-top-xsmall {margin-top: 2rem;}
-.margin-bottom-xsmall {margin-bottom: 2rem;}
-.margin-bottom-xxsmall {margin-bottom: 1rem;}
-.margin-right-xxsmall {margin-right: 1rem;}
-.background-color-text-sending {background-color: $accent-light !important;}
-.hide {display: none !important;}
-.online {fill:$color-green-dark-1;}
-.offline {fill: $primary-dark;}
-// .selected {background-color: $color-light-amber-3 !important;}
+.margin-top-xsmall { margin-top: 2rem; }
+.margin-bottom-xsmall { margin-bottom: 2rem; }
+.margin-bottom-xxsmall { margin-bottom: 1rem; }
+.margin-right-xxsmall { margin-right: 1rem; }
 
-// Side menu
-.open-side-menu {
-    animation: openSideMenu;
-}
-
-.incoming-message {
-    background: linear-gradient(45deg, #FFFFFF, #45B649);
-    border: 1px solid #45B649;
-    border-radius: 2rem;
-}
+.hide { display: none !important; }
