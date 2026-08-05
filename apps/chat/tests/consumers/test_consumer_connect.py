@@ -10,7 +10,7 @@ from apps.chat.services.guest_session import GUEST_SESSION_COOKIE, issue_guest_t
 USERNAME = "testuser"
 USER_ID = "u_00001"
 
-
+@patch("apps.chat.consumers.cleanup_user_presence", new_callable=AsyncMock)
 @patch("apps.chat.consumers.restore_user_private_chat_groups", new_callable=AsyncMock)
 @patch("apps.chat.consumers.register_username_as_active", new_callable=AsyncMock)
 @patch("apps.chat.consumers.mark_user_online", new_callable=AsyncMock)
