@@ -6,11 +6,11 @@ from apps.chat.websocket.validation import validate_group_payload
 
 class ValidateGroupPayloadTests(SimpleTestCase):
     def test_returns_normalized_group(self):
-        data = {"group": "  My-Group  "}
+        data = {"group": "  Chatea  "}
 
         result = validate_group_payload(data)
 
-        self.assertEqual(result, "my-group")
+        self.assertEqual(result, "chatea")
 
     def test_raises_error_when_group_is_missing(self):
         data = {}
