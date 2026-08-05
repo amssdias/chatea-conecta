@@ -32,12 +32,12 @@ jobs:
 
       - name: 🧪 Run Tests with Coverage
         run: |
-            pipenv run coverage run \
-            --source="apps.chat" \
-            manage.py test apps.chat \
-            --settings=chat_connect.settings.settings_tests
+          pipenv run coverage run manage.py test \
+          apps.chat apps.integrations \
+          apps.subscriptions apps.users \
+          --settings=chat_connect.settings.settings_tests
 
-            pipenv run coverage report --show-missing
+          pipenv run coverage report
 
   migrations:
     name: 📋 Check Pending Migrations
