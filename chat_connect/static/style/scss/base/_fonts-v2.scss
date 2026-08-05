@@ -1,51 +1,73 @@
 // =============================================================
-// Self-hosted redesign faces - NOT ACTIVE YET.
+// Self-hosted variable fonts for the redesign.
 //
-// The redesign was drawn with Archivo (variable, wdth + wght),
-// Instrument Sans and JetBrains Mono. Those files are not in the
-// repo yet, so abstracts/_tokens.scss currently points the three
-// $font-* tokens at system stacks and this file compiles to
-// nothing.
+// GENERATED - do not hand-edit. Regenerate by re-running the fetch
+// script, which pulls from the Google Fonts CSS API and writes the
+// unicode-range and font-stretch values exactly as Google reports
+// them. All three are SIL Open Font License 1.1.
 //
-// To switch the real faces on:
-//   1. Download the *variable* woff2 for each family and put them at
-//        static/utils/fonts/archivo/Archivo[wdth,wght].woff2
-//        static/utils/fonts/instrument-sans/InstrumentSans[wght].woff2
-//        static/utils/fonts/jetbrains-mono/JetBrainsMono[wght].woff2
-//      (fonts.google.com -> "Get font" -> download, then convert the
-//       .ttf with fonttools: pyftsubset --flavor=woff2)
-//   2. Uncomment the three blocks below.
-//   3. Point $font-display / $font-body / $font-mono in
-//      abstracts/_tokens.scss back at the family names.
+// Self-hosted on purpose: a fonts.googleapis.com <link> costs a
+// third-party round trip on every page and adds a consent surface.
 //
-// Archivo must be the VARIABLE file: the display sizes use the width
-// axis via `font-stretch`, and the static family ignores it.
-//
-// Do NOT add a fonts.googleapis.com <link>: third-party font
-// requests on every page hurt LCP and add a consent surface.
+// Only latin and latin-ext are shipped - enough for English and
+// Spanish. Archivo is the VARIABLE file: the display sizes drive the
+// width axis through font-stretch, which a static family ignores.
 // =============================================================
 
-// @font-face {
-//     font-family: 'Archivo';
-//     src: url('../../utils/fonts/archivo/Archivo[wdth,wght].woff2') format('woff2-variations');
-//     font-weight: 100 900;
-//     font-stretch: 62% 125%;
-//     font-style: normal;
-//     font-display: swap;
-// }
+@font-face {
+    font-family: 'Archivo';
+    src: url('../../utils/fonts/archivo/archivo-latin-ext.woff2') format('woff2');
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
-// @font-face {
-//     font-family: 'Instrument Sans';
-//     src: url('../../utils/fonts/instrument-sans/InstrumentSans[wght].woff2') format('woff2-variations');
-//     font-weight: 400 700;
-//     font-style: normal;
-//     font-display: swap;
-// }
+@font-face {
+    font-family: 'Archivo';
+    src: url('../../utils/fonts/archivo/archivo-latin.woff2') format('woff2');
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-// @font-face {
-//     font-family: 'JetBrains Mono';
-//     src: url('../../utils/fonts/jetbrains-mono/JetBrainsMono[wght].woff2') format('woff2-variations');
-//     font-weight: 400 700;
-//     font-style: normal;
-//     font-display: swap;
-// }
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('../../utils/fonts/instrument-sans/instrument-sans-latin-ext.woff2') format('woff2');
+    font-weight: 400 700;
+    font-stretch: 100%;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('../../utils/fonts/instrument-sans/instrument-sans-latin.woff2') format('woff2');
+    font-weight: 400 700;
+    font-stretch: 100%;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../../utils/fonts/jetbrains-mono/jetbrains-mono-latin-ext.woff2') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../../utils/fonts/jetbrains-mono/jetbrains-mono-latin.woff2') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}

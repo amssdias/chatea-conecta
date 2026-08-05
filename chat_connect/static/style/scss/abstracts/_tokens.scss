@@ -35,21 +35,16 @@ $online:           #7FA86B;
 $offline:          #5C534E;
 
 // --- Type -----------------------------------------------------
-// System stacks for now. The redesign was drawn with three custom
-// faces; when the woff2 files land, uncomment the @font-face rules
-// in base/_fonts-v2.scss and swap these three lines back to:
+// The three faces the redesign was drawn with, self-hosted as variable
+// woff2 in base/_fonts-v2.scss. The system stacks after each are the
+// fallback while the font loads (font-display: swap) and if it 404s.
 //
-//     $font-display: 'Archivo', system-ui, sans-serif;
-//     $font-body:    'Instrument Sans', system-ui, sans-serif;
-//     $font-mono:    'JetBrains Mono', ui-monospace, monospace;
-//
-// Nothing else has to change. The `font-stretch: 106%-118%` values
-// scattered through _home-v2.scss and _topbar.scss are the display
-// width axis: inert against a static system face, live the moment
-// the variable Archivo is dropped in. Leave them where they are.
-$font-display:     system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-$font-body:        system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-$font-mono:        ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+// Archivo is the VARIABLE file: the `font-stretch: 106%-118%` values
+// through _home-v2.scss, _topbar.scss and _page.scss drive its width
+// axis. A static Archivo would silently ignore them.
+$font-display:     'Archivo', system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-body:        'Instrument Sans', system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-mono:        'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
 // --- Shape and rhythm ----------------------------------------
 $radius:           4px;   // every panel, card, bubble, input

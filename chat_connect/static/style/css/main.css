@@ -212,6 +212,58 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23000000' fill-opacity='0.07' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
+@font-face {
+  font-family: "Archivo";
+  src: url("../../utils/fonts/archivo/archivo-latin-ext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("../../utils/fonts/archivo/archivo-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("../../utils/fonts/instrument-sans/instrument-sans-latin-ext.woff2") format("woff2");
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("../../utils/fonts/instrument-sans/instrument-sans-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../../utils/fonts/jetbrains-mono/jetbrains-mono-latin-ext.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../../utils/fonts/jetbrains-mono/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 body {
   font-family: "Sour Gummy", sans-serif;
   line-height: 1.2;
@@ -517,7 +569,7 @@ body {
 }
 .cta-band__title {
   max-width: 20ch;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 118%;
   font-size: clamp(32px, 4.4vw, 54px);
   line-height: 1;
@@ -540,7 +592,7 @@ body {
   padding: 0 34px;
   border-radius: 999px;
   background-color: #14100F;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: 18px;
   font-weight: 700;
@@ -602,7 +654,7 @@ body {
   align-items: baseline;
   gap: 16px;
   padding: 22px 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 106%;
   font-size: clamp(17px, 1.6vw, 21px);
   font-weight: 700;
@@ -649,7 +701,7 @@ body {
 
 .faq-group__title {
   margin-bottom: 8px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 112%;
   font-size: clamp(24px, 2.4vw, 32px);
   font-weight: 800;
@@ -718,7 +770,7 @@ body {
   background-color: #1A1614;
 }
 .auth-page__title {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 112%;
   font-size: clamp(22px, 2.2vw, 28px);
   font-weight: 800;
@@ -743,7 +795,7 @@ body {
   margin: 0;
 }
 .auth-form label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -759,7 +811,7 @@ body {
   border: 1px solid #3A2E2A;
   border-radius: 4px;
   background-color: #14100F;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 16.5px;
   color: #F5EDE7;
 }
@@ -833,7 +885,7 @@ body {
   border: none;
   border-radius: 999px;
   background-color: #D1402E;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 106%;
   font-size: 17px;
   font-weight: 700;
@@ -924,7 +976,7 @@ body {
   align-items: center;
   gap: 9px;
   margin-bottom: 20px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12.5px;
   color: #9C8F86;
 }
@@ -943,7 +995,7 @@ body {
 .page-head__title {
   max-width: 22ch;
   margin-bottom: 18px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 118%;
   font-size: clamp(34px, 4.6vw, 61px);
   line-height: 1;
@@ -970,7 +1022,7 @@ body {
   border: 1px solid #3A2E2A;
   border-radius: 999px;
   background-color: #1D1917;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12.5px;
   color: #C9BAB1;
 }
@@ -990,7 +1042,7 @@ body {
 }
 .card__title {
   margin-bottom: 10px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: 19px;
   font-weight: 700;
@@ -1053,7 +1105,7 @@ body {
 }
 .doc__title {
   margin-bottom: 12px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: clamp(18px, 1.7vw, 22px);
   font-weight: 700;
@@ -1098,7 +1150,7 @@ body {
 }
 .toc__title {
   margin-bottom: 4px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -1131,7 +1183,7 @@ body {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;
   color: #9C8F86;
 }
@@ -1248,7 +1300,7 @@ body {
   border-top-color: #D1402E;
 }
 .rules__title {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: clamp(18px, 1.7vw, 22px);
   font-weight: 700;
@@ -1314,7 +1366,7 @@ body {
 .closer__title {
   max-width: 24ch;
   margin-bottom: 12px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 115%;
   font-size: clamp(26px, 2.8vw, 37px);
   line-height: 1.05;
@@ -1337,7 +1389,7 @@ body {
   padding: 0 30px;
   border-radius: 999px;
   background-color: #D1402E;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 106%;
   font-size: 17px;
   font-weight: 700;
@@ -1400,7 +1452,7 @@ body {
 }
 
 .doc__num {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 14px;
   font-weight: 500;
   color: #E6725F;
@@ -1426,7 +1478,7 @@ body {
   background-color: #1A1614;
 }
 .contact-form__title {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 112%;
   font-size: clamp(22px, 2.2vw, 29px);
   font-weight: 800;
@@ -1439,7 +1491,7 @@ body {
   gap: 9px;
 }
 .contact-form__label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -1452,7 +1504,7 @@ body {
   border: 1px solid #3A2E2A;
   border-radius: 4px;
   background-color: #14100F;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 16.5px;
   color: #F5EDE7;
 }
@@ -1491,7 +1543,7 @@ body {
   border: none;
   border-radius: 999px;
   background-color: #D1402E;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 106%;
   font-size: 17px;
   font-weight: 700;
@@ -1523,7 +1575,7 @@ body {
 .reason-chips__legend {
   padding: 0;
   margin-bottom: 10px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -1763,7 +1815,7 @@ body {
   filter: invert(100%);
 }
 .site-footer__name {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 112%;
   font-size: 17px;
   font-weight: 700;
@@ -1782,7 +1834,7 @@ body {
 }
 .site-footer__col-title {
   margin-bottom: 2px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -1808,7 +1860,7 @@ body {
   border-top: 1px solid #2B2422;
 }
 .site-footer__legal {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;
   color: #9C8F86;
 }
@@ -1865,7 +1917,7 @@ body {
   pointer-events: none;
 }
 .topbar__name {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 112%;
   font-size: 18px;
   font-weight: 700;
@@ -1948,7 +2000,7 @@ body {
   border: 1px solid transparent;
   border-radius: 999px;
   background: none;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 14.5px;
   font-weight: 600;
   color: #E8DED6;
@@ -2546,7 +2598,7 @@ body {
   border: 1px solid #3A2E2A;
   border-radius: 999px;
   background-color: #1D1917;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -2564,7 +2616,7 @@ body {
 }
 .hero__title {
   max-width: 18ch;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 118%;
   font-size: clamp(35px, 4.6vw, 64px);
   line-height: 1;
@@ -2608,7 +2660,7 @@ body {
   gap: 9px;
 }
 .join__label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -2622,7 +2674,7 @@ body {
   border: 1px solid #3A2E2A;
   border-radius: 4px;
   background-color: #14100F;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 17px;
   color: #F5EDE7;
 }
@@ -2685,7 +2737,7 @@ body {
   border: none;
   border-radius: 999px;
   background-color: #D1402E;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: 18px;
   font-weight: 700;
@@ -2703,7 +2755,7 @@ body {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;
   color: #9C8F86;
 }
@@ -2766,7 +2818,7 @@ body {
   min-width: 0;
 }
 .room-card__name {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: 15.5px;
   font-weight: 700;
@@ -2781,7 +2833,7 @@ body {
   align-items: center;
   gap: 7px;
   margin-left: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11.5px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2841,7 +2893,7 @@ body {
   min-width: 0;
 }
 .room-card__msg-meta {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11.5px;
   color: #9C8F86;
 }
@@ -2928,7 +2980,7 @@ body {
 
 .section-title {
   max-width: 26ch;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 115%;
   font-size: clamp(30px, 3.6vw, 48px);
   line-height: 1.02;
@@ -2962,7 +3014,7 @@ body {
   border-top-color: #D1402E;
 }
 .steps__num {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;
   font-weight: 700;
   color: #9C8F86;
@@ -2971,7 +3023,7 @@ body {
   color: #E6725F;
 }
 .steps__title {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: clamp(20px, 1.8vw, 24px);
   font-weight: 700;
@@ -3031,7 +3083,7 @@ body {
 }
 .reasons__feature-title {
   max-width: 22ch;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 112%;
   font-size: clamp(24px, 2.4vw, 34px);
   line-height: 1.05;
@@ -3060,7 +3112,7 @@ body {
   background-color: #D1402E;
 }
 .reasons__card-title {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-size: clamp(19px, 1.7vw, 22px);
   font-weight: 700;
@@ -3160,7 +3212,7 @@ body {
   justify-content: center;
   aspect-ratio: 1;
   border-radius: 999px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-stretch: 108%;
   font-weight: 700;
   color: #14100F;
@@ -3230,7 +3282,7 @@ body {
   color: #E8DED6;
 }
 .modal--ink .heading-secondary, .modal--ink .heading-tertiary {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: #F5EDE7;
 }
 .modal--ink .paragraph, .modal--ink li {
@@ -3252,7 +3304,7 @@ body {
   background-color: #14100F;
   background-image: none;
   color: #E8DED6;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   overflow-x: hidden;
 }
 .theme-ink a:not([class]) {
