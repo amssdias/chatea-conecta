@@ -2,243 +2,328 @@
 {% load static %}
 {% load i18n %}
 
+{# body_class, navigation and footer all come from base.html now that the #}
+{# redesigned chrome is the site-wide default (step 2). #}
+
 {% block title %}
-{% trans "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta" %}
+{% trans "Free chat rooms with no sign up. Anonymous adult chat, open now | Chatea-Conecta" %}
 {% endblock title %}
 
 {% block description %}
-{% trans "Join Chatea-Conecta, the best free chat without registration! Pick a nickname & start chatting instantly—no sign-ups, no downloads, just real conversations!" %}
+{% trans "Free chat with no registration and no download. Pick a nickname and talk to adults across Europe and Latin America in one moderated room. Anonymous, 18+, always free." %}
 {% endblock description %}
 
 {% block og_title %}
-{% trans "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta" %}
+{% trans "Free chat rooms with no sign up. Anonymous adult chat, open now" %}
 {% endblock og_title %}
 
 {% block og_description %}
-{% trans "Join Chatea-Conecta for free chat without registration. Pick a nickname and start chatting instantly—no sign-ups or downloads." %}
+{% trans "Pick a nickname and talk to adults worldwide. No account, no app, no cost." %}
 {% endblock og_description %}
 
 {% block twitter_title %}
-{% trans "Free Chat Without Registration | Anonymous Online Chat – Chatea-Conecta" %}
+{% trans "Free chat rooms with no sign up. Anonymous adult chat, open now" %}
 {% endblock twitter_title %}
 
 {% block twitter_description %}
-{% trans "Join Chatea-Conecta for free chat without registration. Pick a nickname and start chatting instantly—no sign-ups or downloads." %}
+{% trans "Pick a nickname and talk to adults worldwide. No account, no app, no cost." %}
 {% endblock twitter_description %}
 
 {% block scripts %}
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": "Chatea-Conecta",
-          "url": "{{ SITE_URL }}",
-          "applicationCategory": "CommunicationApplication",
-          "operatingSystem": "Web",
-          "description": "Free anonymous online chat to meet new people instantly without registration."
+          "@graph": [
+            {
+              "@type": "WebApplication",
+              "name": "Chatea-Conecta",
+              "url": "{{ SITE_URL }}",
+              "applicationCategory": "CommunicationApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "Requires JavaScript and a modern browser",
+              "isAccessibleForFree": true,
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+              "audience": { "@type": "PeopleAudience", "suggestedMinAge": 18 },
+              "description": "Free anonymous online chat to meet new people instantly without registration."
+            }
+          ]
         }
     </script>
 
     <script src="{% static 'js/modal.js' %}" defer></script>
 {% endblock scripts %}
 
+
 {% block header %}
+<header class="hero" id="top">
 
-<header class="header">
-    <div class="header__title">
-        <h1 class="heading-primary margin-bottom-xsmall">{% trans "Free Chat – No Sign-Ups, No Downloads!" %}</h1>
-        <h2 class="heading-secondary text-align-center margin-bottom-xxsmall">{% trans "Welcome to Chatea-Conecta – The Best Free Anonymous Chat Room!" %}</h2>
-    </div>
+    <div class="hero__intro">
+        <span class="hero__badge">{% trans "18+ &middot; no sign up &middot; always free" %}</span>
 
-    <form class="form-nickname" method="POST" action="{% url 'chat:live-chat' %}">
-        {% csrf_token %}
-        <input class="form-nickname__input" type="text" name="username" aria-label="{% trans 'Username' %}" placeholder="{% trans 'Write your username...' %}">
-        <div class="form-nickname__legal-confirmations">
-            <div class="margin-bottom-xxsmall">
-                <input class="form-nickname__checkbox margin-right-xxsmall" aria-label="{% trans 'Terms and conditions' %}" required type="checkbox" name="terms-conditions" id="terms-conditions-checkbox">
-                <label class="form-nickname__checkbox-label" for="terms-conditions-checkbox">
-                    {% blocktrans %}I agree to the <span class="link-tc" id="terms-and-conditions">Terms and Conditions</span>  of the site.{% endblocktrans %}
+        <h1 class="hero__title">
+            {% blocktrans %}Free chat rooms. <em>Someone is awake.</em>{% endblocktrans %}
+        </h1>
+
+        <p class="hero__lede">
+            {% trans "Pick a nickname and start talking to adults across Europe and Latin America. No account, no app, no cost." %}
+        </p>
+
+        {% if request.user.is_authenticated %}
+        <form class="join" id="join" method="POST" action="{% url 'chat:live-chat' %}">
+            {% csrf_token %}
+
+            {% for message in messages %}
+            <p class="join__error">{{ message }}</p>
+            {% endfor %}
+
+            <button class="join__submit" type="submit">{% trans "Enter Chatroom" %}</button>
+
+            <p class="join__presence">
+                {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{% endblocktrans %}
+            </p>
+        </form>
+        {% else %}
+        <form class="join" id="join" method="POST" action="{% url 'chat:live-chat' %}">
+            {% csrf_token %}
+
+            <label class="join__field">
+                <span class="join__label">{% trans "Your nickname" %}</span>
+                <input
+                        class="join__input"
+                        type="text"
+                        name="username"
+                        autocomplete="off"
+                        aria-label="{% trans 'Username' %}"
+                        placeholder="{% trans 'Write your username...' %}"
+                >
+            </label>
+
+            <div class="join__checks">
+                <label class="join__check" for="terms-conditions-checkbox">
+                    <input
+                            class="join__checkbox"
+                            aria-label="{% trans 'Terms and conditions' %}"
+                            required
+                            type="checkbox"
+                            name="terms-conditions"
+                            id="terms-conditions-checkbox"
+                    >
+                    <span>{% blocktrans %}I agree to the <span class="link-tc" id="terms-and-conditions">Terms and Conditions</span> of the site.{% endblocktrans %}</span>
+                </label>
+
+                <label class="join__check" for="age-verification-checkbox">
+                    <input
+                            class="join__checkbox"
+                            aria-label="{% trans 'Age verification' %}"
+                            required
+                            type="checkbox"
+                            name="age-verification"
+                            id="age-verification-checkbox"
+                    >
+                    <span>{% trans "I confirm that I am 18 years old or older." %}</span>
                 </label>
             </div>
-            <div class="margin-bottom-xsmall">
-                <input class="form-nickname__checkbox margin-right-xxsmall" aria-label="{% trans 'Age verification' %}" required type="checkbox" name="age-verification" id="age-verification-checkbox">
-                <label class="form-nickname__checkbox-label" for="age-verification-checkbox">{% trans "I confirm that I am 18 years old or older." %}</label>
+
+            {% for message in messages %}
+            <p class="join__error">{{ message }}</p>
+            {% endfor %}
+
+            <button class="join__submit" type="submit">{% trans "Start Chatting Now" %}</button>
+
+            <p class="join__presence">
+                {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{% endblocktrans %}
+            </p>
+        </form>
+        {% endif %}
+    </div>
+
+    <div class="hero__aside">
+        <div class="room-card">
+            <div class="room-card__header">
+                <span class="room-card__stack" aria-hidden="true">
+                    <span class="room-card__avatar room-card__avatar--a">M</span>
+                    <span class="room-card__avatar room-card__avatar--b">J</span>
+                    <span class="room-card__avatar room-card__avatar--c">L</span>
+                </span>
+                <span class="room-card__id">
+                    <span class="room-card__name">Chatea Conecta</span>
+                    <span class="room-card__sub">{% trans "One room &middot; English and Espa&ntilde;ol" %}</span>
+                </span>
+                <span class="room-card__live">{% trans "live" %}</span>
             </div>
-        </div>
-        {% for message in messages %}
-            <p class="message-error">{{ message }}</p>
-        {% endfor %}
 
-        <button class="form-nickname__btn" type="submit">{% trans "Start Chatting Now" %}</button>
-        <p class="form-nickname__paragraph margin-top-xxsmall">
-            {% blocktrans count n=n_persons %}{{ n }} person chatting now!{% plural %}{{ n }} people chatting now!{% endblocktrans %}
-        </p>
-    </form>
+            <div class="room-card__body">
+                <div class="room-card__msg">
+                    <span class="room-card__msg-avatar room-card__msg-avatar--a" aria-hidden="true">M</span>
+                    <div class="room-card__msg-body">
+                        <span class="room-card__msg-meta">marta_48 &middot; Madrid</span>
+                        <p class="room-card__msg-text">{% trans "Rough week. Anyone else just want to talk about something else tonight?" %}</p>
+                    </div>
+                </div>
 
-    <!-- Modal Terms and Conditions -->
-    <div class="modal hide" id="modal-terms-conditions">
-        
-        <div class="modal__header">
-            <h2 class="heading-secondary margin-bottom-xsmall">{% trans "Terms and Conditions" %}</h2>
-            <div class="modal-close margin-bottom-xxsmall" onclick="closeModal()">
-                <svg width="50px" height="50px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)">
-                    <!-- Background circle for hover effect -->
-                    <circle class="bg-circle" cx="12" cy="12" r="10.5" fill="transparent"></circle>
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.192"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path class="modal-close-x" d="M10.0303 8.96965C9.73741 8.67676 9.26253 8.67676 8.96964 8.96965C8.67675 9.26255 8.67675 9.73742 8.96964 10.0303L10.9393 12L8.96966 13.9697C8.67677 14.2625 8.67677 14.7374 8.96966 15.0303C9.26255 15.3232 9.73743 15.3232 10.0303 15.0303L12 13.0607L13.9696 15.0303C14.2625 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2625 15.0303 13.9696L13.0606 12L15.0303 10.0303C15.3232 9.73744 15.3232 9.26257 15.0303 8.96968C14.7374 8.67678 14.2625 8.67678 13.9696 8.96968L12 10.9393L10.0303 8.96965Z" fill="#d97706"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z" fill="#d97706"></path>
-                    </g>
-                </svg>
+                <div class="room-card__msg">
+                    <span class="room-card__msg-avatar room-card__msg-avatar--b" aria-hidden="true">J</span>
+                    <div class="room-card__msg-body">
+                        <span class="room-card__msg-meta">joao_r &middot; Porto</span>
+                        <p class="room-card__msg-text">{% trans "Long walks and worse coffee. Mind if I join?" %}</p>
+                    </div>
+                </div>
+
+                <div class="room-card__msg">
+                    <span class="room-card__msg-avatar room-card__msg-avatar--c" aria-hidden="true">L</span>
+                    <div class="room-card__msg-body">
+                        <span class="room-card__msg-meta">lucia_b &middot; Valencia</span>
+                        <p class="room-card__msg-text">{% trans "Practising my English tonight if anyone is patient with me." %}</p>
+                    </div>
+                </div>
+
+                <p class="room-card__typing">
+                    <span class="room-card__dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                    {% trans "two people typing" %}
+                </p>
             </div>
+
+            <p class="room-card__foot">{% trans "Pick a nickname to reply." %}</p>
         </div>
 
+        <p class="room-note">{% trans "Nicknames only. Nothing anyone writes is kept after the conversation ends." %}</p>
+    </div>
 
-        <div class="modal-content">
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "Welcome to Chatea Conecta! Please read these Terms and Conditions carefully before using our website. By accessing or using Chatea Conecta, you agree to be bound by these terms. If you do not agree with any part of these terms, please do not use our website." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">1. {% trans "General Information" %}</h3>
-            <p class="paragraph">
-                <ul>
-                    <li><strong>{% trans "Website Name:" %} </strong>Chatea Conecta</li>
-                    <li class="margin-bottom-xsmall"><strong>{% trans "Contact Information:" %} </strong>{% trans "For questions or support, please contact us at test@testing.com (this may be updated with a domain-specific email in the future)." %}</li>
-                </ul>
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">2. {% trans "Eligibility and Age Verification" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "By using Chatea Conecta, you confirm that you are at least 18 years of age. Our website is intended for users who are of legal age to participate in open chat rooms and interact with others in a respectful, adult manner." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">3. {% trans "Platform Purpose and Acceptable Use" %}</h3>
-            <p class="paragraph">
-                {% trans "Chatea Conecta is an entertainment-based platform that allows users to connect and chat with others from around the world. We are dedicated to fostering a friendly, positive environment for users to enjoy casual conversations." %}
-            </p>
-            <p class="paragraph">{% trans "By using this website, you agree to:" %}</p>
-            <ul>
-                <li>{% trans "Communicate respectfully with other users, refraining from offensive language, harassment, discrimination, or any form of abuse." %}
-                </li>
-                <li>{% trans "Use Chatea Conecta solely for personal enjoyment and not for any commercial or promotional purposes." %}
-                </li>
-                <li class="margin-bottom-xsmall">{% trans "Avoid sharing or attempting to solicit personal, financial, or sensitive information." %}
-                </li>
-            </ul>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">4. {% trans "Prohibited Actions" %}</h3>
-            <p class="paragraph">
-                {% trans "To maintain a safe and welcoming environment, the following actions are strictly prohibited:" %}
-            </p>
-            <ul>
-                <li><strong>{% trans "Offensive or Abusive Behavior:" %}</strong>{% trans "Users may not use language or behavior that is abusive, offensive, obscene, or otherwise harmful to other users." %}</li>
-                <li><strong>{% trans "Commercial Use:" %}</strong>{% trans "Using Chatea Conecta for advertising, promoting products or services, or conducting commercial transactions is not permitted." %}</li>
-                <li><strong>{% trans "Misrepresentation:" %}</strong>{% trans "Impersonating another person or providing false information is not allowed." %}</li>
-            </ul>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "Violating any of these terms may result in suspension or permanent banning from the platform." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">5. {% trans "Intellectual Property and Content Ownership" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "All content on Chatea Conecta, including SVG designs, website layout, and underlying code, is owned by the creator of Chatea Conecta. Users are not permitted to reproduce, distribute, or otherwise use any part of the website’s content for commercial purposes without prior permission." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">6. {% trans "Privacy and Data Collection" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "Chatea Conecta does not collect, store, or share any personal data at this time. Should this policy change in the future, users will be notified, and updates will be reflected in our Privacy Policy." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">7. {% trans "Liability Disclaimer" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "Chatea Conecta is provided on an 'as is' basis. While we strive to maintain a positive environment, we are not responsible for the behavior, comments, or interactions of individual users. We disclaim any liability for damages resulting from user interactions or any content shared within the platform." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">8. {% trans "Changes to Terms" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "Chatea Conecta reserves the right to update these Terms and Conditions at any time. Users will be notified of significant changes, and continued use of the platform constitutes acceptance of any revised terms." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">9. {% trans "Governing Law" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "These Terms and Conditions are governed by applicable laws of [Your Country/Region]. Any disputes arising from the use of Chatea Conecta shall be resolved through appropriate legal channels within this jurisdiction." %}
-            </p>
-
-            <h3 class="heading-tertiary margin-bottom-xxsmall">10. {% trans "Contact Us" %}</h3>
-            <p class="paragraph margin-bottom-xsmall">
-                {% trans "For any questions or concerns regarding these Terms and Conditions, please contact us at test@testing.com." %}
-            </p>
-        </div>
+    <!-- Modal Terms and Conditions. Ids and closeModal() are the contract for static/js/modal.js. -->
+    <div class="modal modal--ink hide" id="modal-terms-conditions">
+        {% include "partials/terms-modal-body.html" %}
     </div>
 </header>
 {% endblock header %}
 
+
 {% block content %}
 
-<section class="section-about margin-bottom-xsmall" role="region" aria-labelledby="about-heading">
-    <h3 id="about-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall text-align-center">{% trans "Instant Free Chat Without Registration – Meet New People Now!" %}</h3>
-    <p class="paragraph">{% trans "Looking for an easy, free online chat where you can meet new people instantly? Chatea-Conecta lets you connect with people worldwide in real-time—no sign-ups, no hassle, just fun conversations!" %}</p>
+<ul class="pledges">
+    <li class="pledges__item">{% trans "Anonymous by default. A nickname is the only thing we ask for." %}</li>
+    <li class="pledges__item">{% trans "Moderated and adults only, with a report button in every chat." %}</li>
+    <li class="pledges__item">{% trans "Runs in the browser you already have open. Nothing to install." %}</li>
+</ul>
+
+<section class="steps" id="how" aria-labelledby="how-heading">
+    <h2 class="section-title steps__heading" id="how-heading">{% trans "Three steps, about five seconds." %}</h2>
+
+    <ol class="steps__list">
+        <li class="steps__item">
+            <span class="steps__num">01</span>
+            <h3 class="steps__title">{% trans "Choose a nickname" %}</h3>
+            <p class="steps__text">{% trans "Anything you like. No email, no phone number and no profile to build." %}</p>
+        </li>
+        <li class="steps__item">
+            <span class="steps__num">02</span>
+            <h3 class="steps__title">{% trans "Walk into the room" %}</h3>
+            <p class="steps__text">{% trans "One shared room, moderated, open at every hour including the awkward ones." %}</p>
+        </li>
+        <li class="steps__item">
+            <span class="steps__num">03</span>
+            <h3 class="steps__title">{% trans "Take it one to one" %}</h3>
+            <p class="steps__text">{% trans "Click any name and open a private chat. It stays between the two of you." %}</p>
+        </li>
+    </ol>
 </section>
 
-<section class="section-features" role="region" aria-labelledby="features-section">
-    <h3 id="features-section" class="heading-tertiary heading-tertiary-dark-amber text-align-center margin-bottom-xsmall">{% trans "Why Use Chatea-Conecta? The Best Free Chat Online!" %}</h3>
-    <ul class="section-features__list">
-        <li class="section-features__list__item">
+<section class="reasons" id="room" aria-labelledby="room-heading">
+    <h2 class="section-title reasons__heading" id="room-heading">{% trans "Why adults keep the tab open." %}</h2>
 
-            <!-- SVG -->
-            <svg class="margin-bottom-xxsmall" aria-hidden="true" height="100px" width="100px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 473.931 473.931" xml:space="preserve" fill="#000000">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier"><circle style="fill:#FFC10E;" cx="236.966" cy="236.966" r="236.966"></circle> <path style="fill:#FFFFFF;" d="M81.391,237.123c0,85.911,69.649,155.56,155.56,155.56c85.915,0,155.564-69.649,155.564-155.56 L81.391,237.123L81.391,237.123z"></path> <g> <path style="fill:#CCCBCB;" d="M167.728,237.123c0,46.435,0,92.87,0,139.306c6.024,3.001,12.273,5.609,18.709,7.82 c0-49.043,0-98.083,0-147.126H167.728z"></path> <path style="fill:#CCCBCB;" d="M283.319,237.123c0,49.511,0,99.018,0,148.529c6.432-2.006,12.666-4.453,18.709-7.24 c0-47.098,0-94.191,0-141.289L283.319,237.123L283.319,237.123z"></path> </g> <g> <path style="fill:#333333;" d="M219.181,158.793c-1.684-31.255-23.992-53.56-55.243-55.243 c-31.184-1.68-53.698,26.522-55.243,55.243c-0.651,12.063,18.061,12,18.709,0c2.537-47.09,70.536-47.09,73.069,0 C201.12,170.793,219.832,170.856,219.181,158.793L219.181,158.793z"></path> <path style="fill:#333333;" d="M353.985,158.793c-1.684-31.255-23.992-53.56-55.243-55.243 c-31.184-1.68-53.694,26.522-55.243,55.243c-0.651,12.063,18.061,12,18.709,0c2.537-47.09,70.532-47.09,73.069,0 C335.924,170.793,354.637,170.856,353.985,158.793L353.985,158.793z"></path> </g> </g></svg>
+    <div class="reasons__grid">
+        {# Photo-free feature panel: the backdrop is built in CSS, see pages/_home-v2.scss. #}
+        <div class="reasons__feature">
+            <div class="reasons__caption">
+                <h3 class="reasons__feature-title">{% trans "The room is busiest when the rest of the internet gets quiet." %}</h3>
+                <p class="reasons__feature-text">{% trans "Late evenings and small hours are when people actually want to talk. That is when there is always someone here." %}</p>
+            </div>
+        </div>
 
-            <!-- Title -->
-            <h4 class="heading-quaternary">{% trans "No Sign-Ups, No Hassle" %}</h4>
+        <div class="reasons__card">
+            <h3 class="reasons__card-title">{% trans "Nothing is stored" %}</h3>
+            <p class="reasons__card-text">{% trans "Messages are not kept. Your nickname sits in a session cache and is dropped the moment you leave the page." %}</p>
+        </div>
 
-            <!-- Text -->
-            <p class="paragraph">{% trans "Just pick a nickname and start chatting instantly. No personal details or registration required!" %}</p>
-        </li>
-        <li class="section-features__list__item">
-            <!-- SVG -->
-            <svg class="margin-bottom-xxsmall" aria-hidden="true" height="100px" width="100px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 512 512" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle style="fill:#83D8DD;" cx="256" cy="256" r="256"></circle> <path style="fill:#7DBF63;" d="M204.513,372.421c-29.603-30.095-82.23-6.086-95.387-20.887 c-13.156-14.801,3.289-29.603,26.314-30.165s8.223-45.486-15.067-64.657c-23.291-19.169-32.626,10.947-58.94-0.7 c-14.6-6.462-19.97-57.389-16.314-82.515c3.255-22.378,21.929-48.436,39.472-43.818c17.543,4.617,6.251,20.344,19.938,21.253 c13.687,0.909,9.301-18.838,29.037-23.585c18.471-4.442,58.706-11.829,25.437-108.312C65.717,57.261,0,148.949,0,256 c0,22.746,2.982,44.792,8.549,65.787c22.086,16.813,53.062,12.456,59.961,34.725c2.781,8.976-14.062,20.788-28.73,36.585 c37.649,59.252,98.975,101.982,170.67,114.858C232.166,455.421,224.536,392.777,204.513,372.421z"></path> <path style="opacity:0.1;enable-background:new ;" d="M280.692,487.308c-141.384,0-256-114.614-256-256 c0-64.408,23.793-123.255,63.06-168.248C33.98,109.99,0,179.023,0,256c0,141.384,114.616,256,256,256 c76.977,0,146.01-33.98,192.94-87.752C403.947,463.515,345.1,487.308,280.692,487.308z"></path> <g> <path style="fill:#7DBF63;" d="M415.533,55.795c3.082,25.853,9.893,56.278-44.403,48.733c-27.18-3.777-60.513,4.524-60.305,33.814 c0.135,18.916,5.482,70.162,24.122,71.259c18.64,1.096,61.401,8.652,65.787-24.729s38.296-48.687,48.204-35.553 c7.639,10.126,37.403,44.887,59.182,62.093C497.11,148.722,463.289,93.899,415.533,55.795z"></path> <path style="fill:#7DBF63;" d="M402.928,263.079c-20.815,10.505-62.498,32.44-44.955,76.1 c17.543,43.66,36.183,79.847,24.122,116.026c-3.067,9.198,0.323,15.37,7.075,19.468c69.907-42.664,117.749-117.904,122.441-204.623 C482.008,257.391,445.927,241.379,402.928,263.079z"></path> </g> <path style="opacity:0.2;fill:#FFFFFF;enable-background:new ;" d="M353.344,19.177c-8.13,12.15-12.878,26.756-12.878,42.472 c0,42.235,34.239,76.474,76.474,76.474c20.857,0,39.753-8.359,53.55-21.897C442.334,73.107,401.532,39.006,353.344,19.177z"></path> <g> <path style="fill:#394049;" d="M277.38,310.209c-8.394,0-15.984-3.513-21.376-9.146c-5.392,5.634-12.982,9.146-21.376,9.146 c-16.323,0-29.601-13.279-29.601-29.601c0-4.542,3.682-8.223,8.223-8.223c4.543,0,8.223,3.682,8.223,8.223 c0,7.253,5.901,13.154,13.154,13.154c7.252,0,13.153-5.901,13.153-13.154c0-4.542,3.681-8.223,8.223-8.223 c4.543,0,8.223,3.682,8.223,8.223c0,7.253,5.901,13.154,13.153,13.154c7.253,0,13.154-5.901,13.154-13.154 c0-4.542,3.681-8.223,8.223-8.223c4.542,0,8.223,3.682,8.223,8.223C306.981,296.93,293.703,310.209,277.38,310.209z"></path> <path style="fill:#394049;" d="M157.265,256.89c-4.543,0-8.223-3.682-8.223-8.223v-9.08c0-4.542,3.681-8.223,8.223-8.223 c4.543,0,8.223,3.682,8.223,8.223v9.08C165.489,253.208,161.808,256.89,157.265,256.89z"></path> <path style="fill:#394049;" d="M354.741,256.89c-4.543,0-8.223-3.682-8.223-8.223v-9.08c0-4.542,3.681-8.223,8.223-8.223 c4.542,0,8.223,3.682,8.223,8.223v9.08C362.965,253.208,359.283,256.89,354.741,256.89z"></path> </g> </g></svg>
+        <div class="reasons__card reasons__card--ember">
+            <h3 class="reasons__card-title">{% trans "Two languages, one room" %}</h3>
+            <p class="reasons__card-text">{% trans "English and Espa&ntilde;ol share the same room, which is how most people here end up practising one of them." %}</p>
+        </div>
 
-            <!-- Title -->
-            <h4 class="heading-quaternary">{% trans "Chat Worldwide" %}</h4>
+        <div class="reasons__card">
+            <h3 class="reasons__card-title">{% trans "Adults, and moderated" %}</h3>
+            <p class="reasons__card-text">{% trans "Everyone confirms they are 18 or older at the door, and every chat has a report button that reaches a moderator." %}</p>
+        </div>
+    </div>
+</section>
 
-            <!-- Text -->
-            <p class="paragraph">{% trans "Connect with users from Europe, Latin America, and beyond in real-time." %}</p>
-        </li>
-        <li class="section-features__list__item">
-            <!-- SVG -->
-            <svg class="margin-bottom-xxsmall" aria-hidden="true" width="100px" height="100px"
-                 viewBox="0 0 64.00 64.00" id="Layer_1" version="1.1" xml:space="preserve"
-                 xmlns="http://www.w3.org/2000/svg"
-                 fill="#000000">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <style type="text/css"> .st0{fill:none;stroke:#b45309;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:none;stroke:#f59e0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st2{fill:none;stroke:#f59e0b;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;} .st3{fill:#FFFFFF;stroke:#f59e0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st4{fill:#f59e0b;} .st5{fill:none;stroke:#b45309;stroke-width:2;stroke-miterlimit:10;} .st6{fill:none;stroke:#f59e0b;stroke-width:2;stroke-miterlimit:10;} .st7{fill:none;stroke:#2B3088;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;} .st8{fill:none;stroke:#b45309;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;} .st9{fill:none;stroke:#f59e0b;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
-                    </style>
-                    <path class="st0" d="M37.9,45h-3.5C28.3,45,18,52,18,52v-4"></path>
-                    <path class="st0" d="M20.9,45h-3c-3.3,0-5.9-2.6-5.9-5.9V25c0-3.3,2.7-6,6-6h28.1c3.3,0,5.9,2.6,5.9,5.9V36"></path>
-                    <rect class="st1" height="8" width="10" x="42" y="44"></rect>
-                    <path class="st1" d="M50,44h-6v-2c0-1.7,1.3-3,3-3h0c1.7,0,3,1.3,3,3V44z"></path>
-                    <line class="st1" x1="47" x2="47" y1="48" y2="48"></line>
-                    <circle class="st0" cx="21" cy="32" r="3"></circle>
-                    <circle class="st0" cx="32" cy="32" r="3"></circle>
-                    <circle class="st0" cx="43" cy="32" r="3"></circle>
-                </g>
-            </svg>
+<section class="longform" aria-labelledby="about-heading">
+    <div class="longform__body">
+        <h2 class="section-title" id="about-heading">{% trans "Free chat without registration, in one browser tab" %}</h2>
 
-            <!-- Title -->
-            <h4 class="heading-quaternary">{% trans "100% Private & Anonymous" %}</h4>
+        <p class="longform__text">{% trans "Most sites that promise free online chat want an account first. Chatea-Conecta does not. You type a nickname, confirm you are an adult, and you are in a live room with people from Spain, Portugal, Mexico, Argentina and anywhere else with a connection." %}</p>
 
-            <!-- Text -->
-            <p class="paragraph">{% trans "No accounts, no tracking, no worries. Your conversations stay completely private." %}</p>
-        </li>
-    </ul>
+        <p class="longform__text">{% trans "There is no feed, no follower count and nothing to grow. It is a room with strangers in it, which is a much older and better idea than most of what replaced it. Talk about your week, argue about football, practise a language, or sit quietly and read until something catches your interest." %}</p>
+
+        <p class="longform__text">{% trans "If a conversation is worth continuing, open a private chat and keep it there. If someone is out of line, report them. Both take one click." %}</p>
+
+        <div class="longform__links">
+            <a class="longform__link" href="{% url 'chat:security' %}">{% trans "How we keep it safe" %}</a>
+            <a class="longform__link" href="{% url 'chat:faq' %}">{% trans "Common questions" %}</a>
+        </div>
+    </div>
+
+    <figure class="longform__figure">
+        {# Decorative nickname motif in place of a photograph, which is what the #}
+        {# caption below is about. Styling lives in pages/_home-v2.scss. #}
+        <span class="longform__frame" aria-hidden="true">
+            <span class="longform__nick longform__nick--a">M</span>
+            <span class="longform__nick longform__nick--b">J</span>
+            <span class="longform__nick longform__nick--c">L</span>
+            <span class="longform__nick longform__nick--d">A</span>
+            <span class="longform__nick longform__nick--e">R</span>
+            <span class="longform__nick longform__nick--f">S</span>
+        </span>
+        <figcaption class="longform__caption">{% trans "There are no photographs of members on this site. Everyone here is a nickname, and that is the point." %}</figcaption>
+    </figure>
+</section>
+
+<section class="faq-list" id="faq" aria-labelledby="faq-heading">
+    <h2 class="section-title faq-list__heading" id="faq-heading">{% trans "Questions people actually ask" %}</h2>
+
+    <div class="faq-list__items">
+        <details class="faq-list__item" open>
+            <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Is Chatea-Conecta really free chat?" %}</summary>
+            <p class="faq-list__a">{% trans "Yes. The main room and private chats are free with no time limit and no card. PRO is optional and only adds extras such as unlimited private chats and a reserved nickname." %}</p>
+        </details>
+
+        <details class="faq-list__item">
+            <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Can I chat without registration?" %}</summary>
+            <p class="faq-list__a">{% trans "Yes. Type a nickname, confirm you are 18 or older, and you are in the room. There is no account to create, no email to confirm and nothing to install." %}</p>
+        </details>
+
+        <details class="faq-list__item">
+            <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Is free chat without registration safe?" %}</summary>
+            <p class="faq-list__a">{% trans "The room is moderated and every chat has a report button. Keep your address, documents and payment details to yourself, treat unsolicited links as scams, and use a nickname that is not a handle you use elsewhere." %}</p>
+        </details>
+
+        <details class="faq-list__item">
+            <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Are the chats anonymous?" %}</summary>
+            <p class="faq-list__a">{% trans "You are identified only by the nickname you pick. We do not ask for personal data to enter a room, and messages are not stored after the conversation." %}</p>
+        </details>
+
+        <details class="faq-list__item">
+            <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Who can use the chat rooms?" %}</summary>
+            <p class="faq-list__a">{% trans "Adults only. You confirm you are 18 or older before entering, and the room is moderated to keep it respectful." %}</p>
+        </details>
+    </div>
+</section>
+
+<section class="cta-band" id="pro">
+    <div class="cta-band__body">
+        <h2 class="cta-band__title">{% trans "The room is open." %}</h2>
+        <p class="cta-band__text">{% trans "Pick a nickname and say something. Nobody here needs to know who you are." %}</p>
+    </div>
+    <a class="cta-band__btn" href="#join">{% trans "Start chatting free" %}</a>
 </section>
 
 {% endblock content %}

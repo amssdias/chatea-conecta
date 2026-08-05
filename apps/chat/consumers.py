@@ -16,6 +16,10 @@ from apps.chat.services.activity import (
     mark_user_online,
     register_username_as_active,
 )
+from apps.chat.services.guest_session import (
+    GUEST_SESSION_COOKIE,
+    aresolve_guest_identity,
+)
 from apps.chat.services.private_chats import (
     restore_user_private_chat_groups,
     save_user_private_chat_group,
@@ -33,11 +37,27 @@ logger = logging.getLogger("chat_connect")
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        logger.info(
-            f"---- {self.scope['cookies'].get('username')} CONNECTED TO WEBSOCKET ----"
-        )
-        self.id = self.scope["cookies"].get("user_id")
-        self.username = self.scope["cookies"].get("username", "").lower()
+        self.user = self.scope["user"]
+
+        if self.user.is_authenticated:
+            self.id = str(self.user.pk)
+            self.username = self.user.get_username().lower()
+        else:
+            identity = await self.resolve_guest_identity()
+
+            if identity is None:
+                await self.close(code=4001, reason="Invalid chat identity")
+                return
+
+            username, self.id = identity
+            self.username = username.lower()
+
+        if not self.id or not self.username:
+            await self.close(code=4001, reason="Invalid chat identity")
+            return
+
+        logger.info("---- %s CONNECTED TO WEBSOCKET ----", self.username)
+
         self.groups = set()
         self.private_chats = {}
 
@@ -48,6 +68,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # This is in case a user refreshs the page
         await register_username_as_active(self.username)
         await restore_user_private_chat_groups(self)
+
+    async def resolve_guest_identity(self):
+        """
+        Derive a guest identity from the signed session cookie.
+
+        The cookie is verified end to end here: the signature proves this server
+        issued the identity, and the Redis mapping proves the id still owns that
+        nickname. Nothing else about the request is trusted.
+        """
+        return await aresolve_guest_identity(
+            self.scope["cookies"].get(GUEST_SESSION_COOKIE, "")
+        )
 
     async def disconnect(self, close_code):
         """
@@ -61,13 +93,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         5. Reassess the global chat activity status and update the active-users Redis key.
         """
 
-        logger.info(
-            f"---- {self.scope['cookies'].get('username')} DISCONNECTING FROM WEBSOCKET ----"
-        )
-        username = self.scope["cookies"].get("username")
+        if not getattr(self, "id", None):
+            # connect() rejected the handshake, so there is no identity to clean up.
+            return
+
+        logger.info(f"---- {self.username} DISCONNECTING FROM WEBSOCKET ----")
+
         await broadcast_private_chat_user_offline(self)
         await self.unregister_user_from_all_groups()
-        await cleanup_user_presence(username, self.id)
+        await cleanup_user_presence(self.username, self.id)
 
     async def unregister_user_from_all_groups(self):
         for group in self.groups:

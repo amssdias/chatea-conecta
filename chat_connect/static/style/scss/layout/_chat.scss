@@ -1,0 +1,618 @@
+// =============================================================
+// THE CHAT PAGE - 2026 redesign (apps/chat/templates/chat/chat.html)
+//
+// Replaces the legacy _chat-app / _chat-message / _form-chat /
+// _chat-closed / _side-menu partials.
+//
+// READ THIS BEFORE RENAMING ANYTHING HERE. Almost none of this markup
+// exists in a template: apps/chat/static/js/views/chatView.js and
+// sideBarView.js build it at runtime and write these exact class names.
+// A rename here without the matching JS edit silently unstyles the room.
+// The JS-owned names are marked [JS] below.
+//
+// px + clamp() like the rest of the redesign.
+// =============================================================
+
+// The body class, set by chat.html. Scopes the app shell so the flex
+// layout never reaches the ordinary pages that share base.html's <main>.
+.chat-page {
+    & main {
+        display: flex;
+        align-items: stretch;
+        // Fill what the sticky topbar leaves behind.
+        height: calc(100dvh - 68px);
+        min-height: 420px;
+        overflow: hidden;
+    }
+}
+
+// --- Left rail ------------------------------------------------
+// [JS] #side-menu is toggled by chatController.js; sideBarView.js
+// toggles .open-side-menu on it.
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 clamp(272px, 23vw, 328px);
+    min-width: 0;
+    background-color: $ink-raised;
+    border-right: 1px solid $ink-line;
+
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 10px;
+        padding: 15px 18px;
+        border-bottom: 1px solid $ink-line;
+    }
+
+    &__header__title {
+        flex: 1;
+        min-width: 0;
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__header__online {
+        flex: 1 0 100%;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 13.5px;
+        color: $text-dim;
+    }
+
+    // [JS] sideBarView.js sets this class on an <svg> and toggles
+    // .online / .offline on it.
+    &__connected-icon {
+        width: 7px;
+        height: 7px;
+        border-radius: $radius-pill;
+        flex: none;
+
+        // The legacy markup is a filled <circle>; recolour through the SVG
+        // rather than the element background so both states read.
+        & circle { fill: currentColor; }
+
+        &.online {
+            color: $online;
+            animation: ember-pulse 2s ease-in-out infinite;
+        }
+
+        &.offline {
+            color: $offline;
+            animation: none;
+        }
+    }
+
+    &__close-btn {
+        display: none; // only meaningful once the rail is a drawer
+        align-items: center;
+        justify-content: center;
+        width: $tap;
+        height: $tap;
+        margin-right: -10px;
+        border: none;
+        background: none;
+        font-size: 24px;
+        line-height: 1;
+        color: $text-dim;
+        cursor: pointer;
+
+        &:hover { color: $text-strong; }
+    }
+
+    // --- the room, then the private chats ---------------------
+    &__group-chat {
+        padding: 14px 12px 0;
+    }
+
+    // [JS] sideBarView.js:80
+    // Laid out like the private rows below so the shared .incoming-message
+    // treatment can hang its marker off either one.
+    &__group-chat--item {
+        display: flex;
+        align-items: center;
+        padding-right: 12px;
+        border-radius: $radius;
+
+        &:hover { background-color: $ink-raised-2; }
+    }
+
+    // [JS] sideBarView.js:84
+    &__group-chat-btn {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        flex: 1;
+        min-width: 0;
+        min-height: 56px;
+        padding: 9px 12px;
+        border: none;
+        border-radius: $radius;
+        background: none;
+        font-family: $font-display;
+        font-stretch: 106%;
+        font-size: 15.5px;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        text-align: left;
+        color: $text-muted;
+        cursor: pointer;
+    }
+
+    &__private-chats {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 18px 12px 18px;
+    }
+
+    &__private-chats-title {
+        padding: 0 6px;
+        margin-bottom: 8px;
+        font-family: $font-mono;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    &__private-chats__list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        list-style: none;
+    }
+
+    // [JS] sideBarView.js:166
+    &__private-chats__list-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 8px 0 12px;
+        border-radius: $radius;
+
+        &:hover { background-color: $ink-raised-2; }
+
+        // [JS] sideBarView.js:205 - the button carrying the nickname
+        &--link {
+            flex: 1;
+            min-width: 0;
+            min-height: 52px;
+            padding: 0;
+            border: none;
+            background: none;
+            font-family: $font-display;
+            font-stretch: 106%;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -.015em;
+            text-align: left;
+            color: $text-muted;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:hover { color: $text-strong; }
+        }
+
+        // [JS] sideBarView.js:251
+        &--close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: $tap;
+            height: $tap;
+            border: none;
+            background: none;
+            color: $text-quiet;
+            cursor: pointer;
+            flex: none;
+
+            & svg { width: 17px; height: 17px; stroke: currentColor; }
+
+            &:hover { color: $ember-hover; }
+        }
+
+        // [JS] sideBarView.js:310 - free-plan lock. Has no CSS in the legacy
+        // build; the JS sets inline styles on it, which still win over this.
+        &--lock {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: $tap;
+            height: $tap;
+            border: none;
+            background: none;
+            color: $gold;
+            flex: none;
+        }
+    }
+}
+
+// --- Unread ---------------------------------------------------
+// [JS] sideBarView.js:16 adds .incoming-message, :20 removes it. It is
+// resolved by data-group-name, which matches BOTH the group row and a
+// private row - so this is written once for either, rather than nested
+// under one of them.
+//
+// Three signals rather than one, because a single dot is easy to miss in
+// peripheral vision: the row is tinted, its accent bar and nickname lift
+// to full strength, and a dot pings on the right.
+.side-menu__group-chat--item.incoming-message,
+.side-menu__private-chats__list-item.incoming-message {
+    background-color: rgba(209, 64, 46, .1);
+
+    &:hover { background-color: rgba(209, 64, 46, .16); }
+
+    // The accent bar down the left of a rail row, as in the canvas.
+    &::before {
+        background-color: $ember;
+    }
+
+    .side-menu__group-chat-btn,
+    .side-menu__private-chats__list-item--link {
+        color: $text-strong;
+    }
+
+    &::after {
+        content: "";
+        width: 9px;
+        height: 9px;
+        margin-left: auto;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        animation: unread-ping 2.4s ease-out infinite;
+        flex: none;
+    }
+}
+
+// The bar itself, on every rail row. Quiet by default; the rule above
+// turns it ember when something is waiting.
+.side-menu__group-chat--item,
+.side-menu__private-chats__list-item {
+    &::before {
+        content: "";
+        width: 3px;
+        min-height: 34px;
+        align-self: stretch;
+        margin: 9px 0;
+        border-radius: 2px;
+        background-color: $ink-line-strong;
+        flex: none;
+    }
+}
+
+// --- Conversation column --------------------------------------
+.chat-app {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    background-color: $ink;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+}
+
+// [JS] chat.html ships this empty; chatView.js fills it with one .chat per
+// conversation and shows exactly one by toggling .active / .hide.
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+// [JS] chatView.js:74
+.chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+
+    // .hide is a single class, same specificity as .chat, and base/_utilities
+    // is imported before this file - so without this the inactive chats would
+    // all render at once. chatView.js toggles .hide on every .chat.
+    &.hide { display: none; }
+
+    // [JS] chatView.js:333
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: clamp(10px, 1.4vw, 16px);
+        min-height: 68px;
+        padding: 12px clamp(14px, 2.4vw, 28px);
+        border-bottom: 1px solid $ink-line;
+        background-color: rgba(20, 16, 15, .9);
+    }
+
+    // [JS] chatView.js:336
+    &__header-title {
+        min-width: 0;
+        font-family: $font-display;
+        font-stretch: 110%;
+        font-size: clamp(15.5px, 1.5vw, 17.5px);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // [JS] chatView.js:346
+    &__messages {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding: clamp(18px, 2.4vw, 28px) clamp(14px, 2.4vw, 28px);
+    }
+
+    // --- one message block --------------------------------------
+    // [JS] chatView.js:395. Grid rather than flex so the avatar can span the
+    // whole block without the JS having to wrap the text in a column div.
+    &__message {
+        display: grid;
+        grid-template-columns: 36px auto 1fr;
+        align-items: baseline;
+        gap: 5px 11px;
+        animation: arrive .45s ease-out both;
+
+        // [JS] chatView.js - added by _createAvatar
+        &-avatar {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            align-self: start;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: $radius-pill;
+            font-family: $font-display;
+            font-size: 14px;
+            font-weight: 700;
+            color: $ink-raised;
+            user-select: none;
+
+            // Assigned from a hash of the nickname, so a person keeps one colour.
+            &--1 { background-color: #C9705A; }
+            &--2 { background-color: #C9A05A; }
+            &--3 { background-color: $online; }
+            &--4 { background-color: #8FA3B5; }
+            &--5 { background-color: #B58F6B; }
+            &--6 { background-color: #A88F9C; }
+        }
+
+        // [JS] chatView.js:398
+        &-user {
+            grid-column: 2;
+            grid-row: 1;
+            font-family: $font-mono;
+            font-size: 11.5px;
+            font-weight: 500;
+            color: $text-muted;
+        }
+
+        // [JS] chatView.js _makeOpenPrivateChat adds this to the nickname and
+        // the avatar of OTHER people's messages. Clicking either opens a
+        // private chat; your own name never gets it.
+        &-user-link {
+            cursor: pointer;
+
+            &:hover { color: $ember-hover; }
+
+            &:focus-visible {
+                outline: 2px solid $ember-hover;
+                outline-offset: 2px;
+                border-radius: 2px;
+            }
+        }
+
+        // The avatar is a link too, so lift it slightly on hover.
+        &-avatar.chat__message-user-link {
+            transition: transform .15s ease;
+
+            &:hover { transform: translateY(-1px); }
+
+            &:focus-visible { border-radius: $radius-pill; }
+        }
+
+        // [JS] chatView.js - added by _createTimestamp
+        &-time {
+            grid-column: 3;
+            grid-row: 1;
+            justify-self: start;
+            font-family: $font-mono;
+            font-size: 11.5px;
+            color: $text-quiet;
+        }
+
+        // [JS] chatView.js:437
+        &-text {
+            grid-column: 2 / -1;
+            justify-self: start;
+            max-width: 62ch;
+            padding: 11px 14px;
+            border-radius: $radius;
+            background-color: $ink-bubble;
+            font-size: clamp(15px, 1.2vw, 15.5px);
+            line-height: 1.5;
+            color: $text;
+            text-wrap: pretty;
+            overflow-wrap: anywhere;
+
+            & a {
+                color: $ember-hover;
+                text-decoration: underline;
+                text-underline-offset: 2px;
+            }
+        }
+
+        // [JS] chatView.js:404 - your own messages: no avatar, no nickname,
+        // ember bubble on the right, exactly as the canvas shows.
+        &--current-user {
+            grid-template-columns: 1fr;
+            justify-items: end;
+
+            .chat__message-avatar,
+            .chat__message-user { display: none; }
+
+            .chat__message-time {
+                grid-column: 1;
+                justify-self: end;
+            }
+
+            .chat__message-text {
+                grid-column: 1;
+                justify-self: end;
+                max-width: 58ch;
+                background-color: $ember;
+                color: #fff;
+
+                & a { color: #fff; }
+            }
+        }
+    }
+}
+
+// --- Composer --------------------------------------------------
+// [JS] chatView.js:353 builds the form, input and button.
+.chat-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 14px clamp(14px, 2.4vw, 28px) clamp(14px, 2vw, 20px);
+    border-top: 1px solid $ink-line;
+    background-color: #171312;
+
+    &-input {
+        flex: 1;
+        min-width: 0;
+        min-height: 52px;
+        padding: 0 16px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius;
+        background-color: $ink;
+        font-family: $font-body;
+        font-size: 16px;
+        color: $text-strong;
+
+        &::placeholder { color: $text-quiet; }
+
+        &:focus {
+            outline: none;
+            border-color: $ember;
+            box-shadow: 0 0 0 3px rgba(209, 64, 46, .22);
+        }
+    }
+
+    &-btn {
+        min-height: 52px;
+        padding: 0 clamp(18px, 2vw, 26px);
+        border: none;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        font-family: $font-display;
+        font-stretch: 106%;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -.01em;
+        color: #fff;
+        cursor: pointer;
+        flex: none;
+
+        &:hover { background-color: $ember-hover; }
+        &:active { transform: translateY(1px); }
+    }
+}
+
+// [JS] chatView.js:190,440 - a message that has left the input but not yet
+// been acknowledged by the socket.
+.background-color-text-sending {
+    opacity: .55;
+}
+
+// --- Disconnected overlay --------------------------------------
+// [JS] chatSocket.js:230 removes .hide from #chat-closed.
+.chat-closed-container {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $gutter;
+    background-color: rgba(10, 8, 7, .82);
+    backdrop-filter: blur(4px);
+
+    // Same specificity trap as .chat above - this starts hidden in chat.html
+    // and chatSocket.js:233 removes .hide when the socket drops.
+    &.hide { display: none; }
+}
+
+.chat-closed {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    max-width: 46ch;
+    padding: clamp(24px, 3vw, 34px);
+    border: 1px solid $ink-line;
+    border-radius: $radius;
+    background-color: $ink-raised;
+
+    & h1 {
+        font-family: $font-display;
+        font-stretch: 110%;
+        font-size: clamp(20px, 2vw, 26px);
+        font-weight: 800;
+        letter-spacing: -.025em;
+        line-height: 1.15;
+        color: $text-strong;
+    }
+}
+
+// --- Rail as a drawer on small screens -------------------------
+// Above this the rail is a permanent column; below it slides in over the
+// conversation, which is what the legacy .open-side-menu class already did.
+@include respond(tab-port) {
+    .chat-page main {
+        height: calc(100dvh - 60px);
+    }
+
+    .side-menu {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 60;
+        width: min(88vw, 330px);
+        transform: translateX(-102%);
+        transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+        box-shadow: 30px 0 80px rgba(0, 0, 0, .55);
+
+        // [JS] sideBarView.js:12 toggles this
+        &.open-side-menu { transform: none; }
+
+        &__close-btn { display: inline-flex; }
+    }
+}

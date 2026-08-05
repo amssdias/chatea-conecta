@@ -36,23 +36,20 @@ services:
       - db
     ports:
       - "8000:8000"
+    # All application configuration (SECRET_KEY, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS,
+    # SITE_URL, STRIPE_*, EMAIL_*, SENTRY_*, AWS_*) is loaded from .env.
+    # See .env.example for the full list of required keys.
+    # Only container-topology values are overridden below; `environment` wins over `env_file`.
+    env_file:
+      - .env
     environment:
-      - SECRET_KEY=${SECRET_KEY}
       - DB_NAME=chat-app-db
       - DB_USER=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - DB_HOST=db
       - DB_PORT=3306
-      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_HOST=my-redis
       - REDIS_PORT=6379
-      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
-      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
-      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
@@ -73,23 +70,16 @@ services:
     depends_on:
       - my-redis
       - chat-app
+    env_file:
+      - .env
     environment:
-      - SECRET_KEY=${SECRET_KEY}
       - DB_NAME=chat-app-db
       - DB_USER=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - DB_HOST=db
       - DB_PORT=3306
-      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_HOST=my-redis
       - REDIS_PORT=6379
-      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
-      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
-      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - APP_NAME=celery-worker
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
     command: [ "celery", "-A", "chat_connect", "worker", "--loglevel=info", "--autoscale=4,2" ]
@@ -111,23 +101,16 @@ services:
       - db
       - chat-app
       - celery
+    env_file:
+      - .env
     environment:
-      - SECRET_KEY=${SECRET_KEY}
       - DB_NAME=chat-app-db
       - DB_USER=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - DB_HOST=db
       - DB_PORT=3306
-      - REDIS_PROTOCOL=${REDIS_PROTOCOL}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_HOST=my-redis
       - REDIS_PORT=6379
-      - DJANGO_REDIS_CACHE_DB=${DJANGO_REDIS_CACHE_DB}
-      - REDIS_DB_CHANNEL=${REDIS_DB_CHANNEL}
-      - REDIS_DB_CELERY=${REDIS_DB_CELERY}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - APP_NAME=celery-beat
       - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
     command: [ "celery", "-A", "chat_connect", "beat", "--loglevel=info" ]

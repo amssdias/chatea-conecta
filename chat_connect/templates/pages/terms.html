@@ -1,66 +1,128 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Chatea-Conecta - {% trans "Terms and Conditions" %}{% endblock title %}
-{% block description %}{% trans "Read the Terms and Conditions for using Chatea-Conecta." %}{% endblock description %}
-{% block og_title %}{% blocktrans %}Chatea-Conecta - Terms and Conditions{% endblocktrans %}{% endblock og_title %}
-{% block og_description %}{% trans "Read the Terms and Conditions for using Chatea-Conecta." %}{% endblock og_description %}
-{% block twitter_title %}{% blocktrans %}Chatea-Conecta - Terms and Conditions{% endblocktrans %}{% endblock twitter_title %}
-{% block twitter_description %}{% trans "Read the Terms and Conditions for using Chatea-Conecta." %}{% endblock twitter_description %}
+{% block title %}
+{% trans "Terms and conditions for adult chat, 18+ | Chatea-Conecta" %}
+{% endblock title %}
+
+{% block description %}
+{% trans "The rules of Chatea-Conecta: who may use the free chat rooms, what is not allowed, how moderation works, and the limits of our liability." %}
+{% endblock description %}
 
 {% block header %}
-<header class="header-privacy">
-    <h1 class="heading-primary">{% trans "Terms and Conditions" %}</h1>
+<header class="page-head">
+    <nav class="breadcrumb" aria-label="{% trans 'Breadcrumb' %}">
+        <a class="breadcrumb__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+        <span aria-hidden="true">/</span>
+        <span>{% trans "Terms" %}</span>
+    </nav>
+
+    <h1 class="page-head__title page-head__title--short">{% trans "Terms and conditions" %}</h1>
+
+    <p class="page-head__lede">
+        {% trans "Welcome to Chatea Conecta. Please read these terms carefully before using the site. By accessing or using Chatea Conecta you agree to be bound by them. If you do not agree with any part, please do not use the site." %}
+    </p>
+
+    <div class="page-head__badges">
+        <span class="page-head__badge">{% trans "18+ only" %}</span>
+        <span class="page-head__badge">{% trans "Personal use only" %}</span>
+        <span class="page-head__badge">{% trans "5 min read" %}</span>
+    </div>
 </header>
 {% endblock header %}
 
 {% block content %}
-<section class="privacy-policy" aria-labelledby="terms-heading">
-    <h2 id="terms-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "Terms and Conditions" %}</h2>
-    <p class="paragraph margin-bottom-xsmall">{% trans "Welcome to Chatea Conecta! Please read these Terms and Conditions carefully before using our website. By accessing or using Chatea Conecta, you agree to be bound by these terms. If you do not agree with any part of these terms, please do not use our website." %}</p>
+<div class="doc-layout">
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">1. {% trans "General Information" %}</h3>
-    <ul class="margin-bottom-xsmall">
-        <li><strong>{% trans "Website Name:" %}</strong> Chatea Conecta</li>
-        <li><strong>{% trans "Contact Information:" %}</strong> {% trans "For questions or support, please contact us at support@chatea-conecta.com (this may be updated with a domain-specific email in the future)." %}</li>
-    </ul>
+    <aside class="toc">
+        <h2 class="toc__title">{% trans "Contents" %}</h2>
+        <a class="toc__link toc__link--current" href="#t1">1. {% trans "General information" %}</a>
+        <a class="toc__link" href="#t2">2. {% trans "Eligibility and age" %}</a>
+        <a class="toc__link" href="#t3">3. {% trans "Purpose and acceptable use" %}</a>
+        <a class="toc__link" href="#t4">4. {% trans "Prohibited actions" %}</a>
+        <a class="toc__link" href="#t5">5. {% trans "Intellectual property" %}</a>
+        <a class="toc__link" href="#t6">6. {% trans "Privacy and data" %}</a>
+        <a class="toc__link" href="#t7">7. {% trans "Liability disclaimer" %}</a>
+        <a class="toc__link" href="#t8">8. {% trans "Changes to terms" %}</a>
+        <a class="toc__link" href="#t9">9. {% trans "Governing law" %}</a>
+        <a class="toc__link" href="#t10">10. {% trans "Contact us" %}</a>
+    </aside>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">2. {% trans "Eligibility and Age Verification" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "By using Chatea Conecta, you confirm that you are at least 18 years of age. Our website is intended for users who are of legal age to participate in open chat rooms and interact with others in a respectful, adult manner." %}</p>
+    {% url 'chat:contact' as contact_url %}
+    {% url 'chat:privacy' as privacy_url %}
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">3. {% trans "Platform Purpose and Acceptable Use" %}</h3>
-    <p class="paragraph">{% trans "Chatea Conecta is an entertainment-based platform that allows users to connect and chat with others from around the world. We are dedicated to fostering a friendly, positive environment for users to enjoy casual conversations." %}</p>
-    <p class="paragraph">{% trans "By using this website, you agree to:" %}</p>
-    <ul class="margin-bottom-xsmall">
-        <li>{% trans "Communicate respectfully with other users, refraining from offensive language, harassment, discrimination, or any form of abuse." %}</li>
-        <li>{% trans "Use Chatea Conecta solely for personal enjoyment and not for any commercial or promotional purposes." %}</li>
-        <li>{% trans "Avoid sharing or attempting to solicit personal, financial, or sensitive information." %}</li>
-    </ul>
+    <div class="doc doc--numbered doc-layout__body">
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">4. {% trans "Prohibited Actions" %}</h3>
-    <p class="paragraph">{% trans "To maintain a safe and welcoming environment, the following actions are strictly prohibited:" %}</p>
-    <ul class="margin-bottom-xsmall">
-        <li><strong>{% trans "Offensive or Abusive Behavior:" %}</strong> {% trans "Users may not use language or behavior that is abusive, offensive, obscene, or otherwise harmful to other users." %}</li>
-        <li><strong>{% trans "Commercial Use:" %}</strong> {% trans "Using Chatea Conecta for advertising, promoting products or services, or conducting commercial transactions is not permitted." %}</li>
-        <li><strong>{% trans "Misrepresentation:" %}</strong> {% trans "Impersonating another person or providing false information is not allowed." %}</li>
-    </ul>
+        <article class="doc__section" id="t1">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">1</span>{% trans "General information" %}</h2>
+            <p class="doc__text">{% trans "The site is Chatea Conecta." %}</p>
+            <p class="doc__text">
+                {% blocktrans %}For questions or support, contact us at <a href="{{ contact_url }}">support@chatea-conecta.com</a>. This address may be updated with a domain-specific one in the future.{% endblocktrans %}
+            </p>
+        </article>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">5. {% trans "Intellectual Property and Content Ownership" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "All content on Chatea Conecta, including SVG designs, website layout, and underlying code, is owned by the creator of Chatea Conecta. Users are not permitted to reproduce, distribute, or otherwise use any part of the website’s content for commercial purposes without prior permission." %}</p>
+        <article class="doc__section" id="t2">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">2</span>{% trans "Eligibility and age verification" %}</h2>
+            <p class="doc__text">{% trans "By using Chatea Conecta you confirm that you are at least 18 years of age. The site is intended for users who are of legal age to take part in open chat rooms and interact with others in a respectful, adult manner." %}</p>
+        </article>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">6. {% trans "Privacy and Data Collection" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "Chatea Conecta does not collect, store, or share any personal data at this time. Should this policy change in the future, users will be notified, and updates will be reflected in our Privacy Policy." %}</p>
+        <article class="doc__section" id="t3">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">3</span>{% trans "Platform purpose and acceptable use" %}</h2>
+            <p class="doc__text">{% trans "Chatea Conecta is an entertainment platform that lets users connect and chat with others around the world. We are dedicated to a friendly, positive environment for casual conversation." %}</p>
+            <p class="doc__text">{% trans "By using the site you agree to:" %}</p>
+            <ul class="doc__list">
+                <li class="doc__item">{% trans "Communicate respectfully with other users, refraining from offensive language, harassment, discrimination or any form of abuse." %}</li>
+                <li class="doc__item">{% trans "Use Chatea Conecta solely for personal enjoyment and not for commercial or promotional purposes." %}</li>
+                <li class="doc__item">{% trans "Avoid sharing or attempting to solicit personal, financial or sensitive information." %}</li>
+            </ul>
+        </article>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">7. {% trans "Liability Disclaimer" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "Chatea Conecta is provided on an 'as is' basis. While we strive to maintain a positive environment, we are not responsible for the behavior, comments, or interactions of individual users. We disclaim any liability for damages resulting from user interactions or any content shared within the platform." %}</p>
+        <article class="doc__section" id="t4">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">4</span>{% trans "Prohibited actions" %}</h2>
+            <p class="doc__text">{% trans "To keep the room safe and welcoming, the following are strictly prohibited:" %}</p>
+            <ul class="doc__list">
+                <li class="doc__item">{% blocktrans %}<strong>Offensive or abusive behaviour.</strong> Language or behaviour that is abusive, offensive, obscene or otherwise harmful to other users.{% endblocktrans %}</li>
+                <li class="doc__item">{% blocktrans %}<strong>Commercial use.</strong> Advertising, promoting products or services, or conducting commercial transactions.{% endblocktrans %}</li>
+                <li class="doc__item">{% blocktrans %}<strong>Misrepresentation.</strong> Impersonating another person or providing false information.{% endblocktrans %}</li>
+            </ul>
+            <p class="doc__text">{% trans "Violating any of these terms may result in suspension or a permanent ban from the platform." %}</p>
+        </article>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">8. {% trans "Changes to Terms" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "Chatea Conecta reserves the right to update these Terms and Conditions at any time. Users will be notified of significant changes, and continued use of the platform constitutes acceptance of any revised terms." %}</p>
+        <article class="doc__section" id="t5">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">5</span>{% trans "Intellectual property and content ownership" %}</h2>
+            <p class="doc__text">{% trans "All content on Chatea Conecta, including SVG designs, site layout and underlying code, is owned by the creator of Chatea Conecta. Users may not reproduce, distribute or otherwise use any part of the site's content for commercial purposes without prior permission." %}</p>
+        </article>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">9. {% trans "Governing Law" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "These Terms and Conditions are governed by applicable laws of [Your Country/Region]. Any disputes arising from the use of Chatea Conecta shall be resolved through appropriate legal channels within this jurisdiction." %}</p>
+        <article class="doc__section" id="t6">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">6</span>{% trans "Privacy and data collection" %}</h2>
+            <p class="doc__text">
+                {% blocktrans %}Chatea Conecta does not collect, store or share personal data at this time. Should this change, users will be notified and updates will appear in the <a href="{{ privacy_url }}">privacy policy</a>.{% endblocktrans %}
+            </p>
+        </article>
 
-    <h3 class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xxsmall">10. {% trans "Contact Us" %}</h3>
-    <p class="paragraph margin-bottom-xsmall">{% trans "For any questions or concerns regarding these Terms and Conditions, please contact us at test@testing.com." %}</p>
-</section>
+        <article class="doc__section" id="t7">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">7</span>{% trans "Liability disclaimer" %}</h2>
+            <p class="doc__text">{% trans "Chatea Conecta is provided on an 'as is' basis. While we work to maintain a positive environment, we are not responsible for the behaviour, comments or interactions of individual users. We disclaim any liability for damages resulting from user interactions or content shared within the platform." %}</p>
+        </article>
+
+        <article class="doc__section" id="t8">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">8</span>{% trans "Changes to terms" %}</h2>
+            <p class="doc__text">{% trans "Chatea Conecta reserves the right to update these terms at any time. Users will be notified of significant changes, and continued use of the platform means acceptance of any revised terms." %}</p>
+        </article>
+
+        <article class="doc__section" id="t9">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">9</span>{% trans "Governing law" %}</h2>
+            <p class="doc__text">
+                {% blocktrans %}These terms are governed by the applicable laws of <mark>[Your Country/Region]</mark>. Any disputes arising from the use of Chatea Conecta shall be resolved through the appropriate legal channels within this jurisdiction.{% endblocktrans %}
+            </p>
+        </article>
+
+        <article class="doc__section" id="t10">
+            <h2 class="doc__title"><span class="doc__num" aria-hidden="true">10</span>{% trans "Contact us" %}</h2>
+            <p class="doc__text">
+                {% blocktrans %}For any questions or concerns about these terms, contact us at <a href="{{ contact_url }}">support@chatea-conecta.com</a>.{% endblocktrans %}
+            </p>
+        </article>
+    </div>
+</div>
 {% endblock content %}

@@ -656,3 +656,1039 @@ msgstr ""
 #: chat_connect/templates/pages/privacy.html:53
 msgid "How We Use Your Information"
 msgstr "Cómo Usamos Tu Información"
+
+#: chat_connect/templates/index.html
+msgid "Free chat rooms with no sign up. Anonymous adult chat, open now | Chatea-Conecta"
+msgstr "Chats gratis sin registro. Chat anónimo para adultos, abierto ahora | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Free chat with no registration and no download. Pick a nickname and talk to adults across Europe and Latin America in one moderated room. Anonymous, 18+, always free."
+msgstr "Chat gratis sin registro y sin descargas. Elige un apodo y habla con adultos de Europa y Latinoamérica en una sala moderada. Anónimo, 18+, siempre gratis."
+
+#: chat_connect/templates/index.html
+msgid "Free chat rooms with no sign up. Anonymous adult chat, open now"
+msgstr "Chats gratis sin registro. Chat anónimo para adultos, abierto ahora"
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname and talk to adults worldwide. No account, no app, no cost."
+msgstr "Elige un apodo y habla con adultos de todo el mundo. Sin cuenta, sin app, sin coste."
+
+#: chat_connect/templates/index.html
+msgid "18+ &middot; no sign up &middot; always free"
+msgstr "18+ &middot; sin registro &middot; siempre gratis"
+
+#: chat_connect/templates/index.html
+msgid "Free chat rooms. <em>Someone is awake.</em>"
+msgstr "Chats gratis. <em>Alguien está despierto.</em>"
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname and start talking to adults across Europe and Latin America. No account, no app, no cost."
+msgstr "Elige un apodo y empieza a hablar con adultos de Europa y Latinoamérica. Sin cuenta, sin app, sin coste."
+
+#: chat_connect/templates/index.html
+msgid "Enter Chatroom"
+msgstr "Entrar en la sala"
+
+#: chat_connect/templates/index.html
+msgid "Your nickname"
+msgstr "Tu apodo"
+
+#: chat_connect/templates/index.html
+msgid "I agree to the <span class=\"link-tc\" id=\"terms-and-conditions\">Terms and Conditions</span> of the site."
+msgstr "Acepto los <span class=\"link-tc\" id=\"terms-and-conditions\">Términos y Condiciones</span> del sitio."
+
+#: chat_connect/templates/index.html
+msgid "One room &middot; English and Espa&ntilde;ol"
+msgstr "Una sala &middot; English y Espa&ntilde;ol"
+
+#: chat_connect/templates/index.html
+msgid "live"
+msgstr "en directo"
+
+#: chat_connect/templates/index.html
+msgid "Rough week. Anyone else just want to talk about something else tonight?"
+msgstr "Semana dura. ¿Alguien más quiere hablar de otra cosa esta noche?"
+
+#: chat_connect/templates/index.html
+msgid "Long walks and worse coffee. Mind if I join?"
+msgstr "Paseos largos y café peor. ¿Os importa si me uno?"
+
+#: chat_connect/templates/index.html
+msgid "Practising my English tonight if anyone is patient with me."
+msgstr "Practicando mi inglés esta noche, si alguien tiene paciencia conmigo."
+
+#: chat_connect/templates/index.html
+msgid "two people typing"
+msgstr "dos personas escribiendo"
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname to reply."
+msgstr "Elige un apodo para responder."
+
+#: chat_connect/templates/index.html
+msgid "Nicknames only. Nothing anyone writes is kept after the conversation ends."
+msgstr "Solo apodos. Nada de lo que se escribe se guarda cuando termina la conversación."
+
+#: chat_connect/templates/index.html
+msgid "Anonymous by default. A nickname is the only thing we ask for."
+msgstr "Anónimo por defecto. Un apodo es lo único que pedimos."
+
+#: chat_connect/templates/index.html
+msgid "Moderated and adults only, with a report button in every chat."
+msgstr "Moderado y solo para adultos, con un botón de denuncia en cada chat."
+
+#: chat_connect/templates/index.html
+msgid "Runs in the browser you already have open. Nothing to install."
+msgstr "Funciona en el navegador que ya tienes abierto. Nada que instalar."
+
+#: chat_connect/templates/index.html
+msgid "Three steps, about five seconds."
+msgstr "Tres pasos, unos cinco segundos."
+
+#: chat_connect/templates/index.html
+msgid "Choose a nickname"
+msgstr "Elige un apodo"
+
+#: chat_connect/templates/index.html
+msgid "Anything you like. No email, no phone number and no profile to build."
+msgstr "Lo que quieras. Sin correo, sin teléfono y sin perfil que rellenar."
+
+#: chat_connect/templates/index.html
+msgid "Walk into the room"
+msgstr "Entra en la sala"
+
+#: chat_connect/templates/index.html
+msgid "One shared room, moderated, open at every hour including the awkward ones."
+msgstr "Una sala compartida, moderada, abierta a cualquier hora, incluidas las intempestivas."
+
+#: chat_connect/templates/index.html
+msgid "Take it one to one"
+msgstr "Pasa al chat privado"
+
+#: chat_connect/templates/index.html
+msgid "Click any name and open a private chat. It stays between the two of you."
+msgstr "Haz clic en cualquier nombre y abre un chat privado. Queda entre vosotros dos."
+
+#: chat_connect/templates/index.html
+msgid "Why adults keep the tab open."
+msgstr "Por qué los adultos dejan la pestaña abierta."
+
+#: chat_connect/templates/index.html
+msgid "The room is busiest when the rest of the internet gets quiet."
+msgstr "La sala se llena cuando el resto de internet se queda en silencio."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Late evenings and small hours are when people actually want to talk. That is when there is always someone here."
+msgstr "Las noches y la madrugada son cuando la gente de verdad quiere hablar. Es entonces cuando siempre hay alguien aquí."
+
+#: chat_connect/templates/index.html
+msgid "Nothing is stored"
+msgstr "No guardamos nada"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Messages are not kept. Your nickname sits in a session cache and is dropped the moment you leave the page."
+msgstr "Los mensajes no se conservan. Tu apodo vive en una caché de sesión y se descarta en cuanto sales de la página."
+
+#: chat_connect/templates/index.html
+msgid "Two languages, one room"
+msgstr "Dos idiomas, una sala"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "English and Espa&ntilde;ol share the same room, which is how most people here end up practising one of them."
+msgstr "English y Espa&ntilde;ol comparten la misma sala, que es como la mayoría acaba practicando uno de los dos."
+
+#: chat_connect/templates/index.html
+msgid "Adults, and moderated"
+msgstr "Solo adultos, y moderado"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Everyone confirms they are 18 or older at the door, and every chat has a report button that reaches a moderator."
+msgstr "Todo el mundo confirma que tiene 18 años o más al entrar, y cada chat tiene un botón de denuncia que llega a un moderador."
+
+#: chat_connect/templates/index.html
+msgid "Free chat without registration, in one browser tab"
+msgstr "Chat gratis sin registro, en una pestaña del navegador"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Most sites that promise free online chat want an account first. Chatea-Conecta does not. You type a nickname, confirm you are an adult, and you are in a live room with people from Spain, Portugal, Mexico, Argentina and anywhere else with a connection."
+msgstr "La mayoría de los sitios que prometen chat gratis piden antes una cuenta. Chatea-Conecta no. Escribes un apodo, confirmas que eres adulto y ya estás en una sala en directo con gente de España, Portugal, México, Argentina y de cualquier otro sitio con conexión."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "There is no feed, no follower count and nothing to grow. It is a room with strangers in it, which is a much older and better idea than most of what replaced it. Talk about your week, argue about football, practise a language, or sit quietly and read until something catches your interest."
+msgstr "No hay feed, ni contador de seguidores, ni nada que hacer crecer. Es una sala con desconocidos dentro, una idea mucho más antigua y mejor que casi todo lo que vino a sustituirla. Habla de tu semana, discute de fútbol, practica un idioma o quédate leyendo en silencio hasta que algo te llame la atención."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "If a conversation is worth continuing, open a private chat and keep it there. If someone is out of line, report them. Both take one click."
+msgstr "Si una conversación merece continuar, abre un chat privado y sigue ahí. Si alguien se pasa de la raya, denúncialo. Las dos cosas son un clic."
+
+#: chat_connect/templates/index.html
+msgid "How we keep it safe"
+msgstr "Cómo lo mantenemos seguro"
+
+#: chat_connect/templates/index.html
+msgid "Common questions"
+msgstr "Preguntas frecuentes"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "There are no photographs of members on this site. Everyone here is a nickname, and that is the point."
+msgstr "En este sitio no hay fotografías de los miembros. Aquí todo el mundo es un apodo, y de eso se trata."
+
+#: chat_connect/templates/index.html
+msgid "Questions people actually ask"
+msgstr "Preguntas que la gente hace de verdad"
+
+#: chat_connect/templates/index.html
+msgid "Is Chatea-Conecta really free chat?"
+msgstr "¿Chatea-Conecta es de verdad un chat gratis?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Yes. The main room and private chats are free with no time limit and no card. PRO is optional and only adds extras such as unlimited private chats and a reserved nickname."
+msgstr "Sí. La sala principal y los chats privados son gratis, sin límite de tiempo y sin tarjeta. PRO es opcional y solo añade extras como chats privados ilimitados y un apodo reservado."
+
+#: chat_connect/templates/index.html
+msgid "Can I chat without registration?"
+msgstr "¿Puedo chatear sin registrarme?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Yes. Type a nickname, confirm you are 18 or older, and you are in the room. There is no account to create, no email to confirm and nothing to install."
+msgstr "Sí. Escribe un apodo, confirma que tienes 18 años o más y ya estás en la sala. No hay cuenta que crear, ni correo que confirmar, ni nada que instalar."
+
+#: chat_connect/templates/index.html
+msgid "Is free chat without registration safe?"
+msgstr "¿Es seguro el chat gratis sin registro?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "The room is moderated and every chat has a report button. Keep your address, documents and payment details to yourself, treat unsolicited links as scams, and use a nickname that is not a handle you use elsewhere."
+msgstr "La sala está moderada y cada chat tiene un botón de denuncia. Guárdate tu dirección, tus documentos y tus datos de pago, trata los enlaces no solicitados como estafas y usa un apodo que no utilices en otros sitios."
+
+#: chat_connect/templates/index.html
+msgid "Are the chats anonymous?"
+msgstr "¿Los chats son anónimos?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "You are identified only by the nickname you pick. We do not ask for personal data to enter a room, and messages are not stored after the conversation."
+msgstr "Se te identifica solo por el apodo que elijas. No pedimos datos personales para entrar en una sala, y los mensajes no se almacenan después de la conversación."
+
+#: chat_connect/templates/index.html
+msgid "Who can use the chat rooms?"
+msgstr "¿Quién puede usar las salas de chat?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/index.html
+msgid "Adults only. You confirm you are 18 or older before entering, and the room is moderated to keep it respectful."
+msgstr "Solo adultos. Confirmas que tienes 18 años o más antes de entrar, y la sala está moderada para que siga siendo respetuosa."
+
+#: chat_connect/templates/index.html
+msgid "The room is open."
+msgstr "La sala está abierta."
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname and say something. Nobody here needs to know who you are."
+msgstr "Elige un apodo y di algo. Aquí nadie necesita saber quién eres."
+
+#: chat_connect/templates/index.html
+msgid "Start chatting free"
+msgstr "Empieza a chatear gratis"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Main"
+msgstr "Principal"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Toggle navigation menu"
+msgstr "Abrir o cerrar el menú de navegación"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Open chats menu"
+msgstr "Abrir el menú de chats"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "PRO - Action Needed"
+msgstr "PRO - Acción necesaria"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "You are PRO"
+msgstr "Eres PRO"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Go Pro"
+msgstr "Hazte PRO"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Home"
+msgstr "Inicio"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Security"
+msgstr "Seguridad"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Sign up"
+msgstr "Registrarse"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Free anonymous chat rooms for adults. One room, no account, open every hour."
+msgstr "Salas de chat anónimas y gratuitas para adultos. Una sala, sin cuenta, abierta a todas horas."
+
+#: chat_connect/templates/footer-v2.html
+msgid "Chat"
+msgstr "Chat"
+
+#: chat_connect/templates/footer-v2.html
+msgid "About"
+msgstr "Sobre nosotros"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Support"
+msgstr "Ayuda"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Contact"
+msgstr "Contacto"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Legal"
+msgstr "Legal"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Terms"
+msgstr "Términos"
+
+#: chat_connect/templates/partials/terms-modal-body.html
+msgid "Close"
+msgstr "Cerrar"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "How it works"
+msgstr "Cómo funciona"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "The room"
+msgstr "La sala"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Questions"
+msgstr "Preguntas"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Safety"
+msgstr "Seguridad"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Go PRO"
+msgstr "Hazte PRO"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Start chatting"
+msgstr "Empieza a chatear"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Free chat FAQ. No registration, anonymous, adults only | Chatea-Conecta"
+msgstr "Preguntas frecuentes del chat gratis. Sin registro, anónimo, solo adultos | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "How free chat without registration works on Chatea-Conecta: what is stored, whether the chat is anonymous, how to report someone, and why promotional messages appear."
+msgstr "Cómo funciona el chat gratis sin registro en Chatea-Conecta: qué se guarda, si el chat es anónimo, cómo denunciar a alguien y por qué aparecen mensajes promocionales."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Breadcrumb"
+msgstr "Ruta de navegación"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Questions about free chat, answered plainly."
+msgstr "Preguntas sobre el chat gratis, respondidas sin rodeos."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "How the room works, what we keep, and what to do when someone is out of line. If your question is not here, <a href=\"%(contact_url)s\">write to us</a>."
+msgstr "Cómo funciona la sala, qué guardamos y qué hacer cuando alguien se pasa de la raya. Si tu pregunta no está aquí, <a href=\"%(contact_url)s\">escríbenos</a>."
+
+#: chat_connect/templates/pages/faq.html
+msgid "On this page"
+msgstr "En esta página"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Getting started"
+msgstr "Para empezar"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Privacy and safety"
+msgstr "Privacidad y seguridad"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Promotions and PRO"
+msgstr "Promociones y PRO"
+
+#: chat_connect/templates/pages/faq.html
+msgid "in the room"
+msgstr "en la sala"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "Go to the homepage, enter a username of your choice in the input field, and click Start Chatting. You join the global chat room straight away."
+msgstr "Ve a la página de inicio, escribe el nombre de usuario que quieras en el campo y pulsa Empieza a chatear. Entras en la sala global al instante."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Is there a mobile version?"
+msgstr "¿Hay versión para móvil?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "Yes. Chatea-Conecta is fully responsive and works on mobile, tablet and desktop, so you can chat wherever you already are."
+msgstr "Sí. Chatea-Conecta es totalmente adaptable y funciona en móvil, tablet y ordenador, así que puedes chatear desde donde ya estés."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "Yes. You do not need to provide any personal information to use the platform. Avoid sharing sensitive details in the chat for your own safety."
+msgstr "Sí. No necesitas dar ningún dato personal para usar la plataforma. Evita compartir información sensible en el chat por tu propia seguridad."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "No. Chat messages are not stored. All conversations are real-time and ephemeral."
+msgstr "No. Los mensajes del chat no se guardan. Todas las conversaciones son en tiempo real y efímeras."
+
+#: chat_connect/templates/pages/faq.html
+msgid "We use HTTPS to encrypt all communication between your device and our servers."
+msgstr "Usamos HTTPS para cifrar toda la comunicación entre tu dispositivo y nuestros servidores."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "We use HTTPS to encrypt all communication between your device and our servers. There is more detail on the <a href=\"%(security_url)s\">security page</a>."
+msgstr "Usamos HTTPS para cifrar toda la comunicación entre tu dispositivo y nuestros servidores. Hay más detalle en la <a href=\"%(security_url)s\">página de seguridad</a>."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Can I report inappropriate behaviour?"
+msgstr "¿Puedo denunciar comportamientos inapropiados?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "Yes. Use the Report button in the chat interface. Reports reach a moderator and help keep the room welcoming for everyone."
+msgstr "Sí. Usa el botón Denunciar en la interfaz del chat. Las denuncias llegan a un moderador y ayudan a que la sala siga siendo acogedora para todos."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "The platform is paid for with occasional promotional messages sent by bots. They are marked as Promotions so you can tell them apart from real people."
+msgstr "La plataforma se financia con mensajes promocionales ocasionales enviados por bots. Van marcados como Promociones para que puedas distinguirlos de las personas reales."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/faq.html
+msgid "Not at the moment. We keep them minimal and non-intrusive, and PRO members see fewer of them."
+msgstr "De momento no. Los mantenemos al mínimo y sin ser intrusivos, y los miembros PRO ven menos."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Still stuck?"
+msgstr "¿Sigues atascado?"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Write to us and a person will answer, usually within two working days."
+msgstr "Escríbenos y te responderá una persona, normalmente en dos días laborables."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Contact support"
+msgstr "Contactar con soporte"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Privacy policy. We store almost nothing | Chatea-Conecta"
+msgstr "Política de privacidad. Casi no guardamos nada | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "What Chatea-Conecta collects when you use the free chat: a nickname held in a session cache, one cookie, and nothing else. No personal data, no message history, no third parties."
+msgstr "Qué recopila Chatea-Conecta cuando usas el chat gratis: un apodo guardado en una caché de sesión, una cookie y nada más. Sin datos personales, sin historial de mensajes, sin terceros."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Privacy policy"
+msgstr "Política de privacidad"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "Your privacy is important to us. This policy explains how we handle information collected from you while using Chatea-Conecta, which is very little."
+msgstr "Tu privacidad nos importa. Esta política explica cómo tratamos la información que recogemos de ti mientras usas Chatea-Conecta, que es muy poca."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Effective 01/05/2025"
+msgstr "En vigor desde el 01/05/2025"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Summary"
+msgstr "Resumen"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "What we ask for"
+msgstr "Qué pedimos"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "A nickname. That is the only thing you give us, and it does not have to mean anything."
+msgstr "Un apodo. Es lo único que nos das, y no tiene por qué significar nada."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "What we keep"
+msgstr "Qué guardamos"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Nothing after you leave. No message history, no personal data, no profile."
+msgstr "Nada después de que te vayas. Sin historial de mensajes, sin datos personales, sin perfil."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Who else sees it"
+msgstr "Quién más lo ve"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "No one. We do not share, sell or disclose your information to third parties."
+msgstr "Nadie. No compartimos, vendemos ni revelamos tu información a terceros."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Information we collect"
+msgstr "Información que recopilamos"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "We do not collect or store any personal information. The only information we process is the username you create when you access the app. It can be any set of characters and it is not linked to your identity."
+msgstr "No recopilamos ni almacenamos ningún dato personal. La única información que procesamos es el nombre de usuario que creas al acceder a la aplicación. Puede ser cualquier conjunto de caracteres y no está vinculado a tu identidad."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "How we use it"
+msgstr "Cómo la usamos"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "The username is used only to make the chat work. It is not stored permanently. It is cached temporarily using a secure caching service and removed automatically when you leave the page."
+msgstr "El nombre de usuario se usa solo para que el chat funcione. No se almacena de forma permanente. Se guarda temporalmente en una caché segura y se elimina automáticamente cuando sales de la página."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "We use one cookie, which stores the username you created for the length of your session. It is deleted once the session ends or the page is refreshed."
+msgstr "Usamos una sola cookie, que guarda el nombre de usuario que creaste durante tu sesión. Se elimina cuando la sesión termina o se recarga la página."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Storage and security"
+msgstr "Almacenamiento y seguridad"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "Usernames are held temporarily in a secure caching service and deleted automatically when you exit the page."
+msgstr "Los nombres de usuario se guardan temporalmente en una caché segura y se eliminan automáticamente cuando sales de la página."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "We apply reasonable technical measures to keep the temporary data our app processes secure. More detail is on the <a href=\"%(security_url)s\">security page</a>."
+msgstr "Aplicamos medidas técnicas razonables para mantener seguros los datos temporales que procesa nuestra aplicación. Hay más detalle en la <a href=\"%(security_url)s\">página de seguridad</a>."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Age restrictions"
+msgstr "Restricciones de edad"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "The app is intended for users aged 18 and over. By using it you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for complying with this restriction."
+msgstr "La aplicación está destinada a personas mayores de 18 años. Al usarla confirmas que tienes al menos 18 años. Si eres menor de 18, eres el único responsable de cumplir esta restricción."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Your rights"
+msgstr "Tus derechos"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "Because we do not store or collect personal information, there is no data to access, correct or delete. If you have a concern about privacy, write to us and we will explain exactly what happens with your session."
+msgstr "Como no almacenamos ni recopilamos datos personales, no hay información a la que acceder, que corregir o que eliminar. Si tienes alguna duda sobre privacidad, escríbenos y te explicaremos exactamente qué ocurre con tu sesión."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Updates to this policy"
+msgstr "Actualizaciones de esta política"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/privacy.html
+msgid "We may update this policy from time to time. Any changes appear on this page, with the effective date shown at the top."
+msgstr "Podemos actualizar esta política de vez en cuando. Cualquier cambio aparecerá en esta página, con la fecha de entrada en vigor indicada arriba."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Contact us"
+msgstr "Contáctanos"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "If you have questions about this policy, write to <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+msgstr "Si tienes preguntas sobre esta política, escribe a <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+
+#: chat_connect/templates/pages/about.html
+msgid "About Chatea-Conecta. Free anonymous chat for adults | Chatea-Conecta"
+msgstr "Sobre Chatea-Conecta. Chat anónimo y gratuito para adultos | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "Chatea-Conecta is a free anonymous chat platform for adults. No feed, no follower count, no profile. Just one moderated room where people talk to strangers."
+msgstr "Chatea-Conecta es una plataforma de chat anónima y gratuita para adultos. Sin feed, sin contador de seguidores, sin perfil. Solo una sala moderada donde la gente habla con desconocidos."
+
+#: chat_connect/templates/pages/about.html
+msgid "A room for adults who still like talking to strangers."
+msgstr "Una sala para adultos a los que todavía les gusta hablar con desconocidos."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "Chatea-Conecta is a free and anonymous online chat platform where people connect and chat in real time without registration."
+msgstr "Chatea-Conecta es una plataforma de chat en línea, gratuita y anónima, donde la gente conecta y charla en tiempo real sin registrarse."
+
+#: chat_connect/templates/pages/about.html
+msgid "What this is, and what it is not"
+msgstr "Qué es esto, y qué no es"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "The platform is designed for casual conversation with people from different regions, with quick access through a nickname-based session. You are in the room in seconds, and you leave without a trace."
+msgstr "La plataforma está pensada para la conversación informal con gente de distintas regiones, con acceso rápido mediante una sesión basada en un apodo. Entras en la sala en segundos y te vas sin dejar rastro."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "It is not a dating app and not a social network. There is no feed, no follower count and nothing to grow. Some people come for company on a slow evening, some to practise a language, some to say the thing they cannot say to anyone who knows them."
+msgstr "No es una app de citas ni una red social. No hay feed, ni contador de seguidores, ni nada que hacer crecer. Hay quien viene por compañía en una noche tranquila, quien viene a practicar un idioma y quien viene a decir eso que no puede decirle a nadie que le conozca."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "Everyone is 18 or over, and the room is moderated so it stays civil enough to be worth returning to."
+msgstr "Todo el mundo tiene 18 años o más, y la sala está moderada para que siga siendo lo bastante cívica como para volver."
+
+#: chat_connect/templates/pages/about.html
+msgid "There are no member photographs anywhere on this site. Everyone here is a nickname."
+msgstr "En este sitio no hay fotografías de los miembros en ninguna parte. Aquí todo el mundo es un apodo."
+
+#: chat_connect/templates/pages/about.html
+msgid "Three things we hold to"
+msgstr "Tres cosas que mantenemos"
+
+#: chat_connect/templates/pages/about.html
+msgid "Anonymous by default"
+msgstr "Anónimo por defecto"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "A nickname is all we ask for. We would rather store nothing than protect something we never needed in the first place."
+msgstr "Un apodo es todo lo que pedimos. Preferimos no guardar nada antes que proteger algo que nunca necesitamos."
+
+#: chat_connect/templates/pages/about.html
+msgid "Respect is the rule"
+msgstr "El respeto es la norma"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "The room is moderated and abuse gets people removed. An adult space only works while it stays civil."
+msgstr "La sala está moderada y los abusos acaban en expulsión. Un espacio para adultos solo funciona mientras sigue siendo cívico."
+
+#: chat_connect/templates/pages/about.html
+msgid "Free, and honest about it"
+msgstr "Gratis, y honestos al respecto"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/about.html
+msgid "Occasional promotional messages are labelled as promotions. PRO is optional and never a wall in front of the conversation."
+msgstr "Los mensajes promocionales ocasionales van marcados como promociones. PRO es opcional y nunca un muro delante de la conversación."
+
+#: chat_connect/templates/pages/about.html
+msgid "Come and see what it is like."
+msgstr "Ven a ver cómo es."
+
+#: chat_connect/templates/pages/about.html
+msgid "Pick a nickname and you are in the room in about five seconds."
+msgstr "Elige un apodo y estarás en la sala en unos cinco segundos."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Contact support. Report a user or ask a question | Chatea-Conecta"
+msgstr "Contactar con soporte. Denuncia a un usuario o haz una pregunta | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/contact.html
+msgid "Contact Chatea-Conecta support: ask a question about the free chat, report a user, or get help with PRO billing. A person reads every message."
+msgstr "Contacta con el soporte de Chatea-Conecta: haz una pregunta sobre el chat gratis, denuncia a un usuario u obtén ayuda con la facturación de PRO. Una persona lee cada mensaje."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/contact.html
+msgid "Questions, reports and PRO billing all reach the same inbox. A person reads it, usually within two working days."
+msgstr "Preguntas, denuncias y facturación de PRO llegan al mismo buzón. Una persona lo lee, normalmente en dos días laborables."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Send us a message"
+msgstr "Envíanos un mensaje"
+
+#: chat_connect/templates/pages/contact.html
+msgid "What is this about?"
+msgstr "¿De qué se trata?"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Your email"
+msgstr "Tu correo electrónico"
+
+#: chat_connect/templates/pages/contact.html
+msgid "We use it to reply, and for nothing else."
+msgstr "Lo usamos para responderte, y para nada más."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Message"
+msgstr "Mensaje"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Tell us what happened. If you are reporting someone, include the nickname."
+msgstr "Cuéntanos qué ha pasado. Si estás denunciando a alguien, incluye el apodo."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Leave this field empty"
+msgstr "Deja este campo vacío"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Send message"
+msgstr "Enviar mensaje"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Prefer plain email?"
+msgstr "¿Prefieres el correo de siempre?"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Write to <strong>support@chatea-conecta.com</strong> and it lands in the same place."
+msgstr "Escribe a <strong>support@chatea-conecta.com</strong> y llegará al mismo sitio."
+
+#: chat_connect/templates/pages/contact.html
+msgid "This address appears in our current public terms and may be updated in future."
+msgstr "Esta dirección aparece en nuestros términos públicos actuales y puede actualizarse en el futuro."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Urgent safety issue?"
+msgstr "¿Un problema de seguridad urgente?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/contact.html
+msgid "Use the Report button inside the chat first. It reaches a moderator immediately, with the message context already attached."
+msgstr "Usa primero el botón Denunciar dentro del chat. Llega a un moderador de inmediato, con el contexto del mensaje ya adjunto."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Faster than waiting"
+msgstr "Más rápido que esperar"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/contact.html
+msgid "Most questions are already answered: how the chat works, what is stored, and why promotional messages appear."
+msgstr "La mayoría de las preguntas ya están respondidas: cómo funciona el chat, qué se guarda y por qué aparecen mensajes promocionales."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Read the FAQ"
+msgstr "Lee las preguntas frecuentes"
+
+#: apps/chat/forms.py
+msgid "A question"
+msgstr "Una pregunta"
+
+#: apps/chat/forms.py
+msgid "Report a user"
+msgstr "Denunciar a un usuario"
+
+#: apps/chat/forms.py
+msgid "PRO and billing"
+msgstr "PRO y facturación"
+
+#: apps/chat/forms.py
+msgid "Something is broken"
+msgstr "Algo no funciona"
+
+#: apps/chat/views/contact.py
+msgid "That message could not be sent. Please try again."
+msgstr "No se ha podido enviar el mensaje. Inténtalo de nuevo."
+
+#: apps/chat/views/contact.py
+msgid "We could not send that just now. Please email support@chatea-conecta.com directly."
+msgstr "No hemos podido enviarlo ahora mismo. Escribe directamente a support@chatea-conecta.com."
+
+#: apps/chat/views/contact.py
+msgid "Thanks, your message is on its way. We usually reply within two working days."
+msgstr "Gracias, tu mensaje va en camino. Normalmente respondemos en dos días laborables."
+
+#: chat_connect/templates/pages/security.html
+msgid "Is anonymous chat safe? How we protect your session | Chatea-Conecta"
+msgstr "¿Es seguro el chat anónimo? Cómo protegemos tu sesión | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/security.html
+msgid "How Chatea-Conecta protects your chat session, what we deliberately do not store, and the habits that keep anonymous chat safe for adults."
+msgstr "Cómo protege Chatea-Conecta tu sesión de chat, qué no guardamos deliberadamente y los hábitos que mantienen seguro el chat anónimo para adultos."
+
+#: chat_connect/templates/pages/security.html
+msgid "Is anonymous chat safe?"
+msgstr "¿Es seguro el chat anónimo?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/security.html
+msgid "Here is what protects your session, what we deliberately never store, and the handful of habits that keep an anonymous room safe for grown-ups."
+msgstr "Esto es lo que protege tu sesión, lo que nunca guardamos a propósito y el puñado de hábitos que mantienen segura una sala anónima para adultos."
+
+#: chat_connect/templates/pages/security.html
+msgid "How we protect your session"
+msgstr "Cómo protegemos tu sesión"
+
+#: chat_connect/templates/pages/security.html
+msgid "Session-gated chat"
+msgstr "Chat con sesión obligatoria"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/security.html
+msgid "Chat access is session-gated. If the required session cookies are missing or invalid you are sent back to the homepage rather than into the room."
+msgstr "El acceso al chat requiere sesión. Si faltan las cookies de sesión necesarias o no son válidas, se te devuelve a la página de inicio en lugar de entrar en la sala."
+
+#: chat_connect/templates/pages/security.html
+msgid "HttpOnly cookies"
+msgstr "Cookies HttpOnly"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/security.html
+msgid "Session cookies are set as HttpOnly, so page scripts cannot read them, and they can be configured as Secure in deployment settings."
+msgstr "Las cookies de sesión se marcan como HttpOnly, de modo que los scripts de la página no pueden leerlas, y pueden configurarse como Secure en los ajustes de despliegue."
+
+#: chat_connect/templates/pages/security.html
+msgid "HTTPS and HSTS"
+msgstr "HTTPS y HSTS"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/security.html
+msgid "Traffic between your device and our servers is encrypted, with HTTPS-oriented settings including HSTS and secure cookies in production."
+msgstr "El tráfico entre tu dispositivo y nuestros servidores va cifrado, con ajustes orientados a HTTPS que incluyen HSTS y cookies seguras en producción."
+
+#: chat_connect/templates/pages/security.html
+msgid "What we never keep"
+msgstr "Lo que nunca guardamos"
+
+#: chat_connect/templates/pages/security.html
+msgid "Chat messages. Conversations are real-time and ephemeral."
+msgstr "Los mensajes del chat. Las conversaciones son en tiempo real y efímeras."
+
+#: chat_connect/templates/pages/security.html
+msgid "Personal data. No email, phone number or real name is needed to chat."
+msgstr "Datos personales. No hace falta correo, teléfono ni nombre real para chatear."
+
+#: chat_connect/templates/pages/security.html
+msgid "Permanent nicknames. Yours is cached for the session and dropped when you leave."
+msgstr "Apodos permanentes. El tuyo se guarda en caché durante la sesión y se descarta cuando te vas."
+
+#: chat_connect/templates/pages/security.html
+msgid "Read the full privacy policy"
+msgstr "Lee la política de privacidad completa"
+
+#: chat_connect/templates/pages/security.html
+msgid "How to stay safe in the room"
+msgstr "Cómo estar seguro en la sala"
+
+#: chat_connect/templates/pages/security.html
+msgid "Never share your address, workplace, documents or financial details."
+msgstr "Nunca compartas tu dirección, tu lugar de trabajo, tus documentos ni tus datos bancarios."
+
+#: chat_connect/templates/pages/security.html
+msgid "Pick a nickname that is not your real name or a handle you use elsewhere."
+msgstr "Elige un apodo que no sea tu nombre real ni un alias que uses en otros sitios."
+
+#: chat_connect/templates/pages/security.html
+msgid "Treat unsolicited links and payment requests as scams, every time."
+msgstr "Trata los enlaces no solicitados y las peticiones de pago como estafas, siempre."
+
+#: chat_connect/templates/pages/security.html
+msgid "Use the Report button if someone is abusive. A moderator reviews reports."
+msgstr "Usa el botón Denunciar si alguien es abusivo. Un moderador revisa las denuncias."
+
+#: chat_connect/templates/pages/security.html
+msgid "Found a vulnerability, or someone acting badly?"
+msgstr "¿Has encontrado una vulnerabilidad, o a alguien portándose mal?"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/security.html
+msgid "Report it and we will look into it. For the legal detail, read the privacy policy and the terms and conditions."
+msgstr "Denúncialo y lo investigaremos. Para el detalle legal, lee la política de privacidad y los términos y condiciones."
+
+#: chat_connect/templates/pages/security.html
+msgid "Report a problem"
+msgstr "Informar de un problema"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Terms and conditions for adult chat, 18+ | Chatea-Conecta"
+msgstr "Términos y condiciones del chat para adultos, 18+ | Chatea-Conecta"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "The rules of Chatea-Conecta: who may use the free chat rooms, what is not allowed, how moderation works, and the limits of our liability."
+msgstr "Las normas de Chatea-Conecta: quién puede usar las salas de chat gratuitas, qué no está permitido, cómo funciona la moderación y los límites de nuestra responsabilidad."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "Welcome to Chatea Conecta. Please read these terms carefully before using the site. By accessing or using Chatea Conecta you agree to be bound by them. If you do not agree with any part, please do not use the site."
+msgstr "Bienvenido a Chatea Conecta. Lee estos términos con atención antes de usar el sitio. Al acceder o usar Chatea Conecta aceptas quedar vinculado por ellos. Si no estás de acuerdo con alguna parte, no uses el sitio."
+
+#: chat_connect/templates/pages/terms.html
+msgid "18+ only"
+msgstr "Solo 18+"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Personal use only"
+msgstr "Solo uso personal"
+
+#: chat_connect/templates/pages/terms.html
+msgid "5 min read"
+msgstr "5 min de lectura"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Contents"
+msgstr "Contenido"
+
+#: chat_connect/templates/pages/terms.html
+msgid "General information"
+msgstr "Información general"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Eligibility and age"
+msgstr "Requisitos y edad"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Purpose and acceptable use"
+msgstr "Propósito y uso aceptable"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Prohibited actions"
+msgstr "Acciones prohibidas"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Intellectual property"
+msgstr "Propiedad intelectual"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Privacy and data"
+msgstr "Privacidad y datos"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Liability disclaimer"
+msgstr "Exención de responsabilidad"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Changes to terms"
+msgstr "Cambios en los términos"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Governing law"
+msgstr "Legislación aplicable"
+
+#: chat_connect/templates/pages/terms.html
+msgid "The site is Chatea Conecta."
+msgstr "El sitio es Chatea Conecta."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "For questions or support, contact us at <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>. This address may be updated with a domain-specific one in the future."
+msgstr "Para preguntas o soporte, contáctanos en <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>. Esta dirección puede actualizarse por una propia del dominio en el futuro."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Eligibility and age verification"
+msgstr "Requisitos y verificación de edad"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "By using Chatea Conecta you confirm that you are at least 18 years of age. The site is intended for users who are of legal age to take part in open chat rooms and interact with others in a respectful, adult manner."
+msgstr "Al usar Chatea Conecta confirmas que tienes al menos 18 años. El sitio está dirigido a personas con edad legal para participar en salas de chat abiertas e interactuar con otras de forma respetuosa y adulta."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Platform purpose and acceptable use"
+msgstr "Propósito de la plataforma y uso aceptable"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta is an entertainment platform that lets users connect and chat with others around the world. We are dedicated to a friendly, positive environment for casual conversation."
+msgstr "Chatea Conecta es una plataforma de entretenimiento que permite conectar y charlar con gente de todo el mundo. Nos dedicamos a mantener un ambiente amable y positivo para la conversación informal."
+
+#: chat_connect/templates/pages/terms.html
+msgid "By using the site you agree to:"
+msgstr "Al usar el sitio aceptas:"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "Communicate respectfully with other users, refraining from offensive language, harassment, discrimination or any form of abuse."
+msgstr "Comunicarte con respeto con los demás usuarios, evitando el lenguaje ofensivo, el acoso, la discriminación o cualquier forma de abuso."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Use Chatea Conecta solely for personal enjoyment and not for commercial or promotional purposes."
+msgstr "Usar Chatea Conecta únicamente para disfrute personal y no con fines comerciales o promocionales."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Avoid sharing or attempting to solicit personal, financial or sensitive information."
+msgstr "Evitar compartir o intentar obtener información personal, financiera o sensible."
+
+#: chat_connect/templates/pages/terms.html
+msgid "To keep the room safe and welcoming, the following are strictly prohibited:"
+msgstr "Para mantener la sala segura y acogedora, queda terminantemente prohibido:"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "<strong>Offensive or abusive behaviour.</strong> Language or behaviour that is abusive, offensive, obscene or otherwise harmful to other users."
+msgstr "<strong>Comportamiento ofensivo o abusivo.</strong> Lenguaje o conducta abusiva, ofensiva, obscena o de cualquier otro modo dañina para los demás usuarios."
+
+#: chat_connect/templates/pages/terms.html
+msgid "<strong>Commercial use.</strong> Advertising, promoting products or services, or conducting commercial transactions."
+msgstr "<strong>Uso comercial.</strong> Publicitar, promocionar productos o servicios, o realizar transacciones comerciales."
+
+#: chat_connect/templates/pages/terms.html
+msgid "<strong>Misrepresentation.</strong> Impersonating another person or providing false information."
+msgstr "<strong>Suplantación.</strong> Hacerse pasar por otra persona o facilitar información falsa."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Violating any of these terms may result in suspension or a permanent ban from the platform."
+msgstr "Incumplir cualquiera de estos términos puede acarrear la suspensión o la expulsión permanente de la plataforma."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Intellectual property and content ownership"
+msgstr "Propiedad intelectual y titularidad del contenido"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "All content on Chatea Conecta, including SVG designs, site layout and underlying code, is owned by the creator of Chatea Conecta. Users may not reproduce, distribute or otherwise use any part of the site's content for commercial purposes without prior permission."
+msgstr "Todo el contenido de Chatea Conecta, incluidos los diseños SVG, la maquetación del sitio y el código subyacente, pertenece al creador de Chatea Conecta. Los usuarios no pueden reproducir, distribuir ni usar de otro modo ninguna parte del contenido con fines comerciales sin permiso previo."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Privacy and data collection"
+msgstr "Privacidad y recopilación de datos"
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta does not collect, store or share personal data at this time. Should this change, users will be notified and updates will appear in the <a href=\"%(privacy_url)s\">privacy policy</a>."
+msgstr "Chatea Conecta no recopila, almacena ni comparte datos personales por el momento. Si esto cambia, se avisará a los usuarios y las actualizaciones aparecerán en la <a href=\"%(privacy_url)s\">política de privacidad</a>."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta is provided on an 'as is' basis. While we work to maintain a positive environment, we are not responsible for the behaviour, comments or interactions of individual users. We disclaim any liability for damages resulting from user interactions or content shared within the platform."
+msgstr "Chatea Conecta se ofrece «tal cual». Aunque trabajamos para mantener un ambiente positivo, no somos responsables del comportamiento, los comentarios ni las interacciones de los usuarios. Declinamos cualquier responsabilidad por daños derivados de las interacciones entre usuarios o del contenido compartido en la plataforma."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta reserves the right to update these terms at any time. Users will be notified of significant changes, and continued use of the platform means acceptance of any revised terms."
+msgstr "Chatea Conecta se reserva el derecho de actualizar estos términos en cualquier momento. Se avisará a los usuarios de los cambios significativos, y seguir usando la plataforma implica aceptar los términos revisados."
+
+#. TRANSLATOR REVIEW: long-form prose, drafted not professionally translated.
+#: chat_connect/templates/pages/terms.html
+msgid "These terms are governed by the applicable laws of <mark>[Your Country/Region]</mark>. Any disputes arising from the use of Chatea Conecta shall be resolved through the appropriate legal channels within this jurisdiction."
+msgstr "Estos términos se rigen por la legislación aplicable de <mark>[Tu país/región]</mark>. Cualquier disputa derivada del uso de Chatea Conecta se resolverá por los cauces legales adecuados dentro de esta jurisdicción."
+
+#: chat_connect/templates/pages/terms.html
+msgid "For any questions or concerns about these terms, contact us at <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+msgstr "Para cualquier pregunta o duda sobre estos términos, contáctanos en <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Cookies"
+msgstr "Cookies"

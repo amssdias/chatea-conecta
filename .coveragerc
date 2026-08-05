@@ -1,0 +1,22 @@
+[run]
+source =
+    apps.chat
+    apps.integrations
+    apps.subscriptions
+    apps.users
+
+branch = True
+
+omit =
+    */migrations/*
+    */tests/*
+    */settings/*
+    */asgi.py
+    */wsgi.py
+    manage.py
+
+[report]
+show_missing = True
+skip_covered = True
+skip_empty = True
+precision = 2

@@ -1,7 +1,13 @@
 import json
 import logging
 
-from apps.chat.constants.consumer import PRIVATE_INVITE, REGISTER_GROUP, SEND_MESSAGE, ERROR_ACTION, HEARTBEAT
+from apps.chat.constants.consumer import (
+    ERROR_ACTION,
+    HEARTBEAT,
+    PRIVATE_INVITE,
+    REGISTER_GROUP,
+    SEND_MESSAGE,
+)
 from apps.chat.services.actions.heartbeat import handle_heartbeat
 from apps.chat.services.actions.private_invite import handle_private_invite
 from apps.chat.services.actions.register_group import handle_register_group

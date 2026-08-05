@@ -2,19 +2,20 @@ import ChatView from "./views/chatView.js";
 import SideBarView from "./views/sideBarView.js";
 import ChatSocket from "./chatSocket.js";
 
-import { SOCKET_URL } from "./config.js";
+import {SOCKET_URL} from "./config.js";
 
 const chatGroups = document.getElementById("chat-groups");
 const translations = {
     sendPrivateMsg,
 };
 
-const sideBarView = new SideBarView();
+const sideBarView = new SideBarView(isPro);
 const chatView = new ChatView(
     currentUser, 
     userId, 
     sideBarView,
-    translations
+    translations,
+    isPro
 );
 
 const chatSocketHandler = new ChatSocket(

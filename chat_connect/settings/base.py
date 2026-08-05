@@ -44,6 +44,7 @@ DJANGO_APPS = [
 
 MY_PROJECT_APPS = [
     "apps.chat",
+    "apps.subscriptions",
     "apps.users",
 ]
 
@@ -88,6 +89,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "chat_connect.wsgi.application"
 ASGI_APPLICATION = "chat_connect.asgi.application"
 AUTH_USER_MODEL = "users.User"
+LOGIN_URL = "users:login"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -164,6 +166,18 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Email
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Chat Connect <support@chatea-conecta.com>")
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 # Redis
 REDIS_PROTOCOL = os.getenv("REDIS_PROTOCOL", "rediss")
 REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
@@ -195,6 +209,11 @@ CACHE_TIMEOUT_ONE_DAY = SECONDS_IN_DAY
 CACHE_TIMEOUT_ONE_WEEK = SECONDS_IN_DAY * 7
 CACHE_TIMEOUT_ONE_MONTH = SECONDS_IN_DAY * 30
 
+# Lifetime of the signed guest session token and of the Redis keys that map a
+# guest id to its username. Both must use the same value so a token can never
+# outlive the ownership mapping it is checked against.
+GUEST_SESSION_MAX_AGE = SECONDS_IN_DAY
+
 # Web Socket - Channels
 REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")
 REDIS_CHANNEL_LAYER_URL = f"{REDIS_URL}/{REDIS_DB_CHANNEL}"
@@ -224,3 +243,13 @@ CELERY_BEAT_SCHEDULE = {
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = os.getenv("AWS_DEFAULT_REGION")
+
+# Stripe settings
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+STRIPE_PRO_MONTHLY_PRICE_ID = os.getenv("STRIPE_PRO_MONTHLY_PRICE_ID")
+STRIPE_API_VERSION = "2026-02-25.clover"
+
+
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL")
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL")

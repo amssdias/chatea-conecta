@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Your Pro subscription" %}{% endblock title %}
+{% block description %}{% trans "Check and manage your Pro subscription details." %}{% endblock description %}
+
+{% block content %}
+<section class="subscription-detail">
+	<div class="subscription-detail__container">
+		<article class="subscription-detail__card">
+
+			{% if messages %}
+			<div class="subscription-detail__messages" role="status" aria-live="polite">
+				{% for message in messages %}
+				<div class="subscription-detail__alert subscription-detail__alert--{{ message.level_tag }}">
+					{{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<div class="subscription-detail__icon" aria-hidden="true">
+				<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="32" cy="32" r="30"/>
+					<path d="M18 25L27 39L32 21L37 39L46 25L42 45H22L18 25Z"
+						  stroke-linecap="round"
+						  stroke-linejoin="round"/>
+				</svg>
+			</div>
+
+			<span class="
+                subscription-detail__badge
+                {% if subscription.needs_payment_configuration %}
+                    subscription-detail__badge--warning
+                {% elif subscription.is_pro %}
+                    subscription-detail__badge--active
+                {% else %}
+                    subscription-detail__badge--inactive
+                {% endif %}
+            ">
+                {% if subscription.needs_payment_configuration %}
+                    {% trans "Action needed" %}
+                {% elif subscription.is_pro %}
+                    {% trans "Pro active" %}
+                {% else %}
+                    {% trans "No active Pro plan" %}
+                {% endif %}
+            </span>
+
+			<h1 class="subscription-detail__title">
+				{% trans "Your Pro subscription" %}
+			</h1>
+
+			<p class="subscription-detail__message">
+				{% if subscription.needs_payment_configuration %}
+				{% blocktrans %}
+				Your Pro access is still available for now, but your payment method needs to be updated.
+				{% endblocktrans %}
+				{% elif subscription.cancel_at_period_end %}
+				{% blocktrans with end_date=subscription.current_period_end|date:"d M Y" %}
+				Your Pro subscription is cancelled and will remain active until {{ end_date }}.
+				{% endblocktrans %}
+				{% elif subscription.is_pro %}
+				{% blocktrans %}
+				Your Pro plan is active. You can keep using premium access in the chat.
+				{% endblocktrans %}
+				{% else %}
+				{% blocktrans %}
+				You do not have an active Pro subscription yet.
+				{% endblocktrans %}
+				{% endif %}
+			</p>
+
+			<dl class="subscription-detail__details">
+				<div class="subscription-detail__detail-item">
+					<dt>{% trans "Status" %}</dt>
+					<dd>
+						{% if subscription.needs_payment_configuration %}
+						{% trans "Payment action needed" %}
+						{% elif subscription.cancel_at_period_end %}
+						{% trans "Cancelling at period end" %}
+						{% elif subscription.is_active %}
+						{% trans "Active" %}
+						{% else %}
+						{{ subscription.status|title }}
+						{% endif %}
+					</dd>
+				</div>
+
+				<div class="subscription-detail__detail-item">
+					<dt>{% trans "Plan" %}</dt>
+					<dd>{{ subscription.plan_name }}</dd>
+				</div>
+
+				{% if subscription.started_at %}
+				<div class="subscription-detail__detail-item">
+					<dt>{% trans "Subscription started on" %}</dt>
+					<dd>{{ subscription.started_at|date:"d M Y" }}</dd>
+				</div>
+				{% endif %}
+
+				{% if subscription.current_period_start %}
+				<div class="subscription-detail__detail-item">
+					<dt>{% trans "Current paid period started" %}</dt>
+					<dd>{{ subscription.current_period_start|date:"d M Y" }}</dd>
+				</div>
+				{% endif %}
+
+				{% if subscription.current_period_end %}
+				<div class="subscription-detail__detail-item">
+					{% if subscription.cancel_at_period_end %}
+					<dt>{% trans "Access until" %}</dt>
+					{% else %}
+					<dt>{% trans "Renews on" %}</dt>
+					{% endif %}
+					<dd>{{ subscription.current_period_end|date:"d M Y" }}</dd>
+				</div>
+				{% endif %}
+
+				{% if subscription.canceled_at %}
+				<div class="subscription-detail__detail-item">
+					<dt>{% trans "Cancelled on" %}</dt>
+					<dd>{{ subscription.canceled_at|date:"d M Y" }}</dd>
+				</div>
+				{% endif %}
+			</dl>
+
+			<div class="subscription-detail__actions" id="subscription-actions">
+				{% if subscription.needs_payment_configuration %}
+				<form method="post"
+				      action="{% url 'subscriptions:billing_portal' %}"
+				      class="subscription-detail__form">
+					{% csrf_token %}
+					<button type="submit"
+					        class="subscription-detail__button subscription-detail__button--warning">
+						{% trans "Update payment method" %}
+					</button>
+				</form>
+				{% endif %}
+
+				{% if subscription.is_pro and not subscription.cancel_at_period_end %}
+				<a href="#cancel-subscription-modal"
+				   class="subscription-detail__button subscription-detail__button--danger">
+					{% trans "Cancel subscription" %}
+				</a>
+				{% endif %}
+
+				{% if not subscription.is_pro %}
+				<form action="{% url 'subscriptions:create_pro_checkout_session' %}"
+					  method="post"
+					  class="subscription-detail__form">
+					{% csrf_token %}
+					<button type="submit"
+							class="subscription-detail__button subscription-detail__button--primary">
+						{% trans "Go Pro" %}
+					</button>
+				</form>
+				{% endif %}
+
+				<a href="{% url 'chat:live-chat' %}"
+				   class="subscription-detail__button subscription-detail__button--secondary">
+					{% trans "Back to chat" %}
+				</a>
+			</div>
+
+			{% if subscription.is_pro and not subscription.cancel_at_period_end %}
+			<div id="cancel-subscription-modal"
+				 class="subscription-detail__modal"
+				 role="dialog"
+				 aria-modal="true"
+				 aria-labelledby="cancel-subscription-modal-title"
+				 aria-describedby="cancel-subscription-modal-description">
+
+				<a href="#subscription-actions"
+				   class="subscription-detail__modal-backdrop"
+				   aria-label="{% trans 'Close cancellation confirmation' %}">
+				</a>
+
+				<div class="subscription-detail__modal-card">
+					<a href="#subscription-actions"
+					   class="subscription-detail__modal-close"
+					   aria-label="{% trans 'Close cancellation confirmation' %}">
+						&times;
+					</a>
+
+					<div class="subscription-detail__modal-icon" aria-hidden="true">
+						<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<circle cx="32" cy="32" r="30"/>
+							<path d="M32 18V36"
+								  stroke-linecap="round"
+								  stroke-linejoin="round"/>
+							<path d="M32 46H32.01"
+								  stroke-linecap="round"
+								  stroke-linejoin="round"/>
+						</svg>
+					</div>
+
+					<h2 id="cancel-subscription-modal-title"
+						class="subscription-detail__modal-title">
+						{% trans "Cancel your Pro subscription?" %}
+					</h2>
+
+					<p id="cancel-subscription-modal-description"
+					   class="subscription-detail__modal-message">
+						{% if subscription.current_period_end %}
+						{% blocktrans with end_date=subscription.current_period_end|date:"d M Y" %}
+						Your Pro access will remain active until {{ end_date }}. After that date, your subscription will
+						not renew.
+						{% endblocktrans %}
+						{% else %}
+						{% blocktrans %}
+						Your Pro access will remain active until the end of your current billing period. After that,
+						your subscription will not renew.
+						{% endblocktrans %}
+						{% endif %}
+					</p>
+
+					<div class="subscription-detail__modal-actions">
+						<a href="#subscription-actions"
+						   class="subscription-detail__button subscription-detail__button--secondary">
+							{% trans "Keep subscription" %}
+						</a>
+
+						<form method="post"
+							  action="{% url 'subscriptions:cancel' %}"
+							  class="subscription-detail__form">
+							{% csrf_token %}
+							<button type="submit"
+									class="subscription-detail__button subscription-detail__button--danger">
+								{% trans "Yes, cancel subscription" %}
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+
+			<p class="subscription-detail__help">
+				{% blocktrans %}
+				If something looks wrong, refresh the page or contact support.
+				{% endblocktrans %}
+			</p>
+
+		</article>
+	</div>
+</section>
+{% endblock content %}
