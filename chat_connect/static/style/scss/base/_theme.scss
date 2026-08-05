@@ -1,0 +1,43 @@
+// =============================================================
+// SHARED INK THEME
+//
+// Applied by base.html via {% block body_class %}theme-ink{% endblock %},
+// so it is the default for every page. The chat page opts out (it keeps
+// the legacy light palette until step 4 of the redesign).
+//
+// Just the page surface, links, focus ring and selection. This file also
+// carried a transitional layer that rebased the legacy typography and
+// contained the light auth / subscription cards; all of it was deleted
+// once step 3 moved the last page onto the ink palette.
+// =============================================================
+
+.theme-ink {
+    background-color: $ink;
+    background-image: none; // clears the legacy dot pattern from base/_base.scss
+    color: $text;
+    font-family: $font-body;
+    overflow-x: hidden;
+
+    // Prose links only. `a` on its own would be (0,1,1) and beat every
+    // single-class component rule, so .topbar__btn--primary and friends
+    // would lose their own colour - the Sign up button rendered ember on
+    // ember at 1.55:1 before this was narrowed. Any anchor that carries a
+    // class styles itself.
+    a:not([class]) {
+        color: $ember-hover;
+
+        &:hover { color: $gold; }
+    }
+
+    :focus-visible {
+        outline: 2px solid $ember-hover;
+        outline-offset: 3px;
+    }
+
+    ::selection {
+        background-color: $ember;
+        color: #fff;
+    }
+
+    strong { color: $text-strong; }
+}

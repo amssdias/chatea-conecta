@@ -12,16 +12,6 @@
     }
 }
 
-.btn-close-session {
-    align-self: self-end;
-    color: $text-dark;
-
-    &:hover {
-        background-color: $bg-dark;
-        transition: 0.2s;
-    }
-}
-
 .side-menu--btn {
     border: none;
     background: transparent;

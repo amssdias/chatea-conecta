@@ -1,10 +1,13 @@
+// Repaletted onto the ink tokens during step 3 of the redesign. Only
+// colours changed: the layout, and the `&__modal:target` rule that drives
+// the cancel dialog without JavaScript, are untouched.
 .checkout-result {
     min-height: clamp(52rem, 75vh, 72rem);
     padding: 6rem 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, rgba($primary-light, 0.2) 0%, rgba($bg-light, 0.95) 60%);
+    background-color: $ink;
 
     &__container {
         width: 100%;
@@ -12,10 +15,10 @@
     }
 
     &__card {
-        background-color: $color-white;
-        border: 1px solid rgba($accent-light, 0.45);
+        background-color: $ink-raised;
+        border: 1px solid $ink-line;
         border-radius: 2rem;
-        box-shadow: 0 1.4rem 4rem rgba($accent-dark, 0.12);
+        box-shadow: none;
         padding: 4.2rem;
         text-align: center;
     }
@@ -38,12 +41,12 @@
 
     &__title {
         font-size: 3.2rem;
-        color: $accent-dark;
+        color: $text-strong;
         margin-bottom: 1.2rem;
     }
 
     &__message {
-        color: $text-light;
+        color: $text-dim;
         font-size: 1.9rem;
         line-height: 1.5;
         margin-bottom: 2.4rem;
@@ -51,7 +54,7 @@
 
     &__details {
         text-align: left;
-        background-color: $bg-medium;
+        background-color: $ink-raised-2;
         border-radius: 1.2rem;
         padding: 2rem;
         margin: 0 auto 2.8rem;
@@ -63,18 +66,18 @@
         justify-content: space-between;
         gap: 1.2rem;
         padding: 0.8rem 0;
-        border-bottom: 1px solid rgba($accent-light, 0.45);
+        border-bottom: 1px solid $ink-line;
 
         &:last-child {
             border-bottom: 0;
         }
 
         dt {
-            color: $text-light;
+            color: $text-dim;
         }
 
         dd {
-            color: $text-dark;
+            color: $text;
             font-weight: 600;
             text-align: right;
             word-break: break-word;
@@ -98,40 +101,40 @@
         transition: all 0.2s ease;
 
         &--primary {
-            background-color: $button-bg;
-            color: $button-text;
+            background-color: $ember;
+            color: #fff;
 
             &:hover {
-                background-color: $button-hover-bg;
-                color: $button-hover-text;
+                background-color: $ember-hover;
+                color: #fff;
             }
         }
 
         &--secondary {
             background-color: transparent;
-            color: $accent-dark;
-            border-color: rgba($accent-light, 0.8);
+            color: $text-strong;
+            border-color: $ink-line-strong;
 
             &:hover {
-                background-color: rgba($bg-medium, 0.85);
+                background-color: $ink-raised-2;
             }
         }
     }
 
     &__help {
-        color: $text-light;
+        color: $text-dim;
         font-size: 1.5rem;
     }
 
     &--success {
         .checkout-result__icon {
             circle {
-                stroke: rgba($color-green-dark-1, 0.45);
-                fill: rgba($color-green-dark-1, 0.12);
+                stroke: rgba($online, 0.5);
+                fill: rgba($online, 0.14);
             }
 
             path {
-                stroke: darken($color-green-dark-1, 10%);
+                stroke: $online;
             }
         }
     }
@@ -139,12 +142,12 @@
     &--cancel {
         .checkout-result__icon {
             circle {
-                stroke: rgba($color-dark-amber-1, 0.55);
-                fill: rgba($color-light-amber, 0.55);
+                stroke: $gold-line;
+                fill: rgba($gold, 0.16);
             }
 
             path {
-                stroke: $color-dark-amber-3;
+                stroke: $gold;
             }
         }
     }

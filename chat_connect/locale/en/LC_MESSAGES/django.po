@@ -572,3 +572,975 @@ msgstr ""
 #: chat_connect/templates/pages/privacy.html:53
 msgid "How We Use Your Information"
 msgstr ""
+
+#: chat_connect/templates/index.html
+msgid "Free chat rooms with no sign up. Anonymous adult chat, open now | Chatea-Conecta"
+msgstr "Free chat rooms with no sign up. Anonymous adult chat, open now | Chatea-Conecta"
+
+#: chat_connect/templates/index.html
+msgid "Free chat with no registration and no download. Pick a nickname and talk to adults across Europe and Latin America in one moderated room. Anonymous, 18+, always free."
+msgstr "Free chat with no registration and no download. Pick a nickname and talk to adults across Europe and Latin America in one moderated room. Anonymous, 18+, always free."
+
+#: chat_connect/templates/index.html
+msgid "Free chat rooms with no sign up. Anonymous adult chat, open now"
+msgstr "Free chat rooms with no sign up. Anonymous adult chat, open now"
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname and talk to adults worldwide. No account, no app, no cost."
+msgstr "Pick a nickname and talk to adults worldwide. No account, no app, no cost."
+
+#: chat_connect/templates/index.html
+msgid "18+ &middot; no sign up &middot; always free"
+msgstr "18+ &middot; no sign up &middot; always free"
+
+#: chat_connect/templates/index.html
+msgid "Free chat rooms. <em>Someone is awake.</em>"
+msgstr "Free chat rooms. <em>Someone is awake.</em>"
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname and start talking to adults across Europe and Latin America. No account, no app, no cost."
+msgstr "Pick a nickname and start talking to adults across Europe and Latin America. No account, no app, no cost."
+
+#: chat_connect/templates/index.html
+msgid "Enter Chatroom"
+msgstr "Enter Chatroom"
+
+#: chat_connect/templates/index.html
+msgid "Your nickname"
+msgstr "Your nickname"
+
+#: chat_connect/templates/index.html
+msgid "I agree to the <span class=\"link-tc\" id=\"terms-and-conditions\">Terms and Conditions</span> of the site."
+msgstr "I agree to the <span class=\"link-tc\" id=\"terms-and-conditions\">Terms and Conditions</span> of the site."
+
+#: chat_connect/templates/index.html
+msgid "One room &middot; English and Espa&ntilde;ol"
+msgstr "One room &middot; English and Espa&ntilde;ol"
+
+#: chat_connect/templates/index.html
+msgid "live"
+msgstr "live"
+
+#: chat_connect/templates/index.html
+msgid "Rough week. Anyone else just want to talk about something else tonight?"
+msgstr "Rough week. Anyone else just want to talk about something else tonight?"
+
+#: chat_connect/templates/index.html
+msgid "Long walks and worse coffee. Mind if I join?"
+msgstr "Long walks and worse coffee. Mind if I join?"
+
+#: chat_connect/templates/index.html
+msgid "Practising my English tonight if anyone is patient with me."
+msgstr "Practising my English tonight if anyone is patient with me."
+
+#: chat_connect/templates/index.html
+msgid "two people typing"
+msgstr "two people typing"
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname to reply."
+msgstr "Pick a nickname to reply."
+
+#: chat_connect/templates/index.html
+msgid "Nicknames only. Nothing anyone writes is kept after the conversation ends."
+msgstr "Nicknames only. Nothing anyone writes is kept after the conversation ends."
+
+#: chat_connect/templates/index.html
+msgid "Anonymous by default. A nickname is the only thing we ask for."
+msgstr "Anonymous by default. A nickname is the only thing we ask for."
+
+#: chat_connect/templates/index.html
+msgid "Moderated and adults only, with a report button in every chat."
+msgstr "Moderated and adults only, with a report button in every chat."
+
+#: chat_connect/templates/index.html
+msgid "Runs in the browser you already have open. Nothing to install."
+msgstr "Runs in the browser you already have open. Nothing to install."
+
+#: chat_connect/templates/index.html
+msgid "Three steps, about five seconds."
+msgstr "Three steps, about five seconds."
+
+#: chat_connect/templates/index.html
+msgid "Choose a nickname"
+msgstr "Choose a nickname"
+
+#: chat_connect/templates/index.html
+msgid "Anything you like. No email, no phone number and no profile to build."
+msgstr "Anything you like. No email, no phone number and no profile to build."
+
+#: chat_connect/templates/index.html
+msgid "Walk into the room"
+msgstr "Walk into the room"
+
+#: chat_connect/templates/index.html
+msgid "One shared room, moderated, open at every hour including the awkward ones."
+msgstr "One shared room, moderated, open at every hour including the awkward ones."
+
+#: chat_connect/templates/index.html
+msgid "Take it one to one"
+msgstr "Take it one to one"
+
+#: chat_connect/templates/index.html
+msgid "Click any name and open a private chat. It stays between the two of you."
+msgstr "Click any name and open a private chat. It stays between the two of you."
+
+#: chat_connect/templates/index.html
+msgid "Why adults keep the tab open."
+msgstr "Why adults keep the tab open."
+
+#: chat_connect/templates/index.html
+msgid "The room is busiest when the rest of the internet gets quiet."
+msgstr "The room is busiest when the rest of the internet gets quiet."
+
+#: chat_connect/templates/index.html
+msgid "Late evenings and small hours are when people actually want to talk. That is when there is always someone here."
+msgstr "Late evenings and small hours are when people actually want to talk. That is when there is always someone here."
+
+#: chat_connect/templates/index.html
+msgid "Nothing is stored"
+msgstr "Nothing is stored"
+
+#: chat_connect/templates/index.html
+msgid "Messages are not kept. Your nickname sits in a session cache and is dropped the moment you leave the page."
+msgstr "Messages are not kept. Your nickname sits in a session cache and is dropped the moment you leave the page."
+
+#: chat_connect/templates/index.html
+msgid "Two languages, one room"
+msgstr "Two languages, one room"
+
+#: chat_connect/templates/index.html
+msgid "English and Espa&ntilde;ol share the same room, which is how most people here end up practising one of them."
+msgstr "English and Espa&ntilde;ol share the same room, which is how most people here end up practising one of them."
+
+#: chat_connect/templates/index.html
+msgid "Adults, and moderated"
+msgstr "Adults, and moderated"
+
+#: chat_connect/templates/index.html
+msgid "Everyone confirms they are 18 or older at the door, and every chat has a report button that reaches a moderator."
+msgstr "Everyone confirms they are 18 or older at the door, and every chat has a report button that reaches a moderator."
+
+#: chat_connect/templates/index.html
+msgid "Free chat without registration, in one browser tab"
+msgstr "Free chat without registration, in one browser tab"
+
+#: chat_connect/templates/index.html
+msgid "Most sites that promise free online chat want an account first. Chatea-Conecta does not. You type a nickname, confirm you are an adult, and you are in a live room with people from Spain, Portugal, Mexico, Argentina and anywhere else with a connection."
+msgstr "Most sites that promise free online chat want an account first. Chatea-Conecta does not. You type a nickname, confirm you are an adult, and you are in a live room with people from Spain, Portugal, Mexico, Argentina and anywhere else with a connection."
+
+#: chat_connect/templates/index.html
+msgid "There is no feed, no follower count and nothing to grow. It is a room with strangers in it, which is a much older and better idea than most of what replaced it. Talk about your week, argue about football, practise a language, or sit quietly and read until something catches your interest."
+msgstr "There is no feed, no follower count and nothing to grow. It is a room with strangers in it, which is a much older and better idea than most of what replaced it. Talk about your week, argue about football, practise a language, or sit quietly and read until something catches your interest."
+
+#: chat_connect/templates/index.html
+msgid "If a conversation is worth continuing, open a private chat and keep it there. If someone is out of line, report them. Both take one click."
+msgstr "If a conversation is worth continuing, open a private chat and keep it there. If someone is out of line, report them. Both take one click."
+
+#: chat_connect/templates/index.html
+msgid "How we keep it safe"
+msgstr "How we keep it safe"
+
+#: chat_connect/templates/index.html
+msgid "Common questions"
+msgstr "Common questions"
+
+#: chat_connect/templates/index.html
+msgid "There are no photographs of members on this site. Everyone here is a nickname, and that is the point."
+msgstr "There are no photographs of members on this site. Everyone here is a nickname, and that is the point."
+
+#: chat_connect/templates/index.html
+msgid "Questions people actually ask"
+msgstr "Questions people actually ask"
+
+#: chat_connect/templates/index.html
+msgid "Is Chatea-Conecta really free chat?"
+msgstr "Is Chatea-Conecta really free chat?"
+
+#: chat_connect/templates/index.html
+msgid "Yes. The main room and private chats are free with no time limit and no card. PRO is optional and only adds extras such as unlimited private chats and a reserved nickname."
+msgstr "Yes. The main room and private chats are free with no time limit and no card. PRO is optional and only adds extras such as unlimited private chats and a reserved nickname."
+
+#: chat_connect/templates/index.html
+msgid "Can I chat without registration?"
+msgstr "Can I chat without registration?"
+
+#: chat_connect/templates/index.html
+msgid "Yes. Type a nickname, confirm you are 18 or older, and you are in the room. There is no account to create, no email to confirm and nothing to install."
+msgstr "Yes. Type a nickname, confirm you are 18 or older, and you are in the room. There is no account to create, no email to confirm and nothing to install."
+
+#: chat_connect/templates/index.html
+msgid "Is free chat without registration safe?"
+msgstr "Is free chat without registration safe?"
+
+#: chat_connect/templates/index.html
+msgid "The room is moderated and every chat has a report button. Keep your address, documents and payment details to yourself, treat unsolicited links as scams, and use a nickname that is not a handle you use elsewhere."
+msgstr "The room is moderated and every chat has a report button. Keep your address, documents and payment details to yourself, treat unsolicited links as scams, and use a nickname that is not a handle you use elsewhere."
+
+#: chat_connect/templates/index.html
+msgid "Are the chats anonymous?"
+msgstr "Are the chats anonymous?"
+
+#: chat_connect/templates/index.html
+msgid "You are identified only by the nickname you pick. We do not ask for personal data to enter a room, and messages are not stored after the conversation."
+msgstr "You are identified only by the nickname you pick. We do not ask for personal data to enter a room, and messages are not stored after the conversation."
+
+#: chat_connect/templates/index.html
+msgid "Who can use the chat rooms?"
+msgstr "Who can use the chat rooms?"
+
+#: chat_connect/templates/index.html
+msgid "Adults only. You confirm you are 18 or older before entering, and the room is moderated to keep it respectful."
+msgstr "Adults only. You confirm you are 18 or older before entering, and the room is moderated to keep it respectful."
+
+#: chat_connect/templates/index.html
+msgid "The room is open."
+msgstr "The room is open."
+
+#: chat_connect/templates/index.html
+msgid "Pick a nickname and say something. Nobody here needs to know who you are."
+msgstr "Pick a nickname and say something. Nobody here needs to know who you are."
+
+#: chat_connect/templates/index.html
+msgid "Start chatting free"
+msgstr "Start chatting free"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Main"
+msgstr "Main"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Toggle navigation menu"
+msgstr "Toggle navigation menu"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Open chats menu"
+msgstr "Open chats menu"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "PRO - Action Needed"
+msgstr "PRO - Action Needed"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "You are PRO"
+msgstr "You are PRO"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Go Pro"
+msgstr "Go Pro"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Home"
+msgstr "Home"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Security"
+msgstr "Security"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Login"
+msgstr "Login"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Sign up"
+msgstr "Sign up"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Free anonymous chat rooms for adults. One room, no account, open every hour."
+msgstr "Free anonymous chat rooms for adults. One room, no account, open every hour."
+
+#: chat_connect/templates/footer-v2.html
+msgid "Chat"
+msgstr "Chat"
+
+#: chat_connect/templates/footer-v2.html
+msgid "About"
+msgstr "About"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Support"
+msgstr "Support"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Contact"
+msgstr "Contact"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Legal"
+msgstr "Legal"
+
+#: chat_connect/templates/footer-v2.html
+msgid "Terms"
+msgstr "Terms"
+
+#: chat_connect/templates/partials/terms-modal-body.html
+msgid "Close"
+msgstr "Close"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "How it works"
+msgstr "How it works"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "The room"
+msgstr "The room"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Questions"
+msgstr "Questions"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Safety"
+msgstr "Safety"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Go PRO"
+msgstr "Go PRO"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Log in"
+msgstr "Log in"
+
+#: chat_connect/templates/navigation-v2.html
+msgid "Start chatting"
+msgstr "Start chatting"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Free chat FAQ. No registration, anonymous, adults only | Chatea-Conecta"
+msgstr "Free chat FAQ. No registration, anonymous, adults only | Chatea-Conecta"
+
+#: chat_connect/templates/pages/faq.html
+msgid "How free chat without registration works on Chatea-Conecta: what is stored, whether the chat is anonymous, how to report someone, and why promotional messages appear."
+msgstr "How free chat without registration works on Chatea-Conecta: what is stored, whether the chat is anonymous, how to report someone, and why promotional messages appear."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Breadcrumb"
+msgstr "Breadcrumb"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Questions about free chat, answered plainly."
+msgstr "Questions about free chat, answered plainly."
+
+#: chat_connect/templates/pages/faq.html
+msgid "How the room works, what we keep, and what to do when someone is out of line. If your question is not here, <a href=\"%(contact_url)s\">write to us</a>."
+msgstr "How the room works, what we keep, and what to do when someone is out of line. If your question is not here, <a href=\"%(contact_url)s\">write to us</a>."
+
+#: chat_connect/templates/pages/faq.html
+msgid "On this page"
+msgstr "On this page"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Getting started"
+msgstr "Getting started"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Privacy and safety"
+msgstr "Privacy and safety"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Promotions and PRO"
+msgstr "Promotions and PRO"
+
+#: chat_connect/templates/pages/faq.html
+msgid "in the room"
+msgstr "in the room"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Go to the homepage, enter a username of your choice in the input field, and click Start Chatting. You join the global chat room straight away."
+msgstr "Go to the homepage, enter a username of your choice in the input field, and click Start Chatting. You join the global chat room straight away."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Is there a mobile version?"
+msgstr "Is there a mobile version?"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Yes. Chatea-Conecta is fully responsive and works on mobile, tablet and desktop, so you can chat wherever you already are."
+msgstr "Yes. Chatea-Conecta is fully responsive and works on mobile, tablet and desktop, so you can chat wherever you already are."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Yes. You do not need to provide any personal information to use the platform. Avoid sharing sensitive details in the chat for your own safety."
+msgstr "Yes. You do not need to provide any personal information to use the platform. Avoid sharing sensitive details in the chat for your own safety."
+
+#: chat_connect/templates/pages/faq.html
+msgid "No. Chat messages are not stored. All conversations are real-time and ephemeral."
+msgstr "No. Chat messages are not stored. All conversations are real-time and ephemeral."
+
+#: chat_connect/templates/pages/faq.html
+msgid "We use HTTPS to encrypt all communication between your device and our servers."
+msgstr "We use HTTPS to encrypt all communication between your device and our servers."
+
+#: chat_connect/templates/pages/faq.html
+msgid "We use HTTPS to encrypt all communication between your device and our servers. There is more detail on the <a href=\"%(security_url)s\">security page</a>."
+msgstr "We use HTTPS to encrypt all communication between your device and our servers. There is more detail on the <a href=\"%(security_url)s\">security page</a>."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Can I report inappropriate behaviour?"
+msgstr "Can I report inappropriate behaviour?"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Yes. Use the Report button in the chat interface. Reports reach a moderator and help keep the room welcoming for everyone."
+msgstr "Yes. Use the Report button in the chat interface. Reports reach a moderator and help keep the room welcoming for everyone."
+
+#: chat_connect/templates/pages/faq.html
+msgid "The platform is paid for with occasional promotional messages sent by bots. They are marked as Promotions so you can tell them apart from real people."
+msgstr "The platform is paid for with occasional promotional messages sent by bots. They are marked as Promotions so you can tell them apart from real people."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Not at the moment. We keep them minimal and non-intrusive, and PRO members see fewer of them."
+msgstr "Not at the moment. We keep them minimal and non-intrusive, and PRO members see fewer of them."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Still stuck?"
+msgstr "Still stuck?"
+
+#: chat_connect/templates/pages/faq.html
+msgid "Write to us and a person will answer, usually within two working days."
+msgstr "Write to us and a person will answer, usually within two working days."
+
+#: chat_connect/templates/pages/faq.html
+msgid "Contact support"
+msgstr "Contact support"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Privacy policy. We store almost nothing | Chatea-Conecta"
+msgstr "Privacy policy. We store almost nothing | Chatea-Conecta"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "What Chatea-Conecta collects when you use the free chat: a nickname held in a session cache, one cookie, and nothing else. No personal data, no message history, no third parties."
+msgstr "What Chatea-Conecta collects when you use the free chat: a nickname held in a session cache, one cookie, and nothing else. No personal data, no message history, no third parties."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Privacy policy"
+msgstr "Privacy policy"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Your privacy is important to us. This policy explains how we handle information collected from you while using Chatea-Conecta, which is very little."
+msgstr "Your privacy is important to us. This policy explains how we handle information collected from you while using Chatea-Conecta, which is very little."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Effective 01/05/2025"
+msgstr "Effective 01/05/2025"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Summary"
+msgstr "Summary"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "What we ask for"
+msgstr "What we ask for"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "A nickname. That is the only thing you give us, and it does not have to mean anything."
+msgstr "A nickname. That is the only thing you give us, and it does not have to mean anything."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "What we keep"
+msgstr "What we keep"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Nothing after you leave. No message history, no personal data, no profile."
+msgstr "Nothing after you leave. No message history, no personal data, no profile."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Who else sees it"
+msgstr "Who else sees it"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "No one. We do not share, sell or disclose your information to third parties."
+msgstr "No one. We do not share, sell or disclose your information to third parties."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Information we collect"
+msgstr "Information we collect"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "We do not collect or store any personal information. The only information we process is the username you create when you access the app. It can be any set of characters and it is not linked to your identity."
+msgstr "We do not collect or store any personal information. The only information we process is the username you create when you access the app. It can be any set of characters and it is not linked to your identity."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "How we use it"
+msgstr "How we use it"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "The username is used only to make the chat work. It is not stored permanently. It is cached temporarily using a secure caching service and removed automatically when you leave the page."
+msgstr "The username is used only to make the chat work. It is not stored permanently. It is cached temporarily using a secure caching service and removed automatically when you leave the page."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "We use one cookie, which stores the username you created for the length of your session. It is deleted once the session ends or the page is refreshed."
+msgstr "We use one cookie, which stores the username you created for the length of your session. It is deleted once the session ends or the page is refreshed."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Storage and security"
+msgstr "Storage and security"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Usernames are held temporarily in a secure caching service and deleted automatically when you exit the page."
+msgstr "Usernames are held temporarily in a secure caching service and deleted automatically when you exit the page."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "We apply reasonable technical measures to keep the temporary data our app processes secure. More detail is on the <a href=\"%(security_url)s\">security page</a>."
+msgstr "We apply reasonable technical measures to keep the temporary data our app processes secure. More detail is on the <a href=\"%(security_url)s\">security page</a>."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Age restrictions"
+msgstr "Age restrictions"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "The app is intended for users aged 18 and over. By using it you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for complying with this restriction."
+msgstr "The app is intended for users aged 18 and over. By using it you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for complying with this restriction."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Your rights"
+msgstr "Your rights"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Because we do not store or collect personal information, there is no data to access, correct or delete. If you have a concern about privacy, write to us and we will explain exactly what happens with your session."
+msgstr "Because we do not store or collect personal information, there is no data to access, correct or delete. If you have a concern about privacy, write to us and we will explain exactly what happens with your session."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Updates to this policy"
+msgstr "Updates to this policy"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "We may update this policy from time to time. Any changes appear on this page, with the effective date shown at the top."
+msgstr "We may update this policy from time to time. Any changes appear on this page, with the effective date shown at the top."
+
+#: chat_connect/templates/pages/privacy.html
+msgid "Contact us"
+msgstr "Contact us"
+
+#: chat_connect/templates/pages/privacy.html
+msgid "If you have questions about this policy, write to <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+msgstr "If you have questions about this policy, write to <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+
+#: chat_connect/templates/pages/about.html
+msgid "About Chatea-Conecta. Free anonymous chat for adults | Chatea-Conecta"
+msgstr "About Chatea-Conecta. Free anonymous chat for adults | Chatea-Conecta"
+
+#: chat_connect/templates/pages/about.html
+msgid "Chatea-Conecta is a free anonymous chat platform for adults. No feed, no follower count, no profile. Just one moderated room where people talk to strangers."
+msgstr "Chatea-Conecta is a free anonymous chat platform for adults. No feed, no follower count, no profile. Just one moderated room where people talk to strangers."
+
+#: chat_connect/templates/pages/about.html
+msgid "A room for adults who still like talking to strangers."
+msgstr "A room for adults who still like talking to strangers."
+
+#: chat_connect/templates/pages/about.html
+msgid "Chatea-Conecta is a free and anonymous online chat platform where people connect and chat in real time without registration."
+msgstr "Chatea-Conecta is a free and anonymous online chat platform where people connect and chat in real time without registration."
+
+#: chat_connect/templates/pages/about.html
+msgid "What this is, and what it is not"
+msgstr "What this is, and what it is not"
+
+#: chat_connect/templates/pages/about.html
+msgid "The platform is designed for casual conversation with people from different regions, with quick access through a nickname-based session. You are in the room in seconds, and you leave without a trace."
+msgstr "The platform is designed for casual conversation with people from different regions, with quick access through a nickname-based session. You are in the room in seconds, and you leave without a trace."
+
+#: chat_connect/templates/pages/about.html
+msgid "It is not a dating app and not a social network. There is no feed, no follower count and nothing to grow. Some people come for company on a slow evening, some to practise a language, some to say the thing they cannot say to anyone who knows them."
+msgstr "It is not a dating app and not a social network. There is no feed, no follower count and nothing to grow. Some people come for company on a slow evening, some to practise a language, some to say the thing they cannot say to anyone who knows them."
+
+#: chat_connect/templates/pages/about.html
+msgid "Everyone is 18 or over, and the room is moderated so it stays civil enough to be worth returning to."
+msgstr "Everyone is 18 or over, and the room is moderated so it stays civil enough to be worth returning to."
+
+#: chat_connect/templates/pages/about.html
+msgid "There are no member photographs anywhere on this site. Everyone here is a nickname."
+msgstr "There are no member photographs anywhere on this site. Everyone here is a nickname."
+
+#: chat_connect/templates/pages/about.html
+msgid "Three things we hold to"
+msgstr "Three things we hold to"
+
+#: chat_connect/templates/pages/about.html
+msgid "Anonymous by default"
+msgstr "Anonymous by default"
+
+#: chat_connect/templates/pages/about.html
+msgid "A nickname is all we ask for. We would rather store nothing than protect something we never needed in the first place."
+msgstr "A nickname is all we ask for. We would rather store nothing than protect something we never needed in the first place."
+
+#: chat_connect/templates/pages/about.html
+msgid "Respect is the rule"
+msgstr "Respect is the rule"
+
+#: chat_connect/templates/pages/about.html
+msgid "The room is moderated and abuse gets people removed. An adult space only works while it stays civil."
+msgstr "The room is moderated and abuse gets people removed. An adult space only works while it stays civil."
+
+#: chat_connect/templates/pages/about.html
+msgid "Free, and honest about it"
+msgstr "Free, and honest about it"
+
+#: chat_connect/templates/pages/about.html
+msgid "Occasional promotional messages are labelled as promotions. PRO is optional and never a wall in front of the conversation."
+msgstr "Occasional promotional messages are labelled as promotions. PRO is optional and never a wall in front of the conversation."
+
+#: chat_connect/templates/pages/about.html
+msgid "Come and see what it is like."
+msgstr "Come and see what it is like."
+
+#: chat_connect/templates/pages/about.html
+msgid "Pick a nickname and you are in the room in about five seconds."
+msgstr "Pick a nickname and you are in the room in about five seconds."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Contact support. Report a user or ask a question | Chatea-Conecta"
+msgstr "Contact support. Report a user or ask a question | Chatea-Conecta"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Contact Chatea-Conecta support: ask a question about the free chat, report a user, or get help with PRO billing. A person reads every message."
+msgstr "Contact Chatea-Conecta support: ask a question about the free chat, report a user, or get help with PRO billing. A person reads every message."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Questions, reports and PRO billing all reach the same inbox. A person reads it, usually within two working days."
+msgstr "Questions, reports and PRO billing all reach the same inbox. A person reads it, usually within two working days."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Send us a message"
+msgstr "Send us a message"
+
+#: chat_connect/templates/pages/contact.html
+msgid "What is this about?"
+msgstr "What is this about?"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Your email"
+msgstr "Your email"
+
+#: chat_connect/templates/pages/contact.html
+msgid "We use it to reply, and for nothing else."
+msgstr "We use it to reply, and for nothing else."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Message"
+msgstr "Message"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Tell us what happened. If you are reporting someone, include the nickname."
+msgstr "Tell us what happened. If you are reporting someone, include the nickname."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Leave this field empty"
+msgstr "Leave this field empty"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Send message"
+msgstr "Send message"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Prefer plain email?"
+msgstr "Prefer plain email?"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Write to <strong>support@chatea-conecta.com</strong> and it lands in the same place."
+msgstr "Write to <strong>support@chatea-conecta.com</strong> and it lands in the same place."
+
+#: chat_connect/templates/pages/contact.html
+msgid "This address appears in our current public terms and may be updated in future."
+msgstr "This address appears in our current public terms and may be updated in future."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Urgent safety issue?"
+msgstr "Urgent safety issue?"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Use the Report button inside the chat first. It reaches a moderator immediately, with the message context already attached."
+msgstr "Use the Report button inside the chat first. It reaches a moderator immediately, with the message context already attached."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Faster than waiting"
+msgstr "Faster than waiting"
+
+#: chat_connect/templates/pages/contact.html
+msgid "Most questions are already answered: how the chat works, what is stored, and why promotional messages appear."
+msgstr "Most questions are already answered: how the chat works, what is stored, and why promotional messages appear."
+
+#: chat_connect/templates/pages/contact.html
+msgid "Read the FAQ"
+msgstr "Read the FAQ"
+
+#: apps/chat/forms.py
+msgid "A question"
+msgstr "A question"
+
+#: apps/chat/forms.py
+msgid "Report a user"
+msgstr "Report a user"
+
+#: apps/chat/forms.py
+msgid "PRO and billing"
+msgstr "PRO and billing"
+
+#: apps/chat/forms.py
+msgid "Something is broken"
+msgstr "Something is broken"
+
+#: apps/chat/views/contact.py
+msgid "That message could not be sent. Please try again."
+msgstr "That message could not be sent. Please try again."
+
+#: apps/chat/views/contact.py
+msgid "We could not send that just now. Please email support@chatea-conecta.com directly."
+msgstr "We could not send that just now. Please email support@chatea-conecta.com directly."
+
+#: apps/chat/views/contact.py
+msgid "Thanks, your message is on its way. We usually reply within two working days."
+msgstr "Thanks, your message is on its way. We usually reply within two working days."
+
+#: chat_connect/templates/pages/security.html
+msgid "Is anonymous chat safe? How we protect your session | Chatea-Conecta"
+msgstr "Is anonymous chat safe? How we protect your session | Chatea-Conecta"
+
+#: chat_connect/templates/pages/security.html
+msgid "How Chatea-Conecta protects your chat session, what we deliberately do not store, and the habits that keep anonymous chat safe for adults."
+msgstr "How Chatea-Conecta protects your chat session, what we deliberately do not store, and the habits that keep anonymous chat safe for adults."
+
+#: chat_connect/templates/pages/security.html
+msgid "Is anonymous chat safe?"
+msgstr "Is anonymous chat safe?"
+
+#: chat_connect/templates/pages/security.html
+msgid "Here is what protects your session, what we deliberately never store, and the handful of habits that keep an anonymous room safe for grown-ups."
+msgstr "Here is what protects your session, what we deliberately never store, and the handful of habits that keep an anonymous room safe for grown-ups."
+
+#: chat_connect/templates/pages/security.html
+msgid "How we protect your session"
+msgstr "How we protect your session"
+
+#: chat_connect/templates/pages/security.html
+msgid "Session-gated chat"
+msgstr "Session-gated chat"
+
+#: chat_connect/templates/pages/security.html
+msgid "Chat access is session-gated. If the required session cookies are missing or invalid you are sent back to the homepage rather than into the room."
+msgstr "Chat access is session-gated. If the required session cookies are missing or invalid you are sent back to the homepage rather than into the room."
+
+#: chat_connect/templates/pages/security.html
+msgid "HttpOnly cookies"
+msgstr "HttpOnly cookies"
+
+#: chat_connect/templates/pages/security.html
+msgid "Session cookies are set as HttpOnly, so page scripts cannot read them, and they can be configured as Secure in deployment settings."
+msgstr "Session cookies are set as HttpOnly, so page scripts cannot read them, and they can be configured as Secure in deployment settings."
+
+#: chat_connect/templates/pages/security.html
+msgid "HTTPS and HSTS"
+msgstr "HTTPS and HSTS"
+
+#: chat_connect/templates/pages/security.html
+msgid "Traffic between your device and our servers is encrypted, with HTTPS-oriented settings including HSTS and secure cookies in production."
+msgstr "Traffic between your device and our servers is encrypted, with HTTPS-oriented settings including HSTS and secure cookies in production."
+
+#: chat_connect/templates/pages/security.html
+msgid "What we never keep"
+msgstr "What we never keep"
+
+#: chat_connect/templates/pages/security.html
+msgid "Chat messages. Conversations are real-time and ephemeral."
+msgstr "Chat messages. Conversations are real-time and ephemeral."
+
+#: chat_connect/templates/pages/security.html
+msgid "Personal data. No email, phone number or real name is needed to chat."
+msgstr "Personal data. No email, phone number or real name is needed to chat."
+
+#: chat_connect/templates/pages/security.html
+msgid "Permanent nicknames. Yours is cached for the session and dropped when you leave."
+msgstr "Permanent nicknames. Yours is cached for the session and dropped when you leave."
+
+#: chat_connect/templates/pages/security.html
+msgid "Read the full privacy policy"
+msgstr "Read the full privacy policy"
+
+#: chat_connect/templates/pages/security.html
+msgid "How to stay safe in the room"
+msgstr "How to stay safe in the room"
+
+#: chat_connect/templates/pages/security.html
+msgid "Never share your address, workplace, documents or financial details."
+msgstr "Never share your address, workplace, documents or financial details."
+
+#: chat_connect/templates/pages/security.html
+msgid "Pick a nickname that is not your real name or a handle you use elsewhere."
+msgstr "Pick a nickname that is not your real name or a handle you use elsewhere."
+
+#: chat_connect/templates/pages/security.html
+msgid "Treat unsolicited links and payment requests as scams, every time."
+msgstr "Treat unsolicited links and payment requests as scams, every time."
+
+#: chat_connect/templates/pages/security.html
+msgid "Use the Report button if someone is abusive. A moderator reviews reports."
+msgstr "Use the Report button if someone is abusive. A moderator reviews reports."
+
+#: chat_connect/templates/pages/security.html
+msgid "Found a vulnerability, or someone acting badly?"
+msgstr "Found a vulnerability, or someone acting badly?"
+
+#: chat_connect/templates/pages/security.html
+msgid "Report it and we will look into it. For the legal detail, read the privacy policy and the terms and conditions."
+msgstr "Report it and we will look into it. For the legal detail, read the privacy policy and the terms and conditions."
+
+#: chat_connect/templates/pages/security.html
+msgid "Report a problem"
+msgstr "Report a problem"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Terms and conditions for adult chat, 18+ | Chatea-Conecta"
+msgstr "Terms and conditions for adult chat, 18+ | Chatea-Conecta"
+
+#: chat_connect/templates/pages/terms.html
+msgid "The rules of Chatea-Conecta: who may use the free chat rooms, what is not allowed, how moderation works, and the limits of our liability."
+msgstr "The rules of Chatea-Conecta: who may use the free chat rooms, what is not allowed, how moderation works, and the limits of our liability."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Welcome to Chatea Conecta. Please read these terms carefully before using the site. By accessing or using Chatea Conecta you agree to be bound by them. If you do not agree with any part, please do not use the site."
+msgstr "Welcome to Chatea Conecta. Please read these terms carefully before using the site. By accessing or using Chatea Conecta you agree to be bound by them. If you do not agree with any part, please do not use the site."
+
+#: chat_connect/templates/pages/terms.html
+msgid "18+ only"
+msgstr "18+ only"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Personal use only"
+msgstr "Personal use only"
+
+#: chat_connect/templates/pages/terms.html
+msgid "5 min read"
+msgstr "5 min read"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Contents"
+msgstr "Contents"
+
+#: chat_connect/templates/pages/terms.html
+msgid "General information"
+msgstr "General information"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Eligibility and age"
+msgstr "Eligibility and age"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Purpose and acceptable use"
+msgstr "Purpose and acceptable use"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Prohibited actions"
+msgstr "Prohibited actions"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Intellectual property"
+msgstr "Intellectual property"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Privacy and data"
+msgstr "Privacy and data"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Liability disclaimer"
+msgstr "Liability disclaimer"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Changes to terms"
+msgstr "Changes to terms"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Governing law"
+msgstr "Governing law"
+
+#: chat_connect/templates/pages/terms.html
+msgid "The site is Chatea Conecta."
+msgstr "The site is Chatea Conecta."
+
+#: chat_connect/templates/pages/terms.html
+msgid "For questions or support, contact us at <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>. This address may be updated with a domain-specific one in the future."
+msgstr "For questions or support, contact us at <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>. This address may be updated with a domain-specific one in the future."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Eligibility and age verification"
+msgstr "Eligibility and age verification"
+
+#: chat_connect/templates/pages/terms.html
+msgid "By using Chatea Conecta you confirm that you are at least 18 years of age. The site is intended for users who are of legal age to take part in open chat rooms and interact with others in a respectful, adult manner."
+msgstr "By using Chatea Conecta you confirm that you are at least 18 years of age. The site is intended for users who are of legal age to take part in open chat rooms and interact with others in a respectful, adult manner."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Platform purpose and acceptable use"
+msgstr "Platform purpose and acceptable use"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta is an entertainment platform that lets users connect and chat with others around the world. We are dedicated to a friendly, positive environment for casual conversation."
+msgstr "Chatea Conecta is an entertainment platform that lets users connect and chat with others around the world. We are dedicated to a friendly, positive environment for casual conversation."
+
+#: chat_connect/templates/pages/terms.html
+msgid "By using the site you agree to:"
+msgstr "By using the site you agree to:"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Communicate respectfully with other users, refraining from offensive language, harassment, discrimination or any form of abuse."
+msgstr "Communicate respectfully with other users, refraining from offensive language, harassment, discrimination or any form of abuse."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Use Chatea Conecta solely for personal enjoyment and not for commercial or promotional purposes."
+msgstr "Use Chatea Conecta solely for personal enjoyment and not for commercial or promotional purposes."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Avoid sharing or attempting to solicit personal, financial or sensitive information."
+msgstr "Avoid sharing or attempting to solicit personal, financial or sensitive information."
+
+#: chat_connect/templates/pages/terms.html
+msgid "To keep the room safe and welcoming, the following are strictly prohibited:"
+msgstr "To keep the room safe and welcoming, the following are strictly prohibited:"
+
+#: chat_connect/templates/pages/terms.html
+msgid "<strong>Offensive or abusive behaviour.</strong> Language or behaviour that is abusive, offensive, obscene or otherwise harmful to other users."
+msgstr "<strong>Offensive or abusive behaviour.</strong> Language or behaviour that is abusive, offensive, obscene or otherwise harmful to other users."
+
+#: chat_connect/templates/pages/terms.html
+msgid "<strong>Commercial use.</strong> Advertising, promoting products or services, or conducting commercial transactions."
+msgstr "<strong>Commercial use.</strong> Advertising, promoting products or services, or conducting commercial transactions."
+
+#: chat_connect/templates/pages/terms.html
+msgid "<strong>Misrepresentation.</strong> Impersonating another person or providing false information."
+msgstr "<strong>Misrepresentation.</strong> Impersonating another person or providing false information."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Violating any of these terms may result in suspension or a permanent ban from the platform."
+msgstr "Violating any of these terms may result in suspension or a permanent ban from the platform."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Intellectual property and content ownership"
+msgstr "Intellectual property and content ownership"
+
+#: chat_connect/templates/pages/terms.html
+msgid "All content on Chatea Conecta, including SVG designs, site layout and underlying code, is owned by the creator of Chatea Conecta. Users may not reproduce, distribute or otherwise use any part of the site's content for commercial purposes without prior permission."
+msgstr "All content on Chatea Conecta, including SVG designs, site layout and underlying code, is owned by the creator of Chatea Conecta. Users may not reproduce, distribute or otherwise use any part of the site's content for commercial purposes without prior permission."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Privacy and data collection"
+msgstr "Privacy and data collection"
+
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta does not collect, store or share personal data at this time. Should this change, users will be notified and updates will appear in the <a href=\"%(privacy_url)s\">privacy policy</a>."
+msgstr "Chatea Conecta does not collect, store or share personal data at this time. Should this change, users will be notified and updates will appear in the <a href=\"%(privacy_url)s\">privacy policy</a>."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta is provided on an 'as is' basis. While we work to maintain a positive environment, we are not responsible for the behaviour, comments or interactions of individual users. We disclaim any liability for damages resulting from user interactions or content shared within the platform."
+msgstr "Chatea Conecta is provided on an 'as is' basis. While we work to maintain a positive environment, we are not responsible for the behaviour, comments or interactions of individual users. We disclaim any liability for damages resulting from user interactions or content shared within the platform."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Chatea Conecta reserves the right to update these terms at any time. Users will be notified of significant changes, and continued use of the platform means acceptance of any revised terms."
+msgstr "Chatea Conecta reserves the right to update these terms at any time. Users will be notified of significant changes, and continued use of the platform means acceptance of any revised terms."
+
+#: chat_connect/templates/pages/terms.html
+msgid "These terms are governed by the applicable laws of <mark>[Your Country/Region]</mark>. Any disputes arising from the use of Chatea Conecta shall be resolved through the appropriate legal channels within this jurisdiction."
+msgstr "These terms are governed by the applicable laws of <mark>[Your Country/Region]</mark>. Any disputes arising from the use of Chatea Conecta shall be resolved through the appropriate legal channels within this jurisdiction."
+
+#: chat_connect/templates/pages/terms.html
+msgid "For any questions or concerns about these terms, contact us at <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+msgstr "For any questions or concerns about these terms, contact us at <a href=\"%(contact_url)s\">support@chatea-conecta.com</a>."
+
+#: chat_connect/templates/pages/terms.html
+msgid "Cookies"
+msgstr "Cookies"
