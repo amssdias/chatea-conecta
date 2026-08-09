@@ -23,7 +23,7 @@ RUN python -m pip install --upgrade pip \
 COPY Pipfile Pipfile.lock ./
 
 # Install all packages (including development packages) system-wide
-RUN pipenv install --dev --system
+RUN pipenv sync --dev --system
 
 # Copy app
 COPY . .
