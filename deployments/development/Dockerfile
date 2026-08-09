@@ -1,5 +1,10 @@
 FROM python:3.12-slim-bookworm
 
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIPENV_NOSPIN=1
+
 WORKDIR /usr/src/app
 
 RUN pip install pipenv
