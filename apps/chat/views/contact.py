@@ -23,6 +23,17 @@ class ContactView(FormView):
     form_class = ContactForm
     success_url = reverse_lazy("chat:contact")
 
+    def get_initial(self):
+        """Let a link choose the reason, so the Report button in the chat
+        lands on this page with "Report a user" already selected."""
+        initial = super().get_initial()
+        reason = self.request.GET.get("reason")
+
+        if reason in dict(ContactForm.REASON_CHOICES):
+            initial["reason"] = reason
+
+        return initial
+
     def form_valid(self, form):
         if form.is_spam():
             # Honeypot tripped. Show the same success message rather than
