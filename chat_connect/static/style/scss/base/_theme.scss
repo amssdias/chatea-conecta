@@ -2,8 +2,8 @@
 // SHARED INK THEME
 //
 // Applied by base.html via {% block body_class %}theme-ink{% endblock %},
-// so it is the default for every page. The chat page opts out (it keeps
-// the legacy light palette until step 4 of the redesign).
+// so it is the default for every page. The chat page keeps it too and adds
+// .chat-page next to it.
 //
 // Just the page surface, links, focus ring and selection. This file also
 // carried a transitional layer that rebased the legacy typography and
