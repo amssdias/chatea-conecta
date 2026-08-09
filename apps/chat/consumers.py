@@ -38,6 +38,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.user = self.scope["user"]
+        self.groups = set()
+        self.private_chats = {}
 
         if self.user.is_authenticated:
             self.id = str(self.user.pk)
@@ -57,9 +59,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
 
         logger.info("---- %s CONNECTED TO WEBSOCKET ----", self.username)
-
-        self.groups = set()
-        self.private_chats = {}
 
         await self.accept()
 
