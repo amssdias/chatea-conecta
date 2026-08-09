@@ -4,19 +4,24 @@ import ChatSocket from "./chatSocket.js";
 
 import {SOCKET_URL} from "./config.js";
 
-const chatGroups = document.getElementById("chat-groups");
 const translations = {
     sendPrivateMsg,
+    ...(typeof chatStrings === "undefined" ? {} : chatStrings),
 };
 
-const sideBarView = new SideBarView(isPro);
+const sideBarView = new SideBarView(isPro, translations);
 const chatView = new ChatView(
-    currentUser, 
-    userId, 
+    currentUser,
+    userId,
     sideBarView,
     translations,
     isPro
 );
+
+// The free-plan ceiling is a bar inside the conversation, and only chatView
+// knows which conversation is open - so the rail asks it to draw one.
+sideBarView.onLimitReached = (usernameTarget, message) =>
+    chatView.showLimitNotice(usernameTarget, message);
 
 const chatSocketHandler = new ChatSocket(
     SOCKET_URL,
@@ -25,33 +30,28 @@ const chatSocketHandler = new ChatSocket(
     userId,
 );
 
-const sideMenuBtn = document.getElementById("side-menu-btn");
-const navToggle = document.getElementById("nav-toggle");
+// There is no topbar on this page: the drawer is opened from the burger in
+// each conversation header (chatView) and closed from the rail's own button,
+// the scrim behind it, or Escape.
 const sideMenuCloseBtn = document.getElementById("side-menu-close-btn");
+const sideMenuScrim = document.getElementById("side-menu-scrim");
 
-sideMenuBtn.addEventListener("click", function(e) {
-    if (navToggle) navToggle.checked = false;
-    sideBarView.toggleSideBar();
-})
+if (sideMenuCloseBtn) {
+    sideMenuCloseBtn.addEventListener("click", () => sideBarView.closeSideBar());
+}
 
-sideMenuCloseBtn.addEventListener("click", function(e) {
-    sideBarView.toggleSideBar();
-})
+if (sideMenuScrim) {
+    sideMenuScrim.addEventListener("click", () => sideBarView.closeSideBar());
+}
 
-// Make sure if window is resized the chat ocupies the whole space
-window.addEventListener("resize", function (e) {
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") sideBarView.closeSideBar();
+});
 
-    if (this.innerWidth > 600) {
-        document.querySelector(".chat-container").classList.remove("hide");
-    }
-})
-
-
-// Delete all localstorage if user leave the chatapp
-window.addEventListener('beforeunload', function (event) {
-    // You can optionally prompt the user with a confirmation dialog
-    //    event.preventDefault(); // This line is required in some browsers
-    //    event.returnValue = ''; // A string must be assigned to indicate a prompt should show
+// Back on a wide screen the rail is a permanent column again, so a drawer
+// left open would otherwise keep its scrim over the conversation.
+window.addEventListener("resize", function () {
+    if (this.innerWidth > 900) sideBarView.closeSideBar();
 });
 
 

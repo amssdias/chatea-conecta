@@ -1,5 +1,9 @@
 import {appendTextWithLinks} from "../utils/create_elements.js";
+import {avatarInitial, avatarVariant} from "../utils/avatar.js";
 
+// The textarea grows with the message and then scrolls, rather than growing
+// until it has eaten the conversation.
+const COMPOSER_MAX_HEIGHT = 132;
 
 class ChatView {
 
@@ -13,6 +17,8 @@ class ChatView {
         this._translations = translations;
         this._isPro = isPro;
         this._leavePrivateChatHandler = null;
+
+        this._bindLimitNotice();
     }
 
     // =========================
@@ -21,6 +27,11 @@ class ChatView {
 
     get activeChat() {
         return this._getActiveChatElement();
+    }
+
+    // The translated strings the views write into the DOM, from chat.html.
+    get strings() {
+        return this._translations;
     }
 
     // =========================
@@ -44,8 +55,11 @@ class ChatView {
         }
 
         this.hideActiveChat();
+        this.hideLimitNotice();
         chat.classList.remove("hide");
         chat.classList.add("active");
+
+        this._sideBarView.setActiveChat(chat.dataset.groupName);
     }
 
     deleteChat(chat) {
@@ -58,28 +72,43 @@ class ChatView {
     // Public chat creation
     // =========================
 
-    createChat(groupChatName, groupId, sendMessageHandler) {
+    createChat(groupChatName, groupId, sendMessageHandler, options = {}) {
+        const isRoom = Boolean(options.isRoom);
 
         // Chat header
-        const chatHeader = this._createChatHeader(groupChatName);
+        const chatHeader = this._createChatHeader(groupChatName, isRoom);
 
         // Chat messages box
         const chatBox = this._createChatBox();
 
+        // Someone stepping out mid-conversation, said above the composer
+        // rather than bolted onto the header title.
+        const offlineBar = document.createElement("p");
+        offlineBar.className = "chat__offline-bar hide";
+
         // Chat form
-        const form = this._createChatForm(sendMessageHandler, groupId);
+        const form = this._createChatForm(sendMessageHandler, groupId, groupChatName, isRoom);
 
         // Create chat
         const chat = document.createElement("div");
         chat.classList.add("chat", "hide");
         chat.dataset.groupName = groupId;
+        chat.dataset.displayName = groupChatName;
+        if (isRoom) chat.dataset.room = "true";
 
         chat.appendChild(chatHeader);
         chat.appendChild(chatBox);
+        chat.appendChild(offlineBar);
         chat.appendChild(form);
-        
+
 
         this._parentElement.appendChild(chat);
+
+        // A private chat opens on a line saying what it is, which is also what
+        // keeps the empty conversation from looking broken.
+        if (!isRoom && this._translations.privateChatOpened) {
+            this._appendSystemMessage(chatBox, this._translations.privateChatOpened);
+        }
 
         return chat;
     }
@@ -204,7 +233,7 @@ class ChatView {
         const existingPrivateChatId = this._privateChatsMapping[userIdTarget];
         const privateChatId = existingPrivateChatId || this._getPrivateChatGroupName(this._userId, userIdTarget);
         if (!this._sideBarView.canOpenPrivateChat(privateChatId)) {
-            this._sideBarView.showPrivateChatLimitMessage();
+            this._sideBarView.showPrivateChatLimitMessage(usernameTarget);
             return false;
         }
 
@@ -217,8 +246,7 @@ class ChatView {
             const privateChat = this._getChatElement(privateChatId);
             if (privateChat) {
 
-                privateChat.classList.add("active");
-                privateChat.classList.remove("hide");
+                this.displayChat(privateChat);
 
             } else {
                 // 1. Create and display chat
@@ -234,9 +262,9 @@ class ChatView {
                     this.deleteChat.bind(this, chat),
                     false
                 );
-                
+
             }
-            
+
         } else {
             // 1. Create and display chat
             const chat = this.createChat(usernameTarget, privateChatId, sendMsgHandler);
@@ -271,6 +299,38 @@ class ChatView {
 
     restorePrivateChatsState(privateChats) {
         this._privateChatsMapping = privateChats || {};
+    }
+
+    // =========================
+    // Public free-plan ceiling
+    // =========================
+
+    // The design puts this where the decision is made - a bar under the header
+    // of the conversation you are in, with the way out next to it - instead of
+    // a browser alert you can only acknowledge.
+    showLimitNotice(usernameTarget = "", message = "") {
+        const notice = document.getElementById("chat-limit-notice");
+
+        if (!notice) {
+            window.alert(message || privateChatLimitMessage);
+            return;
+        }
+
+        this._setLimitNoticeDetail(notice, usernameTarget, message);
+
+        const activeChat = this.activeChat;
+        const header = activeChat && activeChat.querySelector(".chat__header");
+
+        if (header) {
+            header.insertAdjacentElement("afterend", notice);
+        }
+
+        notice.classList.remove("hide");
+    }
+
+    hideLimitNotice() {
+        const notice = document.getElementById("chat-limit-notice");
+        if (notice) notice.classList.add("hide");
     }
 
     // =========================
@@ -330,41 +390,155 @@ class ChatView {
     // Private chat element creation
     // =========================
 
-    _createChatHeader(groupChatName) {
+    _createChatHeader(groupChatName, isRoom) {
         const chatHeader = document.createElement("div");
         chatHeader.classList.add("chat__header");
 
+        // One burger per conversation header. Only one header is ever on
+        // screen, and it is the only navigation this page has on a phone.
+        chatHeader.appendChild(this._createRailToggle());
+
+        if (!isRoom) {
+            chatHeader.appendChild(this._createHeaderAvatar(groupChatName));
+        }
+
+        const text = document.createElement("span");
+        text.classList.add("chat__header-text");
+
         const h4El = document.createElement("h4");
         h4El.classList.add("chat__header-title");
-
         h4El.textContent = groupChatName;
-        chatHeader.appendChild(h4El);
+
+        const sub = document.createElement("span");
+        sub.classList.add("chat__header-sub");
+        sub.textContent = isRoom
+            ? (this._translations.roomHeaderSubtitle || "")
+            : (this._translations.onlineNow || "");
+
+        text.append(h4El, sub);
+        chatHeader.appendChild(text);
+
+        chatHeader.appendChild(this._createHeaderActions(isRoom));
 
         return chatHeader;
     }
 
+    _createRailToggle() {
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "chat__header-burger";
+        toggle.setAttribute("aria-label", this._translations.openChatList || "Open chat list");
+        toggle.appendChild(document.createElement("span"));
+
+        toggle.addEventListener("click", () => this._sideBarView.openSideBar());
+
+        return toggle;
+    }
+
+    _createHeaderAvatar(username) {
+        const avatar = document.createElement("span");
+        avatar.className = `chat__header-avatar chat__message-avatar--${avatarVariant(username)}`;
+        avatar.setAttribute("aria-hidden", "true");
+        avatar.textContent = avatarInitial(username);
+        return avatar;
+    }
+
+    _createHeaderActions(isRoom) {
+        const actions = document.createElement("span");
+        actions.className = "chat__header-actions";
+
+        if (isRoom) {
+            const presence = document.createElement("span");
+            presence.className = "chat__header-presence";
+
+            const dot = document.createElement("span");
+            dot.className = "side-menu__dot online";
+
+            const count = document.createElement("span");
+            count.className = "js-online-count";
+            count.textContent = "–";
+
+            // One flex item, not two: otherwise the pill's 7px gap lands
+            // between the number and the word it belongs to.
+            const label = document.createElement("span");
+            label.append(
+                count,
+                document.createTextNode(` ${this._translations.online || "online"}`)
+            );
+
+            presence.append(dot, label);
+            actions.appendChild(presence);
+        }
+
+        // Every page of the site promises a report button in the chat. It
+        // reaches the same inbox as /contact/, with the reason preselected.
+        if (this._translations.reportUrl) {
+            const report = document.createElement("a");
+            report.className = "chat__header-report";
+            report.href = this._translations.reportUrl;
+            report.target = "_blank";
+            report.rel = "noopener noreferrer";
+            report.textContent = this._translations.report || "Report";
+            actions.appendChild(report);
+        }
+
+        return actions;
+    }
+
     _createChatBox() {
         const chatBox = document.createElement("div");
-        chatBox.classList.add("chat__messages", "margin-top-xsmall");
+        chatBox.classList.add("chat__messages");
         return chatBox;
     }
 
-    _createChatForm(sendMsgHandler, groupChatName) {
+    _createChatForm(sendMsgHandler, groupChatName, displayName, isRoom) {
 
         const form = document.createElement("form");
-        form.classList.add("chat-form", "margin-top-xsmall");
+        form.classList.add("chat-form");
 
-        const inputEl = document.createElement("input");
-        inputEl.type = "text";
+        const row = document.createElement("div");
+        row.classList.add("chat-form__row");
+
+        // A textarea, not an input: a long message wraps instead of scrolling
+        // sideways through a one-line slot, which is what the canvas shows.
+        const inputEl = document.createElement("textarea");
+        inputEl.rows = 1;
         inputEl.classList.add("chat-form-input");
+        inputEl.placeholder = this._composerPlaceholder(displayName, isRoom);
+        inputEl.dataset.placeholder = inputEl.placeholder;
+        inputEl.setAttribute("aria-label", inputEl.placeholder);
 
         const btn = document.createElement("button");
         btn.type = "submit";
-        btn.textContent = "Submit";
+        btn.textContent = this._translations.send || "Send";
         btn.classList.add("chat-form-btn");
 
-        form.appendChild(inputEl);
-        form.appendChild(btn);
+        row.appendChild(inputEl);
+        row.appendChild(btn);
+
+        const hint = document.createElement("p");
+        hint.classList.add("chat-form__hint");
+        hint.textContent = isRoom
+            ? (this._translations.roomHint || "")
+            : (this._translations.privateHint || "");
+
+        form.appendChild(row);
+        form.appendChild(hint);
+
+        inputEl.addEventListener("input", () => this._autoGrowComposer(inputEl));
+
+        // Enter sends, Shift+Enter starts a new line.
+        inputEl.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" || event.shiftKey) return;
+
+            event.preventDefault();
+            if (typeof form.requestSubmit === "function") {
+                form.requestSubmit();
+            } else {
+                form.dispatchEvent(new Event("submit", {cancelable: true}));
+            }
+        });
+
         form.addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -378,6 +552,7 @@ class ChatView {
 
             // Clear input
             chatFormInput.value = "";
+            this._autoGrowComposer(chatFormInput);
 
             sendMsgHandler(groupChatName, message);
         });
@@ -385,29 +560,44 @@ class ChatView {
         return form;
     }
 
+    _composerPlaceholder(displayName, isRoom) {
+        if (isRoom) return this._translations.roomPlaceholder || "";
+
+        return (this._translations.privatePlaceholder || "%(name)s")
+            .replace("%(name)s", displayName);
+    }
+
+    _autoGrowComposer(inputEl) {
+        inputEl.style.height = "auto";
+        inputEl.style.height = `${Math.min(inputEl.scrollHeight, COMPOSER_MAX_HEIGHT)}px`;
+    }
+
     // =========================
     // Private message element creation
     // =========================
-
-    // Six avatar colours, picked from the username so the same person keeps
-    // the same colour for everyone in the room without the server sending one.
-    _avatarVariant(username) {
-        let hash = 0;
-        for (let i = 0; i < username.length; i++) {
-            hash = (hash * 31 + username.charCodeAt(i)) >>> 0;
-        }
-        return (hash % 6) + 1;
-    }
 
     _createAvatar(username) {
         const avatar = document.createElement("span");
         avatar.classList.add(
             "chat__message-avatar",
-            `chat__message-avatar--${this._avatarVariant(username)}`
+            `chat__message-avatar--${avatarVariant(username)}`
         );
         avatar.setAttribute("aria-hidden", "true");
-        avatar.textContent = username.charAt(0).toUpperCase();
+        avatar.textContent = avatarInitial(username);
         return avatar;
+    }
+
+    // Not a message from anybody: a hairline with a few words on it, marking
+    // what just happened to the conversation.
+    _appendSystemMessage(chatBox, text) {
+        const line = document.createElement("p");
+        line.className = "chat__message chat__message--system";
+
+        const label = document.createElement("span");
+        label.textContent = text;
+
+        line.appendChild(label);
+        chatBox.appendChild(line);
     }
 
     // Messages are never stored, so everything rendered here arrived just now
@@ -515,21 +705,66 @@ class ChatView {
     }
 
     // =========================
+    // Private free-plan ceiling helpers
+    // =========================
+
+    _bindLimitNotice() {
+        const dismiss = document.getElementById("chat-limit-dismiss");
+        if (dismiss) dismiss.addEventListener("click", () => this.hideLimitNotice());
+    }
+
+    _setLimitNoticeDetail(notice, usernameTarget, message) {
+        const detail = notice.querySelector("#chat-limit-notice-detail");
+        if (!detail) return;
+
+        // The generic sentence is the one Django rendered. Keep a copy the
+        // first time round so naming a person is reversible.
+        if (!detail.dataset.defaultText) {
+            detail.dataset.defaultText = detail.textContent.trim();
+        }
+
+        if (message) {
+            detail.textContent = message;
+            return;
+        }
+
+        const template = this._translations.limitWithName;
+
+        if (!usernameTarget || !template || !template.includes("%(name)s")) {
+            detail.textContent = detail.dataset.defaultText;
+            return;
+        }
+
+        const [before, after] = template.split("%(name)s");
+        const name = document.createElement("strong");
+        name.className = "chat__notice-name";
+        name.textContent = usernameTarget;
+
+        detail.replaceChildren(document.createTextNode(before), name, document.createTextNode(after));
+    }
+
+    // =========================
     // Private private-chat status helpers
     // =========================
 
     _updatePrivateChatHeaderStatus(chatElement, isOffline) {
-        const nameEl = this._getChatHeaderTitleElement(chatElement);
+        const sub = chatElement.querySelector(".chat__header-sub");
 
-        if (!nameEl) {
-            return;
+        if (sub) {
+            sub.textContent = isOffline
+                ? (this._translations.offline || "")
+                : (this._translations.onlineNow || "");
+            sub.classList.toggle("chat__header-sub--offline", isOffline);
         }
 
-        const cleanName = nameEl.textContent.replace(" (Offline)", "");
+        const bar = chatElement.querySelector(".chat__offline-bar");
 
-        nameEl.textContent = isOffline
-            ? `${cleanName} (Offline)`
-            : cleanName;
+        if (bar) {
+            const name = chatElement.dataset.displayName || "";
+            bar.textContent = (this._translations.peerWentOffline || "")
+                .replace("%(name)s", name);
+            bar.classList.toggle("hide", !isOffline);
+        }
     }
 
     _updatePrivateChatInputStatus(chatElement, isOffline) {
@@ -539,8 +774,13 @@ class ChatView {
             return;
         }
 
-        formInputEl.placeholder = isOffline ? "User is offline" : "";
+        formInputEl.placeholder = isOffline
+            ? (this._translations.offlinePlaceholder || "")
+            : (formInputEl.dataset.placeholder || "");
         formInputEl.disabled = isOffline;
+
+        const sendBtn = chatElement.querySelector(".chat-form-btn");
+        if (sendBtn) sendBtn.disabled = isOffline;
     }
 
     // =========================
@@ -582,9 +822,24 @@ class ChatView {
             chatBox.appendChild(messageElement);
         }
 
+        this._updateRailPreview(chatBox, message, isCurrentUser);
+
         if (shouldScroll) {
             this._scrollToBottom(chatBox);
         }
+    }
+
+    // The rail row shows the last thing said, so a stack of private chats
+    // reads as conversations rather than a list of nicknames.
+    _updateRailPreview(chatBox, message, isCurrentUser) {
+        const chat = chatBox.closest(".chat");
+        if (!chat || chat.dataset.room === "true") return;
+
+        this._sideBarView.setPrivateChatPreview(
+            chat.dataset.groupName,
+            message,
+            isCurrentUser
+        );
     }
 
     // =========================

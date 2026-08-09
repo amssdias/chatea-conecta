@@ -124,7 +124,7 @@ class ChatSocket {
             }
         }
 
-        window.alert(data.message || privateChatLimitMessage);
+        this.chatView.showLimitNotice("", data.message || privateChatLimitMessage);
     }
 
     handleErrorSocketAction(data) {
@@ -155,18 +155,25 @@ class ChatSocket {
         const formattedGroupChatName = groupChatName.toLowerCase();
         this.registerGroupUser(formattedGroupChatName);
 
+        // The group id stays lowercase because that is what the consumer
+        // registers; the room is shown under its real name instead.
+        const strings = this.chatView.strings || {};
+        const displayName = strings.roomName || groupChatName;
+
         // Create and display chat with event
         const chat = this.chatView.createChat(
-            formattedGroupChatName, 
+            displayName,
             formattedGroupChatName,
-            this.sendMessage.bind(this)
+            this.sendMessage.bind(this),
+            {isRoom: true}
         );
 
         this.chatView.displayChat(chat);
 
         this.sideMenuView.addGroupChat(
-            groupChatName,
-            this.chatView.displayChat.bind(this.chatView, chat)
+            formattedGroupChatName,
+            this.chatView.displayChat.bind(this.chatView, chat),
+            {displayName, subtitle: strings.roomSubtitle}
         );
     }
 
