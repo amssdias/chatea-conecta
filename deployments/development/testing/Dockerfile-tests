@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app
-COPY .. .
+# Copy app. The build context is already the repo root (see the compose file's
+# `context: ../../../`), so this is `.`, not `..` — a path outside the context.
+COPY . .
 
 CMD ["python", "manage.py", "test", "apps.chat", "apps.integrations", "apps.subscriptions", "apps.users", "--settings=chat_connect.settings.settings_tests"]
