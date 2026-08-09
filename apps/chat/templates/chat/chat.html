@@ -13,11 +13,38 @@
 {% block content %}
 
     <script type="text/javascript">
-        let currentUser = "{{ username }}";
-        let userId = "{{ user_id }}";
+        let currentUser = "{{ username|escapejs }}";
+        let userId = "{{ user_id|escapejs }}";
         let isPro = "{{ is_user_pro|yesno:'true,false' }}" === "true";
-        let sendPrivateMsg = "{{ _('Send private message') }}";
-        let privateChatLimitMessage = "{{ _('Free accounts can have up to 3 private chats. Upgrade to Pro to open more private chats.') }}";
+        let sendPrivateMsg = "{{ _('Send private message')|escapejs }}";
+        let privateChatLimitMessage = "{{ _('Free accounts can have up to 3 private chats. Upgrade to Pro to open more private chats.')|escapejs }}";
+
+        let chatStrings = {
+            roomName: "Chatea-Conecta",
+            roomSubtitle: "{{ _('Everyone, English and Español')|escapejs }}",
+            roomHeaderSubtitle: "{{ _('One room, everyone in it')|escapejs }}",
+            live: "{{ _('live')|escapejs }}",
+            online: "{{ _('online')|escapejs }}",
+            onlineNow: "{{ _('Online now')|escapejs }}",
+            offline: "{{ _('Offline')|escapejs }}",
+            peerWentOffline: "{{ _('%(name)s went offline. Anything you send now will not arrive.')|escapejs }}",
+            privateChatOpened: "{{ _('Private chat, only the two of you')|escapejs }}",
+            noMessagesYet: "{{ _('No messages yet')|escapejs }}",
+            youSaid: "{{ _('You:')|escapejs }}",
+            privateCountFree: "{{ _('%(count)s of 3')|escapejs }}",
+            privateCountPro: "{{ _('%(count)s open')|escapejs }}",
+            roomPlaceholder: "{{ _('Say something to the room')|escapejs }}",
+            privatePlaceholder: "{{ _('Message %(name)s')|escapejs }}",
+            offlinePlaceholder: "{{ _('This person is offline')|escapejs }}",
+            roomHint: "{{ _('Nicknames only. Nothing here is kept after the conversation ends.')|escapejs }}",
+            privateHint: "{{ _('This stays between the two of you. Report anything that crosses a line.')|escapejs }}",
+            send: "{{ _('Send')|escapejs }}",
+            report: "{{ _('Report')|escapejs }}",
+            reportUrl: "{% url 'chat:contact' %}?reason=report",
+            openChatList: "{{ _('Open chat list')|escapejs }}",
+            closeChat: "{{ _('Close this private chat')|escapejs }}",
+            limitWithName: "{{ _('Close one to talk to %(name)s, or go PRO for as many as you like.')|escapejs }}"
+        };
     </script>
 
 
@@ -28,38 +55,96 @@
         </div>
     </div>
 
+<div class="side-menu__scrim" id="side-menu-scrim"></div>
+
 <div class="side-menu" id="side-menu">
 
-    <!-- Header -->
-    <div class="side-menu__header margin-bottom-xsmall" id="side-menu-header">
-        <h2 class="side-menu__header__title margin-bottom-xxsmall">{% trans "Chats" %} - {{ username }}</h2>
-        <button class="side-menu__close-btn" id="side-menu-close-btn" type="button" aria-label="Close chats menu">
+    <!-- Brand -->
+    <div class="side-menu__header" id="side-menu-header">
+        <span class="side-menu__brand">
+            <span class="side-menu__mark">
+                <img src="{% static 'img/smile-chat-bubble.svg' %}" alt="">
+            </span>
+            <span class="side-menu__brand-name">Chatea-Conecta</span>
+        </span>
+        <button class="side-menu__close-btn" id="side-menu-close-btn" type="button"
+                aria-label="{% trans 'Close chat list' %}">
             &times;
         </button>
-        <p class="side-menu__header__online">
-            <svg class="side-menu__connected-icon margin-right-xxsmall online" fill="#000000" viewBox="0 0 32 32"
-                 xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <circle cx="16" cy="16" r="16"></circle>
-                </g>
-            </svg>
-            <span id="side-menu-header-count-users"></span>
-            {% trans "people online" %}
+    </div>
+
+    <!-- Who you are in the room -->
+    <div class="side-menu__you">
+        <span class="side-menu__you-label">{% trans "your nickname" %}</span>
+        <span class="side-menu__you-name">
+            {{ username }}
+            {% if is_user_pro %}
+                <a class="side-menu__you-pro" href="{% url 'subscriptions:detail' %}">{% trans "PRO" %}</a>
+            {% endif %}
+        </span>
+        {# The count and its label are one flex item on purpose: two would put #}
+        {# the row's 7px gap between the number and the word. #}
+        <p class="side-menu__you-online">
+            <span class="side-menu__dot online" aria-hidden="true"></span>
+            <span><span class="js-online-count" id="side-menu-header-count-users">&ndash;</span> {% trans "people online" %}</span>
         </p>
     </div>
 
-    <!-- Group Chat -->
-    <div id="side-menu-groups" class="side-menu__group-chat margin-bottom-xsmall">
-    </div>
+    <div class="side-menu__body">
 
-    <!-- Private Chats List -->
-    <div class="side-menu__private-chats">
-        <h3 class="side-menu__private-chats-title margin-bottom-xxsmall">Private Chats</h3>
+        <!-- Group Chat -->
+        <p class="side-menu__section-title">{% trans "The room" %}</p>
+        <div id="side-menu-groups" class="side-menu__group-chat">
+        </div>
+
+        <!-- Private Chats List -->
+        <div class="side-menu__section-head">
+            <p class="side-menu__section-title">{% trans "Private chats" %}</p>
+            <span class="side-menu__section-count" id="side-menu-private-count"></span>
+        </div>
 
         <ul class="side-menu__private-chats__list">
         </ul>
+
+        {# [JS] sideBarView.js hides this as soon as the first private chat opens. #}
+        <p class="side-menu__empty" id="side-menu-private-empty">
+            {% trans "No private chats yet. Tap any nickname in the room to start one." %}
+        </p>
+
+        {% if request.user.is_authenticated and request.user.needs_payment_configuration %}
+        <div class="side-menu__pro side-menu__pro--warning">
+            <span class="side-menu__pro-title">{% trans "PRO needs your attention" %}</span>
+            <span class="side-menu__pro-text">{% trans "A payment detail is missing, so PRO is not active yet." %}</span>
+            <a class="side-menu__pro-btn" href="{% url 'subscriptions:detail' %}">{% trans "Fix it now" %}</a>
+        </div>
+        {% elif not is_user_pro %}
+        <div class="side-menu__pro">
+            <span class="side-menu__pro-title">{% trans "Three private chats on the free plan" %}</span>
+            <span class="side-menu__pro-text">{% trans "PRO removes the limit and reserves your nickname." %}</span>
+
+            {% if request.user.is_authenticated %}
+            <form action="{% url 'subscriptions:create_pro_checkout_session' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="intent" value="pro">
+                <input type="hidden" name="source" value="chat-rail">
+                <button class="side-menu__pro-btn" type="submit">{% trans "Go PRO" %}</button>
+            </form>
+            {% else %}
+            <form action="{% url 'users:signup' %}" method="GET">
+                <input type="hidden" name="intent" value="pro">
+                <button class="side-menu__pro-btn" type="submit">{% trans "Go PRO" %}</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="side-menu__footer">
+        <a class="side-menu__footer-link" href="{% url 'chat:security' %}">{% trans "House rules" %}</a>
+        <form action="{% url 'users:logout' %}" method="POST">
+            {% csrf_token %}
+            <button class="side-menu__leave" type="submit">{% trans "Leave the room" %}</button>
+        </form>
     </div>
 
 </div>
@@ -67,6 +152,27 @@
     <div class="chat-app">
 
         <div class="chat-app__container">
+
+            <div class="chat__notice hide" id="chat-limit-notice" role="status">
+                <p class="chat__notice-text">
+                    <span>{% trans "Free accounts hold three private chats." %}</span>
+                    <span id="chat-limit-notice-detail">{% trans "Close one to open another, or go PRO for as many as you like." %}</span>
+                </p>
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'subscriptions:create_pro_checkout_session' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="intent" value="pro">
+                    <input type="hidden" name="source" value="chat-limit">
+                    <button class="chat__notice-btn" type="submit">{% trans "Go PRO" %}</button>
+                </form>
+                {% else %}
+                <form action="{% url 'users:signup' %}" method="GET">
+                    <input type="hidden" name="intent" value="pro">
+                    <button class="chat__notice-btn" type="submit">{% trans "Go PRO" %}</button>
+                </form>
+                {% endif %}
+                <button class="chat__notice-dismiss" id="chat-limit-dismiss" type="button">{% trans "Dismiss" %}</button>
+            </div>
 
             <!-- Where user can write chat messages -->
             <div class="chat-container"></div>

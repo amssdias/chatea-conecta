@@ -1,9 +1,6 @@
 {% load static %}
 {% load i18n %}
 
-{# Redesigned navigation, site-wide. #}
-{# id="nav-toggle" and id="side-menu-btn" are contracts with static/js/chatController.js. #}
-
 {% with view=request.resolver_match.view_name %}
 <nav class="topbar" aria-label="{% trans 'Main' %}">
     <a class="topbar__brand" href="{% if view == 'chat:home' %}#top{% else %}{% url 'chat:home' %}{% endif %}">
@@ -27,7 +24,7 @@
                 <a class="topbar__link" href="#room">{% trans "The room" %}</a>
                 <a class="topbar__link" href="#faq">{% trans "Questions" %}</a>
             </div>
-        {% elif view != "chat:live-chat" %}
+        {% else %}
             <div class="topbar__links">
                 <a class="topbar__link" href="{% url 'chat:home' %}">{% trans "How it works" %}</a>
                 <a class="topbar__link {% if view == 'chat:security' %}topbar__link--current{% endif %}"
@@ -43,11 +40,6 @@
         {% endif %}
 
         {% if username or request.user.is_authenticated %}
-
-            {% if view == "chat:live-chat" %}
-                <button class="topbar__link side-menu--btn" id="side-menu-btn" type="button"
-                        aria-label="{% trans 'Open chats menu' %}">{% trans "Chats" %}</button>
-            {% endif %}
 
             <div class="topbar__actions">
                 {% if request.user.is_authenticated %}
