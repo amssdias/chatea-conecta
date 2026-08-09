@@ -1,0 +1,73 @@
+# Docker build context exclusions.
+#
+# Every Dockerfile here ends with `COPY . .`, so anything not listed below is
+# baked into the image. Keep secrets and local state out.
+#
+# NOTE: this file is NOT .gitignore. Two things are gitignored but MUST stay in
+# the image, so they are deliberately absent from this file:
+#   - chat_connect/locale/*/LC_MESSAGES/*.mo  (compiled translations, runtime)
+#   - redis.conf                              (only read by the redis service)
+
+# --- Secrets: never bake credentials into an image ---------------------------
+# Dev gets .env through the `- .:/usr/src/app` bind mount; prod and celery load
+# it through `env_file:` in the compose file. Neither needs it copied in.
+.env
+.env.*
+!.env.example
+prod.txt
+prod*.txt
+
+# --- VCS ---------------------------------------------------------------------
+.git
+.gitignore
+.github
+
+# --- Node: build-time only ---------------------------------------------------
+# package.json only provides `sass`, which compiles
+# chat_connect/static/style/scss -> .../css. The compiled CSS is committed, so
+# the image never needs node_modules.
+node_modules
+package.json
+package-lock.json
+
+# --- Python caches -----------------------------------------------------------
+# Docker matches these against the whole relative path and does NOT walk into
+# subdirectories the way .gitignore does, so nested matches need an explicit
+# `**/` prefix. `__pycache__` alone would only ignore the one at the repo root.
+**/__pycache__
+**/*.py[cod]
+**/*$py.class
+**/*.egg-info
+.ruff_cache
+.mypy_cache
+.pytest_cache
+
+# --- Test / coverage output --------------------------------------------------
+.coverage
+.coverage.*
+.coveragerc
+htmlcov/
+coverage.xml
+test.patch
+
+# --- Editors / tooling -------------------------------------------------------
+.idea
+.vscode
+.claude
+.python-version
+
+# --- Local runtime state -----------------------------------------------------
+celerybeat-schedule
+celerybeat-schedule.*
+**/*.log
+db.sqlite3
+media/
+
+# --- Docs and planning -------------------------------------------------------
+docs/
+**/*.md
+plan-*.prompt.md
+
+# --- Compose / deploy descriptors (not needed inside the image) --------------
+docker-compose*.yml
+nginx.conf
