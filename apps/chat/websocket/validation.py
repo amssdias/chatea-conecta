@@ -16,12 +16,14 @@ def validate_group_payload(data: dict) -> str:
     if not normalized_group:
         raise WebSocketValidationError("Missing group")
 
-    # Avoid registrations to user inbox groups and others
-    if normalized_group not in CLIENT_ALLOWED_GROUPS:
-        raise WebSocketValidationError("Invalid group")
-
     return normalized_group
 
 
 async def is_bot_user(user_id: str) -> bool:
     return await AsyncRedisService.is_member(REDIS_BOT_USER_IDS_KEY, user_id)
+
+
+def validate_group_registered(group: str):
+    # Avoid registrations to user inbox groups and others
+    if group not in CLIENT_ALLOWED_GROUPS:
+        raise WebSocketValidationError("Invalid group")

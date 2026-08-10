@@ -7,12 +7,16 @@ from apps.chat.websocket.registration import (
     register_user_to_group,
     register_user_to_group_notification,
 )
-from apps.chat.websocket.validation import validate_group_payload
-
+from apps.chat.websocket.validation import (
+    validate_group_payload,
+    validate_group_registered,
+)
 
 async def handle_register_group(consumer, data):
     try:
         group = validate_group_payload(data)
+        validate_group_registered(group)
+
     except WebSocketValidationError:
         await consumer.close(code=4001, reason="Invalid group")
         return
