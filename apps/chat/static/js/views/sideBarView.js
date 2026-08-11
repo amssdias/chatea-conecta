@@ -152,13 +152,15 @@ class SideBarView {
     // Private chats
     // =========================
 
+    // Adds the row only. Unread state is owned by addIncomingMsgNotification,
+    // which every incoming message goes through - including the one that
+    // caused this row to be created.
     addPrivateChat(
         userIdTarget,
         usernameTarget,
         privateGroupId,
         openChatCallback,
-        deleteChatCallback,
-        incomingMessage = false
+        deleteChatCallback
     ) {
         const listItem = this._createListItem(userIdTarget, privateGroupId);
         const button = this._createChatButton(userIdTarget, usernameTarget);
@@ -174,7 +176,6 @@ class SideBarView {
         );
 
         listItem.append(button, closeBtn);
-        if (incomingMessage) this.addIncomingMessageClass(listItem);
 
         this._appendPrivateChat(listItem);
         this._refreshPrivateChatAvailability();
