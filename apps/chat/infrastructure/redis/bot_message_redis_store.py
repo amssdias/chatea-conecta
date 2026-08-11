@@ -57,6 +57,22 @@ class BotMessageRedisStore:
         """
         self.redis_service.delete_key(BOT_MESSAGE_CACHE_LOADED)
 
+    def clear_bot_users(self) -> None:
+        """
+        Remove every cached bot user from Redis.
+
+        Call this before repopulating the cache, otherwise users that are no
+        longer flagged as bots stay behind: BOT_USER_IDS and BOT_USERNAMES
+        would keep them until their TTL expires, and REDIS_BOT_USER_IDS_KEY
+        has no expiration at all.
+
+        REDIS_ALL_USERNAMES_KEY is deliberately left untouched because it also
+        holds the usernames of real users.
+        """
+        self.redis_service.delete_key(BOT_USER_IDS)
+        self.redis_service.delete_key(BOT_USERNAMES)
+        self.redis_service.delete_key(REDIS_BOT_USER_IDS_KEY)
+
     def store_bot_users(self, users: dict[int, str]) -> None:
         """
         Store bot user IDs and usernames in Redis.
