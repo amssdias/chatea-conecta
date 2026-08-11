@@ -259,8 +259,7 @@ class ChatView {
                     usernameTarget,
                     privateChatId,
                     this.displayChat.bind(this, chat),
-                    this.deleteChat.bind(this, chat),
-                    false
+                    this.deleteChat.bind(this, chat)
                 );
 
             }
@@ -276,8 +275,7 @@ class ChatView {
                 usernameTarget,
                 privateChatId,
                 this.displayChat.bind(this, chat),
-                this.deleteChat.bind(this, chat),
-                false
+                this.deleteChat.bind(this, chat)
             );
 
             // 3. Add to object of private chats
@@ -854,6 +852,10 @@ class ChatView {
         return this._privateChatsMapping[userId];
     }
 
+    // The rail row for a chat we were invited into: the invite itself stays
+    // silent, so the row is born here, when the first message actually lands.
+    // It is created unread-neutral because displayOtherUserMessage marks it
+    // immediately afterwards - counting it here too showed "2" for one message.
     _createMissingPrivateChat(userId, username, groupChatName, sendMsgHandler) {
         const privateChatId = this._getOrCreatePrivateChatMapping(userId, groupChatName);
 
@@ -864,8 +866,7 @@ class ChatView {
             username,
             privateChatId,
             this.displayChat.bind(this, chat),
-            this.deleteChat.bind(this, chat),
-            true
+            this.deleteChat.bind(this, chat)
         );
 
         return chat;
