@@ -1,125 +1,41 @@
-version: "2"
 services:
   my-redis:
-    image: redis:7.2.4
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
-    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-    networks:
-      - chat-network
+    env_file:
+      - .envs/production/redis.env
+    restart: unless-stopped
 
   db:
-    image: mysql
-    container_name: mysql-db
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-    environment:
-      - MYSQL_DATABASE=chat-app-db
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    networks:
-      - chat-network
+    env_file:
+      - .envs/production/mysql.env
+    restart: unless-stopped
 
   chat-app:
-    container_name: chat-app
     build:
       context: .
       dockerfile: deployments/production/Dockerfile
-    depends_on:
-      - my-redis
-      - db
     ports:
-      - "8000:8000"
-    # All application configuration (SECRET_KEY, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS,
-    # SITE_URL, STRIPE_*, EMAIL_*, SENTRY_*, AWS_*) is loaded from .env.
-    # See .env.example for the full list of required keys.
-    # Only container-topology values are overridden below; `environment` wins over `env_file`.
+      - "127.0.0.1:8000:8000"
     env_file:
-      - .env
-    environment:
-      - DB_NAME=chat-app-db
-      - DB_USER=${MYSQL_USER}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=3306
-      - REDIS_HOST=my-redis
-      - REDIS_PORT=6379
-      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
-      interval: 5m30s  # Check every 2 minute and 30 seconds
-      timeout: 10s     # Fail if the check takes longer than 10 seconds
-      retries: 3       # Mark as unhealthy after 3 consecutive failures
-      start_period: 30s  # Give the container 30 seconds after startup before checking
+      - .envs/production/django.env
+      - .envs/production/docker.env
     volumes:
       - ./prod_static:/usr/src/app/chat_connect/prod_static
-    networks:
-      - chat-network
+    restart: unless-stopped
 
   celery:
-    container_name: celery-worker
     build:
       context: .
       dockerfile: deployments/production/Dockerfile
-    depends_on:
-      - my-redis
-      - chat-app
     env_file:
-      - .env
-    environment:
-      - DB_NAME=chat-app-db
-      - DB_USER=${MYSQL_USER}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=3306
-      - REDIS_HOST=my-redis
-      - REDIS_PORT=6379
-      - APP_NAME=celery-worker
-      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
-    command: [ "celery", "-A", "chat_connect", "worker", "--loglevel=info", "--autoscale=4,2" ]
-    healthcheck:
-      test: ["CMD", "celery", "-A", "chat_connect", "status"]
-      interval: 2m
-      timeout: 10s
-      retries: 3
-    networks:
-      - chat-network
+      - .envs/production/django.env
+      - .envs/production/docker.env
+    restart: unless-stopped
 
   celery-beat:
-    container_name: celery-beat-chat
     build:
       context: .
       dockerfile: deployments/production/Dockerfile
-    depends_on:
-      - my-redis
-      - db
-      - chat-app
-      - celery
     env_file:
-      - .env
-    environment:
-      - DB_NAME=chat-app-db
-      - DB_USER=${MYSQL_USER}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=3306
-      - REDIS_HOST=my-redis
-      - REDIS_PORT=6379
-      - APP_NAME=celery-beat
-      - DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
-    command: [ "celery", "-A", "chat_connect", "beat", "--loglevel=info" ]
-    networks:
-      - chat-network
-
-volumes:
-  db_data:
-
-networks:
-  chat-network:
-    driver: bridge
+      - .envs/production/django.env
+      - .envs/production/docker.env
+    restart: unless-stopped

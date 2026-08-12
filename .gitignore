@@ -93,6 +93,9 @@ coverage.xml
 .python-version
 
 # celery
+# Both forms: beat writes a bare `celerybeat-schedule` on Linux and
+# `celerybeat-schedule.db`/`.dat`/`.dir` depending on the shelve backend.
+celerybeat-schedule
 celerybeat-schedule.*
 
 # SageMath parsed files
@@ -109,6 +112,8 @@ ENV/
 env.bak/
 venv.bak/
 redis.conf
+.envs/**/*.env
+!.envs/**/*.env.example
 
 # Plaintext production credential dumps - never commit
 prod.txt

@@ -1,126 +1,44 @@
 services:
   my-redis:
-    image: redis:7.2.4
-    container_name: redis-chat-app
-
     ports:
       - "6379:6379"
-
     env_file:
       - .envs/development/redis.env
 
-    command:
-      ["sh", "-c", 'exec redis-server --port 6379 --requirepass "$$REDIS_PASSWORD"']
-
-    healthcheck:
-      test: [ "CMD-SHELL", 'redis-cli --no-auth-warning -a "$$REDIS_PASSWORD" ping | grep -q PONG' ]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 5s
-
-    networks:
-      - chat-network
-
   db:
-    image: mysql
-    container_name: mysql-db-chat-app
-
     ports:
       - "3306:3306"
-
-    volumes:
-      - db_data:/var/lib/mysql
-
     env_file:
       - .envs/development/mysql.env
 
-    healthcheck:
-      test: ["CMD-SHELL", 'mysqladmin ping -h 127.0.0.1 -u root -p"$$MYSQL_ROOT_PASSWORD" --silent']
-      interval: 5s
-      timeout: 5s
-      retries: 20
-      start_period: 40s
-
-    networks:
-      - chat-network
-
   chat-app:
-    container_name: chat-app
     build:
       context: .
       dockerfile: deployments/development/Dockerfile
-
     ports:
       - "8000:8000"
-
     volumes:
       - .:/usr/src/app
-
     env_file:
       - .envs/development/django.env
       - .envs/development/docker.env
-
-    depends_on:
-      my-redis:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-
-    networks:
-      - chat-network
 
   celery:
-    container_name: celery-worker-chat-app
     build:
       context: .
       dockerfile: deployments/development/Dockerfile
-
     volumes:
       - .:/usr/src/app
-
     env_file:
       - .envs/development/django.env
       - .envs/development/docker.env
-
-    depends_on:
-      my-redis:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-
-    command: [ "celery", "-A", "chat_connect", "worker", "--loglevel=info"]
-    networks:
-      - chat-network
 
   celery-beat:
-    container_name: celery-beat-chat-app
     build:
       context: .
       dockerfile: deployments/development/Dockerfile
-
     volumes:
       - .:/usr/src/app
-
     env_file:
       - .envs/development/django.env
       - .envs/development/docker.env
-
-    depends_on:
-      my-redis:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-      celery:
-        condition: service_started
-
-    command: [ "celery", "-A", "chat_connect", "beat", "--loglevel=info" ]
-    networks:
-      - chat-network
-
-volumes:
-  db_data:
-
-networks:
-  chat-network:
-    driver: bridge
