@@ -1,5 +1,8 @@
 services:
   my-redis:
+    # I expose the redis port to the host machine so that it can be accessed from outside the container (Redis Insight)
+    ports:
+      - "6379:6379"
     env_file:
       - .envs/production/redis.env
     restart: unless-stopped
