@@ -84,6 +84,7 @@ class MarkSubscriptionPaidTests(TestCase):
         mock_save.assert_called_once_with(
             result,
             update_fields=[
+                "stripe_subscription_id",
                 "status",
                 "started_at",
                 "current_period_start",
@@ -299,24 +300,33 @@ class MarkSubscriptionPaidTests(TestCase):
         self.assertEqual(result.status, UserSubscriptionStatus.ACTIVE)
         self.assertTrue(user_subscription.pro)
 
-    def test_ignores_event_when_no_subscription_is_current_yet(self):
+    def test_adopts_the_subscription_when_none_is_linked_yet(self):
+        """
+        ``invoice.paid`` can beat ``checkout.session.completed``, which Stripe does
+        not order. Reading the empty subscription ID as a stale event dropped the
+        first payment's receipt, so the event is applied instead.
+        """
         user_subscription = UserSubscriptionFactory(
             stripe_customer_id="cus_123",
             stripe_subscription_id=None,
             status=UserSubscriptionStatus.INACTIVE,
         )
 
+        current_period_end = timezone.now() + timedelta(days=30)
+
         paid_subscription = self.build_paid_subscription_dto(
             stripe_customer_id="cus_123",
             stripe_subscription_id="sub_123",
+            current_period_end=current_period_end,
         )
 
         result = mark_subscription_paid(paid_subscription)
         user_subscription.refresh_from_db()
 
-        self.assertIsNone(result)
-        self.assertIsNone(user_subscription.stripe_subscription_id)
-        self.assertEqual(user_subscription.status, UserSubscriptionStatus.INACTIVE)
+        self.assertEqual(result.pk, user_subscription.pk)
+        self.assertEqual(user_subscription.stripe_subscription_id, "sub_123")
+        self.assertEqual(user_subscription.status, UserSubscriptionStatus.ACTIVE)
+        self.assertEqual(user_subscription.current_period_end, current_period_end)
 
     def test_locks_the_user_subscription_row(self):
         user_subscription = UserSubscriptionFactory(
