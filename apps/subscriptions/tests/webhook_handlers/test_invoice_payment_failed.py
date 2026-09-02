@@ -4,7 +4,13 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from apps.subscriptions.models.choices import EmailType
+from apps.subscriptions.models import StripeInvoiceNotification
+from apps.subscriptions.models.choices import (
+    EmailType,
+    InvoiceNotificationStatus,
+    UserSubscriptionStatus,
+)
+from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
 from apps.subscriptions.webhook_handlers.dtos import FailedSubscriptionPaymentDTO
 from apps.subscriptions.webhook_handlers.invoices import handle_invoice_payment_failed
 
@@ -121,3 +127,55 @@ class TestHandleInvoicePaymentFailed(TestCase):
             user_id=self.user_subscription.user_id,
             invoice_url=self.failed_payment.invoice_url,
         )
+
+
+class TestHandleInvoicePaymentFailedBeforeCheckout(TestCase):
+    """
+    A failed first payment can also be delivered before
+    ``checkout.session.completed``. The empty subscription ID is not a stale
+    event, so the payment-failed email must still be queued.
+    """
+
+    def setUp(self):
+        self.user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_race_failed_123",
+            stripe_subscription_id=None,
+            status=UserSubscriptionStatus.INACTIVE,
+        )
+
+        self.failed_payment = FailedSubscriptionPaymentDTO(
+            stripe_customer_id="cus_race_failed_123",
+            stripe_subscription_id="sub_race_failed_123",
+            stripe_status="past_due",
+            latest_invoice_id="in_race_failed_123",
+            invoice_url="https://stripe.test/invoice/in_race_failed_123",
+        )
+
+    @patch(
+        "apps.subscriptions.webhook_handlers.invoices."
+        "build_failed_subscription_payment_dto_from_invoice"
+    )
+    def test_queues_the_payment_failed_email_for_the_first_payment(
+        self,
+        build_dto_mock,
+    ):
+        build_dto_mock.return_value = self.failed_payment
+
+        handle_invoice_payment_failed(SimpleNamespace(id="in_race_failed_123"))
+
+        self.user_subscription.refresh_from_db()
+
+        self.assertEqual(
+            self.user_subscription.stripe_subscription_id,
+            "sub_race_failed_123",
+        )
+        self.assertEqual(
+            self.user_subscription.status,
+            UserSubscriptionStatus.PAST_DUE,
+        )
+
+        notification = StripeInvoiceNotification.objects.get(
+            stripe_invoice_id="in_race_failed_123",
+            email_type=EmailType.PAYMENT_FAILED,
+        )
+        self.assertEqual(notification.status, InvoiceNotificationStatus.PENDING)
