@@ -92,6 +92,44 @@ def _log_ignored_non_current_subscription_event(
     )
 
 
+def _bind_subscription_event(
+    user_subscription: UserSubscription,
+    stripe_customer_id: str,
+    stripe_subscription_id: str,
+) -> bool:
+    """
+    Point the local row at the subscription an event belongs to.
+
+    An empty ``stripe_subscription_id`` means Checkout has not been recorded yet.
+    Stripe fires ``checkout.session.completed`` and the first ``invoice.*`` event
+    within milliseconds and orders neither, so an empty ID is not evidence of a
+    stale event. The subscription is adopted rather than ignored: reading it as
+    stale skipped the first period's email while the event was still marked
+    processed, leaving a charged customer with no receipt and nothing to retry.
+
+    Return False when the event belongs to a superseded subscription.
+    """
+    if not user_subscription.stripe_subscription_id:
+        logger.info(
+            "Adopting the subscription from a Stripe event that arrived before "
+            "Checkout. customer_id=%s subscription_id=%s",
+            stripe_customer_id,
+            stripe_subscription_id,
+        )
+        user_subscription.stripe_subscription_id = stripe_subscription_id
+        return True
+
+    if user_subscription.stripe_subscription_id != stripe_subscription_id:
+        _log_ignored_non_current_subscription_event(
+            user_subscription,
+            stripe_customer_id,
+            stripe_subscription_id,
+        )
+        return False
+
+    return True
+
+
 @transaction.atomic
 def sync_user_subscription_from_checkout(
     subscription_sync: StripeSubscriptionSyncDTO,
@@ -99,9 +137,10 @@ def sync_user_subscription_from_checkout(
     """
     Establish the subscription coming from Checkout as the current one.
 
-    This is the only place allowed to replace ``stripe_subscription_id``. It writes a
-    complete snapshot of the Stripe state so that lifecycle events which arrived
-    before Checkout could safely be ignored.
+    This is the only place allowed to replace an already recorded
+    ``stripe_subscription_id``. It writes a complete snapshot of the Stripe state, so
+    it also overrides whatever an earlier-arriving invoice event adopted onto a row
+    that had no subscription yet.
     """
     user_subscription = _get_user_subscription_for_update(
         subscription_sync.stripe_customer_id,
@@ -158,15 +197,11 @@ def mark_subscription_paid(
         paid_subscription.stripe_customer_id
     )
 
-    if (
-        user_subscription.stripe_subscription_id
-        != paid_subscription.stripe_subscription_id
+    if not _bind_subscription_event(
+        user_subscription,
+        paid_subscription.stripe_customer_id,
+        paid_subscription.stripe_subscription_id,
     ):
-        _log_ignored_non_current_subscription_event(
-            user_subscription,
-            paid_subscription.stripe_customer_id,
-            paid_subscription.stripe_subscription_id,
-        )
         return None
 
     user_subscription.status = map_stripe_subscription_status(
@@ -187,6 +222,7 @@ def mark_subscription_paid(
 
     user_subscription.save(
         update_fields=[
+            "stripe_subscription_id",
             "status",
             "started_at",
             "current_period_start",
@@ -209,22 +245,20 @@ def mark_subscription_payment_failed(
         failed_payment.stripe_customer_id
     )
 
-    if (
-        user_subscription.stripe_subscription_id
-        != failed_payment.stripe_subscription_id
+    if not _bind_subscription_event(
+        user_subscription,
+        failed_payment.stripe_customer_id,
+        failed_payment.stripe_subscription_id,
     ):
-        _log_ignored_non_current_subscription_event(
-            user_subscription,
-            failed_payment.stripe_customer_id,
-            failed_payment.stripe_subscription_id,
-        )
         return None
 
     user_subscription.status = map_stripe_subscription_status(
         failed_payment.stripe_status,
         False,
     )
-    user_subscription.save(update_fields=["status", "updated_at"])
+    user_subscription.save(
+        update_fields=["stripe_subscription_id", "status", "updated_at"],
+    )
 
     return user_subscription
 
