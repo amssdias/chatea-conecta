@@ -6,41 +6,81 @@
 	<meta charset="UTF-8">
 	<title>{% trans "Your Pro subscription has ended" %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{# The site is dark by default (theme-ink). Without these two, Apple Mail and #}
+	{# Outlook re-invert an already-dark email and wreck the palette. #}
+	<meta name="color-scheme" content="dark">
+	<meta name="supported-color-schemes" content="dark">
+	<style type="text/css">
+		/* Progressive enhancement only - every rule that matters is also inline,
+		   because Gmail and Outlook.com strip or rewrite <style>. */
+		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+		img { border: 0; line-height: 100%; }
+
+		@media only screen and (max-width: 620px) {
+			.cc-card    { padding: 30px 22px !important; }
+			.cc-title   { font-size: 27px !important; }
+			.cc-lede    { font-size: 16px !important; }
+			.cc-cell    { padding-left: 15px !important; padding-right: 15px !important; }
+			.cc-btn     { display: block !important; }
+		}
+	</style>
 </head>
 
-<body style="margin: 0; padding: 0; background-color: #fbfbfb; font-family: Arial, Helvetica, sans-serif; color: #232121;">
+<body style="margin: 0; padding: 0; width: 100%; background-color: #14100f; font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e8ded6;">
 <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
 	{% trans "Your Chatea-Conecta Pro subscription has ended." %}
 </div>
 
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
-	   style="width: 100%; background-color: #fbfbfb; margin: 0; padding: 0;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#14100f"
+	   style="width: 100%; background-color: #14100f; margin: 0; padding: 0;">
 	<tr>
-		<td align="center" style="padding: 32px 16px; background: #fbfbfb;">
+		<td align="center" style="padding: 32px 16px; background-color: #14100f;">
 			<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
 				   style="width: 100%; max-width: 620px; margin: 0 auto;">
+
+				{# Brand lockup: the topbar's ember mark + wordmark, over its hairline. #}
 				<tr>
-					<td align="center" style="padding: 0 0 20px;">
-						<h1 style="margin: 0; color: #c21d03; font-size: 28px; line-height: 1.2; font-weight: 800;">
-							Chatea-Conecta
-						</h1>
+					<td style="padding: 0 0 18px; border-bottom: 1px solid #2b2422;">
+						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td width="34" valign="middle" align="center" bgcolor="#d1402e"
+									style="width: 34px; height: 34px; border-radius: 4px; background-color: #d1402e; color: #ffffff; font-size: 14px; line-height: 34px; letter-spacing: 2px; text-indent: 2px; text-align: center;">
+									&#8226;&#8226;&#8226;
+								</td>
+								<td valign="middle"
+									style="padding-left: 11px; font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 19px; line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; color: #f5ede7;">
+									Chatea-Conecta
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 
 				<tr>
-					<td style="background-color: #ffffff; border: 1px solid #e3e3e3; border-radius: 20px; padding: 36px 28px; text-align: center; box-shadow: 0 14px 40px rgba(57, 57, 57, 0.12);">
+					<td height="26" style="height: 26px; line-height: 26px; font-size: 0;">&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td class="cc-card"
+						bgcolor="#1a1614"
+						style="background-color: #1a1614; border: 1px solid #2b2422; border-radius: 4px; padding: 40px 30px; text-align: center;">
 						<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
 							<tr>
-								<td align="center" style="padding-bottom: 18px;">
-									<div style="width: 68px; height: 68px; line-height: 68px; border-radius: 50%; background-color: #fef3c7; border: 1px solid #f59e0b; color: #b45309; font-size: 34px; font-weight: 800; text-align: center;">
-										i
-									</div>
+								<td align="center" style="padding-bottom: 20px;">
+									<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+										<tr>
+											<td width="68" height="68" align="center" valign="middle" bgcolor="#371d18"
+												style="width: 68px; height: 68px; border-radius: 50%; background-color: #371d18; border: 1px solid #3a2e2a; color: #f5ede7; font-size: 32px; line-height: 68px; font-weight: 700; text-align: center;">
+												i
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 
 							<tr>
-								<td align="center" style="padding-bottom: 14px;">
-                                        <span style="display: inline-block; padding: 8px 16px; border-radius: 999px; background-color: #fef3c7; border: 1px solid #f59e0b; color: #b45309; font-size: 14px; font-weight: 700;">
+								<td align="center" style="padding-bottom: 18px;">
+                                        <span style="display: inline-block; padding: 8px 15px; border-radius: 999px; background-color: #1d1917; border: 1px solid #2b2422; color: #b5a79e; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;">
                                             {% trans "Subscription ended" %}
                                         </span>
 								</td>
@@ -48,15 +88,17 @@
 
 							<tr>
 								<td align="center">
-									<h2 style="margin: 0 0 14px; color: #393939; font-size: 30px; line-height: 1.15; font-weight: 800;">
+									<h1 class="cc-title"
+										style="margin: 0 0 14px; font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #f5ede7; font-size: 33px; line-height: 1.08; font-weight: 800; letter-spacing: -0.03em;">
 										{% trans "Your Pro access has ended" %}
-									</h2>
+									</h1>
 								</td>
 							</tr>
 
 							<tr>
 								<td align="center">
-									<p style="margin: 0 auto 26px; max-width: 500px; color: #4b4848; font-size: 17px; line-height: 1.55;">
+									<p class="cc-lede"
+									   style="margin: 0 auto 28px; max-width: 500px; color: #b5a79e; font-size: 17px; line-height: 1.6;">
 										{% blocktrans trimmed %}
 										Your Chatea-Conecta Pro subscription has ended and Pro access was removed. You
 										can still continue using Chatea-Conecta with the free plan.
@@ -66,40 +108,41 @@
 							</tr>
 
 							<tr>
-								<td align="center" style="padding-bottom: 28px;">
+								<td align="center" style="padding-bottom: 30px;">
 									<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
-										   style="max-width: 480px; background-color: #f1f1f1; border-radius: 12px; padding: 18px 20px;">
+										   bgcolor="#1d1917"
+										   style="width: 100%; max-width: 480px; margin: 0 auto; background-color: #1d1917; border-radius: 4px;">
 										<tr>
-											<td style="padding: 9px 0; border-bottom: 1px solid #d8d8d8;">
-                                                    <span style="display: block; margin-bottom: 4px; color: #4b4848; font-size: 14px;">
-                                                        {% trans "Plan" %}
-                                                    </span>
-												<span style="display: block; color: #232121; font-size: 15px; font-weight: 700;">
-                                                        {% trans "Chatea-Conecta Pro" %}
-                                                    </span>
+											<td class="cc-cell" align="left"
+												style="padding: 13px 18px; border-bottom: 1px solid #2b2422; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #9c8f86;">
+												{% trans "Plan" %}
+											</td>
+											<td class="cc-cell" align="right"
+												style="padding: 13px 18px; border-bottom: 1px solid #2b2422; color: #e8ded6; font-size: 15px; font-weight: 600; text-align: right;">
+												{% trans "Chatea-Conecta Pro" %}
 											</td>
 										</tr>
 
 										<tr>
-											<td style="padding: 9px 0; {% if ended_at %}border-bottom: 1px solid #d8d8d8;{% endif %}">
-                                                    <span style="display: block; margin-bottom: 4px; color: #4b4848; font-size: 14px;">
-                                                        {% trans "Status" %}
-                                                    </span>
-												<span style="display: block; color: #232121; font-size: 15px; font-weight: 700;">
-                                                        {% trans "Ended" %}
-                                                    </span>
+											<td class="cc-cell" align="left"
+												style="padding: 13px 18px; {% if ended_at %}border-bottom: 1px solid #2b2422; {% endif %}font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #9c8f86;">
+												{% trans "Status" %}
+											</td>
+											<td class="cc-cell" align="right"
+												style="padding: 13px 18px; {% if ended_at %}border-bottom: 1px solid #2b2422; {% endif %}color: #b5a79e; font-size: 15px; font-weight: 600; text-align: right;">
+												{% trans "Ended" %}
 											</td>
 										</tr>
 
 										{% if ended_at %}
 										<tr>
-											<td style="padding: 9px 0;">
-                                                        <span style="display: block; margin-bottom: 4px; color: #4b4848; font-size: 14px;">
-                                                            {% trans "Ended on" %}
-                                                        </span>
-												<span style="display: block; color: #232121; font-size: 15px; font-weight: 700;">
-                                                            {{ ended_at|date:"F j, Y" }}
-                                                        </span>
+											<td class="cc-cell" align="left"
+												style="padding: 13px 18px; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #9c8f86;">
+												{% trans "Ended on" %}
+											</td>
+											<td class="cc-cell" align="right"
+												style="padding: 13px 18px; color: #e8ded6; font-size: 15px; font-weight: 600; text-align: right;">
+												{{ ended_at|date:"F j, Y" }}
 											</td>
 										</tr>
 										{% endif %}
@@ -109,9 +152,9 @@
 
 							{% if site_url %}
 							<tr>
-								<td align="center" style="padding-bottom: 20px;">
-									<a href="{{ site_url }}"
-									   style="display: inline-block; background-color: #fd5732; color: #fbfbfb; padding: 13px 24px; border-radius: 10px; font-size: 16px; font-weight: 700; text-decoration: none;">
+								<td align="center" style="padding-bottom: 24px;">
+									<a class="cc-btn" href="{{ site_url }}"
+									   style="display: inline-block; background-color: #d1402e; color: #ffffff; padding: 17px 30px; border-radius: 999px; font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1; font-weight: 700; text-decoration: none;">
 										{% trans "Go to Chatea-Conecta" %}
 									</a>
 								</td>
@@ -120,7 +163,7 @@
 
 							<tr>
 								<td align="center">
-									<p style="margin: 0 auto; max-width: 480px; color: #4b4848; font-size: 14px; line-height: 1.5;">
+									<p style="margin: 0 auto; max-width: 480px; color: #9c8f86; font-size: 14px; line-height: 1.55;">
 										{% blocktrans trimmed %}
 										You can upgrade again anytime if you want to restore unlimited private chats.
 										{% endblocktrans %}
@@ -132,17 +175,22 @@
 				</tr>
 
 				<tr>
-					<td align="center" style="padding: 22px 12px 0; color: #4b4848; font-size: 13px; line-height: 1.5;">
+					<td height="26" style="height: 26px; line-height: 26px; font-size: 0;">&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td align="center"
+						style="padding: 22px 12px 0; border-top: 1px solid #2b2422; color: #9c8f86; font-size: 13.5px; line-height: 1.55;">
 						<p style="margin: 0 0 8px;">
-							{% trans "You are receiving this email because you had a Chatea-Conecta Pro subscription."
-							%}
+							{# Keep the next tag on one line - a wrapped tag never matches and ships as raw syntax. #}
+							{% trans "You are receiving this email because you had a Chatea-Conecta Pro subscription." %}
 						</p>
 
 						{% if support_email %}
 						<p style="margin: 0;">
 							{% trans "Need help?" %}
 							<a href="mailto:{{ support_email }}"
-							   style="color: #c21d03; font-weight: 700; text-decoration: underline;">
+							   style="color: #e6725f; font-weight: 600; text-decoration: underline;">
 								{{ support_email }}
 							</a>
 						</p>
