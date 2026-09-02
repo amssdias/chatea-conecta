@@ -121,7 +121,7 @@ stateDiagram-v2
 - `map_stripe_subscription_status` maps provider statuses; `expired` is defined but has no implemented incoming transition.
 - `cancel_at_period_end=True` is an orthogonal flag, not a status transition. An active/past-due subscription keeps its current access predicate until provider lifecycle events or period expiry.
 - `UserSubscription.pro` additionally evaluates timestamps at read time. Both `active` and `past_due` require a future non-null `current_period_end`; a null end date grants nothing, because it means the period could not be read from Stripe rather than that the entitlement is unbounded.
-- Checkout synchronization may replace `stripe_subscription_id`; other lifecycle methods return `None` for a stale/non-current subscription event.
+- Checkout synchronization may replace `stripe_subscription_id`; `mark_subscription_paid`/`mark_subscription_payment_failed` only set it when it is empty. All lifecycle methods return `None` for an event carrying a different, non-current subscription ID.
 - Tests under `apps/subscriptions/tests/services/user_subscription/` verify mapping, locks, stale-event rejection, period fields, cancellation, and deletion.
 
 ### Webhook event claim

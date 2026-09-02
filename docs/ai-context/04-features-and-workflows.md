@@ -137,9 +137,9 @@ Status labels assess the repository as implemented and tested, not product desir
 
 **Entry points/components.** Non-localized `POST /subscriptions/payments/stripe/webhook/`; signature adapter; event claim service; handler registry, mappers, DTOs, row-locked subscription services.
 
-**Main workflow.** The view verifies raw payload/signature. The service validates event shape, creates/gets a unique ledger, atomically claims pending/failed, finds a handler, and invokes it. Checkout establishes current state; invoice paid/failed and subscription updated/deleted mutate only the matching current subscription. Success marks the event processed; unknown types are ignored; exceptions mark failed and propagate so Stripe receives a 500/retries.
+**Main workflow.** The view verifies raw payload/signature. The service validates event shape, creates/gets a unique ledger, atomically claims pending/failed, finds a handler, and invokes it. Checkout establishes current state; subscription updated/deleted mutate only the matching current subscription, while invoice paid/failed also apply to a row that has no subscription ID yet. Success marks the event processed; unknown types are ignored; exceptions mark failed and propagate so Stripe receives a 500/retries.
 
-**Failure paths.** Invalid payload/signature returns 400; non-POST returns 405. Missing local customer makes the handler fail. A worker crash while status is `processing` leaves an unrecoverable claim. Event ordering before Checkout is handled by ignoring non-current lifecycle events, but those ignored effects are not replayed after Checkout.
+**Failure paths.** Invalid payload/signature returns 400; non-POST returns 405. Missing local customer makes the handler fail. A worker crash while status is `processing` leaves an unrecoverable claim. Subscription updated/deleted arriving before Checkout are ignored and not replayed afterwards. Invoice paid/failed instead adopt the subscription, so the first billing period's email is not lost when the invoice event wins the race.
 
 **Tests.** Handler mappers, individual handlers, stale-event behavior, locks, and lifecycle services are strong. The orchestration tests are entirely commented in the current untracked `apps/subscriptions/tests/services/test_webhook_handlers.py`; the HTTP webhook view is untested.
 
