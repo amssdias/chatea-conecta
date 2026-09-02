@@ -47,7 +47,7 @@ class MarkSubscriptionPaymentFailedTests(TestCase):
 
     @patch(f"{MODULE_PATH}.map_stripe_subscription_status")
     @patch("apps.subscriptions.models.UserSubscription.save", autospec=True)
-    def test_saves_only_status_and_updated_at_fields(
+    def test_saves_only_the_subscription_link_and_status_fields(
             self,
             mock_save,
             mock_map_stripe_subscription_status,
@@ -61,7 +61,34 @@ class MarkSubscriptionPaymentFailedTests(TestCase):
 
         mock_save.assert_called_once_with(
             result,
-            update_fields=["status", "updated_at"],
+            update_fields=["stripe_subscription_id", "status", "updated_at"],
+        )
+
+    @patch(f"{MODULE_PATH}.map_stripe_subscription_status")
+    def test_adopts_the_subscription_when_none_is_linked_yet(
+        self,
+        mock_map_stripe_subscription_status,
+    ):
+        """
+        A failed first payment can be delivered before Checkout is recorded. Reading
+        the empty subscription ID as a stale event dropped the payment-failed email.
+        """
+        mock_map_stripe_subscription_status.return_value = (
+            UserSubscriptionStatus.PAST_DUE
+        )
+
+        self.user_subscription.stripe_subscription_id = None
+        self.user_subscription.save(update_fields=["stripe_subscription_id"])
+
+        result = mark_subscription_payment_failed(self.failed_payment)
+
+        self.user_subscription.refresh_from_db()
+
+        self.assertEqual(result.pk, self.user_subscription.pk)
+        self.assertEqual(self.user_subscription.stripe_subscription_id, "sub_123")
+        self.assertEqual(
+            self.user_subscription.status,
+            UserSubscriptionStatus.PAST_DUE,
         )
 
     @patch(f"{MODULE_PATH}.map_stripe_subscription_status")
