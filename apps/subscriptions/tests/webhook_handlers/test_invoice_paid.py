@@ -1,12 +1,18 @@
 from contextlib import nullcontext
-from datetime import datetime
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.test import TestCase
 from django.utils import timezone
 
-from apps.subscriptions.models.choices import EmailType
+from apps.subscriptions.models import StripeInvoiceNotification
+from apps.subscriptions.models.choices import (
+    EmailType,
+    InvoiceNotificationStatus,
+    UserSubscriptionStatus,
+)
+from apps.subscriptions.tests.factories.user_subscription import UserSubscriptionFactory
 from apps.subscriptions.webhook_handlers.dtos import PaidSubscriptionDTO
 from apps.subscriptions.webhook_handlers.invoices import handle_invoice_paid
 
@@ -118,3 +124,59 @@ class TestHandleInvoicePaid(TestCase):
             user_id=self.user_subscription.user_id,
             invoice_url=self.paid_subscription.invoice_url,
         )
+
+
+class TestHandleInvoicePaidBeforeCheckout(TestCase):
+    """
+    Stripe fires ``checkout.session.completed`` and the first ``invoice.paid``
+    within milliseconds and orders neither. When the invoice wins, the local row
+    still has no subscription ID, and the whole handler used to return early: the
+    customer was charged, and the receipt was dropped with the webhook event
+    marked processed, so nothing retried it.
+    """
+
+    def setUp(self):
+        self.user_subscription = UserSubscriptionFactory(
+            stripe_customer_id="cus_race_123",
+            stripe_subscription_id=None,
+            status=UserSubscriptionStatus.INACTIVE,
+        )
+
+        now = timezone.now()
+
+        self.paid_subscription = PaidSubscriptionDTO(
+            stripe_customer_id="cus_race_123",
+            stripe_subscription_id="sub_race_123",
+            stripe_status="active",
+            started_at=now,
+            current_period_start=now,
+            current_period_end=now + timedelta(days=30),
+            cancel_at_period_end=False,
+            canceled_at=None,
+            ended_at=None,
+            latest_invoice_id="in_race_123",
+            invoice_url="https://stripe.test/invoice/in_race_123",
+        )
+
+    @patch(
+        "apps.subscriptions.webhook_handlers.invoices."
+        "build_paid_subscription_dto_from_invoice"
+    )
+    def test_queues_the_receipt_for_the_first_payment(self, build_dto_mock):
+        build_dto_mock.return_value = self.paid_subscription
+
+        handle_invoice_paid(SimpleNamespace(id="in_race_123"))
+
+        self.user_subscription.refresh_from_db()
+
+        self.assertEqual(
+            self.user_subscription.stripe_subscription_id,
+            "sub_race_123",
+        )
+        self.assertTrue(self.user_subscription.pro)
+
+        notification = StripeInvoiceNotification.objects.get(
+            stripe_invoice_id="in_race_123",
+            email_type=EmailType.PAYMENT_SUCCEEDED,
+        )
+        self.assertEqual(notification.status, InvoiceNotificationStatus.PENDING)
