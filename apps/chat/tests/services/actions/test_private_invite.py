@@ -22,6 +22,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         consumer.private_chats = {
             target_user_id: "private-chat-10-20",
         }
+        consumer.closed_private_chats = set()
 
         data = {
             "target_user_id": target_user_id,
@@ -32,11 +33,74 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         mock_is_user_online.assert_not_awaited()
         mock_get_private_group_name.assert_not_called()
 
+    @patch(
+        "apps.chat.services.actions.private_invite.broadcast_private_chat_participant_online",
+        new_callable=AsyncMock,
+    )
+    @patch(
+        "apps.chat.services.actions.private_invite.save_user_private_chat_group",
+        new_callable=AsyncMock,
+    )
+    @patch(
+        "apps.chat.services.actions.private_invite.register_user_to_group",
+        new_callable=AsyncMock,
+    )
+    @patch("apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.get_private_group_name")
+    @patch("apps.chat.services.actions.private_invite.is_user_online", new_callable=AsyncMock)
+    @patch(
+        "apps.chat.services.actions.private_invite.user_has_pro_access",
+        new_callable=AsyncMock,
+    )
+    async def test_reopening_a_closed_chat_reuses_its_original_group(
+        self,
+        mock_user_has_pro_access,
+        mock_is_user_online,
+        mock_get_private_group_name,
+        mock_is_bot_user,
+        mock_register_user_to_group,
+        mock_save_user_private_chat_group,
+        mock_broadcast_participant_online,
+    ):
+        """
+        The stored name may have been built from the other id, so recomputing
+        it here would open a second group nobody else is in.
+        """
+        target_user_id = "20"
+        original_group_id = "private-chat-20-10"
+
+        consumer = Mock()
+        consumer.id = "10"
+        consumer.user = Mock()
+        consumer.channel_layer = Mock()
+        consumer.channel_layer.group_send = AsyncMock()
+        consumer.private_chats = {target_user_id: original_group_id}
+        consumer.closed_private_chats = {target_user_id}
+
+        mock_user_has_pro_access.return_value = False
+        mock_is_user_online.return_value = True
+        mock_is_bot_user.return_value = False
+
+        await handle_private_invite(consumer, {"target_user_id": target_user_id})
+
+        mock_get_private_group_name.assert_not_called()
+
+        mock_register_user_to_group.assert_awaited_once_with(
+            consumer,
+            original_group_id,
+        )
+
+        self.assertEqual(consumer.closed_private_chats, set())
+        self.assertEqual(consumer.private_chats, {target_user_id: original_group_id})
+
     @patch("apps.chat.services.actions.private_invite.notify_user_offline", new_callable=AsyncMock)
     @patch("apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock)
     @patch("apps.chat.services.actions.private_invite.get_private_group_name")
     @patch("apps.chat.services.actions.private_invite.is_user_online", new_callable=AsyncMock)
-    @patch("apps.chat.services.actions.private_invite.user_has_pro_access", new_callable=AsyncMock)
+    @patch(
+        "apps.chat.services.actions.private_invite.user_has_pro_access",
+        new_callable=AsyncMock,
+    )
     async def test_notifies_current_user_when_target_user_is_offline(
             self,
             mock_user_has_pro_access,
@@ -54,6 +118,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         consumer.user = authenticated_user
         consumer.channel_layer = Mock()
         consumer.private_chats = {}
+        consumer.closed_private_chats = set()
 
         data = {
             "target_user_id": target_user_id,
@@ -79,6 +144,10 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
             chat_id=private_group_id,
         )
 
+    @patch(
+        "apps.chat.services.actions.private_invite.broadcast_private_chat_participant_online",
+        new_callable=AsyncMock,
+    )
     @patch(
         "apps.chat.services.actions.private_invite.save_user_private_chat_group",
         new_callable=AsyncMock,
@@ -107,6 +176,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         mock_is_bot_user,
         mock_register_user_to_group,
         mock_save_user_private_chat_group,
+        mock_broadcast_participant_online,
     ):
         target_user_id = "20"
         private_group_id = "private-chat-10-20"
@@ -116,6 +186,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
         consumer.id = "10"
         consumer.user = authenticated_user
         consumer.private_chats = {}
+        consumer.closed_private_chats = set()
         consumer.channel_layer = Mock()
         consumer.channel_layer.group_send = AsyncMock()
 
@@ -166,6 +237,13 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
             },
         )
 
+        # Without this the other side stays greyed out from an earlier
+        # disconnect: it can read the conversation but never reply.
+        mock_broadcast_participant_online.assert_awaited_once_with(
+            consumer=consumer,
+            private_group_id=private_group_id,
+        )
+
     @patch(
         "apps.chat.services.actions.private_invite.send_private_chat_access_denied",
         new_callable=AsyncMock,
@@ -194,6 +272,7 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
             str(index): f"private-chat-{index}"
             for index in range(FREE_PRIVATE_CHAT_LIMIT)
         }
+        consumer.closed_private_chats = set()
 
         mock_user_has_pro_access.return_value = False
 
@@ -206,3 +285,45 @@ class HandlePrivateInviteTests(IsolatedAsyncioTestCase):
             authenticated_user,
         )
         mock_send_access_denied.assert_awaited_once()
+
+    @patch(
+        "apps.chat.services.actions.private_invite.send_private_chat_access_denied",
+        new_callable=AsyncMock,
+    )
+    @patch("apps.chat.services.actions.private_invite.notify_user_offline", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.is_bot_user", new_callable=AsyncMock)
+    @patch("apps.chat.services.actions.private_invite.get_private_group_name")
+    @patch("apps.chat.services.actions.private_invite.is_user_online", new_callable=AsyncMock)
+    @patch(
+        "apps.chat.services.actions.private_invite.user_has_pro_access",
+        new_callable=AsyncMock,
+    )
+    async def test_closed_chats_do_not_count_towards_the_ceiling(
+        self,
+        mock_user_has_pro_access,
+        mock_is_user_online,
+        mock_get_private_group_name,
+        mock_is_bot_user,
+        mock_notify_user_offline,
+        mock_send_access_denied,
+    ):
+        """
+        The original bug: closing a chat only cleared it from the rail, so the
+        ledger still held it and the next invite was refused.
+        """
+        consumer = Mock()
+        consumer.id = "10"
+        consumer.user = Mock()
+        consumer.private_chats = {
+            str(index): f"private-chat-{index}"
+            for index in range(FREE_PRIVATE_CHAT_LIMIT)
+        }
+        consumer.closed_private_chats = {"0"}
+
+        mock_user_has_pro_access.return_value = False
+        mock_is_user_online.return_value = False
+        mock_is_bot_user.return_value = False
+
+        await handle_private_invite(consumer, {"target_user_id": "20"})
+
+        mock_send_access_denied.assert_not_awaited()

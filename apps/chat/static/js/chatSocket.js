@@ -1,5 +1,6 @@
 class ChatSocket {
     static ACTION_TYPES = {
+        CLOSE_PRIVATE_CHAT: "close_private_chat",
         HEARTBEAT: "heartbeat",
         PRIVATE_INVITE: "private_invite",
         REGISTER_GROUP: "register_group",
@@ -198,6 +199,13 @@ class ChatSocket {
 
         this._sendPayload({
             "type": ChatSocket.ACTION_TYPES.PRIVATE_INVITE,
+            "target_user_id": userIdTarget,
+        });
+    }
+
+    closePrivateChat(userIdTarget) {
+        this._sendPayload({
+            "type": ChatSocket.ACTION_TYPES.CLOSE_PRIVATE_CHAT,
             "target_user_id": userIdTarget,
         });
     }

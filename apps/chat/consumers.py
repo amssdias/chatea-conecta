@@ -40,6 +40,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user = self.scope["user"]
         self.groups = set()
         self.private_chats = {}
+        # Chats the user dismissed from the rail. They stay in private_chats so
+        # the conversation is still reachable, but stop counting against the
+        # free-plan ceiling.
+        self.closed_private_chats = set()
 
         if self.user.is_authenticated:
             self.id = str(self.user.pk)
@@ -153,6 +157,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await register_user_to_group(self, private_group)
         await save_user_private_chat_group(self.id, user_id, private_group)
         self.private_chats[user_id] = private_group
+        self.closed_private_chats.discard(user_id)
 
         await self.send(
             text_data=json.dumps(

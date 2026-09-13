@@ -27,6 +27,38 @@ async def save_user_private_chat_group(
     )
 
 
+def get_open_private_chats(consumer) -> dict:
+    """
+    Return the private chats that still count against the free-plan ceiling.
+
+    A closed chat stays in `private_chats` so the user remains reachable and
+    the other side is still told when they go offline, but it no longer
+    occupies one of the free slots.
+    """
+    closed = consumer.closed_private_chats
+
+    return {
+        target_user_id: private_group_id
+        for target_user_id, private_group_id in consumer.private_chats.items()
+        if target_user_id not in closed
+    }
+
+
+async def remove_user_private_chat_group(user_id: str, target_user_id) -> None:
+    """
+    Forget one stored private chat for a user.
+
+    Only the stored mapping is dropped. The websocket stays subscribed to the
+    channel-layer group, so the chat can still be reopened by an incoming
+    message during this connection.
+    """
+    redis_key = USER_PRIVATE_CHATS_KEY.format(user_id=user_id)
+
+    await AsyncRedisService.delete_hash_field(
+        redis_key=redis_key,
+        field=str(target_user_id),
+    )
+
 async def restore_user_private_chat_groups(consumer) -> None:
     """
     Restore stored private chat groups for the connected user.

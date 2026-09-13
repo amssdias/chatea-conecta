@@ -11,6 +11,7 @@ HEARTBEAT = "heartbeat"
 REGISTER_GROUP = "register_group"
 SEND_MESSAGE = "send_message"
 PRIVATE_INVITE = "private_invite"
+CLOSE_PRIVATE_CHAT = "close_private_chat"
 
 # --- Server -> Client events ---
 # Events sent from the backend to the frontend so the UI can react.

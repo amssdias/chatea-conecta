@@ -30,6 +30,13 @@ const chatSocketHandler = new ChatSocket(
     userId,
 );
 
+// Closing a row is not just a DOM removal: the consumer counts open private
+// chats to enforce the free-plan ceiling, so it has to be told as well.
+sideBarView.onPrivateChatClosed = (userIdTarget, privateGroupId) => {
+    chatView.removePrivateChat(userIdTarget, privateGroupId);
+    chatSocketHandler.closePrivateChat(userIdTarget);
+};
+
 // There is no topbar on this page: the drawer is opened from the burger in
 // each conversation header (chatView) and closed from the rail's own button,
 // the scrim behind it, or Escape.

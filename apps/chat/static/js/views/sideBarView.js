@@ -12,6 +12,9 @@ class SideBarView {
         // Set by the controller so the free-plan ceiling can be shown as a bar
         // inside the conversation instead of a browser alert.
         this.onLimitReached = null;
+        // Also set by the controller: closing a row has to free the slot on the
+        // server too, otherwise its ledger keeps counting the closed chat.
+        this.onPrivateChatClosed = null;
 
         this._refreshPrivateChatsSummary();
     }
@@ -389,10 +392,16 @@ class SideBarView {
             event.stopPropagation();
             event.preventDefault();
 
+            const {userIdTarget, groupName} = listItem.dataset;
+
             listItem.remove();
             this._refreshPrivateChatAvailability();
             this._refreshPrivateChatsSummary();
             deleteChatCallback();
+
+            if (typeof this.onPrivateChatClosed === "function") {
+                this.onPrivateChatClosed(userIdTarget, groupName);
+            }
         });
     }
 

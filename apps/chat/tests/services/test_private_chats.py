@@ -1,9 +1,10 @@
-from unittest import IsolatedAsyncioTestCase
+from unittest import IsolatedAsyncioTestCase, TestCase
 from unittest.mock import AsyncMock, Mock, call, patch
 
 from apps.chat.constants.cache_expiration import PRIVATE_CHATS_TTL
 from apps.chat.constants.redis_keys import USER_PRIVATE_CHATS_KEY
 from apps.chat.services.private_chats import (
+    get_open_private_chats,
     restore_user_private_chat_groups,
     save_user_private_chat_group,
 )
@@ -115,3 +116,33 @@ class PrivateChatsServiceTests(IsolatedAsyncioTestCase):
         mock_register_user_to_group.assert_not_awaited()
         mock_broadcast_private_chat_participant_online.assert_not_awaited()
         mock_set_expiration.assert_not_awaited()
+
+
+class GetOpenPrivateChatsTests(TestCase):
+    """
+    What the free-plan ceiling is counted from. A closed chat is still a live
+    subscription, it just no longer occupies one of the slots.
+    """
+
+    def test_closed_chats_are_excluded(self):
+        consumer = Mock()
+        consumer.private_chats = {
+            "20": "private-chat-10-20",
+            "30": "private-chat-10-30",
+        }
+        consumer.closed_private_chats = {"20"}
+
+        self.assertEqual(
+            get_open_private_chats(consumer),
+            {"30": "private-chat-10-30"},
+        )
+
+    def test_everything_counts_when_nothing_was_closed(self):
+        consumer = Mock()
+        consumer.private_chats = {"20": "private-chat-10-20"}
+        consumer.closed_private_chats = set()
+
+        self.assertEqual(
+            get_open_private_chats(consumer),
+            {"20": "private-chat-10-20"},
+        )

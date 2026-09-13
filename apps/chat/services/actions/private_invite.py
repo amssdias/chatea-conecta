@@ -6,8 +6,12 @@ from apps.chat.constants.private_chat import (
 )
 from apps.chat.constants.redis_keys import USER_NOTIFICATION_GROUP
 from apps.chat.services.activity import is_user_online
-from apps.chat.services.private_chats import save_user_private_chat_group
+from apps.chat.services.private_chats import (
+    get_open_private_chats,
+    save_user_private_chat_group,
+)
 from apps.chat.services.subscription_access import user_has_pro_access
+from apps.chat.websocket.broadcast import broadcast_private_chat_participant_online
 from apps.chat.websocket.broadcast import notify_user_offline
 from apps.chat.websocket.broadcast import send_private_chat_access_denied
 from apps.chat.websocket.group_names import get_private_group_name
@@ -28,12 +32,14 @@ async def handle_private_invite(consumer, data):
     if user_id_target == str(consumer.id):
         return
 
-    if consumer.private_chats.get(user_id_target):
+    open_private_chats = get_open_private_chats(consumer)
+
+    if open_private_chats.get(user_id_target):
         return
 
     if (
         not await user_has_pro_access(consumer.user)
-        and len(consumer.private_chats) >= FREE_PRIVATE_CHAT_LIMIT
+        and len(open_private_chats) >= FREE_PRIVATE_CHAT_LIMIT
     ):
         await send_private_chat_access_denied(
             consumer=consumer,
@@ -48,7 +54,11 @@ async def handle_private_invite(consumer, data):
         return
 
     user_is_online = await is_user_online(user_id_target)
-    private_group_id = get_private_group_name(consumer.id, user_id_target)
+    # Reopening a closed chat has to land back in the original group, not in a
+    # second one named after whoever is inviting this time round.
+    private_group_id = consumer.private_chats.get(
+        user_id_target
+    ) or get_private_group_name(consumer.id, user_id_target)
     user_is_bot = await is_bot_user(user_id_target)
 
     if not user_is_online and not user_is_bot:
@@ -65,6 +75,7 @@ async def handle_private_invite(consumer, data):
     await save_user_private_chat_group(consumer.id, user_id_target, private_group_id)
 
     consumer.private_chats[user_id_target] = private_group_id
+    consumer.closed_private_chats.discard(user_id_target)
 
     if user_is_bot:
         return
@@ -77,4 +88,11 @@ async def handle_private_invite(consumer, data):
             "from_user_id": consumer.id,
             "private_group": private_group_id,
         },
+    )
+
+    # If this user had gone offline while the chat was closed, the other side
+    # still has it greyed out, and nothing else would ever re-enable it.
+    await broadcast_private_chat_participant_online(
+        consumer=consumer,
+        private_group_id=private_group_id,
     )
