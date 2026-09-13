@@ -1,6 +1,7 @@
 from apps.chat.constants.bot_message_redis_keys import REDIS_BOT_USER_IDS_KEY
 from apps.chat.constants.cache_expiration import ONLINE_USER_TTL
 from apps.chat.constants.redis_keys import (
+    ID_TO_USERNAME_KEY,
     REDIS_ALL_USERNAMES_KEY,
     USER_ONLINE_KEY,
 )
@@ -45,6 +46,17 @@ async def mark_user_offline(user_id: str) -> None:
     Remove the user's online marker.
     """
     await AsyncRedisService.delete_key(USER_ONLINE_KEY.format(user_id=user_id))
+
+
+async def get_username_by_id(user_id: str) -> str | None:
+    """
+    Return the nickname the given user id owns, or None once the mapping has
+    expired. Guests and authenticated users are both registered through
+    register_user_on_redis, so one lookup covers both.
+    """
+    return await AsyncRedisService.get_value(
+        ID_TO_USERNAME_KEY.format(user_id=user_id)
+    )
 
 
 async def is_user_online(user_id: str) -> bool:

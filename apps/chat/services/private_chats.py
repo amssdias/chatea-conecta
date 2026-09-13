@@ -1,5 +1,6 @@
 from apps.chat.constants.cache_expiration import PRIVATE_CHATS_TTL
 from apps.chat.constants.redis_keys import USER_PRIVATE_CHATS_KEY
+from apps.chat.services.activity import get_username_by_id, is_user_online
 from apps.chat.infrastructure.redis.async_redis_service import AsyncRedisService
 from apps.chat.websocket.broadcast import (
     broadcast_private_chat_participant_online,
@@ -59,13 +60,15 @@ async def remove_user_private_chat_group(user_id: str, target_user_id) -> None:
         field=str(target_user_id),
     )
 
+
 async def restore_user_private_chat_groups(consumer) -> None:
     """
     Restore stored private chat groups for the connected user.
 
-    Registers the current websocket connection back into each saved
-    private group, then notifies the other participants that this user
-    is online again.
+    The frontend rebuilds the whole rail from this, so each chat is sent with
+    the nickname and presence it needs to be drawn. A chat whose owner mapping
+    has expired can no longer be labelled, so it is dropped on both sides
+    rather than left counting against the free-plan ceiling invisibly.
     """
     redis_key = USER_PRIVATE_CHATS_KEY.format(user_id=consumer.id)
 
@@ -74,14 +77,37 @@ async def restore_user_private_chat_groups(consumer) -> None:
     if not private_chats:
         return
 
-    consumer.private_chats = private_chats
-
-    await send_private_chats_restored(
-        consumer=consumer,
-        private_chats=private_chats,
-    )
+    restored = {}
 
     for target_user_id, private_group_id in private_chats.items():
+        username = await get_username_by_id(target_user_id)
+
+        if not username:
+            await remove_user_private_chat_group(consumer.id, target_user_id)
+            continue
+
+        restored[target_user_id] = {
+            "privateGroupId": private_group_id,
+            "username": username,
+            "isOnline": await is_user_online(target_user_id),
+        }
+
+    consumer.private_chats = {
+        target_user_id: chat["privateGroupId"]
+        for target_user_id, chat in restored.items()
+    }
+
+    if not restored:
+        return
+
+    # Sent before rejoining the groups, so an incoming message cannot race
+    # ahead of the rail it belongs in.
+    await send_private_chats_restored(
+        consumer=consumer,
+        private_chats=restored,
+    )
+
+    for private_group_id in consumer.private_chats.values():
         await register_user_to_group(consumer, private_group_id)
 
         await broadcast_private_chat_participant_online(

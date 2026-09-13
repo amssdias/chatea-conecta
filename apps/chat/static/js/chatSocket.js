@@ -134,7 +134,10 @@ class ChatSocket {
     }
 
     handlePrivateChatsRestored(data) {
-        this.chatView.restorePrivateChatsState(data.privateChats);
+        this.chatView.restorePrivateChatsState(
+            data.privateChats,
+            this.sendMessage.bind(this),
+        );
     }
 
     handlePrivateChatParticipantOnline(data) {

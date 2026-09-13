@@ -295,8 +295,39 @@ class ChatView {
         this._privateChatsMapping[fromUserId] = privateGroup;
     }
 
-    restorePrivateChatsState(privateChats) {
-        this._privateChatsMapping = privateChats || {};
+    // A refresh arrives with an empty rail, so every stored chat is drawn back
+    // into it. Without this the consumer would still be counting chats the user
+    // can no longer see, and the free-plan ceiling would look already spent.
+    restorePrivateChatsState(privateChats, sendMsgHandler) {
+        this._privateChatsMapping = {};
+
+        Object.entries(privateChats || {}).forEach(([userIdTarget, chat]) => {
+            const {privateGroupId, username, isOnline} = chat;
+
+            this._privateChatsMapping[userIdTarget] = privateGroupId;
+
+            // A message can beat the restore in and build the row already.
+            if (this._getChatElement(privateGroupId)) return;
+
+            const restoredChat = this.createChat(
+                username,
+                privateGroupId,
+                sendMsgHandler
+            );
+
+            this._sideBarView.addPrivateChat(
+                userIdTarget,
+                username,
+                privateGroupId,
+                this.displayChat.bind(this, restoredChat),
+                this.deleteChat.bind(this, restoredChat)
+            );
+
+            if (!isOnline) {
+                this._sideBarView.setPrivateChatOffline(privateGroupId);
+                this.markPrivateChatAsOffline(privateGroupId);
+            }
+        });
     }
 
     // =========================
