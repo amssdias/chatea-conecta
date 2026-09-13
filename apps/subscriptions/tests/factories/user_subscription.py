@@ -40,6 +40,16 @@ class UserSubscriptionFactory(factory.django.DjangoModelFactory):
             ),
         )
 
+        past_due = factory.Trait(
+            status=UserSubscriptionStatus.PAST_DUE,
+            stripe_subscription_id=factory.Sequence(lambda n: f"sub_{n}"),
+            started_at=factory.LazyFunction(timezone.now),
+            current_period_start=factory.LazyFunction(timezone.now),
+            current_period_end=factory.LazyFunction(
+                lambda: timezone.now() + timezone.timedelta(days=30)
+            ),
+        )
+
         cancel_at_period_end_active = factory.Trait(
             status=UserSubscriptionStatus.ACTIVE,
             stripe_subscription_id=factory.Sequence(lambda n: f"sub_{n}"),

@@ -2,7 +2,10 @@ from django.utils.translation import gettext as _
 
 from apps.chat.constants.private_chat import (
     FREE_PRIVATE_CHAT_LIMIT,
+    PRIVATE_CHAT_ACCESS_PAYMENT_OVERDUE,
+    PRIVATE_CHAT_ACCESS_UNLIMITED,
     PRIVATE_CHAT_LIMIT_REACHED,
+    PRIVATE_CHAT_PAYMENT_OVERDUE,
 )
 from apps.chat.constants.redis_keys import USER_NOTIFICATION_GROUP
 from apps.chat.services.activity import is_user_online
@@ -10,7 +13,7 @@ from apps.chat.services.private_chats import (
     get_open_private_chats,
     save_user_private_chat_group,
 )
-from apps.chat.services.subscription_access import user_has_pro_access
+from apps.chat.services.subscription_access import resolve_private_chat_access
 from apps.chat.websocket.broadcast import broadcast_private_chat_participant_online
 from apps.chat.websocket.broadcast import notify_user_offline
 from apps.chat.websocket.broadcast import send_private_chat_access_denied
@@ -19,6 +22,29 @@ from apps.chat.websocket.registration import (
     register_user_to_group,
 )
 from apps.chat.websocket.validation import is_bot_user
+
+
+def _ceiling_denial(access):
+    """Pick the reason and wording that fit why this account is capped."""
+    if access == PRIVATE_CHAT_ACCESS_PAYMENT_OVERDUE:
+        return (
+            PRIVATE_CHAT_PAYMENT_OVERDUE,
+            _(
+                "PRO is paused while your payment is failing, so you are back to "
+                "%(limit)s private chats. Update your payment details to lift "
+                "the limit."
+            )
+            % {"limit": FREE_PRIVATE_CHAT_LIMIT},
+        )
+
+    return (
+        PRIVATE_CHAT_LIMIT_REACHED,
+        _(
+            "Free accounts can have up to %(limit)s private chats. "
+            "Upgrade to Pro to open more private chats."
+        )
+        % {"limit": FREE_PRIVATE_CHAT_LIMIT},
+    )
 
 
 async def handle_private_invite(consumer, data):
@@ -37,18 +63,18 @@ async def handle_private_invite(consumer, data):
     if open_private_chats.get(user_id_target):
         return
 
+    access = await resolve_private_chat_access(consumer.user)
+
     if (
-        not await user_has_pro_access(consumer.user)
+        access != PRIVATE_CHAT_ACCESS_UNLIMITED
         and len(open_private_chats) >= FREE_PRIVATE_CHAT_LIMIT
     ):
+        reason, message = _ceiling_denial(access)
+
         await send_private_chat_access_denied(
             consumer=consumer,
-            reason=PRIVATE_CHAT_LIMIT_REACHED,
-            message=_(
-                "Free accounts can have up to %(limit)s private chats. "
-                "Upgrade to Pro to open more private chats."
-            )
-            % {"limit": FREE_PRIVATE_CHAT_LIMIT},
+            reason=reason,
+            message=message,
             target_user_id=user_id_target,
         )
         return

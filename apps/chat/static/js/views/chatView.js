@@ -9,13 +9,21 @@ class ChatView {
 
     _parentElement = document.querySelector(".chat-container");
 
-    constructor(username, userId, sideBarView, translations = {}, isPro = false) {
+    constructor(
+        username,
+        userId,
+        sideBarView,
+        translations = {},
+        isPro = false,
+        isPaymentOverdue = false
+    ) {
         this._privateChatsMapping = {};
         this._username = username;
         this._userId = userId;
         this._sideBarView = sideBarView;
         this._translations = translations;
         this._isPro = isPro;
+        this._isPaymentOverdue = isPaymentOverdue;
         this._leavePrivateChatHandler = null;
 
         this._bindLimitNotice();
@@ -757,7 +765,11 @@ class ChatView {
             return;
         }
 
-        const template = this._translations.limitWithName;
+        // A failing payment is capped for a different reason than a free plan,
+        // so it must not be sold an upgrade the account already paid for.
+        const template = this._isPaymentOverdue
+            ? this._translations.limitWithNameOverdue
+            : this._translations.limitWithName;
 
         if (!usernameTarget || !template || !template.includes("%(name)s")) {
             detail.textContent = detail.dataset.defaultText;

@@ -15,7 +15,8 @@ const chatView = new ChatView(
     userId,
     sideBarView,
     translations,
-    isPro
+    isPro,
+    isPaymentOverdue
 );
 
 // The free-plan ceiling is a bar inside the conversation, and only chatView

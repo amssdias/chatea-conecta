@@ -15,7 +15,8 @@
     <script type="text/javascript">
         let currentUser = "{{ username|escapejs }}";
         let userId = "{{ user_id|escapejs }}";
-        let isPro = "{{ is_user_pro|yesno:'true,false' }}" === "true";
+        let isPro = "{{ private_chats_unlimited|yesno:'true,false' }}" === "true";
+        let isPaymentOverdue = "{{ payment_overdue|yesno:'true,false' }}" === "true";
         let sendPrivateMsg = "{{ _('Send private message')|escapejs }}";
         let privateChatLimitMessage = "{{ _('Free accounts can have up to 3 private chats. Upgrade to Pro to open more private chats.')|escapejs }}";
 
@@ -43,7 +44,8 @@
             reportUrl: "{% url 'chat:contact' %}?reason=report",
             openChatList: "{{ _('Open chat list')|escapejs }}",
             closeChat: "{{ _('Close this private chat')|escapejs }}",
-            limitWithName: "{{ _('Close one to talk to %(name)s, or go PRO for as many as you like.')|escapejs }}"
+            limitWithName: "{{ _('Close one to talk to %(name)s, or go PRO for as many as you like.')|escapejs }}",
+            limitWithNameOverdue: "{{ _('Close one to talk to %(name)s, or update your payment details to lift the limit.')|escapejs }}"
         };
     </script>
 
@@ -155,10 +157,15 @@
 
             <div class="chat__notice hide" id="chat-limit-notice" role="status">
                 <p class="chat__notice-text">
-                    <span>{% trans "Free accounts hold three private chats." %}</span>
-                    <span id="chat-limit-notice-detail">{% trans "Close one to open another, or go PRO for as many as you like." %}</span>
+                    <span>{% if payment_overdue %}{% trans "PRO is paused while your payment is failing." %}{% else %}{% trans "Free accounts hold three private chats." %}{% endif %}</span>
+                    <span id="chat-limit-notice-detail">{% if payment_overdue %}{% trans "You are back to three private chats until your payment details are updated." %}{% else %}{% trans "Close one to open another, or go PRO for as many as you like." %}{% endif %}</span>
                 </p>
-                {% if request.user.is_authenticated %}
+                {% if payment_overdue %}
+                <form action="{% url 'subscriptions:billing_portal' %}" method="POST">
+                    {% csrf_token %}
+                    <button class="chat__notice-btn" type="submit">{% trans "Update payment details" %}</button>
+                </form>
+                {% elif request.user.is_authenticated %}
                 <form action="{% url 'subscriptions:create_pro_checkout_session' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="intent" value="pro">

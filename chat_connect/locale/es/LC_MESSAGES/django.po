@@ -1692,3 +1692,23 @@ msgstr "Para cualquier pregunta o duda sobre estos términos, contáctanos en <a
 #: chat_connect/templates/pages/terms.html
 msgid "Cookies"
 msgstr "Cookies"
+
+#: apps/chat/templates/chat/chat.html
+msgid "PRO is paused while your payment is failing."
+msgstr "PRO está en pausa porque tu pago está fallando."
+
+#: apps/chat/templates/chat/chat.html
+msgid "You are back to three private chats until your payment details are updated."
+msgstr "Vuelves a tener tres chats privados hasta que actualices tus datos de pago."
+
+#: apps/chat/templates/chat/chat.html
+msgid "Update payment details"
+msgstr "Actualizar datos de pago"
+
+#: apps/chat/templates/chat/chat.html
+msgid "Close one to talk to %(name)s, or update your payment details to lift the limit."
+msgstr "Cierra uno para hablar con %(name)s, o actualiza tus datos de pago para quitar el límite."
+
+#: apps/chat/services/actions/private_invite.py
+msgid "PRO is paused while your payment is failing, so you are back to %(limit)s private chats. Update your payment details to lift the limit."
+msgstr "PRO está en pausa porque tu pago está fallando, así que vuelves a tener %(limit)s chats privados. Actualiza tus datos de pago para quitar el límite."
