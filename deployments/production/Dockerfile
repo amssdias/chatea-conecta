@@ -20,6 +20,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Compile translations before starting the application
+RUN django-admin compilemessages
+
 # Set environment variables
 ENV DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_production
 ENV PYTHONUNBUFFERED=1

@@ -71,12 +71,6 @@ jobs:
               echo "Running database migrations..."
               docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T chat-app python manage.py migrate --noinput || { echo "Database migrations failed. Exiting."; exit 1; }
             fi
-            
-            # Run collectstatic if input is true
-            if [ "$RUN_COLLECTSTATIC" = "true" ]; then
-              echo "Collecting static files..."
-              docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T chat-app python manage.py collectstatic --noinput || { echo "Collectstatic failed. Exiting."; exit 1; }
-            fi
 
             echo "Restarting NGINX..."
             sudo systemctl restart nginx || { echo "NGINX restart failed. Exiting."; exit 1; }
