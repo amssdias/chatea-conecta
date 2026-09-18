@@ -85,6 +85,11 @@ class ChatSocket {
     }
 
     handleSendMessage(data) {
+        if (typeof data.message !== "string") {
+            console.warn("Invalid chat message received:", data.message);
+            return;
+        }
+
         if (String(data.userId) === String(this.currentUserId)) {
             this.chatView.updateCurrentUserBackgroundMessage(data.message);
             return;
