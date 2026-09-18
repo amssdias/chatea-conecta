@@ -1,8 +1,8 @@
+import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from .base import *
-import sentry_sdk
 
 DEBUG = False
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
@@ -44,16 +44,6 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # - This ensures users always see the latest version of static files after updates.
 # - Does NOT affect user-uploaded files (those are managed via MEDIA_ROOT/MEDIA_URL).
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
-# Channels
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [REDIS_CHANNEL_LAYER_URL],
-        },
-    },
-}
 
 # Sentry configuration
 sentry_sdk.init(
