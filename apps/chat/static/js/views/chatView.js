@@ -4,6 +4,7 @@ import {avatarInitial, avatarVariant} from "../utils/avatar.js";
 // The textarea grows with the message and then scrolls, rather than growing
 // until it has eaten the conversation.
 const COMPOSER_MAX_HEIGHT = 132;
+const MAX_CHAT_MESSAGE_LENGTH = 1000;
 
 class ChatView {
 
@@ -540,6 +541,7 @@ class ChatView {
         // sideways through a one-line slot, which is what the canvas shows.
         const inputEl = document.createElement("textarea");
         inputEl.rows = 1;
+        inputEl.maxLength = MAX_CHAT_MESSAGE_LENGTH;
         inputEl.classList.add("chat-form-input");
         inputEl.placeholder = this._composerPlaceholder(displayName, isRoom);
         inputEl.dataset.placeholder = inputEl.placeholder;
