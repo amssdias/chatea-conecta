@@ -2,8 +2,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views import View
+from django.views.decorators.cache import never_cache
 
 from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 from apps.chat.constants.username import USERNAME_REGEX
@@ -19,6 +21,7 @@ from apps.chat.services.register_user import register_user_on_redis
 User = get_user_model()
 
 
+@method_decorator(never_cache, name="dispatch")
 class ChatView(View):
     template_name = "chat/chat.html"
     home_route = "chat:home"

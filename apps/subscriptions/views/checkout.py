@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from apps.integrations.stripe.checkout_sessions import retrieve_checkout_session
@@ -94,6 +95,7 @@ def _resolve_checkout_status(session, user_subscription) -> str:
     return "not_paid"
 
 
+@never_cache
 @login_required
 def checkout_success_view(request):
     session_id = request.GET.get("session_id")
@@ -149,6 +151,7 @@ def checkout_success_view(request):
     )
 
 
+@never_cache
 @login_required
 def checkout_cancel_view(request):
     return render(request, "subscriptions/checkout_cancel.html")

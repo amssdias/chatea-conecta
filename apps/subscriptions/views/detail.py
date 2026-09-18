@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.views.decorators.cache import never_cache
 
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.models.choices import UserSubscriptionStatus
 
 
+@never_cache
 @login_required
 def subscription_detail_view(request):
     user_subscription = (
