@@ -4,6 +4,7 @@ import logging
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from apps.chat.constants.consumer import (
+    ERROR_ACTION,
     SEND_MESSAGE,
     NOTIFY_USERS_COUNT,
     PRIVATE_INVITE,
@@ -116,8 +117,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         self.groups.clear()
 
-    async def receive(self, text_data):
-        data = json.loads(text_data)
+    async def receive(self, text_data=None, bytes_data=None):
+        try:
+            data = json.loads(text_data) if text_data is not None else None
+        except ValueError:
+            data = None
+
+        if not isinstance(data, dict):
+            logger.warning(
+                "Malformed websocket payload received",
+                extra={"username": self.username},
+            )
+            await self.send(
+                text_data=json.dumps({"type": ERROR_ACTION, "error": "Invalid payload"})
+            )
+            return
+
         await dispatch_action(self, data)
 
     async def notify_users_count(self, event):
