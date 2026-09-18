@@ -217,10 +217,28 @@ GUEST_SESSION_MAX_AGE = SECONDS_IN_DAY
 # Web Socket - Channels
 REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")
 REDIS_CHANNEL_LAYER_URL = f"{REDIS_URL}/{REDIS_DB_CHANNEL}"
+
+# Redis servers used by the Channels layer.
+REDIS_CHANNEL_LAYER_HOSTS = [
+    {
+        # Redis address and logical database used for Channels messages.
+        "address": REDIS_CHANNEL_LAYER_URL,
+
+        # Maximum time to wait for a Redis response.
+        # It must be longer than Channels' 5-second blocking receive.
+        "socket_timeout": 10,
+    },
+]
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {"hosts": [REDIS_CHANNEL_LAYER_URL], "expiry": 60},
+        # Settings passed to the Redis channel layer.
+        "CONFIG": {
+            "hosts": REDIS_CHANNEL_LAYER_HOSTS,
+
+            # Delete messages that remain undelivered for more than 60 seconds.
+            "expiry": 60,
+        },
     },
 }
 
