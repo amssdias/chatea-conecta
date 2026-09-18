@@ -45,7 +45,7 @@ Route shadowing note: `apps.users.urls` is included before `django.contrib.auth.
 | Reject | Close code `4001`, reason `Invalid chat identity` |
 | Connection state | `consumer.groups: set[str]`; `consumer.private_chats: dict[target_id, group]` |
 | Disconnect | Notify private peers, discard all groups, broadcast counts, remove username, delete online marker |
-| Limits | No connection/message rate limit. Channel layer capacity/expiry are library defaults/configured expiry, not application policy. |
+| Limits | Per connection, eight `send_message` attempts are allowed in a five-second sliding window; the next attempt closes with `4008`. Reconnects and parallel sockets have independent quotas. Channel layer capacity/expiry are separate library controls. |
 
 ### Incoming messages
 
@@ -54,10 +54,10 @@ Route shadowing note: `apps.users.urls` is included before `django.contrib.auth.
 | `heartbeat` | No additional fields | Refresh `USER_ONLINE_KEY` to 90 seconds | Redis exceptions propagate |
 | `register_group` | `group: string` | Trim/lowercase, reject private prefix, join group and personal notification group, broadcast count | Invalid closes `4001`; private name sends `error_action` |
 | `private_invite` | `target_user_id` coercible to string | Enforce self/duplicate/Pro/free/online rules, join/save group, notify target | Missing/self/duplicate silently ignored; offline event; limit sends dedicated denial |
-| `send_message` | `group: string`, `message: any` | Normalize group; enforce membership only for `private-`; broadcast | Invalid group closes with code `401` (below the standard application-defined WebSocket close-code range); private nonmember gets `error_action` |
+| `send_message` | `group: string`, `message: nonblank string` (max 1,000 characters) | Normalize group; enforce membership only for `private-`; validate and rate-limit before broadcast | Invalid group closes with code `401`; private nonmember or invalid message gets `error_action`; exceeding eight attempts in five seconds closes with `4008` |
 | Unknown/missing | Any | No handler | `{"type":"error_action","error":"Invalid action"}` |
 
-`ChatConsumer.receive` directly calls `json.loads`; malformed JSON is not converted into a protocol error.
+`ChatConsumer.receive` converts malformed JSON and non-object JSON roots into an `Invalid payload` `error_action`.
 
 ### Outgoing messages
 

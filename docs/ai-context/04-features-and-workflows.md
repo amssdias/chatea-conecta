@@ -55,11 +55,11 @@ Status labels assess the repository as implemented and tested, not product desir
 
 **Main workflow.** On browser socket open, `ChatSocket` starts a 30-second heartbeat and registers `Chatea` (normalized to `chatea`). The server accepts identity, marks presence, joins the public and personal notification groups, returns the inflated online count, and broadcasts each submitted message as `chat.message`. Consumer methods convert it to client `send_message`; the browser appends it to the current chat.
 
-**Rules/failures.** A missing/invalid group closes the connection; unknown action sends `error_action`. A `private-` group cannot be registered ordinarily. User messages have no server-side type/length/rate/content validation. Malformed JSON is unhandled. The first message in a visual message cluster is assigned to `innerHTML`, enabling cross-user HTML/script-adjacent DOM injection; subsequent messages use text nodes/link generation.
+**Rules/failures.** A missing/invalid group closes the connection; unknown action sends `error_action`. A `private-` group cannot be registered ordinarily. User messages must be nonblank strings of at most 1,000 characters. A connection may broadcast eight messages per five-second sliding window; the next attempt closes it with code `4008`. Malformed/non-object JSON receives `error_action`. The first message in a visual message cluster is assigned to `innerHTML`, enabling cross-user HTML/script-adjacent DOM injection; subsequent messages use text nodes/link generation.
 
 **Tests.** Action dispatch, group validation, registration, broadcasts, and action handlers are unit tested under `apps/chat/tests/services/actions/` and `websocket/`. `apps/chat/tests/consumers/test_consumer.py` contains only `_test_*` helpers, so no true consumer connection/message test runs. Browser JS has no automated tests.
 
-**Status: Partial.** Transport and units exist, but identity, message sanitization, payload validation, and actual socket coverage are insufficient.
+**Status: Partial.** Transport and unit-level message validation exist, but identity, message sanitization, cross-connection abuse controls, and actual socket coverage are insufficient.
 
 ## Private chat, presence, and restoration
 

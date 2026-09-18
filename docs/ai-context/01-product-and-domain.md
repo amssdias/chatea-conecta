@@ -69,7 +69,7 @@ There are no organizations, tenants, business accounts, moderators, block lists,
 - A private invite to self, a missing target, or an already-open target is ignored. Offline non-bot targets produce an offline event; bots may be invited without being online (`handle_private_invite`).
 - Non-Pro initiators are denied when `len(consumer.private_chats) >= 3`; authenticated database state is authoritative for Pro (`user_has_pro_access`).
 - Private chat hashes expire after 30 minutes; presence markers expire after 90 seconds; the browser sends heartbeats every 30 seconds (`apps/chat/constants/cache_expiration.py`, `apps/chat/static/js/chatSocket.js`).
-- Chat messages have no server-side length, content, or rate validation. The 300-character database limit applies only to `ConversationFlow`, not user messages.
+- User chat messages must be nonblank strings of at most 1,000 characters. Each WebSocket connection may send eight messages in a five-second sliding window; the next attempt closes that socket with code `4008`. The 300-character database limit still applies only to `ConversationFlow` bot messages.
 
 ### Subscription and payment rules
 
