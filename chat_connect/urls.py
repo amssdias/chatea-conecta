@@ -21,6 +21,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from apps.chat.sitemaps import ChatStaticViewSitemap
+from apps.subscriptions.views import stripe_webhook_view
 from chat_connect.views import health_check, robots_txt, multilingual_sitemap
 
 sitemaps = {
@@ -31,10 +32,18 @@ urlpatterns = [
     path("sitemap.xml", multilingual_sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
     path("robots.txt", robots_txt, name="robots_txt"),
     path("health/", health_check),
+    path(
+        "subscriptions/payments/stripe/webhook/",
+        stripe_webhook_view,
+        name="stripe_webhook",
+    ),
 ]
 
 urlpatterns += i18n_patterns(
     path("chatea-admin/", admin.site.urls),
+    path("accounts/", include("apps.users.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("subscriptions/", include("apps.subscriptions.urls")),
     path("", include("apps.chat.urls")),
 )
 

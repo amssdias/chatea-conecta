@@ -1,0 +1,209 @@
+// =============================================================
+// .topbar - redesign navigation (templates/navigation-v2.html)
+// Lives alongside the legacy .nav-bar until every page migrates.
+// =============================================================
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(14px, 2vw, 28px);
+    min-height: 68px;
+    padding: 14px $gutter;
+    background-color: rgba(20, 16, 15, .82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid $ink-line;
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: $text;
+    }
+
+    &__mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: $radius;
+        background-color: $ember;
+        flex: none;
+
+        & img,
+        & object {
+            width: 20px;
+            height: 20px;
+            filter: invert(100%);
+            pointer-events: none;
+        }
+    }
+
+    &__name {
+        font-family: $font-display;
+        font-stretch: 112%;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        color: $text-strong;
+    }
+
+    // Checkbox toggle (same pattern as the legacy nav so no JS changes).
+    &__toggle {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &__burger {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: $tap;
+        height: $tap;
+        margin-left: auto;
+        border-radius: $radius;
+        cursor: pointer;
+
+        & span {
+            display: block;
+            width: 19px;
+            height: 2px;
+            background-color: $text-muted;
+            box-shadow: 0 -6px 0 $text-muted, 0 6px 0 $text-muted;
+        }
+
+        &:hover { background-color: $ink-raised-2; }
+    }
+
+    &__menu {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(14px, 1.8vw, 24px);
+        flex: 1;
+    }
+
+    &__links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(14px, 1.8vw, 24px);
+    }
+
+    &__link {
+        min-height: $tap;
+        display: inline-flex;
+        align-items: center;
+        font-size: 15px;
+        font-weight: 500;
+        color: $text-dim;
+        text-decoration: none;
+
+        &:hover { color: $text; }
+
+        // The page you are on, marked in the accent.
+        &--current {
+            font-weight: 600;
+            color: $ember-hover;
+        }
+
+        & img { width: 18px; height: 18px; }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+    }
+
+    &__form { display: contents; }
+
+    &__btn {
+        min-height: $tap;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 18px;
+        border: 1px solid transparent;
+        border-radius: $radius-pill;
+        background: none;
+        font-family: $font-body;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: $text;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &--quiet {
+            padding: 0 10px;
+            font-size: 15px;
+            color: $text;
+
+            &:hover { color: $text-strong; }
+        }
+
+        &--pro {
+            padding: 0 16px;
+            border-color: $gold-line;
+            background-color: $gold-surface;
+            color: $gold;
+
+            &:hover { border-color: $gold; }
+        }
+
+        &--warning {
+            border-color: $ember;
+            background-color: $ink-raised;
+            color: $ember-hover;
+        }
+
+        &--primary {
+            background-color: $ember;
+            font-weight: 700;
+            color: #fff;
+
+            &:hover { background-color: $ember-hover; }
+        }
+    }
+
+    @include respond(tab-port) {
+        // The collapsed menu is still a flex line, so the row gap would
+        // leave dead space under the bar. Drop it and let the open menu
+        // pay for its own spacing.
+        row-gap: 0;
+
+        &__burger { display: inline-flex; }
+
+        &__menu {
+            flex: 1 0 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        &__toggle:checked ~ &__menu {
+            max-height: 420px;
+            padding-top: 10px;
+        }
+
+        &__links,
+        &__actions {
+            flex-direction: column;
+            align-items: stretch;
+            margin-left: 0;
+        }
+
+        &__btn { justify-content: center; }
+    }
+}

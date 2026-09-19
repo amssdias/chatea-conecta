@@ -135,5 +135,19 @@ class AsyncRedisService:
         return await cls.get_client().hgetall(redis_key)
 
     @classmethod
+    async def delete_hash_field(cls, redis_key, field):
+        """
+        Remove a single field from a Redis hash.
+
+        Args:
+            redis_key: Redis hash key.
+            field: Hash field to remove, e.g. target user ID.
+
+        Returns:
+            Number of fields removed (0 if the field was not present).
+        """
+        return await cls.get_client().hdel(redis_key, field)
+
+    @classmethod
     async def is_member(cls, key: str, value: str) -> bool:
         return bool(await cls.get_client().sismember(key, value))

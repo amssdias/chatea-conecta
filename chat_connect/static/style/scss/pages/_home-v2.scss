@@ -1,0 +1,813 @@
+// =============================================================
+// HOMEPAGE - 2026 redesign (templates/index.html)
+//
+// px + clamp() throughout, deliberately. base/_base.scss rescales
+// html{font-size} per breakpoint (10px -> 8px at tab-port), so rem
+// values here would shrink unevenly against the fluid layout.
+//
+// =============================================================
+
+// --- Hero -----------------------------------------------------
+.hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: clamp(36px, 5vw, 72px);
+    align-items: center;
+    padding: clamp(40px, 6vw, 88px) $gutter clamp(48px, 6vw, 92px);
+    border-bottom: 1px solid $ink-line;
+
+    &__intro {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: clamp(20px, 2.4vw, 30px);
+        min-width: 0;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius-pill;
+        background-color: $ink-raised-2;
+        font-family: $font-mono;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: $text-muted;
+
+        &::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: $radius-pill;
+            background-color: $ember;
+            animation: ember-pulse 2s ease-in-out infinite;
+            flex: none;
+        }
+    }
+
+    &__title {
+        max-width: 18ch;
+        font-family: $font-display;
+        font-stretch: 118%;
+        font-size: clamp(35px, 4.6vw, 64px);
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -.035em;
+        color: $text-strong;
+        text-wrap: balance;
+
+        & em {
+            font-style: normal;
+            color: $ember;
+        }
+    }
+
+    &__lede {
+        max-width: 46ch;
+        font-size: clamp(17px, 1.5vw, 19px);
+        line-height: 1.55;
+        color: $text-dim;
+        text-wrap: pretty;
+    }
+
+    &__aside {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-width: 0;
+    }
+}
+
+// --- Nickname form -------------------------------------------
+.join {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: clamp(20px, 2.4vw, 28px);
+    border: 1px solid $ink-line;
+    border-radius: $radius;
+    background-color: $ink-raised;
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    &__label {
+        font-family: $font-mono;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    &__input {
+        width: 100%;
+        min-height: 54px;
+        padding: 0 16px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius;
+        background-color: $ink;
+        font-family: $font-body;
+        font-size: 17px;
+        color: $text-strong;
+
+        &::placeholder { color: $text-quiet; }
+
+        &:focus {
+            outline: none;
+            border-color: $ember;
+            box-shadow: 0 0 0 3px rgba(209, 64, 46, .22);
+        }
+    }
+
+    &__checks {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    &__check {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        font-size: 15px;
+        line-height: 1.45;
+        color: $text-dim;
+    }
+
+    &__checkbox {
+        width: 20px;
+        height: 20px;
+        accent-color: $ember;
+        flex: none;
+    }
+
+    // The T&C trigger inside the checkbox label. Keeps id
+    // #terms-and-conditions, so static/js/modal.js still binds.
+    & .link-tc {
+        color: $ember-hover;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover { color: $gold; }
+    }
+
+    &__error {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        border: 1px solid $ember;
+        border-radius: $radius;
+        background-color: rgba(209, 64, 46, .1);
+        font-size: 14.5px;
+        line-height: 1.45;
+        color: $text-strong;
+    }
+
+    &__submit {
+        width: 100%;
+        min-height: 56px;
+        border: none;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -.01em;
+        color: #fff;
+        cursor: pointer;
+
+        &:hover { background-color: $ember-hover; }
+        &:active { transform: translateY(1px); }
+    }
+
+    &__presence {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: $font-mono;
+        font-size: 13px;
+        color: $text-quiet;
+
+        &::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: $radius-pill;
+            background-color: $online;
+            animation: ember-pulse 2s ease-in-out infinite;
+            flex: none;
+        }
+    }
+}
+
+// --- Live room preview (hero, right) -------------------------
+.room-card {
+    border: 1px solid $ink-line;
+    border-radius: $radius;
+    background-color: $ink-raised;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-bottom: 1px solid $ink-line;
+        background-color: $ink-raised-2;
+    }
+
+    &__stack { display: flex; }
+
+    &__avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border: 2px solid $ink-raised-2;
+        border-radius: $radius-pill;
+        font-size: 11px;
+        font-weight: 700;
+        color: $ink-raised;
+        flex: none;
+
+        & + & { margin-left: -9px; }
+
+        &--a { background-color: #C9705A; }
+        &--b { background-color: #C9A05A; }
+        &--c { background-color: $online; }
+    }
+
+    &__id {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+    }
+
+    &__name {
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: 15.5px;
+        font-weight: 700;
+        color: $text-strong;
+    }
+
+    &__sub {
+        font-size: 13px;
+        color: $text-quiet;
+    }
+
+    &__live {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-left: auto;
+        font-family: $font-mono;
+        font-size: 11.5px;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: $text-dim;
+        flex: none;
+
+        &::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: $radius-pill;
+            background-color: $online;
+            animation: ember-pulse 2s ease-in-out infinite;
+        }
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 22px 20px;
+    }
+
+    &__msg {
+        display: flex;
+        gap: 11px;
+        animation: arrive .5s ease-out both;
+
+        &:nth-child(2) { animation-delay: .12s; }
+        &:nth-child(3) { animation-delay: .24s; }
+    }
+
+    &__msg-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: $radius-pill;
+        font-size: 13px;
+        font-weight: 700;
+        color: $ink-raised;
+        flex: none;
+
+        &--a { background-color: #C9705A; }
+        &--b { background-color: #C9A05A; }
+        &--c { background-color: $online; }
+    }
+
+    &__msg-body {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 0;
+    }
+
+    &__msg-meta {
+        font-family: $font-mono;
+        font-size: 11.5px;
+        color: $text-quiet;
+    }
+
+    &__msg-text {
+        padding: 11px 14px;
+        border-radius: $radius;
+        background-color: $ink-bubble;
+        font-size: 15.5px;
+        line-height: 1.5;
+        color: $text;
+        text-wrap: pretty;
+    }
+
+    &__typing {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-size: 13.5px;
+        color: $text-quiet;
+
+        &::before {
+            content: "";
+            width: 32px;
+            flex: none;
+        }
+    }
+
+    &__dots {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 12px 14px;
+        border-radius: $radius;
+        background-color: $ink-bubble;
+
+        & span {
+            width: 6px;
+            height: 6px;
+            border-radius: $radius-pill;
+            background-color: $ember;
+            animation: typing-dot 1.3s infinite;
+
+            &:nth-child(2) { animation-delay: .18s; }
+            &:nth-child(3) { animation-delay: .36s; }
+        }
+    }
+
+    &__foot {
+        padding: 14px 20px;
+        border-top: 1px solid $ink-line;
+        background-color: $ink-raised-2;
+        font-size: 14px;
+        color: $text-quiet;
+    }
+}
+
+.room-note {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: $text-quiet;
+}
+
+// --- Pledge strip --------------------------------------------
+.pledges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    border-bottom: 1px solid $ink-line;
+    background-color: $ink-raised;
+
+    &__item {
+        flex: 1 1 260px;
+        padding: 22px clamp(20px, 3vw, 32px);
+        font-size: 15.5px;
+        line-height: 1.5;
+        color: $text-muted;
+        list-style: none;
+
+        & + & { border-left: 1px solid $ink-line; }
+
+        @include respond(tab-port) {
+            & + & {
+                border-left: none;
+                border-top: 1px solid $ink-line;
+            }
+        }
+    }
+}
+
+// --- Shared section heading ----------------------------------
+.section-title {
+    max-width: 26ch;
+    font-family: $font-display;
+    font-stretch: 115%;
+    font-size: clamp(30px, 3.6vw, 48px);
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    color: $text-strong;
+    text-wrap: balance;
+}
+
+// --- How it works --------------------------------------------
+.steps {
+    padding: $section-y $gutter;
+    border-bottom: 1px solid $ink-line;
+
+    &__heading { margin-bottom: clamp(32px, 4vw, 56px); }
+
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: clamp(24px, 3vw, 44px);
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 20px;
+        border-top: 2px solid $ink-line-strong;
+        list-style: none;
+
+        &:first-child { border-top-color: $ember; }
+    }
+
+    &__num {
+        font-family: $font-mono;
+        font-size: 13px;
+        font-weight: 700;
+        color: $text-quiet;
+    }
+
+    // $ember on $ink is 4.04:1 - under the AA floor for text this size.
+    // $ember-hover reads as the same accent and clears it.
+    &__item:first-child &__num { color: $ember-hover; }
+
+    &__title {
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: clamp(20px, 1.8vw, 24px);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+    }
+
+    &__text {
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+}
+
+// --- Why adults stay (mixed grid) ----------------------------
+.reasons {
+    padding: $section-y $gutter;
+    border-bottom: 1px solid $ink-line;
+
+    &__heading { margin-bottom: clamp(28px, 3.5vw, 48px); }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 16px;
+    }
+
+    // Photo-free treatment. The design called for a greyscale
+    // photograph under an ember colour pass; this builds the same
+    // shape out of two off-centre ember glows over a dot field, so
+    // there is no image to license and nothing to break.
+    //
+    // To restore photography: put the 1200x760 file at
+    // static/img/room-night.jpg, add back
+    //   <img class="reasons__img" src="..." alt="...">
+    // as the first child, and replace the background-image below with
+    //   background-image: url("../../img/room-night.jpg");
+    //   background-size: cover;
+    //   background-position: center;
+    // then re-add `filter: grayscale(1) contrast(1.12);` on __img and
+    // give ::before `background-color: $ember; mix-blend-mode: color;`.
+    &__feature {
+        position: relative;
+        // Two columns wide, as in the design - not full-bleed. It sits beside
+        // the cards rather than banding across above them.
+        grid-column: span 2;
+        min-height: 320px;
+        border-radius: $radius;
+        overflow: hidden;
+        background-color: $ink-raised;
+        background-image:
+            radial-gradient(58% 88% at 14% 6%, rgba(209, 64, 46, .34) 0%, rgba(209, 64, 46, 0) 62%),
+            radial-gradient(50% 76% at 86% 30%, rgba(240, 168, 104, .13) 0%, rgba(240, 168, 104, 0) 66%);
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        // Dot field, echoing the texture the legacy site used on <body>.
+        &::before {
+            background-image: radial-gradient(rgba(245, 237, 231, .075) 1px, transparent 1px);
+            background-size: 22px 22px;
+        }
+
+        // Bottom scrim, so the copy keeps its contrast floor.
+        &::after {
+            background-image: linear-gradient(180deg, rgba(20, 16, 15, .1) 0%, rgba(20, 16, 15, .55) 55%, rgba(20, 16, 15, .88) 100%);
+        }
+    }
+
+    &__caption {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 10px;
+        min-height: 320px;
+        height: 100%;
+        padding: clamp(24px, 3vw, 36px);
+    }
+
+    &__feature-title {
+        max-width: 22ch;
+        font-family: $font-display;
+        font-stretch: 112%;
+        font-size: clamp(24px, 2.4vw, 34px);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -.025em;
+        color: $text-strong;
+        text-wrap: balance;
+    }
+
+    &__feature-text {
+        max-width: 44ch;
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-muted;
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: clamp(24px, 3vw, 32px);
+        border: 1px solid $ink-line;
+        border-radius: $radius;
+        background-color: $ink-raised;
+
+        &--ember {
+            border-color: transparent;
+            background-color: $ember;
+        }
+    }
+
+    &__card-title {
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-size: clamp(19px, 1.7vw, 22px);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: $text-strong;
+    }
+
+    &__card-text {
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+
+    &__card--ember &__card-title { color: #fff; }
+    // Full white, not .9: on $ember the softer value lands at 4.07:1.
+    &__card--ember &__card-text { color: #fff; }
+}
+
+// --- Long-form SEO block -------------------------------------
+.longform {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+    padding: $section-y $gutter;
+    border-bottom: 1px solid $ink-line;
+    background-color: $ink-raised;
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 0;
+    }
+
+    &__text {
+        max-width: 62ch;
+        font-size: 17px;
+        line-height: 1.65;
+        color: $text-dim;
+        text-wrap: pretty;
+    }
+
+    &__links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-top: 6px;
+    }
+
+    &__link {
+        min-height: $tap;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 18px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius-pill;
+        font-size: 15px;
+        font-weight: 600;
+        color: $text;
+        text-decoration: none;
+
+        &:hover {
+            border-color: $ember;
+            color: $ember-hover;
+        }
+    }
+
+    &__figure {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    // Photo-free treatment. The caption already says there are no
+    // photographs of members on this site, so the frame is filled with
+    // the nickname motif from .room-card instead: scattered avatar
+    // initials over an ink field.
+    //
+    // To restore photography: put the 900x1125 file at
+    // static/img/evening-lamp.jpg, drop the .longform__nick spans, add
+    //   <img class="longform__img" src="..." alt="...">
+    // and give ::before `background-color: $ember; mix-blend-mode: color;`.
+    &__frame {
+        position: relative;
+        display: block;
+        aspect-ratio: 4 / 5;
+        border-radius: $radius;
+        overflow: hidden;
+        background-color: $ink;
+        // So the initials below can size in cqw and stay proportional to
+        // their circles, which are a % of this frame rather than of the
+        // viewport.
+        container-type: inline-size;
+        background-image:
+            radial-gradient(64% 52% at 26% 22%, rgba(209, 64, 46, .30) 0%, rgba(209, 64, 46, 0) 70%),
+            radial-gradient(58% 46% at 78% 76%, rgba(240, 168, 104, .12) 0%, rgba(240, 168, 104, 0) 72%);
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        &::before {
+            background-image: radial-gradient(rgba(245, 237, 231, .07) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        &::after { background-color: rgba(20, 16, 15, .22); }
+    }
+
+    // Scattered nickname initials. Decorative: the span carrying them
+    // is aria-hidden in the template. Each is a % of the frame, and the
+    // letter is ~40% of that, so the composition holds at every width.
+    // The px font-size is the fallback for browsers without container
+    // queries; the cqw line wins wherever they are supported.
+    &__nick {
+        position: absolute;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border-radius: $radius-pill;
+        font-family: $font-display;
+        font-stretch: 108%;
+        font-weight: 700;
+        color: $ink;
+        user-select: none;
+
+        &--a {
+            top: 11%; left: 13%; width: 21%;
+            font-size: 24px; font-size: 8cqw;
+            background-color: #C9705A;
+        }
+
+        &--b {
+            top: 31%; left: 58%; width: 16%;
+            font-size: 18px; font-size: 6cqw;
+            background-color: #C9A05A;
+        }
+
+        &--c {
+            top: 51%; left: 17%; width: 24%;
+            font-size: 27px; font-size: 9cqw;
+            background-color: $online;
+        }
+
+        &--d {
+            top: 20%; left: 79%; width: 11%;
+            font-size: 13px; font-size: 4.2cqw;
+            background-color: $ink-line-strong;
+            color: $text-muted;
+        }
+
+        &--e {
+            top: 70%; left: 62%; width: 14%;
+            font-size: 16px; font-size: 5.3cqw;
+            background-color: $ink-line-strong;
+            color: $text-dim;
+        }
+
+        &--f {
+            top: 82%; left: 30%; width: 17%;
+            font-size: 20px; font-size: 6.5cqw;
+            background-color: $ember;
+            color: #fff;
+        }
+    }
+
+    &__caption {
+        font-size: 14px;
+        line-height: 1.5;
+        color: $text-quiet;
+    }
+}
+
+// The .faq-list accordion and the .cta-band closing band moved to
+// components/_faq-list.scss and components/_cta-band.scss when the /faq/
+// page started sharing them. The homepage markup is unchanged.
+
+// --- Terms modal, ink treatment ------------------------------
+// Only the skin. Keeps .modal / .hide / #modal-terms-conditions and
+// closeModal() from static/js/modal.js untouched.
+.modal--ink {
+    background-color: $ink-raised;
+    border: 1px solid $ink-line;
+    border-radius: $radius;
+    color: $text;
+
+    & .heading-secondary,
+    & .heading-tertiary {
+        font-family: $font-display;
+        color: $text-strong;
+    }
+
+    & .paragraph,
+    & li {
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+
+    & strong { color: $text-strong; }
+
+    & .modal-close svg path { fill: $ember; }
+    & .modal-close:hover .bg-circle { fill: rgba(209, 64, 46, .16); }
+}

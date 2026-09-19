@@ -1,0 +1,226 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+	<meta charset="UTF-8">
+	<title>{% trans "Your Pro payment failed" %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{# The site is dark by default (theme-ink). Without these two, Apple Mail and #}
+	{# Outlook re-invert an already-dark email and wreck the palette. #}
+	<meta name="color-scheme" content="dark">
+	<meta name="supported-color-schemes" content="dark">
+	<style type="text/css">
+		/* Progressive enhancement only - every rule that matters is also inline,
+		   because Gmail and Outlook.com strip or rewrite <style>. */
+		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+		img { border: 0; line-height: 100%; }
+
+		@media only screen and (max-width: 620px) {
+			.cc-card    { padding: 30px 22px !important; }
+			.cc-title   { font-size: 27px !important; }
+			.cc-lede    { font-size: 16px !important; }
+			.cc-cell    { padding-left: 15px !important; padding-right: 15px !important; }
+			.cc-btn     { display: block !important; }
+		}
+	</style>
+</head>
+
+<body style="margin: 0; padding: 0; width: 100%; background-color: #14100f; font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e8ded6;">
+<div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
+	{% trans "We could not process your Chatea-Conecta Pro payment." %}
+</div>
+
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#14100f"
+	   style="width: 100%; background-color: #14100f; margin: 0; padding: 0;">
+	<tr>
+		<td align="center" style="padding: 32px 16px; background-color: #14100f;">
+			<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+				   style="width: 100%; max-width: 620px; margin: 0 auto;">
+
+				{# Brand lockup: the topbar's ember mark + wordmark, over its hairline. #}
+				<tr>
+					<td style="padding: 0 0 18px; border-bottom: 1px solid #2b2422;">
+						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td width="34" valign="middle" align="center" bgcolor="#d1402e"
+									style="width: 34px; height: 34px; border-radius: 4px; background-color: #d1402e; color: #ffffff; font-size: 14px; line-height: 34px; letter-spacing: 2px; text-indent: 2px; text-align: center;">
+									&#8226;&#8226;&#8226;
+								</td>
+								<td valign="middle"
+									style="padding-left: 11px; font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 19px; line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; color: #f5ede7;">
+									Chatea-Conecta
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td height="26" style="height: 26px; line-height: 26px; font-size: 0;">&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td class="cc-card"
+						bgcolor="#1a1614"
+						style="background-color: #1a1614; border: 1px solid #2b2422; border-radius: 4px; padding: 40px 30px; text-align: center;">
+						<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td align="center" style="padding-bottom: 20px;">
+									<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+										<tr>
+											<td width="68" height="68" align="center" valign="middle" bgcolor="#3c2d21"
+												style="width: 68px; height: 68px; border-radius: 50%; background-color: #3c2d21; border: 1px solid #4a3b2e; color: #f0a868; font-size: 32px; line-height: 68px; font-weight: 700; text-align: center;">
+												!
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center" style="padding-bottom: 18px;">
+                                        <span style="display: inline-block; padding: 8px 15px; border-radius: 999px; background-color: #241c17; border: 1px solid #4a3b2e; color: #f0a868; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;">
+                                            {% trans "Payment failed" %}
+                                        </span>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center">
+									<h1 class="cc-title"
+										style="margin: 0 0 14px; font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #f5ede7; font-size: 33px; line-height: 1.08; font-weight: 800; letter-spacing: -0.03em;">
+										{% trans "We could not process your Pro payment" %}
+									</h1>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center">
+									<p class="cc-lede"
+									   style="margin: 0 auto 28px; max-width: 500px; color: #b5a79e; font-size: 17px; line-height: 1.6;">
+										{% blocktrans trimmed %}
+										We tried to renew your Pro subscription, but the payment did not go through.
+										Please update your payment method to avoid losing Pro access.
+										{% endblocktrans %}
+									</p>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center" style="padding-bottom: 30px;">
+									<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+										   bgcolor="#1d1917"
+										   style="width: 100%; max-width: 480px; margin: 0 auto; background-color: #1d1917; border-radius: 4px;">
+										<tr>
+											<td class="cc-cell" align="left"
+												style="padding: 13px 18px; border-bottom: 1px solid #2b2422; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #9c8f86;">
+												{% trans "Plan" %}
+											</td>
+											<td class="cc-cell" align="right"
+												style="padding: 13px 18px; border-bottom: 1px solid #2b2422; color: #e8ded6; font-size: 15px; font-weight: 600; text-align: right;">
+												{% trans "Chatea-Conecta Pro" %}
+											</td>
+										</tr>
+
+										<tr>
+											<td class="cc-cell" align="left"
+												style="padding: 13px 18px; {% if invoice_url %}border-bottom: 1px solid #2b2422; {% endif %}font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #9c8f86;">
+												{% trans "Status" %}
+											</td>
+											<td class="cc-cell" align="right"
+												style="padding: 13px 18px; {% if invoice_url %}border-bottom: 1px solid #2b2422; {% endif %}color: #f0a868; font-size: 15px; font-weight: 600; text-align: right;">
+												{% trans "Payment failed" %}
+											</td>
+										</tr>
+
+										{% if invoice_url %}
+										<tr>
+											<td class="cc-cell" align="left"
+												style="padding: 13px 18px; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #9c8f86;">
+												{% trans "Invoice" %}
+											</td>
+											<td class="cc-cell" align="right"
+												style="padding: 13px 18px; color: #e8ded6; font-size: 15px; font-weight: 600; text-align: right;">
+													<a href="{{ invoice_url }}"
+													   style="color: #e6725f; font-weight: 600; text-decoration: underline;">
+														{% trans "View invoice" %}
+													</a>
+											</td>
+										</tr>
+										{% endif %}
+									</table>
+								</td>
+							</tr>
+
+							{% if payment_update_url or subscription_url or site_url %}
+							<tr>
+								<td align="center" style="padding-bottom: 18px;">
+									<a class="cc-btn" href="{% if payment_update_url %}{{ payment_update_url }}{% elif subscription_url %}{{ subscription_url }}{% else %}{{ site_url }}{% endif %}"
+									   style="display: inline-block; background-color: #d1402e; color: #ffffff; padding: 17px 30px; border-radius: 999px; font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1; font-weight: 700; text-decoration: none;">
+										{% if payment_update_url %}
+										{% trans "Update payment method" %}
+										{% elif subscription_url %}
+										{% trans "Manage your subscription" %}
+										{% else %}
+										{% trans "Go to Chatea-Conecta" %}
+										{% endif %}
+									</a>
+								</td>
+							</tr>
+							{% endif %}
+
+							{% if invoice_url %}
+							<tr>
+								<td align="center" style="padding-bottom: 24px;">
+									<a href="{{ invoice_url }}"
+									   style="color: #e6725f; font-size: 15.5px; font-weight: 700; text-decoration: none;">
+										{% trans "Review invoice details" %}
+									</a>
+								</td>
+							</tr>
+							{% endif %}
+
+							<tr>
+								<td align="center">
+									<p style="margin: 0 auto; max-width: 480px; color: #9c8f86; font-size: 14px; line-height: 1.55;">
+										{% blocktrans trimmed %}
+										If the payment method is updated successfully, Stripe may retry the payment
+										automatically. If you already fixed it, you can ignore this message.
+										{% endblocktrans %}
+									</p>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td height="26" style="height: 26px; line-height: 26px; font-size: 0;">&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td align="center"
+						style="padding: 22px 12px 0; border-top: 1px solid #2b2422; color: #9c8f86; font-size: 13.5px; line-height: 1.55;">
+						<p style="margin: 0 0 8px;">
+							{# Keep the next tag on one line - a wrapped tag never matches and ships as raw syntax. #}
+							{% trans "You are receiving this email because you have a Chatea-Conecta Pro subscription." %}
+						</p>
+
+						{% if support_email %}
+						<p style="margin: 0;">
+							{% trans "Need help?" %}
+							<a href="mailto:{{ support_email }}"
+							   style="color: #e6725f; font-weight: 600; text-decoration: underline;">
+								{{ support_email }}
+							</a>
+						</p>
+						{% endif %}
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "sass": "sass --watch chat_connect/static/style/scss:chat_connect/static/style/css/ --style=expanded",
-    "sass-min": "sass --watch chat_connect/static/style/scss/main.scss:chat_connect/static/style/css/main.min.css --style=compressed"
+    "sass-min": "sass --watch chat_connect/static/style/scss/main.scss:chat_connect/static/style/css/main.min.css --style=compressed",
+    "build:css": "sass chat_connect/static/style/scss/main.scss:chat_connect/static/style/css/main.css --style=expanded && sass chat_connect/static/style/scss/main.scss:chat_connect/static/style/css/main.min.css --style=compressed"
   },
   "author": "Andre Dias",
   "license": "ISC",

@@ -1,251 +1,163 @@
 {% extends "base.html" %}
-{% load static %}
 {% load i18n %}
 
 {% block title %}
-Chatea-Conecta - {% trans "FAQ" %}
+{% trans "Free chat FAQ. No registration, anonymous, adults only | Chatea-Conecta" %}
 {% endblock title %}
 
 {% block description %}
-    {% trans "Find answers to frequently asked questions about Chatea-Conecta. Learn how it works and more." %}
+{% trans "How free chat without registration works on Chatea-Conecta: what is stored, whether the chat is anonymous, how to report someone, and why promotional messages appear." %}
 {% endblock description %}
-
-
-{% block og_title %}
-{% blocktrans %}Chatea-Conecta - FAQ{% endblocktrans %}
-{% endblock og_title %}
-
-{% block og_description %}
-{% trans "Find answers to frequently asked questions about Chatea-Conecta. Learn how it works and more." %}
-{% endblock og_description %}
-
-{% block twitter_title %}
-{% blocktrans %}Chatea-Conecta - FAQ{% endblocktrans %}
-{% endblock twitter_title %}
-
-{% block twitter_description %}
-{% trans "Find answers to frequently asked questions about Chatea-Conecta. Learn how it works and more." %}
-{% endblock twitter_description %}
 
 {% block scripts %}
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {"@type":"Question","name":"{% trans "What is Chatea-Conecta?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "Chatea-Conecta is a free and anonymous chat platform that allows users to connect with others worldwide in real-time. No login or registration is required to join the conversation." %}"}},
-        {"@type":"Question","name":"{% trans "How do I start chatting?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "Simply go to the homepage, enter a username of your choice in the input field, and click 'Start Chatting'. You'll instantly join a global chat room with other users." %}"}},
-        {"@type":"Question","name":"{% trans "Is Chatea-Conecta really anonymous?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "Yes! You don't need to provide any personal information to use the platform. However, avoid sharing sensitive details in the chat for your own safety." %}"}},
-        {"@type":"Question","name":"{% trans "Is there a mobile version of Chatea-Conecta?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "Yes, Chatea-Conecta is fully responsive and works seamlessly on mobile, tablet, and desktop devices. You can enjoy chatting on the go!" %}"}},
-        {"@type":"Question","name":"{% trans "Can I report inappropriate behavior in the chat?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "Yes. If you encounter inappropriate content, use the 'Report' button in the chat interface. This helps us maintain a safe and welcoming environment for all users." %}"}},
-        {"@type":"Question","name":"{% trans "Does Chatea-Conecta store my chat messages?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "No, Chatea-Conecta does not store chat messages. All conversations are real-time and ephemeral, ensuring your privacy." %}"}},
-        {"@type":"Question","name":"{% trans "How is Chatea-Conecta secure?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "We use HTTPS to encrypt all communication between your device and our servers. This ensures a safe and secure chat experience." %}"}},
-        {"@type":"Question","name":"{% trans "Why do I see promotional messages in the chat?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "We monetize the platform by including occasional promotional messages sent by bots. These messages are marked as 'Promotions' to distinguish them from real users." %}"}},
-        {"@type":"Question","name":"{% trans "Can I block promotional messages?" %}","acceptedAnswer":{"@type":"Answer","text":"{% trans "At this time, promotional messages cannot be blocked, but we strive to keep them minimal and non-intrusive." %}"}}
-      ]
-    }
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ SITE_URL }}"},
+                {"@type": "ListItem", "position": 2, "name": "FAQ", "item": "{{ SITE_URL }}{{ request.path }}"}
+              ]
+            },
+            {
+              "@type": "FAQPage",
+              "mainEntity": [
+                {"@type": "Question", "name": "{% trans 'What is Chatea-Conecta?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'Chatea-Conecta is a free and anonymous chat platform that allows users to connect with others worldwide in real-time. No login or registration is required to join the conversation.' %}"}},
+                {"@type": "Question", "name": "{% trans 'How do I start chatting?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'Go to the homepage, enter a username of your choice in the input field, and click Start Chatting. You join the global chat room straight away.' %}"}},
+                {"@type": "Question", "name": "{% trans 'Is there a mobile version?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'Yes. Chatea-Conecta is fully responsive and works on mobile, tablet and desktop, so you can chat wherever you already are.' %}"}},
+                {"@type": "Question", "name": "{% trans 'Is Chatea-Conecta really anonymous?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'Yes. You do not need to provide any personal information to use the platform. Avoid sharing sensitive details in the chat for your own safety.' %}"}},
+                {"@type": "Question", "name": "{% trans 'Does Chatea-Conecta store my chat messages?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'No. Chat messages are not stored. All conversations are real-time and ephemeral.' %}"}},
+                {"@type": "Question", "name": "{% trans 'How is Chatea-Conecta secure?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'We use HTTPS to encrypt all communication between your device and our servers.' %}"}},
+                {"@type": "Question", "name": "{% trans 'Can I report inappropriate behaviour?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'Yes. Use the Report button in the chat interface. Reports reach a moderator and help keep the room welcoming for everyone.' %}"}},
+                {"@type": "Question", "name": "{% trans 'Why do I see promotional messages in the chat?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'The platform is paid for with occasional promotional messages sent by bots. They are marked as Promotions so you can tell them apart from real people.' %}"}},
+                {"@type": "Question", "name": "{% trans 'Can I block promotional messages?' %}", "acceptedAnswer": {"@type": "Answer", "text": "{% trans 'Not at the moment. We keep them minimal and non-intrusive, and PRO members see fewer of them.' %}"}}
+              ]
+            }
+          ]
+        }
     </script>
-    <script src="{% static 'js/faq.js' %}" defer></script>
 {% endblock scripts %}
 
 {% block header %}
+<header class="page-head">
+    <nav class="breadcrumb" aria-label="{% trans 'Breadcrumb' %}">
+        <a class="breadcrumb__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+        <span aria-hidden="true">/</span>
+        <span>{% trans "FAQ" %}</span>
+    </nav>
 
-<header class="header-faq">
-    <h1 class="heading-primary">{% trans "Frequently Asked Questions (FAQ)" %}</h1>
+    <h1 class="page-head__title">{% trans "Questions about free chat, answered plainly." %}</h1>
+
+    {# URLs are resolved into variables first: the url tag cannot run inside a #}
+    {# translation block, and a bare /contact/ would bounce through a #}
+    {# LocaleMiddleware redirect because every page URL is language-prefixed. #}
+    {% url 'chat:contact' as contact_url %}
+    <p class="page-head__lede">
+        {% blocktrans %}How the room works, what we keep, and what to do when someone is out of line. If your question is not here, <a href="{{ contact_url }}">write to us</a>.{% endblocktrans %}
+    </p>
 </header>
-
 {% endblock header %}
 
 {% block content %}
-<section class="faq" role="region" aria-labelledby="faq-heading">
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 id="faq-heading" class="heading-tertiary heading-tertiary-dark-amber">{% trans "What is Chatea-Conecta?" %}</h3>
+<div class="faq-page">
 
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "Chatea-Conecta is a free and anonymous chat platform that allows users to connect with others worldwide in real-time. No login or registration is required to join the conversation." %}</p>
+    <aside class="toc">
+        <h2 class="toc__title">{% trans "On this page" %}</h2>
+        <a class="toc__link toc__link--current" href="#start">{% trans "Getting started" %}</a>
+        <a class="toc__link" href="#privacy">{% trans "Privacy and safety" %}</a>
+        <a class="toc__link" href="#promos">{% trans "Promotions and PRO" %}</a>
+
+        <div class="toc__card">
+            <p class="toc__presence">
+                <span class="toc__count">{{ n_persons }}</span>&nbsp;{% trans "in the room" %}
+            </p>
+            <a class="toc__cta" href="{% url 'chat:home' %}#join">{% trans "Start chatting" %}</a>
+        </div>
+    </aside>
+
+    <div class="faq-page__body">
+
+        <section class="faq-group" id="start" aria-labelledby="start-heading">
+            <h2 class="faq-group__title" id="start-heading">{% trans "Getting started" %}</h2>
+
+            <div class="faq-list faq-list--bare">
+                <div class="faq-list__items">
+                    <details class="faq-list__item" open>
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "What is Chatea-Conecta?" %}</summary>
+                        <p class="faq-list__a">{% trans "Chatea-Conecta is a free and anonymous chat platform that allows users to connect with others worldwide in real-time. No login or registration is required to join the conversation." %}</p>
+                    </details>
+
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "How do I start chatting?" %}</summary>
+                        <p class="faq-list__a">{% trans "Go to the homepage, enter a username of your choice in the input field, and click Start Chatting. You join the global chat room straight away." %}</p>
+                    </details>
+
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Is there a mobile version?" %}</summary>
+                        <p class="faq-list__a">{% trans "Yes. Chatea-Conecta is fully responsive and works on mobile, tablet and desktop, so you can chat wherever you already are." %}</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-group" id="privacy" aria-labelledby="privacy-heading">
+            <h2 class="faq-group__title" id="privacy-heading">{% trans "Privacy and safety" %}</h2>
+
+            <div class="faq-list faq-list--bare">
+                <div class="faq-list__items">
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Is Chatea-Conecta really anonymous?" %}</summary>
+                        <p class="faq-list__a">{% trans "Yes. You do not need to provide any personal information to use the platform. Avoid sharing sensitive details in the chat for your own safety." %}</p>
+                    </details>
+
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Does Chatea-Conecta store my chat messages?" %}</summary>
+                        <p class="faq-list__a">{% trans "No. Chat messages are not stored. All conversations are real-time and ephemeral." %}</p>
+                    </details>
+
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "How is Chatea-Conecta secure?" %}</summary>
+                        {% url 'chat:security' as security_url %}
+                        <p class="faq-list__a">
+                            {% blocktrans %}We use HTTPS to encrypt all communication between your device and our servers. There is more detail on the <a href="{{ security_url }}">security page</a>.{% endblocktrans %}
+                        </p>
+                    </details>
+
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Can I report inappropriate behaviour?" %}</summary>
+                        <p class="faq-list__a">{% trans "Yes. Use the Report button in the chat interface. Reports reach a moderator and help keep the room welcoming for everyone." %}</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-group" id="promos" aria-labelledby="promos-heading">
+            <h2 class="faq-group__title" id="promos-heading">{% trans "Promotions and PRO" %}</h2>
+
+            <div class="faq-list faq-list--bare">
+                <div class="faq-list__items">
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Why do I see promotional messages in the chat?" %}</summary>
+                        <p class="faq-list__a">{% trans "The platform is paid for with occasional promotional messages sent by bots. They are marked as Promotions so you can tell them apart from real people." %}</p>
+                    </details>
+
+                    <details class="faq-list__item">
+                        <summary class="faq-list__q"><span class="faq-list__mark" aria-hidden="true">+</span>{% trans "Can I block promotional messages?" %}</summary>
+                        <p class="faq-list__a">{% trans "Not at the moment. We keep them minimal and non-intrusive, and PRO members see fewer of them." %}</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-band cta-band--compact">
+            <div class="cta-band__body">
+                <h2 class="cta-band__title">{% trans "Still stuck?" %}</h2>
+                <p class="cta-band__text">{% trans "Write to us and a person will answer, usually within two working days." %}</p>
+            </div>
+            <a class="cta-band__btn" href="{% url 'chat:contact' %}">{% trans "Contact support" %}</a>
+        </section>
     </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "How do I start chatting?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "Simply go to the homepage, enter a username of your choice in the input field, and click 'Start Chatting'. You'll instantly join a global chat room with other users." %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Is Chatea-Conecta really anonymous?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "Yes! You don't need to provide any personal information to use the platform. However, avoid sharing sensitive details in the chat for your own safety." %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Is there a mobile version of Chatea-Conecta?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "Yes, Chatea-Conecta is fully responsive and works seamlessly on mobile, tablet, and desktop devices. You can enjoy chatting on the go!" %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Can I report inappropriate behavior in the chat?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "Yes. If you encounter inappropriate content, use the 'Report' button in the chat interface. This helps us maintain a safe and welcoming environment for all users." %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Does Chatea-Conecta store my chat messages?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "No, Chatea-Conecta does not store chat messages. All conversations are real-time and ephemeral, ensuring your privacy." %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "How is Chatea-Conecta secure?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "We use HTTPS to encrypt all communication between your device and our servers. This ensures a safe and secure chat experience." %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Why do I see promotional messages in the chat?" %}</h3>
-            
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "We monetize the platform by including occasional promotional messages sent by bots. These messages are marked as 'Promotions' to distinguish them from real users." %}</p>
-    </div>
-
-    <div class="faq__question">
-        <button class="faq__question__header" type="button" aria-expanded="false">
-            <h3 class="heading-tertiary heading-tertiary-dark-amber">{% trans "Can I block promotional messages?" %}</h3>
-
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M4 12H20M12 4V20" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-            <svg class="hide" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12L18 12" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </svg>
-        </button>
-        <p class="paragraph hide" hidden>{% trans "At this time, promotional messages cannot be blocked, but we strive to keep them minimal and non-intrusive." %}</p>
-    </div>
-</section>
-
+</div>
 {% endblock content %}

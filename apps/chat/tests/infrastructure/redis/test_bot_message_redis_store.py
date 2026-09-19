@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 from django.test import SimpleTestCase
 
@@ -8,8 +8,10 @@ from apps.chat.constants.bot_message_redis_keys import (
     BOT_TOPIC_MESSAGES,
     BOT_USER_IDS,
     BOT_USERNAMES, BOT_MESSAGE_SENT,
+    REDIS_BOT_USER_IDS_KEY,
 )
 from apps.chat.constants.cache_expiration import BOT_MESSAGE_CACHE_TTL, BOT_MESSAGE_SENT_TTL
+from apps.chat.constants.redis_keys import REDIS_ALL_USERNAMES_KEY
 from apps.chat.infrastructure.redis.bot_message_redis_store import (
     BotMessageRedisStore,
 )
@@ -52,6 +54,23 @@ class BotMessageRedisStoreTestCase(SimpleTestCase):
         self.store.clear_cache_loaded_flag()
 
         mock_delete_key.assert_called_once_with(BOT_MESSAGE_CACHE_LOADED)
+
+    @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.delete_key")
+    def test_clear_bot_users_deletes_every_bot_user_key(self, mock_delete_key):
+        self.store.clear_bot_users()
+
+        self.assertEqual(mock_delete_key.call_count, 3)
+        mock_delete_key.assert_any_call(BOT_USER_IDS)
+        mock_delete_key.assert_any_call(BOT_USERNAMES)
+        mock_delete_key.assert_any_call(REDIS_BOT_USER_IDS_KEY)
+
+    @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.delete_key")
+    def test_clear_bot_users_keeps_the_shared_usernames_key(self, mock_delete_key):
+        """Real users live in that key too, so it must survive a bot cache reload."""
+        self.store.clear_bot_users()
+
+        for delete_call in mock_delete_key.call_args_list:
+            self.assertNotEqual(delete_call, call(REDIS_ALL_USERNAMES_KEY))
 
     @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.set_expiration")
     @patch("apps.chat.infrastructure.redis.bot_message_redis_store.RedisService.store_hash")

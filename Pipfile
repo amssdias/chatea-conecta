@@ -16,6 +16,7 @@ factory-boy = "*"
 sentry-sdk = {extras = ["django"], version = "*"}
 boto3 = "*"
 watchtower = "*"
+stripe = "*"
 
 [dev-packages]
 django-browser-reload = "*"
@@ -24,4 +25,4 @@ coverage = "*"
 pip3-autoremove = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"

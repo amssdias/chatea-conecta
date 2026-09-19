@@ -1,19 +1,31 @@
 from apps.chat.services.activity import get_online_users_count
 
 from apps.chat.websocket.broadcast import notify_group_online_count
+from apps.chat.websocket.errors import send_websocket_error
 from apps.chat.websocket.exceptions import WebSocketValidationError
 from apps.chat.websocket.registration import (
     register_user_to_group,
     register_user_to_group_notification,
 )
-from apps.chat.websocket.validation import validate_group_payload
-
+from apps.chat.websocket.validation import (
+    validate_group_payload,
+    validate_group_registered,
+)
 
 async def handle_register_group(consumer, data):
     try:
         group = validate_group_payload(data)
+        validate_group_registered(group)
+
     except WebSocketValidationError:
         await consumer.close(code=4001, reason="Invalid group")
+        return
+
+    if group.startswith("private-"):
+        await send_websocket_error(
+            consumer,
+            "Private chat groups can only be joined through an invite.",
+        )
         return
 
     await register_user_to_group(consumer, group)

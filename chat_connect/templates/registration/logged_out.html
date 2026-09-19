@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Logged Out" %} | Chatea Conecta{% endblock title %}
+{% block description %}{% trans "You have been signed out successfully." %}{% endblock description %}
+{% block robots %}noindex,nofollow{% endblock robots %}
+
+{% block header %}<header class="page-head">
+    <h1 class="page-head__title page-head__title--short">{% trans "Logged Out" %}</h1>
+</header>{% endblock header %}
+
+{% block content %}
+    <section class="auth-page" aria-labelledby="logged-out-heading">
+        <div class="auth-page__container">
+            <article class="auth-page__card">
+                <h2 id="logged-out-heading" class="auth-page__title">
+                    {% trans "You have logged out" %}
+                </h2>
+                <p class="auth-page__description">{% trans "Your session has ended safely." %}</p>
+                <p class="auth-form__footer">
+                    <a href="{% url 'users:login' %}">{% trans "Log in again" %}</a>
+                </p>
+            </article>
+        </div>
+    </section>
+{% endblock content %}

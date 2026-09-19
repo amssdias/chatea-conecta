@@ -16,7 +16,7 @@ class BotCacheLoaderTestCase(TestCase):
         self.loader = BotCacheLoader(redis_store=self.redis_store)
 
     def test_load_loads_users_topics_messages_and_marks_cache_as_loaded(self):
-        user = UserFactory(username="john_bot")
+        user = UserFactory(username="john_bot", is_bot=True)
         topic = TopicFactory()
         message = ConversationFlowFactory(
             topic=topic,
@@ -48,9 +48,9 @@ class BotCacheLoaderTestCase(TestCase):
         self.redis_store.store_topic_messages.assert_not_called()
         self.redis_store.mark_cache_as_loaded.assert_called_once_with()
 
-    def test_load_bot_users_stores_non_staff_non_superuser_users(self):
-        user_1 = UserFactory(username="john_bot")
-        user_2 = UserFactory(username="maria_bot")
+    def test_load_bot_users_stores_users_flagged_as_bots(self):
+        user_1 = UserFactory(username="john_bot", is_bot=True)
+        user_2 = UserFactory(username="maria_bot", is_bot=True)
 
         self.loader._load_bot_users()
 
@@ -61,58 +61,41 @@ class BotCacheLoaderTestCase(TestCase):
             }
         )
 
-    def test_load_bot_users_excludes_staff_users(self):
-        normal_user = UserFactory(
-            username="normal_bot",
-            is_staff=False,
-            is_superuser=False,
-        )
-        UserFactory(
-            username="staff_user",
-            is_staff=True,
-            is_superuser=False,
-        )
+    def test_load_bot_users_excludes_users_not_flagged_as_bots(self):
+        bot = UserFactory(username="normal_bot", is_bot=True)
+        UserFactory(username="registered_user", is_bot=False)
+        UserFactory(username="staff_user", is_bot=False, is_staff=True)
+        UserFactory(username="admin_user", is_bot=False, is_superuser=True)
 
         self.loader._load_bot_users()
 
         self.redis_store.store_bot_users.assert_called_once_with(
             {
-                normal_user.id: "normal_bot",
+                bot.id: "normal_bot",
             }
         )
 
-    def test_load_bot_users_excludes_superusers(self):
-        normal_user = UserFactory(
-            username="normal_bot",
-            is_staff=False,
-            is_superuser=False,
-        )
-        UserFactory(
-            username="admin_user",
-            is_staff=False,
-            is_superuser=True,
-        )
+    def test_load_bot_users_clears_cached_bots_before_storing_them(self):
+        UserFactory(username="john_bot", is_bot=True)
 
         self.loader._load_bot_users()
 
-        self.redis_store.store_bot_users.assert_called_once_with(
-            {
-                normal_user.id: "normal_bot",
-            }
+        self.assertEqual(
+            self.redis_store.mock_calls.index(call.clear_bot_users()),
+            0,
         )
+        self.redis_store.clear_bot_users.assert_called_once_with()
 
     def test_load_bot_users_includes_inactive_users_because_no_is_active_filter_exists(self):
         active_user = UserFactory(
             username="active_bot",
             is_active=True,
-            is_staff=False,
-            is_superuser=False,
+            is_bot=True,
         )
         inactive_user = UserFactory(
             username="inactive_bot",
             is_active=False,
-            is_staff=False,
-            is_superuser=False,
+            is_bot=True,
         )
 
         self.loader._load_bot_users()

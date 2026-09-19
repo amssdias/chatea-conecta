@@ -1,28 +1,27 @@
 name: "🛠️ Setup Python and Project Dependencies"
-description: "Sets up Python 3.9 and installs all required project dependencies, including development packages, using Pipenv. Ideal for preparing the environment for tests or CI workflows."
+description: "Sets up Python 3.12 and installs all required project dependencies, including development packages, using Pipenv. Ideal for preparing the environment for tests or CI workflows."
+
 
 runs:
   using: "composite"
   steps:
-    - name: 🐍 Set up Python 3.9
-      uses: actions/setup-python@v5
+    - name: 🐍 Set up Python 3.12
+      uses: actions/setup-python@v7
       with:
-        python-version: 3.9
+        python-version: 3.12
+        cache: "pipenv"
+        cache-dependency-path: "Pipfile.lock"
+
     - name: 📦 Install Pipenv
       run: |
         python -m pip install --upgrade pip
-        pip install pipenv
+        python -m pip install "pipenv==2026.7.1"
       shell: bash
 
-    - name: Cache pipenv dependencies deploy
-      uses: actions/cache@v3
-      with:
-        path: ~/.local/share/virtualenvs  # Default path for pipenv’s virtual environments
-        key: ${{ runner.os }}-pipenv-dev-${{ hashFiles('Pipfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pipenv-dev-
-
-    - name: 📦 Install Dependencies with Pipenv
-      run: |
-        pipenv install --dev
+    - name: 🔒 Verify Pipfile.lock
       shell: bash
+      run: pipenv verify
+
+    - name: 📦 Install development dependencies
+      shell: bash
+      run: pipenv sync --dev

@@ -1,15 +1,74 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Chatea-Conecta - {% trans "About" %}{% endblock title %}
-{% block description %}{% trans "Learn about Chatea-Conecta, a free anonymous chat platform for real-time conversations." %}{% endblock description %}
+{% block title %}
+{% trans "About Chatea-Conecta. Free anonymous chat for adults | Chatea-Conecta" %}
+{% endblock title %}
 
-{% block header %}<header class="header-privacy"><h1 class="heading-primary">{% trans "About Chatea-Conecta" %}</h1></header>{% endblock header %}
+{% block description %}
+{% trans "Chatea-Conecta is a free anonymous chat platform for adults. No feed, no follower count, no profile. Just one moderated room where people talk to strangers." %}
+{% endblock description %}
+
+{% block header %}
+<header class="page-head">
+    <nav class="breadcrumb" aria-label="{% trans 'Breadcrumb' %}">
+        <a class="breadcrumb__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+        <span aria-hidden="true">/</span>
+        <span>{% trans "About" %}</span>
+    </nav>
+
+    <h1 class="page-head__title">{% trans "A room for adults who still like talking to strangers." %}</h1>
+
+    <p class="page-head__lede">
+        {% trans "Chatea-Conecta is a free and anonymous online chat platform where people connect and chat in real time without registration." %}
+    </p>
+</header>
+{% endblock header %}
 
 {% block content %}
-<section class="privacy-policy" aria-labelledby="about-heading">
-    <h2 id="about-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "What is Chatea-Conecta?" %}</h2>
-    <p class="paragraph">{% trans "Chatea-Conecta is a free and anonymous online chat platform where people can connect and chat in real time without registration." %}</p>
-    <p class="paragraph">{% trans "The platform is designed for casual conversations with users from different regions, with quick access through a nickname-based session." %}</p>
+
+<section class="split split--center split--tight" aria-labelledby="what-heading">
+    <div class="split__col">
+        <h2 class="section-title" id="what-heading">{% trans "What this is, and what it is not" %}</h2>
+        <p class="doc__text">{% trans "The platform is designed for casual conversation with people from different regions, with quick access through a nickname-based session. You are in the room in seconds, and you leave without a trace." %}</p>
+        <p class="doc__text">{% trans "It is not a dating app and not a social network. There is no feed, no follower count and nothing to grow. Some people come for company on a slow evening, some to practise a language, some to say the thing they cannot say to anyone who knows them." %}</p>
+        <p class="doc__text">{% trans "Everyone is 18 or over, and the room is moderated so it stays civil enough to be worth returning to." %}</p>
+    </div>
+
+    <figure class="split__col">
+        {# Decorative panel in place of the canvas photograph - see .art in components/_page.scss. #}
+        <span class="art" aria-hidden="true"></span>
+        <figcaption class="art__caption">{% trans "There are no member photographs anywhere on this site. Everyone here is a nickname." %}</figcaption>
+    </figure>
 </section>
+
+<section class="rules" aria-labelledby="hold-heading">
+    <h2 class="section-title rules__heading" id="hold-heading">{% trans "Three things we hold to" %}</h2>
+
+    <div class="cards cards--flush">
+        <div class="card">
+            <h3 class="card__title">{% trans "Anonymous by default" %}</h3>
+            <p class="card__text">{% trans "A nickname is all we ask for. We would rather store nothing than protect something we never needed in the first place." %}</p>
+        </div>
+
+        <div class="card card--ember">
+            <h3 class="card__title">{% trans "Respect is the rule" %}</h3>
+            <p class="card__text">{% trans "The room is moderated and abuse gets people removed. An adult space only works while it stays civil." %}</p>
+        </div>
+
+        <div class="card">
+            <h3 class="card__title">{% trans "Free, and honest about it" %}</h3>
+            <p class="card__text">{% trans "Occasional promotional messages are labelled as promotions. PRO is optional and never a wall in front of the conversation." %}</p>
+        </div>
+    </div>
+</section>
+
+<section class="closer">
+    <div class="closer__body">
+        <h2 class="closer__title">{% trans "Come and see what it is like." %}</h2>
+        <p class="closer__text">{% trans "Pick a nickname and you are in the room in about five seconds." %}</p>
+    </div>
+    <a class="closer__btn" href="{% url 'chat:home' %}#join">{% trans "Start chatting free" %}</a>
+</section>
+
 {% endblock content %}

@@ -1,77 +1,27 @@
-// COLORS
-$color-light-amber: #fef3c7;
-$color-light-amber-2: #fcd34d;
+// =============================================================
+// LEGACY palette and fonts.
+//
+// Everything here belongs to the pre-redesign look and now serves only
+// the chat page, which keeps its light palette until step 4. The
+// redesign's own tokens live in abstracts/_tokens.scss.
+//
+// Unused entries were pruned during the step 3 cleanup, so anything
+// still listed has at least one live reference.
+// =============================================================
+
+// --- Colours -------------------------------------------------
+$color-light-amber:   #fef3c7;
 $color-light-amber-3: #fde68a;
+$color-dark-amber-2:  #d97706;
+$color-green-dark-1:  #84cc16;
+$color-red-wine:      #813c58;
 
-$color-dark-amber-1: #f59e0b;
-$color-dark-amber-2: #d97706;
-$color-dark-amber-3: #b45309;
+$primary-dark:  #c21d03; // h1, CTA hover
+$primary-main:  #fd5732; // h2, CTA
 
-$color-green-dark-1: #84cc16;
+$accent-light:  #bebebe; // secondary text, borders
 
-$color-rose: #D81159;
-$color-red-wine: #813c58;
+$text-dark:     #232121; // main text
+$text-light:    #4b4848; // secondary text, input labels
 
-$color-grey-dark: #777;
-$color-grey-dark-2: #999;
-$color-grey-dark-3: #333;
-
-$color-white: #fff;
-$color-black: #000;
-
-// COLORS
-// 🌟 Primary Colors (Brand Colors)
-$primary-dark: #c21d03;  // --primary-100 (nav-bar, h1, CTA hover)
-$primary-main: #fd5732;  // --primary-200 (h2, CTA)
-$primary-light: #ffb787; // --primary-300
-
-// 🎨 Accent Colors
-$accent-dark: #393939;   // --accent-100 (Used for headings, some UI elements) (h3, footer bg)
-$accent-light: #bebebe;  // --accent-200 (Used for secondary text, borders)
-
-// 🔤 Text Colors
-$text-dark: #232121;     // --text-100 (Main text color)
-$text-light: #4b4848;    // --text-200 (Secondary text) (input nickname text, labels)
-
-// 🎭 Background Colors
-$bg-light: #fbfbfb;      // --bg-100 (Main site background) (nav-links)
-$bg-medium: #f1f1f1;     // --bg-200 (Used for input fields) (input nickname)
-$bg-dark: #c8c8c8;       // --bg-300 (Darker background elements)
-
-// 🟢 Navigation Bar
-$nav-bg: $primary-dark;   // Background color for navbar
-$nav-text: $bg-light;     // Text color for navbar links
-$nav-text-hover: $primary-light; // Hover color for links
-
-// ✨ Buttons
-$button-bg: $primary-main;   // Default button background
-$button-text: $bg-light;     // Button text color
-$button-hover-bg: $primary-dark;  // Button background on hover
-$button-hover-text: $bg-light; // Button text on hover
-$button-border: transparent; // No border by default, but can be adjusted
-
-// 🎯 Forms (Inputs)
-$input-bg: $bg-medium;      // Input field background
-$input-text: $text-light;   // Input text color
-$input-border: $accent-light;  // Default input border
-$input-border-focus: $primary-main; // Border when input is focused
-$input-placeholder: $accent-light;  // Placeholder text color
-
-
-// FONT
-$default-font-size: 1.6rem;
-
-// Include fonts
-@include font-face("Sour Gummy", "SourGummy_Expanded-Thin", 100, normal);
-@include font-face("Sour Gummy", "SourGummy_Expanded-ThinItalic", 100, italic);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-ExtraLight", 200, normal);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-ExtraLightItalic", 200, italic);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-Light", 300, normal);
-@include font-face("Sour Gummy", "SourGummy_SemiExpanded-Italic", 300, italic);
-@include font-face("Sour Gummy", "SourGummy-Regular", 400, normal);
-@include font-face("Sour Gummy", "SourGummy-Medium", 500, normal);
-@include font-face("Sour Gummy", "SourGummy-SemiBold", 600, normal);
-@include font-face("Sour Gummy", "SourGummy-Bold", 700, normal);
-@include font-face("Sour Gummy", "SourGummy-ExtraBold", 800, normal);
-@include font-face("Sour Gummy", "SourGummy-Black", 900, normal);
-  
+$bg-light:      #fbfbfb; // main background

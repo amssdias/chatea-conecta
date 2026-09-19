@@ -1,5 +1,6 @@
-from chat_connect.settings.base import *
 import secrets
+
+from chat_connect.settings.base import *
 
 SECRET_KEY = "".join(secrets.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50))
 
@@ -57,3 +58,6 @@ LOGGING = {
     },
 }
 
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+DEFAULT_FROM_EMAIL = "no-reply@chatea-conecta.com"
+SUPPORT_EMAIL = "support@chatea-conecta.test"
