@@ -108,4 +108,5 @@ Migrations once applied, `Pipfile.lock`, `package-lock.json`, compiled locale `.
 ## Known production/config gaps (verify before relying on these paths)
 
 - `requirements.txt` (used by the production Docker image) has historically omitted `stripe`, even though the Pipenv dev environment includes it and root URL/subscription code imports it — check both dependency lists stay in sync when touching Stripe code or the deploy image.
-- `.envs/production/django.env.example` still omits `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, and the Sentry variables (`SITE_URL`, Stripe, and email are already templated there) — verify env wiring against `settings/base.py`'s expectations before assuming production has what it needs.
+- `ALLOWED_HOSTS` and `CSRF_TRUSTED_ORIGINS` are hardcoded in `settings_production.py` (single production domain, no staging), not env-driven; keep `localhost` in `ALLOWED_HOSTS` for the container healthcheck.
+- `.envs/production/django.env.example` still omits the Sentry variables (`SITE_URL`, Stripe, and email are already templated there) — verify env wiring against `settings/base.py`'s expectations before assuming production has what it needs.
