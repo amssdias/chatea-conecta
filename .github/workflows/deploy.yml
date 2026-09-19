@@ -56,10 +56,6 @@ jobs:
             docker compose -f docker-compose.yml -f docker-compose.prod.yml down || { echo "Docker shutdown failed. Exiting."; exit 1; }
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d || { echo "Docker startup failed. Exiting."; exit 1; }
             
-            # Run compilemessages
-            echo "Compiling messages..."
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T chat-app python manage.py compilemessages || { echo "Compilemessages failed. Exiting."; exit 1; }
-            
             # Clear Redis if input is True
             if [ "$CLEAR_REDIS" = "true" ]; then
               echo "Clearing Redis database..."
@@ -70,6 +66,12 @@ jobs:
             if [ "$RUN_MIGRATIONS" = "true" ]; then
               echo "Running database migrations..."
               docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T chat-app python manage.py migrate --noinput || { echo "Database migrations failed. Exiting."; exit 1; }
+            fi
+
+            # Run collectstatic if input is true
+            if [ "$RUN_COLLECTSTATIC" = "true" ]; then
+              echo "Collecting static files..."
+              docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T chat-app python manage.py collectstatic --noinput || { echo "Collectstatic failed. Exiting."; exit 1; }
             fi
 
             echo "Restarting NGINX..."
