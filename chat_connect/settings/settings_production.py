@@ -5,7 +5,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+# "localhost" is required by the container healthcheck, which calls Django with that Host header.
+ALLOWED_HOSTS = ["chatea-conecta.com", "www.chatea-conecta.com", "localhost"]
 
 MIDDLEWARE.insert(0, "django.middleware.cache.UpdateCacheMiddleware") # Save responses to cache (must come first)
 MIDDLEWARE.insert(4, "django.middleware.cache.FetchFromCacheMiddleware") # Retrieve responses from cache (must be after CommonMiddleware)
@@ -26,7 +27,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # - CSRF_TRUSTED_ORIGINS: Specifies trusted origins for cross-origin requests with CSRF protection.
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+CSRF_TRUSTED_ORIGINS = ["https://chatea-conecta.com", "https://www.chatea-conecta.com"]
 
 # ====== Header Security Settings ======
 # - SECURE_BROWSER_XSS_FILTER: Enables the X-XSS-Protection header in compatible browsers to help prevent cross-site scripting (XSS) attacks.
