@@ -9,7 +9,10 @@ DEBUG = False
 ALLOWED_HOSTS = ["chatea-conecta.com", "www.chatea-conecta.com", "localhost"]
 
 MIDDLEWARE.insert(0, "django.middleware.cache.UpdateCacheMiddleware") # Save responses to cache (must come first)
-MIDDLEWARE.insert(4, "django.middleware.cache.FetchFromCacheMiddleware") # Retrieve responses from cache (must be after CommonMiddleware)
+MIDDLEWARE.insert(
+    MIDDLEWARE.index("django.middleware.locale.LocaleMiddleware") + 1,
+    "django.middleware.cache.FetchFromCacheMiddleware",
+)
 
 # ====== Security for HTTPS Enforcement ======
 # - SECURE_SSL_REDIRECT: Redirects all HTTP traffic to HTTPS, ensuring encrypted connections across the site.
