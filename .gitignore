@@ -160,3 +160,6 @@ dist/
 
 # Claude Code (personal/machine-specific; .claude/settings.json, commands/, agents/ are shared and committed)
 .claude/settings.local.json
+
+promo-hyperframes/
+promo-video/
