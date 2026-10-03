@@ -4,6 +4,10 @@
 
 {% block robots %}noindex,nofollow{% endblock robots %}
 
+{# The chat fills the viewport and cannot scroll, so the site footer would #}
+{# take its height straight out of the conversation. #}
+{% block footer %}{% endblock footer %}
+
 {% block scripts %}
 
     <script type="module" src="{% static 'js/main.js' %}"></script>
