@@ -74,9 +74,10 @@ class ChatView(View):
     def _register_and_render_chat(self, request, username, user_id=None, is_guest=False):
         redis_user_id = register_user_on_redis(username, user_id=user_id)
 
-        is_authenticated = request.user.is_authenticated
-        is_user_pro = is_authenticated and request.user.is_pro
-        payment_overdue = is_authenticated and request.user.needs_payment_configuration
+        accounts_enabled = settings.ACCOUNTS_ENABLED
+        has_account = accounts_enabled and request.user.is_authenticated
+        is_user_pro = has_account and request.user.is_pro
+        payment_overdue = has_account and request.user.needs_payment_configuration
 
         response = render(
             request,
@@ -85,7 +86,10 @@ class ChatView(View):
                 username=username,
                 user_id=redis_user_id,
                 is_user_pro=is_user_pro,
-                private_chats_unlimited=is_user_pro and not payment_overdue,
+                # With accounts off there is no PRO to sell, so nobody is capped.
+                private_chats_unlimited=(
+                    not accounts_enabled or (is_user_pro and not payment_overdue)
+                ),
                 payment_overdue=payment_overdue,
             ),
         )

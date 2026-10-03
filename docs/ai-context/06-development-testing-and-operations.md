@@ -56,6 +56,7 @@ Set `DJANGO_SETTINGS_MODULE=chat_connect.settings.settings_development` for Cele
 | Area | Names |
 |---|---|
 | Django/site | `SECRET_KEY`, `SITE_URL`; `ALLOWED_HOSTS`/`CSRF_TRUSTED_ORIGINS` are hardcoded in `settings_production.py` (development uses `["*"]`/`[]`), not read from env |
+| Feature flags | `ACCOUNTS_ENABLED` (`true` to enable; unset or anything else is off). Off hides login/signup/PRO, 404s their routes and the Stripe webhook, and lifts the private-chat limit. `settings_tests.py` forces it on |
 | MySQL | `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`; Compose additionally interpolates `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD` |
 | Redis | `REDIS_PROTOCOL`, `REDIS_PASSWORD`, `REDIS_HOST`, `REDIS_PORT`, `DJANGO_REDIS_CACHE_DB`, `REDIS_DB_CHANNEL`, `REDIS_DB_CELERY` |
 | Stripe | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRO_MONTHLY_PRICE_ID`; `STRIPE_SUCCESS_URL`/`STRIPE_CANCEL_URL` are currently unused |
@@ -215,6 +216,10 @@ There is no blue/green/canary deployment, automated backup, rollback command, mi
 | Checkout success returns a template error | `subscriptions/checkout_success.html` has a split `endblocktrans` tag; all result renders fail template compilation until it is corrected. |
 | Production container unhealthy | Check that the healthcheck Host is in the hardcoded production `ALLOWED_HOSTS`, and check production dependencies, before debugging the health function itself. |
 | CloudWatch blocks checks/startup | Provide AWS config or set `SKIP_CLOUDWATCH=1` for non-production validation, as CI does. |
+
+## Promo video tooling (added 2026-10-03)
+
+`promo-video/` is an independent Remotion project for a 21-second Spanish vertical promo (1080 × 1920, 30 fps). It reuses the current site palette, self-hosted fonts and smiling chat logo. It does not participate in Django's build or runtime. From that directory, use `pnpm install`, `pnpm dev` for Studio, `pnpm lint` for ESLint/TypeScript, and `pnpm build` to bundle. The main composition is `Chatea-Conecta`; each scene also has its own editable timeline. The original synthesized soundtrack can be regenerated with `node scripts/make-music.mjs`. See `promo-video/README.md` for export instructions.
 
 ## Verification baseline
 

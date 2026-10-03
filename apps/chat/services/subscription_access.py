@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from channels.db import database_sync_to_async
+from django.conf import settings
 
 from apps.chat.constants.private_chat import (
     PRIVATE_CHAT_ACCESS_FREE,
@@ -21,7 +22,12 @@ def resolve_private_chat_access(user) -> str:
     failing is the one benefit worth holding back to get the card fixed. It is
     checked before ``pro`` so the account is told about billing rather than
     being sold an upgrade it already bought.
+
+    While accounts are switched off nobody can buy PRO, so nobody is capped.
     """
+    if not settings.ACCOUNTS_ENABLED:
+        return PRIVATE_CHAT_ACCESS_UNLIMITED
+
     if not user.is_authenticated:
         return PRIVATE_CHAT_ACCESS_FREE
 

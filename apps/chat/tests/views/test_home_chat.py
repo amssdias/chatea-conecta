@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
 from apps.chat.services.guest_session import GUEST_SESSION_COOKIE, issue_guest_token
@@ -46,3 +46,18 @@ class TestHomeChatView(TestCase):
         response = self.client.get(self.register_url)
 
         self.assertEqual(response.status_code, 200)
+
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    def test_navigation_offers_login_and_signup(self, mock_get_group_size):
+        response = self.client.get(self.register_url)
+
+        self.assertContains(response, reverse("users:login"))
+        self.assertContains(response, reverse("users:signup"))
+
+    @override_settings(ACCOUNTS_ENABLED=False)
+    @patch("apps.chat.views.home_chat.RedisService.get_group_size", return_value=5)
+    def test_navigation_hides_login_and_signup_while_accounts_are_switched_off(self, mock_get_group_size):
+        response = self.client.get(self.register_url)
+
+        self.assertNotContains(response, reverse("users:login"))
+        self.assertNotContains(response, reverse("users:signup"))

@@ -1,6 +1,6 @@
 from channels.db import database_sync_to_async
 from django.contrib.auth.models import AnonymousUser
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from apps.chat.constants.private_chat import (
     PRIVATE_CHAT_ACCESS_FREE,
@@ -56,3 +56,17 @@ class ResolvePrivateChatAccessTests(TestCase):
         access = await resolve_private_chat_access(subscription.user)
 
         self.assertEqual(access, PRIVATE_CHAT_ACCESS_PAYMENT_OVERDUE)
+
+    @override_settings(ACCOUNTS_ENABLED=False)
+    async def test_nobody_is_capped_while_accounts_are_switched_off(self):
+        access = await resolve_private_chat_access(AnonymousUser())
+
+        self.assertEqual(access, PRIVATE_CHAT_ACCESS_UNLIMITED)
+
+    @override_settings(ACCOUNTS_ENABLED=False)
+    async def test_past_due_subscription_is_not_capped_while_accounts_are_switched_off(self):
+        subscription = await database_sync_to_async(UserSubscriptionFactory)(past_due=True)
+
+        access = await resolve_private_chat_access(subscription.user)
+
+        self.assertEqual(access, PRIVATE_CHAT_ACCESS_UNLIMITED)

@@ -31,6 +31,10 @@ ALLOWED_HOSTS = []
 
 SITE_URL = os.getenv("SITE_URL", "https://chatea-conecta.com").rstrip("/")
 
+# Accounts and billing ship dark. Off hides login, signup and PRO, answers 404
+# on their routes and lifts the private-chat limit that PRO would otherwise sell.
+ACCOUNTS_ENABLED = os.getenv("ACCOUNTS_ENABLED", "false").lower() == "true"
+
 # Application definition
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -63,6 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",  # Handles user authentication
     "django.contrib.messages.middleware.MessageMiddleware",  # Manages messages (e.g., success/error notices)
     "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Prevents clickjacking attacks
+    "chat_connect.middleware.AccountsFlagMiddleware",  # 404s account and billing routes while ACCOUNTS_ENABLED is off
 ]
 
 ROOT_URLCONF = "chat_connect.urls"
@@ -80,7 +85,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "chat_connect.context_processors.hreflang_context"
+                "chat_connect.context_processors.hreflang_context",
+                "chat_connect.context_processors.feature_flags",
             ],
         },
     },

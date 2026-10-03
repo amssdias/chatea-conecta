@@ -29,6 +29,8 @@
 | POST | `/[lang]/subscriptions/billing-portal/` | `login_required`; CSRF; stored Stripe customer required | None | Redirect to Stripe Portal or message/detail | `create_billing_portal_session_view` |
 | GET | `/__reload__/...` | Development only | Browser reload protocol | Reload support | `django_browser_reload.urls` |
 
+Accounts flag: while `ACCOUNTS_ENABLED` is off, `chat_connect/middleware.py::AccountsFlagMiddleware` answers 404 for the Stripe webhook, signup, login, the built-in auth family and every `/subscriptions/` route above. `/accounts/logout/` stays open (guests leave the chat through it) and the admin keeps its own login. The routes remain in the URLconf, so they still reverse.
+
 Route shadowing note: `apps.users.urls` is included before `django.contrib.auth.urls` at the same `/accounts/` prefix, so custom login/logout views resolve incoming requests while global Django URL names such as `login` still reverse to the same paths.
 
 ## WebSocket interface

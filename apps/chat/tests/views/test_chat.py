@@ -562,3 +562,62 @@ class ChatViewTests(TestCase):
             user.username,
             user_id=user.id,
         )
+
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_offers_pro_to_a_guest(
+            self,
+            mock_claim,
+            mock_register_user_on_redis,
+    ):
+        self.given_guest_session()
+
+        mock_claim.return_value = True
+        mock_register_user_on_redis.return_value = self.user_id
+
+        response = self.client.get(self.url)
+
+        self.assertFalse(response.context["private_chats_unlimited"])
+        self.assertContains(response, reverse("users:signup"))
+
+    @override_settings(ACCOUNTS_ENABLED=False)
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    @patch("apps.chat.views.chat.claim_guest_identity")
+    def test_get_lifts_the_private_chat_limit_while_accounts_are_switched_off(
+            self,
+            mock_claim,
+            mock_register_user_on_redis,
+    ):
+        self.given_guest_session()
+
+        mock_claim.return_value = True
+        mock_register_user_on_redis.return_value = self.user_id
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["private_chats_unlimited"])
+        self.assertFalse(response.context["is_user_pro"])
+        self.assertNotContains(response, reverse("users:signup"))
+        self.assertNotContains(response, reverse("users:login"))
+        self.assertNotContains(response, "/subscriptions/")
+        self.assertContains(response, reverse("users:logout"))
+
+    @override_settings(ACCOUNTS_ENABLED=False)
+    @patch("apps.chat.views.chat.register_user_on_redis")
+    def test_get_hides_billing_from_a_signed_in_user_while_accounts_are_switched_off(
+            self,
+            mock_register_user_on_redis,
+    ):
+        """A staff session from the admin must not be sold PRO either."""
+        user = UserFactory(username="realuser")
+
+        self.client.force_login(user)
+        mock_register_user_on_redis.return_value = str(user.id)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["private_chats_unlimited"])
+        self.assertNotContains(response, "/subscriptions/")
+        self.assertNotContains(response, reverse("users:signup"))

@@ -113,7 +113,9 @@
             {% trans "No private chats yet. Tap any nickname in the room to start one." %}
         </p>
 
-        {% if request.user.is_authenticated and request.user.needs_payment_configuration %}
+        {% if not ACCOUNTS_ENABLED %}
+        {# Accounts and PRO are switched off: no limit to explain, nothing to sell. #}
+        {% elif request.user.is_authenticated and request.user.needs_payment_configuration %}
         <div class="side-menu__pro side-menu__pro--warning">
             <span class="side-menu__pro-title">{% trans "PRO needs your attention" %}</span>
             <span class="side-menu__pro-text">{% trans "A payment detail is missing, so PRO is not active yet." %}</span>
@@ -160,7 +162,8 @@
                     <span>{% if payment_overdue %}{% trans "PRO is paused while your payment is failing." %}{% else %}{% trans "Free accounts hold three private chats." %}{% endif %}</span>
                     <span id="chat-limit-notice-detail">{% if payment_overdue %}{% trans "You are back to three private chats until your payment details are updated." %}{% else %}{% trans "Close one to open another, or go PRO for as many as you like." %}{% endif %}</span>
                 </p>
-                {% if payment_overdue %}
+                {% if not ACCOUNTS_ENABLED %}
+                {% elif payment_overdue %}
                 <form action="{% url 'subscriptions:billing_portal' %}" method="POST">
                     {% csrf_token %}
                     <button class="chat__notice-btn" type="submit">{% trans "Update payment details" %}</button>

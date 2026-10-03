@@ -29,3 +29,7 @@ def hreflang_context(request):
     })
 
     return {"hreflang_urls": hreflang_urls, "SITE_URL": settings.SITE_URL}
+
+
+def feature_flags(request):
+    return {"ACCOUNTS_ENABLED": settings.ACCOUNTS_ENABLED}
