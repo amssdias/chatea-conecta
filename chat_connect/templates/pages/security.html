@@ -1,19 +1,86 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Chatea-Conecta - {% trans "Security" %}{% endblock title %}
-{% block description %}{% trans "Read current security-related information for Chatea-Conecta." %}{% endblock description %}
+{% block title %}
+{% trans "Is anonymous chat safe? How we protect your session | Chatea-Conecta" %}
+{% endblock title %}
 
-{% block header %}<header class="header-privacy"><h1 class="heading-primary">{% trans "Security" %}</h1></header>{% endblock header %}
+{% block description %}
+{% trans "How Chatea-Conecta protects your chat session, what we deliberately do not store, and the habits that keep anonymous chat safe for adults." %}
+{% endblock description %}
+
+{% block header %}
+<section class="split split--center split--tight split--ruled">
+    <header class="page-head page-head--bare split__col">
+        <nav class="breadcrumb" aria-label="{% trans 'Breadcrumb' %}">
+            <a class="breadcrumb__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+            <span aria-hidden="true">/</span>
+            <span>{% trans "Security" %}</span>
+        </nav>
+
+        <h1 class="page-head__title page-head__title--short">{% trans "Is anonymous chat safe?" %}</h1>
+
+        <p class="page-head__lede">
+            {% trans "Here is what protects your session, what we deliberately never store, and the handful of habits that keep an anonymous room safe for grown-ups." %}
+        </p>
+    </header>
+
+    <figure class="split__col">
+        {# Decorative panel in place of the canvas photograph. #}
+        <span class="art art--wide" aria-hidden="true"></span>
+    </figure>
+</section>
+{% endblock header %}
 
 {% block content %}
-<section class="privacy-policy" aria-labelledby="security-heading">
-    <h2 id="security-heading" class="heading-tertiary heading-tertiary-dark-amber margin-bottom-xsmall">{% trans "Current security information" %}</h2>
-    <ul>
-        <li>{% trans "Chat access is session-gated: users are redirected to the homepage when required session cookies are missing or invalid." %}</li>
-        <li>{% trans "User session cookies are set as HttpOnly and can be configured as Secure in deployment settings." %}</li>
-        <li>{% trans "The site supports HTTPS-oriented security settings in production, including HSTS and secure cookie settings." %}</li>
+
+<section class="rules" aria-labelledby="protect-heading">
+    <h2 class="section-title rules__heading" id="protect-heading">{% trans "How we protect your session" %}</h2>
+
+    <ul class="rules__grid">
+        <li class="rules__item">
+            <h3 class="rules__title">{% trans "Session-gated chat" %}</h3>
+            <p class="rules__text">{% trans "Chat access is session-gated. If the required session cookies are missing or invalid you are sent back to the homepage rather than into the room." %}</p>
+        </li>
+        <li class="rules__item">
+            <h3 class="rules__title">{% trans "HttpOnly cookies" %}</h3>
+            <p class="rules__text">{% trans "Session cookies are set as HttpOnly, so page scripts cannot read them, and they can be configured as Secure in deployment settings." %}</p>
+        </li>
+        <li class="rules__item">
+            <h3 class="rules__title">{% trans "HTTPS and HSTS" %}</h3>
+            <p class="rules__text">{% trans "Traffic between your device and our servers is encrypted, with HTTPS-oriented settings including HSTS and secure cookies in production." %}</p>
+        </li>
     </ul>
-    <p class="paragraph margin-top-xsmall">{% trans "For legal and privacy details, please review our Privacy Policy and Terms and Conditions pages." %}</p>
 </section>
+
+<section class="cards cards--ruled" aria-label="{% trans 'Safety' %}">
+    <div class="card card--lg">
+        <h2 class="card__title">{% trans "What we never keep" %}</h2>
+        <ul class="card__list">
+            <li class="card__item">{% trans "Chat messages. Conversations are real-time and ephemeral." %}</li>
+            <li class="card__item">{% trans "Personal data. No email, phone number or real name is needed to chat." %}</li>
+            <li class="card__item">{% trans "Permanent nicknames. Yours is cached for the session and dropped when you leave." %}</li>
+        </ul>
+        <a class="card__link" href="{% url 'chat:privacy' %}">{% trans "Read the full privacy policy" %}</a>
+    </div>
+
+    <div class="card card--lg card--ember">
+        <h2 class="card__title">{% trans "How to stay safe in the room" %}</h2>
+        <ul class="card__list">
+            <li class="card__item">{% trans "Never share your address, workplace, documents or financial details." %}</li>
+            <li class="card__item">{% trans "Pick a nickname that is not your real name or a handle you use elsewhere." %}</li>
+            <li class="card__item">{% trans "Treat unsolicited links and payment requests as scams, every time." %}</li>
+            <li class="card__item">{% trans "Use the Report button if someone is abusive. A moderator reviews reports." %}</li>
+        </ul>
+    </div>
+</section>
+
+<section class="closer">
+    <div class="closer__body">
+        <h2 class="closer__title">{% trans "Found a vulnerability, or someone acting badly?" %}</h2>
+        <p class="closer__text">{% trans "Report it and we will look into it. For the legal detail, read the privacy policy and the terms and conditions." %}</p>
+    </div>
+    <a class="closer__btn" href="{% url 'chat:contact' %}">{% trans "Report a problem" %}</a>
+</section>
+
 {% endblock content %}

@@ -1,0 +1,414 @@
+// Repaletted onto the ink tokens during step 3 of the redesign. Only
+// colours changed: the layout, and the `&__modal:target` rule that drives
+// the cancel dialog without JavaScript, are untouched.
+.subscription-detail {
+    min-height: clamp(52rem, 75vh, 72rem);
+    padding: 6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $ink;
+
+    &__container {
+        width: 100%;
+        max-width: 72rem;
+    }
+
+    &__card {
+        background-color: $ink-raised;
+        border: 1px solid $ink-line;
+        border-radius: 2rem;
+        box-shadow: none;
+        padding: 4.2rem;
+        text-align: center;
+    }
+
+    &__icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        margin: 0 auto 1.6rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        circle {
+            stroke: $ink-line-strong;
+            fill: rgba($ember, 0.16);
+            stroke-width: 4;
+        }
+
+        path {
+            stroke: $text-strong;
+            stroke-width: 4;
+        }
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.6rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 10rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+
+        &--active {
+            color: $online;
+            background-color: rgba($online, 0.14);
+            border: 1px solid rgba($online, 0.4);
+        }
+
+        &--warning {
+            color: $gold;
+            background-color: $gold-surface;
+            border: 1px solid $gold-line;
+        }
+
+        &--inactive {
+            color: $text-dim;
+            background-color: $ink-raised-2;
+            border: 1px solid $ink-line;
+        }
+    }
+
+    &__title {
+        font-size: 3.2rem;
+        color: $text-strong;
+        margin-bottom: 1.2rem;
+    }
+
+    &__message {
+        color: $text-dim;
+        font-size: 1.9rem;
+        line-height: 1.5;
+        margin: 0 auto 2.4rem;
+        max-width: 56rem;
+    }
+
+    &__details {
+        text-align: left;
+        background-color: $ink-raised-2;
+        border-radius: 1.2rem;
+        padding: 2rem;
+        margin: 0 auto 2.8rem;
+        max-width: 52rem;
+    }
+
+    &__detail-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 1.2rem;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid $ink-line;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        dt {
+            color: $text-dim;
+            font-size: 1.5rem;
+        }
+
+        dd {
+            color: $text;
+            font-weight: 600;
+            font-size: 1.3rem;
+            text-align: right;
+            word-break: break-word;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    &__form {
+        margin: 0;
+    }
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 4.6rem;
+        padding: 1.2rem 2rem;
+        border-radius: 1rem;
+        border: 1px solid transparent;
+        font-size: 1.7rem;
+        font-weight: 600;
+        font-family: inherit;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &--primary {
+            background-color: $ember;
+            color: #fff;
+
+            &:hover {
+                background-color: $ember-hover;
+                color: #fff;
+            }
+        }
+
+        &--secondary {
+            background-color: transparent;
+            color: $text-strong;
+            border-color: $ink-line-strong;
+
+            &:hover {
+                background-color: $ink-raised-2;
+            }
+        }
+
+        &--warning {
+            background-color: $gold-surface;
+            color: $gold;
+            border-color: $gold-line;
+
+            &:hover {
+                background-color: $gold-line;
+            }
+        }
+
+        &--danger {
+            background-color: transparent;
+            color: $gold;
+            border-color: $gold-line;
+
+            &:hover {
+                background-color: $gold-surface;
+            }
+        }
+    }
+
+    &__help {
+        color: $text-dim;
+        font-size: 1.5rem;
+    }
+
+    @include respond(tab-port) {
+        padding: 5rem 1.8rem;
+
+        &__card {
+            padding: 3.2rem;
+        }
+    }
+
+    @include respond(phone) {
+        min-height: auto;
+        padding: 3.2rem 1.2rem;
+
+        &__title {
+            font-size: 2.8rem;
+        }
+
+        &__message {
+            font-size: 1.7rem;
+        }
+
+        &__details {
+            padding: 1.6rem;
+        }
+
+        &__detail-item {
+            flex-direction: column;
+            align-items: flex-start;
+
+            dd {
+                text-align: left;
+            }
+        }
+
+        &__actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__form,
+        &__button {
+            width: 100%;
+        }
+
+        &__modal {
+            padding: 1.2rem;
+        }
+
+        &__modal-card {
+            padding: 3rem 2rem 2.4rem;
+        }
+
+        &__modal-title {
+            font-size: 2.3rem;
+        }
+
+        &__modal-message {
+            font-size: 1.6rem;
+        }
+
+        &__modal-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+    }
+
+    &__messages {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2.4rem;
+        text-align: left;
+    }
+
+    &__alert {
+        padding: 1.4rem 1.6rem;
+        border-radius: 1.2rem;
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 1.4;
+        border: 1px solid transparent;
+
+        &--success {
+            color: $online;
+            background-color: rgba($online, 0.14);
+            border-color: rgba($online, 0.4);
+        }
+
+        &--info {
+            color: $text-strong;
+            background-color: rgba($ember, 0.12);
+            border-color: $ink-line;
+        }
+
+        &--warning {
+            color: $gold;
+            background-color: $gold-surface;
+            border-color: $gold-line;
+        }
+
+        &--error {
+            color: $gold;
+            background-color: $gold-surface;
+            border-color: $gold-line;
+        }
+    }
+
+    &__modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    &__modal:target {
+        display: flex;
+    }
+
+    &__modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.66);
+        backdrop-filter: blur(0.4rem);
+    }
+
+    &__modal-card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 52rem;
+        background-color: $ink-raised;
+        border: 1px solid $ink-line;
+        border-radius: 2rem;
+        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.55);
+        padding: 3.2rem;
+        text-align: center;
+        animation: subscription-modal-in 0.18s ease-out;
+    }
+
+    &__modal-close {
+        position: absolute;
+        top: 1.4rem;
+        right: 1.6rem;
+        width: 3.2rem;
+        height: 3.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        text-decoration: none;
+        color: $text-dim;
+        font-size: 2.8rem;
+        line-height: 1;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: $ink-raised-2;
+            color: $text-strong;
+        }
+    }
+
+    &__modal-icon {
+        width: 6.4rem;
+        height: 6.4rem;
+        margin: 0 auto 1.8rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        circle {
+            fill: rgba($gold, 0.16);
+            stroke: $gold-line;
+            stroke-width: 4;
+        }
+
+        path {
+            stroke: $gold;
+            stroke-width: 4;
+        }
+    }
+
+    &__modal-title {
+        color: $text-strong;
+        font-size: 2.6rem;
+        margin-bottom: 1.2rem;
+    }
+
+    &__modal-message {
+        color: $text-dim;
+        font-size: 1.7rem;
+        line-height: 1.55;
+        margin-bottom: 2.4rem;
+    }
+
+    &__modal-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+    }
+
+    @keyframes subscription-modal-in {
+        from {
+            opacity: 0;
+            transform: translateY(1.2rem) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+}

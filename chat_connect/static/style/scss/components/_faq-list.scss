@@ -1,0 +1,102 @@
+// =============================================================
+// .faq-list - native <details> accordion, no JavaScript.
+//
+// Shared by the homepage FAQ section and the /faq/ page. The old
+// components/_faq.scss and static/js/faq.js were replaced by this: the
+// redesign uses <details>/<summary>, so the open/close behaviour, the
+// keyboard handling and the aria-expanded state all come from the
+// browser instead of a click handler.
+// =============================================================
+
+.faq-list {
+    padding: $section-y $gutter;
+    border-bottom: 1px solid $ink-line;
+
+    // On /faq/ the accordions sit inside .faq-group, which supplies its own
+    // heading and spacing, so the block is used without the section chrome.
+    &--bare {
+        padding: 0;
+        border-bottom: none;
+    }
+
+    &__heading { margin-bottom: clamp(28px, 3.5vw, 44px); }
+
+    &__items {
+        display: flex;
+        flex-direction: column;
+        max-width: 900px;
+        border-top: 1px solid $ink-line;
+    }
+
+    &--bare &__items { max-width: none; }
+
+    &__item {
+        border-bottom: 1px solid $ink-line;
+    }
+
+    &__q {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        padding: 22px 0;
+        font-family: $font-display;
+        font-stretch: 106%;
+        font-size: clamp(17px, 1.6vw, 21px);
+        font-weight: 700;
+        letter-spacing: -.015em;
+        color: $text-strong;
+        list-style: none;
+        cursor: pointer;
+
+        &::-webkit-details-marker { display: none; }
+    }
+
+    &__mark {
+        display: inline-block;
+        color: $ember;
+        transition: transform .2s ease;
+        flex: none;
+    }
+
+    &__item[open] &__mark { transform: rotate(45deg); }
+
+    &__a {
+        margin: 0 0 24px 32px;
+        max-width: 66ch;
+        font-size: 16.5px;
+        line-height: 1.65;
+        color: $text-dim;
+    }
+}
+
+// --- /faq/ page layout ---------------------------------------
+.faq-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: clamp(28px, 4vw, 56px);
+    padding: clamp(36px, 5vw, 64px) $gutter clamp(56px, 7vw, 96px);
+
+    // flex-grow 999 so the sidebar takes its basis and the body absorbs the
+    // rest, then both drop to full width when they can no longer sit together.
+    &__body {
+        flex: 999 1 520px;
+        min-width: 0;
+        max-width: 820px;
+        display: flex;
+        flex-direction: column;
+        gap: clamp(36px, 4vw, 52px);
+    }
+}
+
+.faq-group {
+    &__title {
+        margin-bottom: 8px;
+        font-family: $font-display;
+        font-stretch: 112%;
+        font-size: clamp(24px, 2.4vw, 32px);
+        font-weight: 800;
+        letter-spacing: -.025em;
+        color: $text-strong;
+    }
+}

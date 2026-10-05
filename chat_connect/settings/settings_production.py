@@ -1,14 +1,18 @@
+import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from .base import *
-import sentry_sdk
 
 DEBUG = False
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+# "localhost" is required by the container healthcheck, which calls Django with that Host header.
+ALLOWED_HOSTS = ["chatea-conecta.com", "www.chatea-conecta.com", "localhost"]
 
 MIDDLEWARE.insert(0, "django.middleware.cache.UpdateCacheMiddleware") # Save responses to cache (must come first)
-MIDDLEWARE.insert(4, "django.middleware.cache.FetchFromCacheMiddleware") # Retrieve responses from cache (must be after CommonMiddleware)
+MIDDLEWARE.insert(
+    MIDDLEWARE.index("django.middleware.locale.LocaleMiddleware") + 1,
+    "django.middleware.cache.FetchFromCacheMiddleware",
+)
 
 # ====== Security for HTTPS Enforcement ======
 # - SECURE_SSL_REDIRECT: Redirects all HTTP traffic to HTTPS, ensuring encrypted connections across the site.
@@ -26,7 +30,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # - CSRF_TRUSTED_ORIGINS: Specifies trusted origins for cross-origin requests with CSRF protection.
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+CSRF_TRUSTED_ORIGINS = ["https://chatea-conecta.com", "https://www.chatea-conecta.com"]
 
 # ====== Header Security Settings ======
 # - SECURE_BROWSER_XSS_FILTER: Enables the X-XSS-Protection header in compatible browsers to help prevent cross-site scripting (XSS) attacks.
@@ -44,16 +48,6 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # - This ensures users always see the latest version of static files after updates.
 # - Does NOT affect user-uploaded files (those are managed via MEDIA_ROOT/MEDIA_URL).
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
-# Channels
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [REDIS_CHANNEL_LAYER_URL],
-        },
-    },
-}
 
 # Sentry configuration
 sentry_sdk.init(

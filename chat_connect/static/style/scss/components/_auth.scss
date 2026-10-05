@@ -1,0 +1,187 @@
+// =============================================================
+// Auth pages: login, signup, logged out, password change and the four
+// password-reset steps.
+//
+// No canvas exists for these, so this extends the redesign's own
+// vocabulary rather than inventing one: the .join card from the homepage
+// hero is the reference, since signing in and picking a nickname are the
+// same gesture. Ink card, ink inputs with an ember focus ring, one ember
+// pill for the primary action.
+//
+// Replaces the old light-card version (formerly _form-nickname.scss).
+// The markup is Django's: {{ form.as_p }} emits <p><label><input>, a
+// <span class="helptext"> and <ul class="errorlist">, so those element
+// selectors are load-bearing and cannot become BEM classes without a
+// custom form renderer.
+// =============================================================
+
+.auth-page {
+    padding: clamp(32px, 5vw, 64px) $gutter clamp(56px, 7vw, 96px);
+
+    &__container {
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        padding: clamp(24px, 3vw, 34px);
+        border: 1px solid $ink-line;
+        border-radius: $radius;
+        background-color: $ink-raised;
+    }
+
+    &__title {
+        font-family: $font-display;
+        font-stretch: 112%;
+        font-size: clamp(22px, 2.2vw, 28px);
+        font-weight: 800;
+        letter-spacing: -.025em;
+        color: $text-strong;
+    }
+
+    &__description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: $text-dim;
+    }
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    // {{ form.as_p }} wraps each field in a <p>.
+    p {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        margin: 0;
+    }
+
+    label {
+        font-family: $font-mono;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        min-height: 52px;
+        padding: 0 16px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius;
+        background-color: $ink;
+        font-family: $font-body;
+        font-size: 16.5px;
+        color: $text-strong;
+
+        &::placeholder { color: $text-quiet; }
+
+        &:focus {
+            outline: none;
+            border-color: $ember;
+            box-shadow: 0 0 0 3px rgba(209, 64, 46, .22);
+        }
+    }
+
+    textarea {
+        min-height: 0;
+        padding: 14px 16px;
+        line-height: 1.55;
+        resize: vertical;
+    }
+
+    // Checkboxes must not stretch to the full field width.
+    input[type="checkbox"],
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        min-height: 0;
+        padding: 0;
+        accent-color: $ember;
+    }
+
+    .helptext {
+        font-size: 14px;
+        line-height: 1.5;
+        color: $text-quiet;
+
+        // Django renders password rules as a nested list.
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 6px;
+            padding-left: 18px;
+        }
+    }
+
+    // Django's own error markup, plus the block-level wrapper.
+    ul.errorlist,
+    &__errors ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+        padding: 11px 14px;
+        border: 1px solid $ember;
+        border-radius: $radius;
+        background-color: rgba(209, 64, 46, .1);
+        font-size: 14.5px;
+        line-height: 1.45;
+        color: $text-strong;
+    }
+
+    &__help {
+        padding: 12px 14px;
+        border: 1px solid $ink-line-strong;
+        border-radius: $radius;
+        background-color: $ink-raised-2;
+        font-size: 14.5px;
+        line-height: 1.5;
+        color: $text-dim;
+    }
+
+    &__actions { margin-top: 4px; }
+
+    &__button {
+        width: 100%;
+        min-height: 54px;
+        border: none;
+        border-radius: $radius-pill;
+        background-color: $ember;
+        font-family: $font-display;
+        font-stretch: 106%;
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+
+        &:hover { background-color: $ember-hover; }
+        &:active { transform: translateY(1px); }
+    }
+
+    &__footer {
+        font-size: 15px;
+        line-height: 1.6;
+        color: $text-dim;
+
+        a {
+            font-weight: 600;
+            color: $ember-hover;
+            text-decoration: none;
+
+            &:hover { color: $gold; }
+        }
+    }
+}

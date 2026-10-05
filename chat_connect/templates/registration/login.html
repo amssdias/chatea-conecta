@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" %} | Chatea Conecta{% endblock title %}
+{% block description %}{% trans "Sign in to access your account and continue chatting." %}{% endblock description %}
+{% block robots %}noindex,nofollow{% endblock robots %}
+
+{% block header %}
+<header class="page-head">
+    <h1 class="page-head__title page-head__title--short">{% trans "Login" %}</h1>
+</header>
+{% endblock header %}
+
+{% block content %}
+<section class="auth-page" aria-labelledby="login-heading">
+    <div class="auth-page__container">
+        <article class="auth-page__card">
+            {% if user.is_authenticated %}
+                <h2 id="login-heading" class="auth-page__title">{% trans "You are already signed in" %}</h2>
+                <p class="auth-page__description">{% trans "Your account is already active in this browser." %}</p>
+                <p class="auth-form__footer">
+                    <a href="{% url 'chat:home' %}">{% trans "Go back to chat home" %}</a>
+                </p>
+            {% else %}
+                <h2 id="login-heading" class="auth-page__title">{% trans "Access your account" %}</h2>
+                <p class="auth-page__description">{% trans "Enter your username and password to continue." %}</p>
+
+                <form method="post" class="auth-form" aria-describedby="login-help">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <div class="auth-form__actions">
+                        <button class="auth-form__button" type="submit">{% trans "Log in" %}</button>
+                    </div>
+                </form>
+
+                <p id="login-help" class="auth-form__footer">
+                    <a href="{% url 'password_reset' %}">{% trans "Forgot your password? Reset it here." %}</a>
+                </p>
+                <p class="auth-form__footer">{% trans "Need an account?" %} <a href="{% url 'users:signup' %}">{% trans "Create one here" %}</a>.</p>
+            {% endif %}
+        </article>
+    </div>
+</section>
+{% endblock content %}

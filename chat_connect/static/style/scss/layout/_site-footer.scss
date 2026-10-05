@@ -1,0 +1,115 @@
+// .site-footer - redesign footer (templates/footer-v2.html)
+
+.site-footer {
+    padding: clamp(44px, 5vw, 72px) $gutter 28px;
+    background-color: $ink;
+    border-top: 1px solid $ink-line;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: clamp(28px, 3vw, 48px);
+    }
+
+    &__brand {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    &__brand-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: $radius;
+        background-color: $ember;
+        flex: none;
+
+        & img {
+            width: 17px;
+            height: 17px;
+            filter: invert(100%);
+        }
+    }
+
+    &__name {
+        font-family: $font-display;
+        font-stretch: 112%;
+        font-size: 17px;
+        font-weight: 700;
+        color: $text-strong;
+    }
+
+    &__blurb {
+        max-width: 32ch;
+        font-size: 15px;
+        line-height: 1.6;
+        color: $text-quiet;
+    }
+
+    &__col {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+    }
+
+    &__col-title {
+        margin-bottom: 2px;
+        font-family: $font-mono;
+        font-size: 11.5px;
+        font-weight: 500;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: $text-quiet;
+    }
+
+    &__link {
+        font-size: 15.5px;
+        color: $text;
+        text-decoration: none;
+
+        &:hover { color: $ember-hover; }
+    }
+
+    &__bottom {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: clamp(32px, 4vw, 52px);
+        padding-top: 20px;
+        border-top: 1px solid $ink-line;
+    }
+
+    &__legal {
+        font-family: $font-mono;
+        font-size: 13px;
+        color: $text-quiet;
+    }
+
+    &__langs {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    &__lang {
+        font-size: 14px;
+        color: $text-quiet;
+        text-decoration: none;
+
+        &--current {
+            font-weight: 600;
+            color: $text;
+        }
+    }
+}

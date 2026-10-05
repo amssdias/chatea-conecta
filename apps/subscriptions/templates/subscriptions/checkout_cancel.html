@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Checkout cancelled" %}{% endblock title %}
+{% block description %}{% trans "Your checkout was cancelled. No payment was taken." %}{% endblock description %}
+
+{% block content %}
+<section class="checkout-result checkout-result--cancel">
+	<div class="checkout-result__container">
+		<article class="checkout-result__card" aria-live="polite">
+			<div class="checkout-result__icon" aria-hidden="true">
+				<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="32" cy="32" r="30"/>
+					<path d="M22 22L42 42" stroke-linecap="round"/>
+					<path d="M42 22L22 42" stroke-linecap="round"/>
+				</svg>
+			</div>
+
+			<h1 class="checkout-result__title">{% trans "Checkout cancelled" %}</h1>
+			<p class="checkout-result__message">
+				{% blocktrans %}No payment was taken. You can try again whenever you are ready.{% endblocktrans %}
+			</p>
+
+			<div class="checkout-result__actions">
+				<form method="post" action="{% url 'subscriptions:create_pro_checkout_session' %}">
+					{% csrf_token %}
+					<button type="submit" class="checkout-result__button checkout-result__button--primary">
+						{% trans "Try again" %}
+					</button>
+				</form>
+				<a href="{% url 'chat:live-chat' %}" class="checkout-result__button checkout-result__button--secondary">{%
+					trans "Back to chat" %}</a>
+			</div>
+
+			<p class="checkout-result__help">
+				{% blocktrans %}You can continue using the free version.{% endblocktrans %}
+			</p>
+		</article>
+	</div>
+</section>
+{% endblock content %}

@@ -32,13 +32,15 @@ class BotCacheLoader:
 
     def _load_bot_users(self) -> None:
         """
-        Load all non-staff, non-superuser users that can act as public chat bots.
+        Load all users flagged as bots into Redis.
+
+        The cached bot users are cleared first so that users that are no longer
+        flagged as bots stop being selected as soon as the cache is reloaded.
         """
+        self.redis_store.clear_bot_users()
+
         users = dict(
-            User.objects.filter(
-                is_staff=False,
-                is_superuser=False,
-            ).values_list("id", "username")
+            User.objects.filter(is_bot=True).values_list("id", "username")
         )
 
         for bot_id, bot_username in users.items():

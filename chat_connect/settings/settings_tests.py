@@ -1,5 +1,6 @@
-from chat_connect.settings.base import *
 import secrets
+
+from chat_connect.settings.base import *
 
 SECRET_KEY = "".join(secrets.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50))
 
@@ -29,6 +30,10 @@ CACHES = {
 CELERY_BROKER_URL = "memory://localhost"
 COOKIES_SECURE = False
 
+# The suite covers accounts and billing, so it runs with them switched on
+# whatever the environment says. Flag-off behaviour is tested with override_settings.
+ACCOUNTS_ENABLED = True
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": True,
@@ -57,3 +62,6 @@ LOGGING = {
     },
 }
 
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+DEFAULT_FROM_EMAIL = "no-reply@chatea-conecta.com"
+SUPPORT_EMAIL = "support@chatea-conecta.test"

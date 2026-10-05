@@ -73,7 +73,7 @@ REDIS_PASSWORD=<redis-password>
 DJANGO_REDIS_CACHE_DB=<redis-cache-db-index>
 REDIS_DB_CHANNEL=<redis-channel-db-index>
 REDIS_DB_CELERY=<redis-celery-db-index>
-SENTRY_DNS=<sentry-dns>
+SENTRY_DSN=<sentry-dsn>
 ```
 
 3. Add redis.conf file (with same password in the `.env` file):

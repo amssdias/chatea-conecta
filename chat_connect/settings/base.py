@@ -31,6 +31,10 @@ ALLOWED_HOSTS = []
 
 SITE_URL = os.getenv("SITE_URL", "https://chatea-conecta.com").rstrip("/")
 
+# Accounts and billing ship dark. Off hides login, signup and PRO, answers 404
+# on their routes and lifts the private-chat limit that PRO would otherwise sell.
+ACCOUNTS_ENABLED = os.getenv("ACCOUNTS_ENABLED", "false").lower() == "true"
+
 # Application definition
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -44,6 +48,7 @@ DJANGO_APPS = [
 
 MY_PROJECT_APPS = [
     "apps.chat",
+    "apps.subscriptions",
     "apps.users",
 ]
 
@@ -62,6 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",  # Handles user authentication
     "django.contrib.messages.middleware.MessageMiddleware",  # Manages messages (e.g., success/error notices)
     "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Prevents clickjacking attacks
+    "chat_connect.middleware.AccountsFlagMiddleware",  # 404s account and billing routes while ACCOUNTS_ENABLED is off
 ]
 
 ROOT_URLCONF = "chat_connect.urls"
@@ -79,7 +85,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "chat_connect.context_processors.hreflang_context"
+                "chat_connect.context_processors.hreflang_context",
+                "chat_connect.context_processors.feature_flags",
             ],
         },
     },
@@ -88,6 +95,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "chat_connect.wsgi.application"
 ASGI_APPLICATION = "chat_connect.asgi.application"
 AUTH_USER_MODEL = "users.User"
+LOGIN_URL = "users:login"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -164,6 +172,18 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Email
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Chat Connect <support@chatea-conecta.com>")
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 # Redis
 REDIS_PROTOCOL = os.getenv("REDIS_PROTOCOL", "rediss")
 REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
@@ -195,13 +215,36 @@ CACHE_TIMEOUT_ONE_DAY = SECONDS_IN_DAY
 CACHE_TIMEOUT_ONE_WEEK = SECONDS_IN_DAY * 7
 CACHE_TIMEOUT_ONE_MONTH = SECONDS_IN_DAY * 30
 
+# Lifetime of the signed guest session token and of the Redis keys that map a
+# guest id to its username. Both must use the same value so a token can never
+# outlive the ownership mapping it is checked against.
+GUEST_SESSION_MAX_AGE = SECONDS_IN_DAY
+
 # Web Socket - Channels
 REDIS_DB_CHANNEL = os.getenv("REDIS_DB_CHANNEL")
 REDIS_CHANNEL_LAYER_URL = f"{REDIS_URL}/{REDIS_DB_CHANNEL}"
+
+# Redis servers used by the Channels layer.
+REDIS_CHANNEL_LAYER_HOSTS = [
+    {
+        # Redis address and logical database used for Channels messages.
+        "address": REDIS_CHANNEL_LAYER_URL,
+
+        # Maximum time to wait for a Redis response.
+        # It must be longer than Channels' 5-second blocking receive.
+        "socket_timeout": 10,
+    },
+]
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {"hosts": [REDIS_CHANNEL_LAYER_URL], "expiry": 60},
+        # Settings passed to the Redis channel layer.
+        "CONFIG": {
+            "hosts": REDIS_CHANNEL_LAYER_HOSTS,
+
+            # Delete messages that remain undelivered for more than 60 seconds.
+            "expiry": 60,
+        },
     },
 }
 
@@ -224,3 +267,13 @@ CELERY_BEAT_SCHEDULE = {
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = os.getenv("AWS_DEFAULT_REGION")
+
+# Stripe settings
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+STRIPE_PRO_MONTHLY_PRICE_ID = os.getenv("STRIPE_PRO_MONTHLY_PRICE_ID")
+STRIPE_API_VERSION = "2026-02-25.clover"
+
+
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL")
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL")

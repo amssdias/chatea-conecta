@@ -1,7 +1,8 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 
-from apps.chat.views import ChatView, CloseChatSessionView, HomeChatView
+from apps.chat.views import ChatView, HomeChatView
+from apps.users.views import CloseChatSessionView
 
 
 class UrlsTestCase(SimpleTestCase):
@@ -16,6 +17,6 @@ class UrlsTestCase(SimpleTestCase):
         self.assertEqual(view_class, ChatView)
 
     def test_logout_url_resolves(self):
-        url = reverse("chat:close-chat")
+        url = reverse("users:logout")
         view_class = resolve(url).func.view_class
         self.assertEqual(view_class, CloseChatSessionView)

@@ -1,0 +1,50 @@
+{% load static %}
+{% load i18n %}
+
+{# Redesign footer. Included only by pages that opt in via {% block footer %}. #}
+
+<footer class="site-footer">
+    <div class="site-footer__grid">
+        <div class="site-footer__brand">
+            <span class="site-footer__brand-row">
+                <span class="site-footer__mark">
+                    <img src="{% static 'img/smile-chat-bubble.svg' %}" alt="">
+                </span>
+                <span class="site-footer__name">Chatea-Conecta</span>
+            </span>
+            <p class="site-footer__blurb">
+                {% trans "Free anonymous chat rooms for adults. One room, no account, open every hour." %}
+            </p>
+        </div>
+
+        <nav class="site-footer__col" aria-label="{% trans 'Chat' %}">
+            <h2 class="site-footer__col-title">{% trans "Chat" %}</h2>
+            <a class="site-footer__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+            <a class="site-footer__link" href="{% url 'chat:about' %}">{% trans "About" %}</a>
+        </nav>
+
+        <nav class="site-footer__col" aria-label="{% trans 'Support' %}">
+            <h2 class="site-footer__col-title">{% trans "Support" %}</h2>
+            <a class="site-footer__link" href="{% url 'chat:faq' %}">{% trans "FAQ" %}</a>
+            <a class="site-footer__link" href="{% url 'chat:security' %}">{% trans "Security" %}</a>
+            <a class="site-footer__link" href="{% url 'chat:contact' %}">{% trans "Contact" %}</a>
+        </nav>
+
+        <nav class="site-footer__col" aria-label="{% trans 'Legal' %}">
+            <h2 class="site-footer__col-title">{% trans "Legal" %}</h2>
+            <a class="site-footer__link" href="{% url 'chat:terms' %}">{% trans "Terms" %}</a>
+            <a class="site-footer__link" href="{% url 'chat:privacy' %}">{% trans "Privacy Policy" %}</a>
+        </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+        <span class="site-footer__legal">&copy; {% now "Y" %} Chatea-Conecta &middot; 18+</span>
+        <span class="site-footer__langs">
+            {% get_current_language as CURRENT_LANGUAGE %}
+            {% for hreflang in hreflang_urls %}
+                <a class="site-footer__lang {% if hreflang.lang == CURRENT_LANGUAGE %}site-footer__lang--current{% endif %}"
+                   href="{{ hreflang.url }}" hreflang="{{ hreflang.lang }}">{{ hreflang.lang|upper }}</a>
+            {% endfor %}
+        </span>
+    </div>
+</footer>

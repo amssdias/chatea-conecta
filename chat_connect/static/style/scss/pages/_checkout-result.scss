@@ -1,0 +1,198 @@
+// Repaletted onto the ink tokens during step 3 of the redesign. Only
+// colours changed: the layout, and the `&__modal:target` rule that drives
+// the cancel dialog without JavaScript, are untouched.
+.checkout-result {
+    min-height: clamp(52rem, 75vh, 72rem);
+    padding: 6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $ink;
+
+    &__container {
+        width: 100%;
+        max-width: 72rem;
+    }
+
+    &__card {
+        background-color: $ink-raised;
+        border: 1px solid $ink-line;
+        border-radius: 2rem;
+        box-shadow: none;
+        padding: 4.2rem;
+        text-align: center;
+    }
+
+    &__icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        margin: 0 auto 2rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        circle,
+        path {
+            stroke-width: 4;
+        }
+    }
+
+    &__title {
+        font-size: 3.2rem;
+        color: $text-strong;
+        margin-bottom: 1.2rem;
+    }
+
+    &__message {
+        color: $text-dim;
+        font-size: 1.9rem;
+        line-height: 1.5;
+        margin-bottom: 2.4rem;
+    }
+
+    &__details {
+        text-align: left;
+        background-color: $ink-raised-2;
+        border-radius: 1.2rem;
+        padding: 2rem;
+        margin: 0 auto 2.8rem;
+        max-width: 52rem;
+    }
+
+    &__detail-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 1.2rem;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid $ink-line;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        dt {
+            color: $text-dim;
+        }
+
+        dd {
+            color: $text;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-word;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    &__button {
+        text-decoration: none;
+        padding: 1.2rem 2rem;
+        border-radius: 1rem;
+        border: 1px solid transparent;
+        font-size: 1.7rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+
+        &--primary {
+            background-color: $ember;
+            color: #fff;
+
+            &:hover {
+                background-color: $ember-hover;
+                color: #fff;
+            }
+        }
+
+        &--secondary {
+            background-color: transparent;
+            color: $text-strong;
+            border-color: $ink-line-strong;
+
+            &:hover {
+                background-color: $ink-raised-2;
+            }
+        }
+    }
+
+    &__help {
+        color: $text-dim;
+        font-size: 1.5rem;
+    }
+
+    &--success {
+        .checkout-result__icon {
+            circle {
+                stroke: rgba($online, 0.5);
+                fill: rgba($online, 0.14);
+            }
+
+            path {
+                stroke: $online;
+            }
+        }
+    }
+
+    &--cancel {
+        .checkout-result__icon {
+            circle {
+                stroke: $gold-line;
+                fill: rgba($gold, 0.16);
+            }
+
+            path {
+                stroke: $gold;
+            }
+        }
+    }
+
+    @include respond(tab-port) {
+        padding: 5rem 1.8rem;
+
+        &__card {
+            padding: 3.2rem;
+        }
+    }
+
+    @include respond(phone) {
+        min-height: auto;
+        padding: 3.2rem 1.2rem;
+
+        &__title {
+            font-size: 2.8rem;
+        }
+
+        &__message {
+            font-size: 1.7rem;
+        }
+
+        &__details {
+            padding: 1.6rem;
+        }
+
+        &__detail-item {
+            flex-direction: column;
+            align-items: flex-start;
+
+            dd {
+                text-align: left;
+            }
+        }
+
+        &__actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__button {
+            width: 100%;
+            text-align: center;
+        }
+    }
+}

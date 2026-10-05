@@ -1,95 +1,130 @@
 {% extends "base.html" %}
-{% load static %}
 {% load i18n %}
 
 {% block title %}
-Chatea-Conecta - {% trans "Privacy Policy" %}
+{% trans "Privacy policy. We store almost nothing | Chatea-Conecta" %}
 {% endblock title %}
 
 {% block description %}
-    {% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
+{% trans "What Chatea-Conecta collects when you use the free chat: a nickname held in a session cache, one cookie, and nothing else. No personal data, no message history, no third parties." %}
 {% endblock description %}
 
-{% block og_title %}
-{% blocktrans %}Chatea-Conecta - Privacy Policy{% endblocktrans %}
-{% endblock og_title %}
-
-{% block og_description %}
-{% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
-{% endblock og_description %}
-
-{% block twitter_title %}
-{% blocktrans %}Chatea-Conecta - Privacy Policy{% endblocktrans %}
-{% endblock twitter_title %}
-
-{% block twitter_description %}
-{% trans "Learn about the privacy practices of Chatea-Conecta. We prioritize your privacy and explain how your data is handled." %}
-{% endblock twitter_description %}
-
 {% block scripts %}
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ SITE_URL }}"},
+                {"@type": "ListItem", "position": 2, "name": "Privacy policy", "item": "{{ SITE_URL }}{{ request.path }}"}
+              ]
+            },
+            {
+              "@type": "WebPage",
+              "name": "Privacy policy",
+              "url": "{{ SITE_URL }}{{ request.path }}",
+              "inLanguage": "{{ LANGUAGE_CODE|default:'en' }}",
+              "datePublished": "2025-05-01"
+            }
+          ]
+        }
+    </script>
 {% endblock scripts %}
 
 {% block header %}
+<header class="page-head">
+    <nav class="breadcrumb" aria-label="{% trans 'Breadcrumb' %}">
+        <a class="breadcrumb__link" href="{% url 'chat:home' %}">{% trans "Home" %}</a>
+        <span aria-hidden="true">/</span>
+        <span>{% trans "Privacy policy" %}</span>
+    </nav>
 
-<header class="header-privacy">
-    <h1 class="heading-primary">{% trans "Privacy Policy" %}</h1>
+    <h1 class="page-head__title page-head__title--short">{% trans "Privacy policy" %}</h1>
+
+    <p class="page-head__lede">
+        {% trans "Your privacy is important to us. This policy explains how we handle information collected from you while using Chatea-Conecta, which is very little." %}
+    </p>
+
+    <span class="page-head__badge">{% trans "Effective 01/05/2025" %}</span>
 </header>
-
 {% endblock header %}
 
 {% block content %}
-<section class="privacy-policy" role="region" aria-labelledby="privacy-policy-heading">
-    <div class="privacy-policy-heading">
-        <h2 id="privacy-policy-heading" class="heading-secondary heading-secondary-dark-amber">{% trans "Effective Date: 01/05/2025" %}</h2>
-        <p class="paragraph">{% trans "Welcome to <strong>Chatea-Conecta</strong>. Your privacy is important to us. This Privacy Policy explains how we handle information collected from users ('you' or 'your') while using our application." %}</p>
+
+<section class="cards" aria-label="{% trans 'Summary' %}">
+    <div class="card">
+        <h2 class="card__title">{% trans "What we ask for" %}</h2>
+        <p class="card__text">{% trans "A nickname. That is the only thing you give us, and it does not have to mean anything." %}</p>
     </div>
 
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">1. {% trans "Information We Collect" %}</h3>
-        <p class="paragraph">{% trans "We do not collect or store any personal information. The only information we process is the username you create upon accessing our app. This username can be any set of characters of your choice and is not linked to your personal identity." %}</p>
+    <div class="card card--ember">
+        <h2 class="card__title">{% trans "What we keep" %}</h2>
+        <p class="card__text">{% trans "Nothing after you leave. No message history, no personal data, no profile." %}</p>
     </div>
 
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">2. {% trans "How We Use Your Information" %}</h3>
-        <p class="paragraph">{% trans "The username is used exclusively to facilitate the chat functionality within the app. We do not store usernames permanently; they are temporarily cached using a secure caching service (Redis) and are automatically removed when you leave the page." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">3. {% trans "Cookies" %}</h3>
-        <p class="paragraph">{% trans "We use cookies to enhance your experience. A single cookie is used to store the username you create for the duration of your session. This cookie is deleted once the session ends or the page is refreshed." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">4. {% trans "Data Storage and Security" %}</h3>
-        <ul class="privacy-policy-section__list">
-            <li class="paragraph">{% trans "Usernames are stored temporarily in Redis, a secure caching service, and are automatically deleted when the user exits the page." %}</li>
-            <li class="paragraph">{% trans "We implement reasonable technical measures to ensure that the temporary data processed by our app is secure." %}</li>
-        </ul>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">5. {% trans "Third Parties" %}</h3>
-        <p class="paragraph">{% trans "We do not share, sell, or disclose your information to third parties." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">6. {% trans "Age Restrictions" %}</h3>
-        <p class="paragraph">{% trans "Our app is intended for users aged 18 and older. By using this app, you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for ensuring compliance with this restriction." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">7. {% trans "Your Rights" %}</h3>
-        <p class="paragraph">{% trans "Since we do not store or collect personal information, there are no specific rights for data access, correction, or deletion. If you have concerns about privacy, you may stop using the app at any time." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">8. {% trans "Updates to This Policy" %}</h3>
-        <p class="paragraph">{% trans "We may update this Privacy Policy from time to time. Any changes will be reflected on this page, and the updated date will be indicated at the top." %}</p>
-    </div>
-
-    <div class="privacy-policy-section">
-        <h3 class="heading-tertiary heading-tertiary-dark-amber">9. {% trans "Contact Us" %}</h3>
-        <p class="paragraph">{% trans "If you have any questions or concerns regarding this Privacy Policy, please refrain from using the app." %}</p>
+    <div class="card">
+        <h2 class="card__title">{% trans "Who else sees it" %}</h2>
+        <p class="card__text">{% trans "No one. We do not share, sell or disclose your information to third parties." %}</p>
     </div>
 </section>
+
+<div class="doc">
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Information we collect" %}</h2>
+        <p class="doc__text">{% trans "We do not collect or store any personal information. The only information we process is the username you create when you access the app. It can be any set of characters and it is not linked to your identity." %}</p>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "How we use it" %}</h2>
+        <p class="doc__text">{% trans "The username is used only to make the chat work. It is not stored permanently. It is cached temporarily using a secure caching service and removed automatically when you leave the page." %}</p>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Cookies" %}</h2>
+        <p class="doc__text">{% trans "We use one cookie, which stores the username you created for the length of your session. It is deleted once the session ends or the page is refreshed." %}</p>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Storage and security" %}</h2>
+        <ul class="doc__list">
+            <li class="doc__item">{% trans "Usernames are held temporarily in a secure caching service and deleted automatically when you exit the page." %}</li>
+            {# Resolved first: the url tag cannot run inside a translation block. #}
+            {% url 'chat:security' as security_url %}
+            <li class="doc__item">
+                {% blocktrans %}We apply reasonable technical measures to keep the temporary data our app processes secure. More detail is on the <a href="{{ security_url }}">security page</a>.{% endblocktrans %}
+            </li>
+        </ul>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Age restrictions" %}</h2>
+        <p class="doc__text">{% trans "The app is intended for users aged 18 and over. By using it you confirm that you are at least 18 years old. If you are under 18, you are solely responsible for complying with this restriction." %}</p>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Your rights" %}</h2>
+        <p class="doc__text">{% trans "Because we do not store or collect personal information, there is no data to access, correct or delete. If you have a concern about privacy, write to us and we will explain exactly what happens with your session." %}</p>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Updates to this policy" %}</h2>
+        <p class="doc__text">{% trans "We may update this policy from time to time. Any changes appear on this page, with the effective date shown at the top." %}</p>
+    </article>
+
+    <article class="doc__section">
+        <h2 class="doc__title">{% trans "Contact us" %}</h2>
+        {% url 'chat:contact' as contact_url %}
+        <p class="doc__text">
+            {% blocktrans %}If you have questions about this policy, write to <a href="{{ contact_url }}">support@chatea-conecta.com</a>.{% endblocktrans %}
+        </p>
+        <div class="doc__actions pill-links">
+            <a class="pill-link" href="{% url 'chat:terms' %}">{% trans "Terms and conditions" %}</a>
+            <a class="pill-link" href="{% url 'chat:security' %}">{% trans "Security" %}</a>
+        </div>
+    </article>
+</div>
+
 {% endblock content %}

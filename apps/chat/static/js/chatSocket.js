@@ -1,5 +1,6 @@
 class ChatSocket {
     static ACTION_TYPES = {
+        CLOSE_PRIVATE_CHAT: "close_private_chat",
         HEARTBEAT: "heartbeat",
         PRIVATE_INVITE: "private_invite",
         REGISTER_GROUP: "register_group",
@@ -84,6 +85,11 @@ class ChatSocket {
     }
 
     handleSendMessage(data) {
+        if (typeof data.message !== "string") {
+            console.warn("Invalid chat message received:", data.message);
+            return;
+        }
+
         if (String(data.userId) === String(this.currentUserId)) {
             this.chatView.updateCurrentUserBackgroundMessage(data.message);
             return;
@@ -111,13 +117,32 @@ class ChatSocket {
         this.chatView.markPrivateChatAsOffline(data.privateGroupId);
     }
 
+    handlePrivateChatError(data) {
+        if (data.targetUserId) {
+            const privateGroupId = this.chatView._privateChatsMapping[
+                data.targetUserId
+                ];
+            if (privateGroupId) {
+                this.chatView.removePrivateChat(
+                    data.targetUserId,
+                    privateGroupId,
+                );
+            }
+        }
+
+        this.chatView.showLimitNotice("", data.message || privateChatLimitMessage);
+    }
+
     handleErrorSocketAction(data) {
         console.error("Socket error action received:", data);
         this._showChatClosedMessage();
     }
 
     handlePrivateChatsRestored(data) {
-        this.chatView.restorePrivateChatsState(data.privateChats);
+        this.chatView.restorePrivateChatsState(
+            data.privateChats,
+            this.sendMessage.bind(this),
+        );
     }
 
     handlePrivateChatParticipantOnline(data) {
@@ -139,18 +164,25 @@ class ChatSocket {
         const formattedGroupChatName = groupChatName.toLowerCase();
         this.registerGroupUser(formattedGroupChatName);
 
+        // The group id stays lowercase because that is what the consumer
+        // registers; the room is shown under its real name instead.
+        const strings = this.chatView.strings || {};
+        const displayName = strings.roomName || groupChatName;
+
         // Create and display chat with event
         const chat = this.chatView.createChat(
-            formattedGroupChatName, 
+            displayName,
             formattedGroupChatName,
-            this.sendMessage.bind(this)
+            this.sendMessage.bind(this),
+            {isRoom: true}
         );
 
         this.chatView.displayChat(chat);
 
         this.sideMenuView.addGroupChat(
-            groupChatName,
-            this.chatView.displayChat.bind(this.chatView, chat)
+            formattedGroupChatName,
+            this.chatView.displayChat.bind(this.chatView, chat),
+            {displayName, subtitle: strings.roomSubtitle}
         );
     }
 
@@ -179,6 +211,13 @@ class ChatSocket {
         });
     }
 
+    closePrivateChat(userIdTarget) {
+        this._sendPayload({
+            "type": ChatSocket.ACTION_TYPES.CLOSE_PRIVATE_CHAT,
+            "target_user_id": userIdTarget,
+        });
+    }
+
     // Private helpers
 
     _bindSocketEvents() {
@@ -194,6 +233,7 @@ class ChatSocket {
             send_message: this.handleSendMessage.bind(this),
             private_invite: this.handleChatInvite.bind(this),
             private_chat_participant_offline: this.handlePrivateChatOffline.bind(this),
+            private_chat_access_denied: this.handlePrivateChatError.bind(this),
             error_action: this.handleErrorSocketAction.bind(this),
             private_chats_restored: this.handlePrivateChatsRestored.bind(this),
             private_chat_participant_online: this.handlePrivateChatParticipantOnline.bind(this),

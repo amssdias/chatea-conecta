@@ -28,6 +28,14 @@ COOKIES_SECURE = False
 CELERY_TASK_ALWAYS_EAGER = False # If true must disable task on chat consumer
 CELERY_TASK_EAGER_PROPAGATES = True
 
+CELERY_BEAT_SCHEDULE = {
+    "send-random-messages-tick-every-60-seconds": {
+        "task": "apps.chat.tasks.send_random_messages_tick",
+        "schedule": 60.0,
+        "args": ("chatea",),
+    },
+}
+
 # Time in minutes to expire messages sent
 CLEAR_MESSAGES_EXPIRATION_TIME = 10
 

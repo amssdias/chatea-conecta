@@ -1,6 +1,6 @@
-import boto3
 import json
 
+import boto3
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
@@ -74,7 +74,9 @@ class Command(BaseCommand):
                 }
 
                 User.objects.create_user_with_profile(
-                    username=user["username"], profile_data=profile_data
+                    username=user["username"],
+                    profile_data=profile_data,
+                    is_bot=True,
                 )
                 self.users_created += 1
             except Exception as e:
