@@ -21,9 +21,7 @@ jobs:
         env:
           PROJECT_DIR: "projects/chatea-conecta"
           BRANCH: "master"
-          RUN_COLLECTSTATIC: ${{ inputs.run_collectstatic }}
           CLEAR_REDIS: ${{ inputs.clear_redis }}
-          RUN_MIGRATIONS: ${{ inputs.run_migrations }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
         with:
           host: ${{ secrets.VPS_HOST }}
